@@ -1,0 +1,995 @@
+{
+	"name": "Initial-Ingestion",
+	"properties": {
+		"activities": [
+			{
+				"name": "Pre-Process Synthea CSV",
+				"type": "SynapseNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "EnvironementSuffix",
+						"value": "demo"
+					}
+				],
+				"typeProperties": {
+					"notebook": {
+						"referenceName": "Synthea-CSV-to-Json",
+						"type": "NotebookReference"
+					},
+					"snapshot": true,
+					"sparkPool": {
+						"referenceName": "ingestion",
+						"type": "BigDataPoolReference"
+					},
+					"executorSize": "Small",
+					"conf": {
+						"spark.dynamicAllocation.enabled": true
+					},
+					"driverSize": "Small"
+				}
+			},
+			{
+				"name": "Ingest Adjudicators",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Pre-Process Synthea CSV",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 1,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"additionalColumns": [
+							{
+								"name": "createdOn",
+								"value": {
+									"value": "@utcNow('o')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "modifiedOn",
+								"value": {
+									"value": "@utcNow('o')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "createdBy",
+								"value": {
+									"value": "@variables('IngestionUserName')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "modifiedBy",
+								"value": {
+									"value": "@variables('IngestionUserName')",
+									"type": "Expression"
+								}
+							}
+						],
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"wildcardFileName": "*.json",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "CosmosDbSqlApiSink",
+						"writeBatchSize": 100,
+						"writeBehavior": "upsert",
+						"disableMetricsCollection": false,
+						"maxConcurrentConnections": 1
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "AdlsAdjudicator",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "CosmosAdjudicator",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Ingest Payers",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Pre-Process Synthea CSV",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 1,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"additionalColumns": [
+							{
+								"name": "createdOn",
+								"value": {
+									"value": "@utcNow('o')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "modifiedOn",
+								"value": {
+									"value": "@utcNow('o')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "createdBy",
+								"value": {
+									"value": "@variables('IngestionUserName')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "modifiedBy",
+								"value": {
+									"value": "@variables('IngestionUserName')",
+									"type": "Expression"
+								}
+							}
+						],
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"wildcardFileName": "*.json",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "CosmosDbSqlApiSink",
+						"writeBatchSize": 100,
+						"writeBehavior": "upsert",
+						"disableMetricsCollection": false,
+						"maxConcurrentConnections": 1
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "AdlsPayer",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "CosmosPayer",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Ingest Providers",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Ingest Payers",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 1,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"additionalColumns": [
+							{
+								"name": "createdOn",
+								"value": {
+									"value": "@utcNow('o')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "modifiedOn",
+								"value": {
+									"value": "@utcNow('o')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "createdBy",
+								"value": {
+									"value": "@variables('IngestionUserName')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "modifiedBy",
+								"value": {
+									"value": "@variables('IngestionUserName')",
+									"type": "Expression"
+								}
+							}
+						],
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"wildcardFileName": "*.json",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "CosmosDbSqlApiSink",
+						"writeBatchSize": 100,
+						"writeBehavior": "upsert",
+						"disableMetricsCollection": false,
+						"maxConcurrentConnections": 1
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "AdlsProvider",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "CosmosProvider",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Ingest ClaimProcedures",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Pre-Process Synthea CSV",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 1,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"additionalColumns": [
+							{
+								"name": "createdOn",
+								"value": {
+									"value": "@utcNow('o')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "modifiedOn",
+								"value": {
+									"value": "@utcNow('o')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "createdBy",
+								"value": {
+									"value": "@variables('IngestionUserName')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "modifiedBy",
+								"value": {
+									"value": "@variables('IngestionUserName')",
+									"type": "Expression"
+								}
+							}
+						],
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"wildcardFileName": "*.json",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "CosmosDbSqlApiSink",
+						"writeBatchSize": 100,
+						"writeBehavior": "upsert",
+						"disableMetricsCollection": false,
+						"maxConcurrentConnections": 1
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "AdlsClaimProcedure",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "CosmosClaimProcedure",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Ingest Members",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Pre-Process Synthea CSV",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 1,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"additionalColumns": [
+							{
+								"name": "createdOn",
+								"value": {
+									"value": "@utcNow('o')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "modifiedOn",
+								"value": {
+									"value": "@utcNow('o')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "createdBy",
+								"value": {
+									"value": "@variables('IngestionUserName')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "modifiedBy",
+								"value": {
+									"value": "@variables('IngestionUserName')",
+									"type": "Expression"
+								}
+							}
+						],
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"wildcardFileName": "*.json",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "CosmosDbSqlApiSink",
+						"writeBatchSize": 100,
+						"writeBehavior": "upsert",
+						"disableMetricsCollection": false,
+						"maxConcurrentConnections": 1
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "AdlsMember",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "CosmosMember",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Ingest Member Coverage",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Ingest Members",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 1,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"additionalColumns": [
+							{
+								"name": "createdOn",
+								"value": {
+									"value": "@utcNow('o')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "modifiedOn",
+								"value": {
+									"value": "@utcNow('o')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "createdBy",
+								"value": {
+									"value": "@variables('IngestionUserName')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "modifiedBy",
+								"value": {
+									"value": "@variables('IngestionUserName')",
+									"type": "Expression"
+								}
+							}
+						],
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"wildcardFileName": "*.json",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "CosmosDbSqlApiSink",
+						"writeBatchSize": 100,
+						"writeBehavior": "upsert",
+						"disableMetricsCollection": false,
+						"maxConcurrentConnections": 1
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "AdlsCoverage",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "CosmosCoverage",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Ingest ClaimDetail",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Ingest Member Coverage",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Ingest ClaimProcedures",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Ingest Providers",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Ingest Adjudicators",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 1,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"additionalColumns": [
+							{
+								"name": "createdOn",
+								"value": {
+									"value": "@formatDateTime(utcNow(),'yyyy-MM-ddTHH:mm:ss.000z')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "modifiedOn",
+								"value": {
+									"value": "@utcNow('yyyy-MM-ddTHH:mm:ss.000z')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "createdBy",
+								"value": {
+									"value": "@variables('IngestionUserName')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "modifiedBy",
+								"value": {
+									"value": "@variables('IngestionUserName')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "type",
+								"value": "ClaimDetail"
+							}
+						],
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"wildcardFileName": "*.json",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "CosmosDbSqlApiSink",
+						"writeBatchSize": 100,
+						"writeBehavior": "upsert",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['claimId']"
+								},
+								"sink": {
+									"path": "claimId"
+								}
+							},
+							{
+								"source": {
+									"path": "$['memberId']"
+								},
+								"sink": {
+									"path": "memberId"
+								}
+							},
+							{
+								"source": {
+									"path": "$['filingDate']"
+								},
+								"sink": {
+									"path": "filingDate"
+								}
+							},
+							{
+								"source": {
+									"path": "$['adjustmentId']"
+								},
+								"sink": {
+									"path": "adjustmentId"
+								}
+							},
+							{
+								"source": {
+									"path": "$['claimStatus']"
+								},
+								"sink": {
+									"path": "claimStatus"
+								}
+							},
+							{
+								"source": {
+									"path": "$['detailId']"
+								},
+								"sink": {
+									"path": "id"
+								}
+							},
+							{
+								"source": {
+									"path": "$['lineItems']"
+								},
+								"sink": {
+									"path": "lineItems"
+								}
+							},
+							{
+								"source": {
+									"path": "$['providerId']"
+								},
+								"sink": {
+									"path": "providerId"
+								}
+							},
+							{
+								"source": {
+									"path": "$['providerName']"
+								},
+								"sink": {
+									"path": "providerName"
+								}
+							},
+							{
+								"source": {
+									"path": "$['createdOn']"
+								},
+								"sink": {
+									"path": "createdOn"
+								}
+							},
+							{
+								"source": {
+									"path": "$['modifiedOn']"
+								},
+								"sink": {
+									"path": "modifiedOn"
+								}
+							},
+							{
+								"source": {
+									"path": "$['createdBy']"
+								},
+								"sink": {
+									"path": "createdBy"
+								}
+							},
+							{
+								"source": {
+									"path": "$['modifiedBy']"
+								},
+								"sink": {
+									"path": "modifiedBy"
+								}
+							},
+							{
+								"source": {
+									"path": "$['type']"
+								},
+								"sink": {
+									"path": "type"
+								}
+							},
+							{
+								"source": {
+									"path": "$['totalAmount']"
+								},
+								"sink": {
+									"path": "totalAmount"
+								}
+							}
+						],
+						"collectionReference": ""
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "AdlsClaimDetail",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "CosmosClaim",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Ingest ClaimHeader",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Ingest ClaimDetail",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 1,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"additionalColumns": [
+							{
+								"name": "createdOn",
+								"value": {
+									"value": "@utcNow('o')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "modifiedOn",
+								"value": {
+									"value": "@utcNow('o')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "createdBy",
+								"value": {
+									"value": "@variables('IngestionUserName')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "modifiedBy",
+								"value": {
+									"value": "@variables('IngestionUserName')",
+									"type": "Expression"
+								}
+							},
+							{
+								"name": "type",
+								"value": "ClaimHeader"
+							}
+						],
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"wildcardFileName": "*.json",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "CosmosDbSqlApiSink",
+						"writeBatchSize": 100,
+						"writeBehavior": "upsert",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['claimId']"
+								},
+								"sink": {
+									"path": "claimId"
+								}
+							},
+							{
+								"source": {
+									"path": "$['memberId']"
+								},
+								"sink": {
+									"path": "memberId"
+								}
+							},
+							{
+								"source": {
+									"path": "$['filingDate']"
+								},
+								"sink": {
+									"path": "filingDate"
+								}
+							},
+							{
+								"source": {
+									"path": "$['adjustmentId']"
+								},
+								"sink": {
+									"path": "adjustmentId"
+								}
+							},
+							{
+								"source": {
+									"path": "$['claimStatus']"
+								},
+								"sink": {
+									"path": "claimStatus"
+								}
+							},
+							{
+								"source": {
+									"path": "$['headerId']"
+								},
+								"sink": {
+									"path": "id"
+								}
+							},
+							{
+								"source": {
+									"path": "$['providerId']"
+								},
+								"sink": {
+									"path": "providerId"
+								}
+							},
+							{
+								"source": {
+									"path": "$['providerName']"
+								},
+								"sink": {
+									"path": "providerName"
+								}
+							},
+							{
+								"source": {
+									"path": "$['createdOn']"
+								},
+								"sink": {
+									"path": "createdOn"
+								}
+							},
+							{
+								"source": {
+									"path": "$['modifiedOn']"
+								},
+								"sink": {
+									"path": "modifiedOn"
+								}
+							},
+							{
+								"source": {
+									"path": "$['createdBy']"
+								},
+								"sink": {
+									"path": "createdBy"
+								}
+							},
+							{
+								"source": {
+									"path": "$['modifiedBy']"
+								},
+								"sink": {
+									"path": "modifiedBy"
+								}
+							},
+							{
+								"source": {
+									"path": "$['type']"
+								},
+								"sink": {
+									"path": "type"
+								}
+							},
+							{
+								"source": {
+									"path": "$['totalAmount']"
+								},
+								"sink": {
+									"path": "totalAmount"
+								}
+							}
+						],
+						"collectionReference": ""
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "AdlsClaimDetail",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "CosmosClaim",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"concurrency": 1,
+		"parameters": {
+			"EnvironmentSuffix": {
+				"type": "string",
+				"defaultValue": "demo"
+			}
+		},
+		"variables": {
+			"IngestionUserName": {
+				"type": "String",
+				"defaultValue": "Synapse/Ingestion"
+			}
+		},
+		"annotations": []
+	}
+}

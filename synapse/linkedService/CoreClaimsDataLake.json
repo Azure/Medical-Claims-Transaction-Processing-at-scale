@@ -1,0 +1,14 @@
+{
+	"name": "CoreClaimsDataLake",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://adlcoreclaimsdemo.dfs.core.windows.net"
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

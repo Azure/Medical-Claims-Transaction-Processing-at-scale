@@ -1,0 +1,7 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "BusinessRules__AutoApproveThreshold": 200,
+    "BusinessRules__RequireManagerApproval": 500
+  }
+}
