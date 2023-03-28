@@ -1,0 +1,15 @@
+{
+	"name": "CoreClaimsCosmosDb",
+	"properties": {
+		"annotations": [],
+		"type": "CosmosDb",
+		"typeProperties": {
+			"accountEndpoint": "https://db-coreclaims-demo.documents.azure.com:443/",
+			"database": "CoreClaimsApp"
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
