@@ -1,0 +1,15 @@
+{
+  "GeneratorOptions": {
+    "RunMode": "OneTime",
+    "BatchSize": 10,
+    "Verbose": true,
+    "SleepTime": 1000
+  },
+  "CoreClaimsCosmosDB": {
+    "accountEndpoint": "https://db-coreclaims-${SUFFIX}.documents.azure.com:443/"
+  },
+  "CoreClaimsEventHub": {
+    "fullyQualifiedNamespace": "eh-coreclaims-${SUFFIX}.servicebus.windows.net"
+  }
+}
+

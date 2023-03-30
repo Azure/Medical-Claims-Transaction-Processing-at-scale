@@ -13,12 +13,7 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": [
-					{
-						"name": "EnvironementSuffix",
-						"value": "demo"
-					}
-				],
+				"userProperties": [],
 				"typeProperties": {
 					"notebook": {
 						"referenceName": "Synthea-CSV-to-Json",
@@ -62,14 +57,14 @@
 							{
 								"name": "createdOn",
 								"value": {
-									"value": "@utcNow('o')",
+									"value": "@utcNow(variables('DateFormatString'))",
 									"type": "Expression"
 								}
 							},
 							{
 								"name": "modifiedOn",
 								"value": {
-									"value": "@utcNow('o')",
+									"value": "@utcNow(variables('DateFormatString'))",
 									"type": "Expression"
 								}
 							},
@@ -146,14 +141,14 @@
 							{
 								"name": "createdOn",
 								"value": {
-									"value": "@utcNow('o')",
+									"value": "@utcNow(variables('DateFormatString'))",
 									"type": "Expression"
 								}
 							},
 							{
 								"name": "modifiedOn",
 								"value": {
-									"value": "@utcNow('o')",
+									"value": "@utcNow(variables('DateFormatString'))",
 									"type": "Expression"
 								}
 							},
@@ -230,14 +225,14 @@
 							{
 								"name": "createdOn",
 								"value": {
-									"value": "@utcNow('o')",
+									"value": "@utcNow(variables('DateFormatString'))",
 									"type": "Expression"
 								}
 							},
 							{
 								"name": "modifiedOn",
 								"value": {
-									"value": "@utcNow('o')",
+									"value": "@utcNow(variables('DateFormatString'))",
 									"type": "Expression"
 								}
 							},
@@ -314,14 +309,14 @@
 							{
 								"name": "createdOn",
 								"value": {
-									"value": "@utcNow('o')",
+									"value": "@utcNow(variables('DateFormatString'))",
 									"type": "Expression"
 								}
 							},
 							{
 								"name": "modifiedOn",
 								"value": {
-									"value": "@utcNow('o')",
+									"value": "@utcNow(variables('DateFormatString'))",
 									"type": "Expression"
 								}
 							},
@@ -398,14 +393,14 @@
 							{
 								"name": "createdOn",
 								"value": {
-									"value": "@utcNow('o')",
+									"value": "@utcNow(variables('DateFormatString'))",
 									"type": "Expression"
 								}
 							},
 							{
 								"name": "modifiedOn",
 								"value": {
-									"value": "@utcNow('o')",
+									"value": "@utcNow(variables('DateFormatString'))",
 									"type": "Expression"
 								}
 							},
@@ -482,14 +477,14 @@
 							{
 								"name": "createdOn",
 								"value": {
-									"value": "@utcNow('o')",
+									"value": "@utcNow(variables('DateFormatString'))",
 									"type": "Expression"
 								}
 							},
 							{
 								"name": "modifiedOn",
 								"value": {
-									"value": "@utcNow('o')",
+									"value": "@utcNow(variables('DateFormatString'))",
 									"type": "Expression"
 								}
 							},
@@ -584,14 +579,14 @@
 							{
 								"name": "createdOn",
 								"value": {
-									"value": "@formatDateTime(utcNow(),'yyyy-MM-ddTHH:mm:ss.000z')",
+									"value": "@utcNow(variables('DateFormatString'))",
 									"type": "Expression"
 								}
 							},
 							{
 								"name": "modifiedOn",
 								"value": {
-									"value": "@utcNow('yyyy-MM-ddTHH:mm:ss.000z')",
+									"value": "@utcNow(variables('DateFormatString'))",
 									"type": "Expression"
 								}
 							},
@@ -797,14 +792,14 @@
 							{
 								"name": "createdOn",
 								"value": {
-									"value": "@utcNow('o')",
+									"value": "@utcNow(variables('DateFormatString'))",
 									"type": "Expression"
 								}
 							},
 							{
 								"name": "modifiedOn",
 								"value": {
-									"value": "@utcNow('o')",
+									"value": "@utcNow(variables('DateFormatString'))",
 									"type": "Expression"
 								}
 							},
@@ -978,16 +973,14 @@
 			}
 		],
 		"concurrency": 1,
-		"parameters": {
-			"EnvironmentSuffix": {
-				"type": "string",
-				"defaultValue": "demo"
-			}
-		},
 		"variables": {
 			"IngestionUserName": {
 				"type": "String",
 				"defaultValue": "Synapse/Ingestion"
+			},
+			"DateFormatString": {
+				"type": "String",
+				"defaultValue": "yyyy-MM-ddTHH:mm:ss.000z"
 			}
 		},
 		"annotations": []

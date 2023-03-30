@@ -1,5 +1,5 @@
 @description('Deployment suffix')
-param suffix string = 'demo'
+param suffix string = 'uswest3'
 
 var cosmosAccountName  = 'db-coreclaims-${suffix}'
 var eventHubNamespace  = 'eh-coreclaims-${suffix}'

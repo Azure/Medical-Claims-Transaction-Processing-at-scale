@@ -20,17 +20,17 @@ var containers = [
   {
     name: 'Claim'
     partitionKey: '/claimId'
-    dedicated: 1000
+    dedicated: 2000
   }
   {
     name: 'ClaimLeases'
     partitionKey: '/id'
-    dedicated: 0
+    dedicated: 2000
   }
   {
     name: 'Member'
     partitionKey: '/memberId'
-    dedicated: 0
+    dedicated: 1000
   }
   {
     name: 'ClaimProcedure'
