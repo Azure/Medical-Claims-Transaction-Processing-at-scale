@@ -1,8 +1,0 @@
-{
-  "IsEncrypted": false,
-  "Values": {
-    "AzureWebJobsStorage__accountName": "adlcoreclaimsusdemo",
-    "CoreClaimsCosmosDB__accountEndpoint": "https://db-coreclaims-demo.documents.azure.com:443/",
-    "CoreClaimsEventHub__fullyQualifiedNamespace": "eh-coreclaims-demo.servicebus.windows.net"
-  }
-}

@@ -1,0 +1,6 @@
+{
+  "BusinessRuleOptions": {
+    "AutoApproveThreshold": 200,
+    "RequireManagerApproval": 500
+  }
+}

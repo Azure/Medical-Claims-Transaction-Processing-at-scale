@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "AzureBlobFS",
 		"typeProperties": {
-			"url": "https://adlcoreclaimsdemo.dfs.core.windows.net"
+			"url": "https://adlcoreclaimsuswest3.dfs.core.windows.net"
 		},
 		"connectVia": {
 			"referenceName": "AutoResolveIntegrationRuntime",

@@ -47,8 +47,21 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
       
       appSettings: [
         {
+          name: 'BusinessRuleOptions__AutoApproveThreshold'
+          value: '200'
+        }
+        {
+          name: 'BusinessRuleOptions__RequireManagerApproval'
+          value: '500'
+        }
+        {
           name: 'AzureWebJobsStorage__accountName'
           value: storageAccountName
+        }
+        // Needed if publishing from linux
+        {
+          name: 'AzureWebJobsStorage'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${blob.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(blob.id, blob.apiVersion).keys[0].value}'
         }
         {
           name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'

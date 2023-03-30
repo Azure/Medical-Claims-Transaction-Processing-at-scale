@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "CosmosDb",
 		"typeProperties": {
-			"accountEndpoint": "https://db-coreclaims-demo.documents.azure.com:443/",
+			"accountEndpoint": "https://db-coreclaims-uswest3.documents.azure.com:443/",
 			"database": "CoreClaimsApp"
 		},
 		"connectVia": {
