@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This repository provides a code sample in .NET on how to use some Azure Cosmos DB features integrated with Azure Funcions.
+This repository provides a code sample in .NET on how you might use a combination of Azure Functions, Cosmos DB, and EventHub to implement an event-driven medical insurance claims process. With minimal changes this could be modified to work for other insurance processes.
 
 ## Requirements to deploy
 > Setup shell was tested on WSL2 (Ubuntu 22.04.5 LTS)
