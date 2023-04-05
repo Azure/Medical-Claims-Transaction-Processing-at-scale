@@ -18,12 +18,9 @@ Mutable entities will contain a set of audit trail fields. These should automati
 | Field      | Type     | Notes                                   |
 | ---------- | -------- | --------------------------------------- |
 | createdOn  | DateTime |                                         |
-| createdBy  | ?        | Set once on create                      |
+| createdBy  | string   | Set once on create                      |
 | modifiedOn | DateTime |                                         |
-| modifiedBy | ?        | Set whenever changed (including create) |
-
-> [!question]
->- [ ] What goes in the user fields, entity? alias? id? leave blank for non-adjudicators?
+| modifiedBy | string   | Set whenever changed (including create) |
 
 ### Container: Member
 **Entities**: Member, Coverage, ClaimHeader  
@@ -64,7 +61,7 @@ Mutable entities will contain a set of audit trail fields. These should automati
 
 ### Container: Claim
 **Entities**: ClaimHeader, ClaimDetail  
-**Partition Key**: `claimId` ^[Based on conversation with Sergiy, suggestion is claims get duplicated into another container with memberId as Partition Key, perhaps Member?]  
+**Partition Key**: `claimId`  
 
 A single `ClaimHeader` will exist per claim, `ClaimDetail`s will be replaced, rather than updated, creating an audit trail.
 
@@ -114,10 +111,6 @@ A single `ClaimHeader` will exist per claim, `ClaimDetail`s will be replaced, ra
 | discount        | decimal  |                                |
 | serviceDate     | DateTime |                                |
 
-> [!question]
->- [x] ProcedureId is foreign key
->- [x] claimDetailDate vs createdOn/modifiedOn *serviceDate seems more relevant*
-
 ### Container: ClaimProcedure
 
 **Entities**: ClaimProcedure  
@@ -129,10 +122,6 @@ A single `ClaimHeader` will exist per claim, `ClaimDetail`s will be replaced, ra
 | code        | string |                          |
 | category    | string |                          | 
 | description | string | display name/description |
-
-> [!question]
->- [x] Does this have a display name, or is code sufficient? [done:: 2023-03-10]
->- [x] Are there enough of these to warrant partitioning these, or are point queries going to be easier with a const partition? [done:: 2023-03-10]
 
 ### Container: Payer
 **Entities**: Payer  
@@ -215,11 +204,6 @@ Synthia/Faker will be used to generate thousands of rows of Member and Claim dat
 
 In order to simulate continuous claims being filed, a Publisher app will be created. This will be a simple Console/Function app that will be responsible for using Faker to  generate new claims, and push them to the `IncomingClaim` EventHub topic.
 
-> [!question]
-> - [ ] Console app vs Function app for providing streaming data *Preference is for console app*
-> - [ ] What did we land on for sample data generation, Faker or Synthia?
-> - [x] Confirm seed counts make sense
-
 ## Function Application
 
 Function application will be main entry point for users, exposing a number of endpoints for use in testing, and a hypothetical future UI. For the scope of this project, no UI will be built, the API's will called from Postman (or similar tool), and JMeter for purposes of load/performance testing.
@@ -257,9 +241,6 @@ The Claim Detail contains the bulk of the information about the claim, including
 
 Creating a claim will create both of these documents, and set their state to `Initial`
 
-> [!question]
-> - [x] Are all repeats a "Duplicate claim", or should they be treated as updates?
-
 #### 2. Auto-Adjudication/Assignment
 
 > [!trigger] Endpoint: AssignClaimAdjudicator  
@@ -280,13 +261,6 @@ Rules for Auto-adjudication
 Rules when `Resubmitted`:
 - This should esentially restart the workflow **regardless of where it currently is**
 - We can leave it assigned to the existing Adjudicator if one has already been assigned
-
-> [!question]
-> - [x] Do we need an endpoint to list unassigned claims, or is the EventHub handling this?
-> - [x] If EventHub/ChangeFeed is assigning this, what's the logic for assigning a claim? *Random from the list of ~10-15 adjudicators*
-> - [x] How will we decide what will be automatically processed, and what will be manually assigned?
-> - [x] Will Auto-assigned claims be handled by change-feed, or EventHub? *change feed is fine*
-> - [ ] What are the rules for automatic adjustment? ie: Not being manually assigned, rules to be defined from Oracle doc [Adjustment Rules :: Oracle Health Insurance Claims Adjudication and Pricing (3.21.3)](https://docs.oracle.com/en/industries/insurance/health-insurance-components/claims-3.21.3/operations/claims-flow/pricing/examples/adjustment-rules.html) 
 
 #### 3. Acknowledgement
 Once a claim has been assigned for **manual** adjudication, the adjudicator must acknowledge the claim. To support this, two endpoints will be build
@@ -385,11 +359,6 @@ Once a ClaimHeader gets the `Complete` or `Denied` status assigned, an event wil
 >  
 > **Stretch Goal:** For the scope of this release we will deprioritize the Synapse integration. If time allows we should aim to expose this, and provide a few example queries. But prioritizing the other functionality is first priority.
 
->[!question]
-> - [ ] Does take a status to count by, or does it return counts of **all** statuses
-> - [ ] Do we maintain this with change-feed, or are we doing a groupby/count
-> - [ ] What is the scope for these? Global? byMember? byAdjudicator?
-
 ### Change feed Endpoints
 
 > [!trigger] Endpoint: ClaimUpdated  
@@ -424,9 +393,4 @@ A bicep definition of the required infrastructure will be created containing the
 | Storage Account    | `adl-coreclaims-demo`     | Storage account for Azure Data Lake storage of initial seed data for synapse processing                 |
 | Synapse workspace  | `synapse-coreclaims-demo` | Synapse notebook for running initial seed scripts                                                       |
 | Apache Spark Pool  | `SeedData`                | Spark pool used by synapse                                                                              |
-
-> [!question]
-> - [x] What does the Synapse/ADL Infrastructure look like?
-> - [ ] TODO: // Add CosmosDB containers/DB to this description including partition key
-
 
