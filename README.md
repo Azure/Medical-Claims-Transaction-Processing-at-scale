@@ -105,7 +105,7 @@ This config file will generate 10000 patients, each with a random number of clai
 This will require logging into the azure portal, and accessing the Synapse workspace.
 
 1. Upload generated csv files to blob storage collection `claimsfs` created by `setup.sh` script
-    - Pre-generated data can be found in this repo under `/deploy/csv`
+    - Pre-generated data can be found in this repo under `/deploy/csv` (this sample data has around 100 patients)
     - If you generated your own using the above instructions these will be in `{clone-path}/synthea/output/csv` folder
 1. Log into the Synapse workspace in Synapse Studio
 2. Locate the **Initial-Ingestion** pipeline in the **Integrate** section in the side menu
@@ -117,7 +117,7 @@ This will require logging into the azure portal, and accessing the Synapse works
 ## Running the sample
 
 You can call Function APIs from Azure Portal or your favorite tool.
-> Postman Exports are included in the `/docs` folder
+> Postman Exports are included in the `/postman` folder
 
 ### 1. Run the Claim Publisher
 
