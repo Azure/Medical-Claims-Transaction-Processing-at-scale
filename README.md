@@ -79,7 +79,7 @@ cd medical-claims/deploy/
 > - Notebook for transforming Synthea output
 > - Pipeline for ingesting Synthea output into Cosmos Db Containers
 
-## Generate Sample Data
+## Generate Sample Data (Optional)
 > Requirements: Java 11 or new
 ```bash
 sudo apt install openjdk-11-jre-headless
@@ -98,15 +98,15 @@ cd synthea
 ```
 This config file will generate 10000 patients, each with a random number of claims. These files will be output to the `./output/csv` directory. Creating 10000 records took me around 15 minutes.
 
-3. Upload these files to blob storage
-The `setup.sh` script created a Blob Storage account with a container called `claimsfs`, create a folder in this account called `SyntheaInput` and upload all of these csv files to this folder.
-
 > For more information customizing this generated patient data see: https://github.com/synthetichealth/synthea
 
 ## Ingest Sample Data
 
 This will require logging into the azure portal, and accessing the Synapse workspace.
 
+1. Upload generated csv files to blob storage collection `claimsfs` created by `setup.sh` script
+    - Pre-generated data can be found in this repo under `/deploy/csv`
+    - If you generated your own using the above instructions these will be in `{clone-path}/synthea/output/csv` folder
 1. Log into the Synapse workspace in Synapse Studio
 2. Locate the **Initial-Ingestion** pipeline in the **Integrate** section in the side menu
 3. Click the **Debug** button to run the pipeline
