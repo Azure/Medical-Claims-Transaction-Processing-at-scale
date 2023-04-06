@@ -1,0 +1,44 @@
+{
+	"name": "AdlsCoverage",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CoreClaimsDataLake",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DataLake_Input"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "SyntheaOutput/coverage.json",
+				"fileSystem": "claimsfs"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"memberId": {
+					"type": "string"
+				},
+				"type": {
+					"type": "string"
+				},
+				"coverageId": {
+					"type": "string"
+				},
+				"id": {
+					"type": "string"
+				},
+				"startDate": {
+					"type": "string"
+				},
+				"endDate": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}

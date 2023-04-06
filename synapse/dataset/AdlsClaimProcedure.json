@@ -1,0 +1,35 @@
+{
+	"name": "AdlsClaimProcedure",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CoreClaimsDataLake",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DataLake_Input"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "SyntheaOutput/claimprocedure.json",
+				"fileSystem": "claimsfs"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"code": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"category": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}
