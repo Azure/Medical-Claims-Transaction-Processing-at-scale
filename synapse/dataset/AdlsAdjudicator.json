@@ -1,0 +1,44 @@
+{
+	"name": "AdlsAdjudicator",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CoreClaimsDataLake",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DataLake_Input"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "SyntheaOutput/adjudicator.json",
+				"fileSystem": "claimsfs"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "string"
+				},
+				"adjudicatorId": {
+					"type": "string"
+				},
+				"type": {
+					"type": "string"
+				},
+				"name": {
+					"type": "string"
+				},
+				"email": {
+					"type": "string"
+				},
+				"role": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}
