@@ -38,9 +38,20 @@ resource synapse 'Microsoft.Synapse/workspaces@2021-06-01' = {
       accountUrl: storageAccount.properties.primaryEndpoints.dfs
       filesystem: storageContainerName
     }
+    publicNetworkAccess: 'Enabled'
+    trustedServiceBypassEnabled: true
   }
   identity: {
     type: 'SystemAssigned'
+  }
+}
+
+resource synapsefirewall 'Microsoft.Synapse/workspaces/firewallRules@2021-06-01' = {
+  name: 'allow-all'
+  parent: synapse
+  properties: {
+    endIpAddress: '255.255.255.255'
+    startIpAddress: '0.0.0.0'
   }
 }
 

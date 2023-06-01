@@ -49,7 +49,7 @@ namespace CoreClaims.Publisher
                 return;
             }
             
-            var client = new CosmosClientBuilder(config[Constants.Connections.CosmosDbEndpoint], new DefaultAzureCredential())
+            var client = new CosmosClientBuilder(config[Constants.Connections.CosmosDbEndpoint])
                 .Build();
 
             Console.WriteLine("Loading Members...");

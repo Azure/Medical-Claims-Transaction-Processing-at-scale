@@ -57,16 +57,16 @@ cd medical-claims/deploy/
 > - Azure Event Hub standard
 > - Azure Functions Consumption Plan
 > - Azure Application Insights
-> - Synapse Workspace
+> - Synapse Workspace (public access enabled)
 > - Apache Spark Pool
 
 * Run setup-synapse.sh with the appropriate parameters.
 
 ```bash
 #SAMPLE
-#./setup.sh 00000000-0000-0000-0000-000000000000 myrandomsuffix
+#./setup-synapse.sh 00000000-0000-0000-0000-000000000000 myrandomsuffix
 
-./setup.sh <subscription id> <resources suffix>
+./setup-synapse.sh <subscription id> <resources suffix>
 ```
 
 > This setup will provision the Ingestion pipeline and supporting components in the Synapse workspace created in the previous step.
@@ -80,16 +80,21 @@ cd medical-claims/deploy/
 > - Pipeline for ingesting Synthea output into Cosmos Db Containers
 
 ## Generate Sample Data (Optional)
-> Requirements: Java 11 or new
+> Requirements: Java 11 or newer.
+> 
+> This step is **optional** if you want to create and load large historical dataset based on Synthea data generator.
+>
+> The repo has pre-generated small dataset files ready to use under `/deploy/csv` (this sample data has around 100 patients).
+> If you want to continue with this step - note that building and generating sample data may take more than 15 minutes to complete.
 ```bash
-sudo apt install openjdk-11-jre-headless
+sudo apt install openjdk-11-jdk
 ```
 
 1. Clone and build Synthea
 ```bash
 git clone https://github.com/synthetichealth/synthea
 cd synthea
-./gradlew build check test
+./gradlew build -x check
 ```
 
 2. Run Synthea to generate patient information
@@ -104,12 +109,12 @@ This config file will generate 10000 patients, each with a random number of clai
 
 This will require logging into the azure portal, and accessing the Synapse workspace.
 
-1. Upload generated csv files to blob storage collection `claimsfs` created by `setup.sh` script
+1. Create a folder `SyntheaInput` in blob storage container `claimsfs` created by `setup.sh` script and upload generated csv files 
     - Pre-generated data can be found in this repo under `/deploy/csv` (this sample data has around 100 patients)
     - If you generated your own using the above instructions these will be in `{clone-path}/synthea/output/csv` folder
 1. Log into the Synapse workspace in Synapse Studio
 2. Locate the **Initial-Ingestion** pipeline in the **Integrate** section in the side menu
-3. Click the **Debug** button to run the pipeline
+3. Click the **Add trigger -> Trigger now** button to run the pipeline
 
 > The time this pipeline takes to run will heavily depend on the volume of data generated from Synthea. In addition, the Spark pool will often take 2-3 minutes to start up the first time it's used.
 
@@ -121,7 +126,28 @@ You can call Function APIs from Azure Portal or your favorite tool.
 
 ### 1. Run the Claim Publisher
 
-> This console app will generate random claims and publish them to the EventHub topic the FunctionApp subscribes to. Take note of one of the ClaimId uuids output from this tool.
+> This console app will generate random claims and publish them to the EventHub topic the FunctionApp subscribes to which then will be injested into Cosmos `Claim` container where we will store all Claim and Claim line item events data. **Take note of one of the ClaimId uuids output from this tool which has value over $500**.
+>
+> Console app has 2 **"RunMode"** options configurable in *settings.json* under `./src/CoreClaims.Publisher` : "OneTime" (default) and "Continous" 
+> as well as **"BatchSize"** (default - 10), **"Verbose"** (default - True) and **"SleepTime"** (default - 1000 ms).
+>
+>  *settings.json* example:
+```
+{
+  "GeneratorOptions": {
+    "RunMode": "OneTime",
+    "BatchSize": 10,
+    "Verbose": true,
+    "SleepTime": 1000
+  },
+  "CoreClaimsCosmosDB": {
+    "accountEndpoint": "AccountEndpoint=https://*COSMOS_ACC_NAME*.documents.azure.com:443/;AccountKey=*COSMOS_ACC_KEY*;"
+  },
+  "CoreClaimsEventHub": {
+    "fullyQualifiedNamespace": "Endpoint=sb://*YOUR_EH_NAME*.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=*EH_KEY*"
+  }
+}
+```
 
 
 ```bash
@@ -129,7 +155,7 @@ cd ../src/CoreClaims.Publisher
 dotnet run
 ```
 
-### 2. Call GetClaimHistory function
+### 2. Call GetSingleClaimById or GetClaimHistory functions to see Claim Status changes:
 
 ```bash
 #Setting variables
@@ -137,7 +163,20 @@ SUFFIX=<your suffix>
 CLAIM_ID=<Claim UUID from Publisher>
 FUNCTION_KEY=<FunctionApp Authorization Key from Portal>
 
-curl "https://fa-coreclaims-$SUFFIX.azurewebsites/api/claim/$CLAIM_ID" \
+curl "https://fa-coreclaims-$SUFFIX.azurewebsites.net/api/claim/$CLAIM_ID" \
+    --request GET \
+    --header "x-functions-key: $FUNCTION_KEY"
+```
+> 
+> then get history:
+> 
+```bash
+#Setting variables
+SUFFIX=<your suffix>
+CLAIM_ID=<Claim UUID from Publisher>
+FUNCTION_KEY=<FunctionApp Authorization Key from Portal>
+
+curl "https://fa-coreclaims-$SUFFIX.azurewebsites.net/api/claim/$CLAIM_ID/history" \
     --request GET \
     --header "x-functions-key: $FUNCTION_KEY"
 ```
@@ -149,14 +188,15 @@ Check the status of the claim response. At this point it should be one of a few 
 - If the `totalAmount` value is greater than 200.00, it should be `Assigned`
 - Finally, if your initial ingestion run has a large volume of claims, it's possible the ChangeFeed triggers are still catching up, and the status may be `Initial`
 
-*Repeat these steps till you find a claim that has the status `Assigned`*
+*Repeat these steps till you find a claim that has the status `Assigned` which will be assigned to random AdjudicatorId*
 
 ### 3. Call AcknowledgeClaim function
 
+For simulation of manual claims Adjudication process we first need to call Claim Ackowledgement API to trigger downstream processing logic.
 This is simulating an Adjudicator acknowledging the claim has been assigned to them in preparation for adjudication.
 
 ```bash
-curl "https://fa-coreclaims-$SUFFIX.azurewebsites/api/claim/$CLAIM_ID" \
+curl "https://fa-coreclaims-$SUFFIX.azurewebsites.net/api/claim/$CLAIM_ID/acknowledge" \
     --request POST \
     --header "x-functions-key: $FUNCTION_KEY" \
     --header "Content-Type: application/json" \
@@ -164,11 +204,17 @@ curl "https://fa-coreclaims-$SUFFIX.azurewebsites/api/claim/$CLAIM_ID" \
 ```
 
 ### 3. Call AdjudicateClaim function
+This is simulating an Adjudicator making any adjustments to a claim (applying discounts), and proposing an update, or denying a claim.
 
-This is simulating an Adjudicator making any adjustments to a claim (applying discounts), and proposing an update, or denying a claim
+Once it is acknowledged in a previous step  - you can now execute this API to do a manual Adjudication based on following conditions for this API payload:
+
+Here you have some choices
+- Setting `claimStatus` to `Denied` will finalize the claim as `Denied` and publish the final status of the claim to a `ClaimDenied` topic on the event hub
+- Setting `claimStatus` to `Proposed` without changing the `lineItems`, or changing them such that the difference between the total before and after is less than 500.00 (configurable) will trigger automatic approval 
+- Setting `claimStatus` to `Proposed` while changing the `lineItems` so the total before and after differs by more than 500.00 will trigger manager approval, updating the status to `ApprovalRequired` and assigning a new adjudicator to the claim. At which point you can call the endpoint again, acting as the manager approver. To simulate this type of processing - copy `lineItems` array from GetClaimbyId output, paste/update in the payload for this API in addition to Status update with modified `discount` line item values total over $500.  
 
 ```bash
-curl "https://fa-coreclaims-$SUFFIX.azurewebsites/api/claim/$CLAIM_ID" \
+curl "https://fa-coreclaims-$SUFFIX.azurewebsites.net/api/claim/$CLAIM_ID" \
     --request PUT \
     --header "x-functions-key: $FUNCTION_KEY" \
     --header "Content-Type: application/json" \
@@ -181,15 +227,12 @@ curl "https://fa-coreclaims-$SUFFIX.azurewebsites/api/claim/$CLAIM_ID" \
     }'
 ```
 
-Here you have some choices
-- Setting `claimStatus` to `Denied` will finalize the claim as `Denied` and publish the final status of the claim to a `ClaimDenied` topic on the event hub
-- Setting `claimStatus` to `Proposed` without changing the `lineItems`, or changing them such that the difference between the total before and after is less than 500.00 (configurable) will trigger automatic approval
-- Setting `claimStatus` to `Proposed` while changing the `lineItems` so the total before and after differs by more than 500.00 will trigger manager approval, updating the status to `ApprovalRequired` and assigning a new adjudicator to the claim. At which point you can call the endpoint again, acting as the manager approver.
+
 
 ### 4. Reviewing the Claim history
 
 ```bash
-curl "https://fa-coreclaims-$SUFFIX.azurewebsites/api/claim/$CLAIM_ID" \
+curl "https://fa-coreclaims-$SUFFIX.azurewebsites.net/api/claim/$CLAIM_ID/history" \
     --request GET \
     --header "x-functions-key: $FUNCTION_KEY"
 ```
@@ -212,6 +255,69 @@ From the response you should be able to see the history of the various stages th
 ### 5. Post Run
 
 Once a Claim reaches the `Denied` or `Approved` state, it will get published to another pair of EventHub topics for hypothetical downstream processing.
+
+Note that when Claim get to final `Approved` state - member main document in `Member` container will get updated with increments of 2 additional attributes:
+```
+ "approvedCount": 6,
+ "approvedTotal": 5851.93
+```
+which you can see by calling Read MemberId API ( see below reference APIs):
+
+### 6. Additional Reference Read APIs
+
+Functions support a set of additional Reference Read APIs:
+1. GetMemberById
+
+```bash
+#Setting additional variables
+MEMBER_ID=<Member UUID>
+
+curl "https://fa-coreclaims-$SUFFIX.azurewebsites.net/api/member/$MEMBER_ID" \
+    --request GET \
+    --header "x-functions-key: $FUNCTION_KEY"
+```
+
+
+
+2. List Claims for MemberId
+
+```bash
+#Setting additional variables
+MEMBER_ID=<Member UUID>
+
+curl "https://fa-coreclaims-$SUFFIX.azurewebsites.net/api/member/$MEMBER_ID/claims?offset=0&limit=50" \
+    --request GET \
+    --header "x-functions-key: $FUNCTION_KEY"
+```
+
+3. List Claims for AdjudicatorId 
+
+```bash
+#Setting additional variables
+ADJUDICATOR_ID=<Member UUID>
+
+curl "https://fa-coreclaims-$SUFFIX.azurewebsites.net/api/adjudicator/$ADJUDICATOR_ID/claims?offset=0&limit=100" \
+    --request GET \
+    --header "x-functions-key: $FUNCTION_KEY"
+```
+
+5. List Providers
+
+```bash
+
+curl "https://fa-coreclaims-$SUFFIX.azurewebsites.net/api/providers?offset=0&limit=50" \
+    --request GET \
+    --header "x-functions-key: $FUNCTION_KEY"
+```
+
+4. List Payers
+```bash
+
+curl "https://fa-coreclaims-$SUFFIX.azurewebsites.net/api/payers?offset=0&limit=50" \
+    --request GET \
+    --header "x-functions-key: $FUNCTION_KEY"
+```
+
 
 # Clean Up
 

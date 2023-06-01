@@ -6,10 +6,10 @@
     "SleepTime": 1000
   },
   "CoreClaimsCosmosDB": {
-    "accountEndpoint": "https://db-coreclaims-${SUFFIX}.documents.azure.com:443/"
+    "accountEndpoint": "AccountEndpoint=https://db-coreclaims-${SUFFIX}.documents.azure.com:443/;AccountKey=${COSMOSKEY};"
   },
   "CoreClaimsEventHub": {
-    "fullyQualifiedNamespace": "eh-coreclaims-${SUFFIX}.servicebus.windows.net"
+    "fullyQualifiedNamespace": "Endpoint=sb://eh-coreclaims-${SUFFIX}.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=${EVENTHUBKEY}"
   }
 }
 
