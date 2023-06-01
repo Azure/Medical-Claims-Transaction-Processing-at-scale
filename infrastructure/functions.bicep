@@ -61,11 +61,11 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         // Needed if publishing from linux
         {
           name: 'AzureWebJobsStorage'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${blob.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(blob.id, blob.apiVersion).keys[0].value}'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${blob.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${blob.listKeys().keys[0].value}'
         }
         {
           name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${blob.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${listKeys(blob.id, blob.apiVersion).keys[0].value}'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${blob.name};EndpointSuffix=${environment().suffixes.storage};AccountKey=${blob.listKeys().keys[0].value}'
         }
         {
           name: 'FUNCTIONS_WORKER_RUNTIME'

@@ -57,6 +57,9 @@ echo "Directory changed: '$(pwd)'"
 cp ./CoreClaims.FunctionApp/local.settings{.template,}.json 
 cp ./CoreClaims.Publisher/settings{.template,}.json 
 
+COSMOSKEY=$(az cosmosdb keys list -g $RESOURCE_GROUP --name db-coreclaims-$SUFFIX --type keys --query primaryMasterKey -o tsv)
+EVENTHUBKEY=$(az eventhubs namespace authorization-rule keys list -g $RESOURCE_GROUP --namespace-name eh-coreclaims-$SUFFIX --name RootManageSharedAccessKey --query primaryKey -o tsv)
+
 # File to modify
 FILES_TO_REPLACE="CoreClaims.Publisher/settings.json CoreClaims.FunctionApp/local.settings.json"
 

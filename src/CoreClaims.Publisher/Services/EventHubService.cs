@@ -10,16 +10,16 @@ namespace CoreClaims.Publisher.Services
 {
     public class EventHubService
     {
-        private readonly string _fullyQualifiedNamespace;
+        private readonly string _connectionString;
 
-        public EventHubService(string fullyQualifiedNamespace)
+        public EventHubService(string connectionString)
         {
-            _fullyQualifiedNamespace = fullyQualifiedNamespace;
+            _connectionString = connectionString;
         }
 
         protected EventHubProducerClient GetClient(string hubName)
         {
-            return new EventHubProducerClient(_fullyQualifiedNamespace, hubName, new DefaultAzureCredential());
+            return new EventHubProducerClient(_connectionString, hubName);
         }
 
         public async Task SendDataAsync<T>(string hubName, IEnumerable<T> data)
