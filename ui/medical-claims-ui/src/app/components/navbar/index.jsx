@@ -4,9 +4,8 @@ import Image from "next/image";
 export default function NavBar({children, menuItems}){  
   return(
     <div className='min-h-screen flex flex-col'>
-      <header className='bg-white sticky top-0 h-14 flex justify-center items-center font-semibold uppercase'>
-        <h1 className='h-10'>Medical Claims</h1>
-        
+      <header className='bg-white sticky top-0 h-14 flex justify-center items-center font-semibold'>
+        <h1 className='h-10'>Medical Claims</h1>        
       </header>
 
       <button className="float-left absolute w-20">
@@ -27,7 +26,7 @@ export default function NavBar({children, menuItems}){
             </ul>
           </nav>
         </aside>
-        <main className='flex min-h-screen flex-col p-24'>{children}</main>
+        <main className='p-10'>{children}</main>
       </div>
     </div>
   );

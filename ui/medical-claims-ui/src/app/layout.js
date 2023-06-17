@@ -1,5 +1,6 @@
 import './globals.css'
 import './assets/css/tailwind.css'
+import NavBar from './components/navbar'
 import { Inter } from 'next/font/google'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -10,9 +11,32 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }) {
+  const menuItems = [
+    {
+      href: '/search',
+      title: 'Search',
+    },
+    {
+      href: '/',
+      title: 'Home',
+    },
+    {
+      href: '/members',
+      title: 'Members',
+    },
+    {
+      href: '/settings',
+      title: 'Settings',
+    },
+  ];
+
   return (
     <html lang="en" data-layout-mode="light">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <NavBar menuItems={menuItems}>
+          {children}
+        </NavBar>
+      </body>
     </html>
   )
 }
