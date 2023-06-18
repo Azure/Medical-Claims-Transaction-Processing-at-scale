@@ -25,8 +25,12 @@ export default function RootLayout({ children }) {
       title: 'Members',
     },
     {
-      href: '/settings',
-      title: 'Settings',
+      href: '/providers',
+      title: 'Providers',
+    },
+    {
+      href: '/payers',
+      title: 'Payers',
     },
   ];
 
