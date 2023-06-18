@@ -4,8 +4,8 @@ import useSWR from "swr";
 import axios from "axios";
 
 const 
-	API_URL = 'https://fa-coreclaims-ios38n2l.azurewebsites.net/api',//process.env.API_URL,
-	X_FUNCTION_KEY = '-3VTIyOmv6Fj3cMi_kaVcwPHEr2nN8qM7ks4zNzdfzZ0AzFu8YepTw=='//process.env.X_FUNCTION_KEY
+	API_URL = 'https://fa-coreclaims-ios38n2l.azurewebsites.net/api',//process.env.NEXT_PUBLIC_API_URL,
+	X_FUNCTION_KEY = '-3VTIyOmv6Fj3cMi_kaVcwPHEr2nN8qM7ks4zNzdfzZ0AzFu8YepTw=='//process.env.NEXT_PUBLIC_X_FUNCTION_KEY
 
 const fetcher = (url) => axios.get(url, { headers: { 'x-functions-key': X_FUNCTION_KEY } }).then((res) => res.data);
 
@@ -44,12 +44,28 @@ const getClaimDetails = (claimId) => {
 	);
 };
 
+const getProviders = (offset = 0, pageSize = 10) => {
+	return useSWR(
+		`${API_URL}/payers?offset=${offset}&limit=${pageSize}`,
+		fetcher
+	);
+};
+
+const getPayers = (offset = 0, pageSize = 10) => {
+	return useSWR(
+		`${API_URL}/providers?offset=${offset}&limit=${pageSize}`,
+		fetcher
+	);
+};
+
 const TransactionsStatement={
     getMembersList,
     getMember,
     getCoverageByMember,
     getClaimsByMemberId,
-    getClaimDetails
+    getClaimDetails,
+    getProviders,
+    getPayers
 }
 
 export default TransactionsStatement;
