@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState, useEffect } from 'react'
 import { Table } from 'flowbite-react';
 import Link from 'next/link'
@@ -8,7 +6,7 @@ import TransactionsStatement from '../../../hooks/TransactionsStatement'
 
 let money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 
-export default function ClaimDetails({ claimId }){
+export default function ClaimHistory({ claimId }){
 	const { data, isLoading } = TransactionsStatement.getClaimDetails(claimId);
 
 	return((!isLoading && data) ? (
@@ -24,7 +22,7 @@ export default function ClaimDetails({ claimId }){
 							<div className='px-4 font-bold gap-2'>Claim Id:</div>
 							<div className='float-left'>{data.claimId}</div>
 							<div className='px-4 font-bold gap-2'>Claim Status:</div>
-							<div>{data.claimStatus} {ClaimsActions(data.claimStatus)}</div>
+							<div>{data.claimStatus}</div>
 							<div className='px-4 font-bold gap-2'>Payer Name:</div>
 							<div>{data.payerName ? data.payerName : '-'}</div>
 							<div className='px-4 font-bold gap-2'>Total Amount:</div>
@@ -45,30 +43,8 @@ export default function ClaimDetails({ claimId }){
 	) : null);
 }
 
-function ClaimsActions({claimStatus}){
-	switch(claimStatus){
-		case "Assigned":
-			return(<button className='btn bg-gray-300 hover:bg-gray-100 ml-5'>Acknowledge Claim Assignment</button>);
-			break;
-		case "Acknowledged":
-			return(
-				<>
-					<button className='btn bg-red-500 hover:bg-red-600 text-white mr-5 ml-5'>Deny Claim</button>
-					<button className='btn bg-gray-300 hover:bg-gray-100'>Propose Claim</button>
-				</>
-			);
-			break;
-		case "ApprovalRequired":
-			return(
-				<>
-					<button className='btn bg-red-500 hover:bg-red-600 text-white mr-5 ml-5'>Deny Claim</button>
-					<button className='btn bg-green-500 hover:bg-green-600 text-white'>Approve Claim</button>
-				</>
-			);
-			break;
-		default:
-			return(<></>)
-	}
+function HistoryItem({data}){
+
 }
 
 function LineItemsTable({ data }){
