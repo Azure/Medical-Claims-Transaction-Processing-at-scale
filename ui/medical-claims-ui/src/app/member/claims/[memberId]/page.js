@@ -10,9 +10,10 @@ import ClaimDetails from './claimDetails'
 
 export default function page(){
 	const params = useParams();
+	const [page, setPage] = useState(1);
 
 	const requestMember = TransactionsStatement.getMember(params.memberId);
-	const requestClaims = TransactionsStatement.getClaimsByMemberId(params.memberId, 0, 5);
+	const requestClaims = TransactionsStatement.getClaimsByMemberId(params.memberId, page, 5);
 
 	const [claimId, setClaimId] = useState(null);
 	const [ showClaimDetail, setShowClaimDetail ] = useState(false);
@@ -34,8 +35,8 @@ export default function page(){
 				<div className="card-body">
 					<div className="relative overflow-x-auto sm:rounded">
 						{ (!requestClaims.isLoading && requestClaims.data) ? (
-							<ClaimsTable data={requestClaims.data} {...{claimId, setClaimId, setShowClaimDetail, setShowHistory}}/>
-						) : null}
+							<ClaimsTable data={requestClaims.data} {...{claimId, setClaimId, setShowClaimDetail, setShowHistory, page, setPage}}/>
+						) : <Spinner aria-label="Loading..." />}
 					</div>
 				</div>
 			</div>
@@ -48,7 +49,7 @@ export default function page(){
 	);
 }
 
-function ClaimsTable({ data, claimId, setClaimId, setShowClaimDetail, setShowHistory }){
+function ClaimsTable({ data, claimId, setClaimId, setShowClaimDetail, setShowHistory, page, setPage }){
 	const headers = [
 		{ key: 'filingDate', name: 'Filing Date'},
 		{ key: 'claimStatus', name: 'Claim Status'},
@@ -61,6 +62,16 @@ function ClaimsTable({ data, claimId, setClaimId, setShowClaimDetail, setShowHis
 	return(
 		<>
 			<Datatable headers={headers} {...{data, claimId, setClaimId, setShowClaimDetail, setShowHistory }}/>
+      <Pagination
+        className="p-6 self-center"
+        currentPage={page}
+        layout="navigation"
+        onPageChange={(page) => {
+          setPage(page);
+          //setContinuationToken(data.continuationToken);
+        }}
+        totalPages={100}
+      />
 		</>
 	);
 }

@@ -1,4 +1,5 @@
 import TransactionsStatement from '../hooks/TransactionsStatement'
+import { Spinner } from 'flowbite-react';
 
 export default function MemberDetail({memberId}){
 	const { data, error, isLoading } = TransactionsStatement.getMember(memberId);
@@ -32,6 +33,6 @@ export default function MemberDetail({memberId}){
 					</div>  
 				</div>
 			</div>
-		) : null		
+		) : <Spinner aria-label="Loading..." />		
 	);
 }

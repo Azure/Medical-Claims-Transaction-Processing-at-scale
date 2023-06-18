@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react'
-import { Table } from 'flowbite-react';
+import { Table, Spinner, Pagination } from 'flowbite-react';
 import Link from 'next/link'
 import Moment from 'moment'
 import TransactionsStatement from '../../../hooks/TransactionsStatement'
@@ -42,7 +42,7 @@ export default function ClaimDetails({ claimId }){
 				</div>
 			</div>
 		</>
-	) : null);
+	) : <Spinner aria-label="Loading..." />);
 }
 
 function ClaimsActions({claimStatus}){
@@ -80,7 +80,11 @@ function LineItemsTable({ data }){
 		{ key: 'discount', name: 'Discount'},
 	];
 
-	return(<LineItemsDataTable {...{data, headers}}/>);
+	return(
+		<>
+			<LineItemsDataTable {...{data, headers}}/>
+		</>
+	);
 }
 
 function LineItemsDataTable({headers, data}){
