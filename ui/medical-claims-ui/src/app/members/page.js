@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react'
-import { Table } from 'flowbite-react';
+import { Table, Pagination, Spinner } from 'flowbite-react';
 import Link from 'next/link'
 import TransactionsStatement from '../hooks/TransactionsStatement'
 import MemberDetail from './memberDetail'
@@ -45,7 +45,9 @@ function MembersTable({ data, setShowMemberDetail, showCoverageModal, setShowCov
 	];
 
 	return(
-		<Datatable headers={headers} {...{data, setShowMemberDetail, showCoverageModal, setShowCoverageModal, setMemberId, setCoverageByMemberId }}/>
+		<>
+			<Datatable headers={headers} {...{data, setShowMemberDetail, showCoverageModal, setShowCoverageModal, setMemberId, setCoverageByMemberId }}/>
+		</>
 	);
 }
 

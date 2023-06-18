@@ -3,7 +3,7 @@
 import { useParams  } from 'next/navigation'
 import React, { useState, useEffect } from 'react'
 import TransactionsStatement from '../../../hooks/TransactionsStatement'
-import { Table } from 'flowbite-react';
+import { Table, Pagination, Spinner } from 'flowbite-react';
 import Link from 'next/link'
 import Moment from 'moment'
 import ClaimDetails from './claimDetails'
@@ -15,6 +15,8 @@ export default function page(){
 	const requestClaims = TransactionsStatement.getClaimsByMemberId(params.memberId, 0, 5);
 
 	const [claimId, setClaimId] = useState(null);
+	const [ showClaimDetail, setShowClaimDetail ] = useState(false);
+	const [ showHistory, setShowHistory ] = useState(false);
 
 	return(
 		<>
@@ -32,19 +34,21 @@ export default function page(){
 				<div className="card-body">
 					<div className="relative overflow-x-auto sm:rounded">
 						{ (!requestClaims.isLoading && requestClaims.data) ? (
-							<ClaimsTable data={requestClaims.data} {...{claimId, setClaimId}}/>
+							<ClaimsTable data={requestClaims.data} {...{claimId, setClaimId, setShowClaimDetail, setShowHistory}}/>
 						) : null}
 					</div>
 				</div>
 			</div>
 
 			{ /*Claim Detail*/ }
-			<ClaimDetails {...{claimId}}/>
+			{showClaimDetail ? (
+				<ClaimDetails {...{claimId}}/>
+			) : null}			
 		</>
 	);
 }
 
-function ClaimsTable({ data, claimId, setClaimId }){
+function ClaimsTable({ data, claimId, setClaimId, setShowClaimDetail, setShowHistory }){
 	const headers = [
 		{ key: 'filingDate', name: 'Filing Date'},
 		{ key: 'claimStatus', name: 'Claim Status'},
@@ -55,11 +59,18 @@ function ClaimsTable({ data, claimId, setClaimId }){
 	];
 
 	return(
-		<Datatable headers={headers} {...{data, claimId, setClaimId }}/>
+		<>
+			<Datatable headers={headers} {...{data, claimId, setClaimId, setShowClaimDetail, setShowHistory }}/>
+		</>
 	);
 }
 
-const Datatable = ({ claimId, setClaimId, headers = [], data = [] }) => {
+const Datatable = ({ claimId, setClaimId, setShowClaimDetail, setShowHistory, headers = [], data = [] }) => {
+	const viewDetails = (claimId)=> {
+		setClaimId(claimId);
+		setShowClaimDetail(true);
+	}
+
   return (
     <Table className="w-full" hoverable>
       <Table.Head>
@@ -80,7 +91,7 @@ const Datatable = ({ claimId, setClaimId, headers = [], data = [] }) => {
               </Table.Cell>
             ))}
             <Table.Cell className="!p-4">
-            	<Link href='#' onClick={()=> setClaimId(row.claimId)}>Details</Link>
+            	<Link href='#' onClick={()=> viewDetails(row.claimId)}>Details</Link>
             </Table.Cell>
            <Table.Cell className="!p-4">
             	<Link href={`/member/claims/${row.memberId}`}>View History</Link>
