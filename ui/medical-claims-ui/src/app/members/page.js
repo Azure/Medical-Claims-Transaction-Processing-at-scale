@@ -7,7 +7,8 @@ import MemberDetail from './memberDetail'
 import MemberCoverageModal from './memberCoverageModal'
 
 export default function Members(){	
-	const { data, isLoading } = TransactionsStatement.getMembersList(0, 10);
+  const [page, setPage] = useState(1);
+	const { data, isLoading } = TransactionsStatement.getMembersList(page, 10);
 	const [ showMemberDetail, setShowMemberDetail ] = useState(false);
 	const [ showCoverageModal, setShowCoverageModal ] = useState(false);
 	const [ memberId, setMemberId ] = useState(null);
@@ -21,7 +22,10 @@ export default function Members(){
 				</div>
 				<div className="card-body">
 					<div className="relative overflow-x-auto sm:rounded">
-						<MembersTable data={data} {...{showCoverageModal, setShowCoverageModal, setShowMemberDetail, setMemberId, setCoverageByMemberId}} />
+						{!isLoading ? (
+							<MembersTable data={data} {...{showCoverageModal, setShowCoverageModal, 
+								setShowMemberDetail, setMemberId, setCoverageByMemberId, page, setPage }} />
+						) : <Spinner aria-label="Loading..." /> }
 					</div>  
 				</div>
 			</div>
@@ -34,7 +38,7 @@ export default function Members(){
 }
 
 
-function MembersTable({ data, setShowMemberDetail, showCoverageModal, setShowCoverageModal, setMemberId, setCoverageByMemberId }){
+function MembersTable({ data, setShowMemberDetail, showCoverageModal, setShowCoverageModal, setMemberId, setCoverageByMemberId, page, setPage }){
 	const headers = [
 		{ key: 'firstName', name: 'name'},
 		{ key: 'state', name: 'State/Province'},
@@ -47,6 +51,16 @@ function MembersTable({ data, setShowMemberDetail, showCoverageModal, setShowCov
 	return(
 		<>
 			<Datatable headers={headers} {...{data, setShowMemberDetail, showCoverageModal, setShowCoverageModal, setMemberId, setCoverageByMemberId }}/>
+      <Pagination
+        className="p-6 self-center"
+        currentPage={page}
+        layout="navigation"
+        onPageChange={(page) => {
+          setPage(page);
+          //setContinuationToken(data.continuationToken);
+        }}
+        totalPages={100}
+      />
 		</>
 	);
 }
