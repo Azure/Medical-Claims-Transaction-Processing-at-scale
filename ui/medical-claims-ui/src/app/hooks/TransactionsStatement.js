@@ -18,14 +18,38 @@ const getMembersList = (offset = 0, pageSize = 10) => {
 
 const getMember = (memberId) => {
 	return useSWR(
-		`${API_URL}/member/${memberId}?`,
+		`${API_URL}/member/${memberId}`,
+		fetcher
+	);
+};
+
+const getCoverageByMember = (memberId) => {
+	return useSWR(
+		`${API_URL}/member/${memberId}`,
+		fetcher
+	);
+};
+
+const getClaimsByMemberId = (memberId, offset = 0, pageSize = 10) => {
+	return useSWR(
+		`${API_URL}/member/${memberId}/claims?offset=${offset}&limit=${pageSize}`,
+		fetcher
+	);
+};
+
+const getClaimDetails = (claimId) => {
+	return useSWR(
+		`${API_URL}/claim/${claimId}`,
 		fetcher
 	);
 };
 
 const TransactionsStatement={
     getMembersList,
-    getMember
+    getMember,
+    getCoverageByMember,
+    getClaimsByMemberId,
+    getClaimDetails
 }
 
 export default TransactionsStatement;
