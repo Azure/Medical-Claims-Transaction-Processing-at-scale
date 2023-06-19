@@ -7,6 +7,7 @@ import { Table, Pagination, Spinner } from 'flowbite-react';
 import Link from 'next/link'
 import Moment from 'moment'
 import ClaimDetails from './claimDetails'
+import ClaimHistory from './claimHistory'
 
 export default function page(){
 	const params = useParams();
@@ -44,7 +45,12 @@ export default function page(){
 			{ /*Claim Detail*/ }
 			{showClaimDetail ? (
 				<ClaimDetails {...{claimId}}/>
-			) : null}			
+			) : null}		
+
+			{ /*Claim History*/ }
+			{showHistory ? (
+				<ClaimHistory {...{claimId}}/>
+			) : null}	
 		</>
 	);
 }
@@ -80,6 +86,13 @@ const Datatable = ({ claimId, setClaimId, setShowClaimDetail, setShowHistory, he
 	const viewDetails = (claimId)=> {
 		setClaimId(claimId);
 		setShowClaimDetail(true);
+		setShowHistory(false);
+	}
+
+	const viewHistory = (claimId)=> {
+		setClaimId(claimId);
+		setShowHistory(true);
+		setShowClaimDetail(false);
 	}
 
   return (
@@ -105,7 +118,7 @@ const Datatable = ({ claimId, setClaimId, setShowClaimDetail, setShowHistory, he
             	<Link href='#' onClick={()=> viewDetails(row.claimId)}>Details</Link>
             </Table.Cell>
            <Table.Cell className="!p-4">
-            	<Link href={`/member/claims/${row.memberId}`}>View History</Link>
+            	<Link href='#' onClick={()=> viewHistory(row.claimId)}>View History</Link>
             </Table.Cell>
           </Table.Row>
         ))}

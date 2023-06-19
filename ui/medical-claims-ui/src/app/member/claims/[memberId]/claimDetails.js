@@ -24,7 +24,7 @@ export default function ClaimDetails({ claimId }){
 							<div className='px-4 font-bold gap-2'>Claim Id:</div>
 							<div className='float-left'>{data.claimId}</div>
 							<div className='px-4 font-bold gap-2'>Claim Status:</div>
-							<div>{data.claimStatus} {ClaimsActions(data.claimStatus)}</div>
+							<div>{data.claimStatus} <ClaimsActions claimStatus={data.claimStatus}/></div>
 							<div className='px-4 font-bold gap-2'>Payer Name:</div>
 							<div>{data.payerName ? data.payerName : '-'}</div>
 							<div className='px-4 font-bold gap-2'>Total Amount:</div>
@@ -67,7 +67,8 @@ function ClaimsActions({claimStatus}){
 			);
 			break;
 		default:
-			return(<></>)
+			return(<></>);
+			break;
 	}
 }
 
