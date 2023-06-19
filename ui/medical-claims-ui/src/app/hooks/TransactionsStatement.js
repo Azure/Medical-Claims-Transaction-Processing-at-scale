@@ -58,6 +58,13 @@ const getPayers = (offset = 0, pageSize = 10) => {
 	);
 };
 
+const getClaimHistory = (claimId) => {
+	return useSWR(
+		`${API_URL}/claim/${claimId}/history`,
+		fetcher
+	);
+};
+
 const TransactionsStatement={
     getMembersList,
     getMember,
@@ -65,7 +72,8 @@ const TransactionsStatement={
     getClaimsByMemberId,
     getClaimDetails,
     getProviders,
-    getPayers
+    getPayers,
+    getClaimHistory
 }
 
 export default TransactionsStatement;
