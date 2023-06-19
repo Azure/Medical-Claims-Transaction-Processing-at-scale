@@ -3586,29 +3586,9 @@ input[type="checkbox"]:checked~ input[type="checkbox"]:checked~ input[type="chec
   --tw-bg-opacity: 0.6 !important;
 }
 
-.bg-\[url\(\'\.\.\/images\/bg-body\.png\'\)\] {
-  background-image: url('../images/bg-body.png') !important;
-}
-
-.bg-\[url\(\'\.\.\/images\/widgets\/m-p2\.png\'\)\] {
-  background-image: url('../images/widgets/m-p2.png') !important;
-}
-
-.bg-\[url\(\'\.\.\/images\/widgets\/svg-map\.svg\'\)\] {
-  background-image: url('../images/widgets/svg-map.svg') !important;
-}
-
 .bg-gradient-to-r {
   background-image: -webkit-gradient(linear, left top, right top, from(var(--tw-gradient-stops))) !important;
   background-image: linear-gradient(to right, var(--tw-gradient-stops)) !important;
-}
-
-.bg-\[url\(\'\.\.\/images\/widgets\/p-1\.png\'\)\] {
-  background-image: url('../images/widgets/p-1.png') !important;
-}
-
-.bg-\[url\(\'\.\.\/images\/widgets\/c\.gif\'\)\] {
-  background-image: url('../images/widgets/c.gif') !important;
 }
 
 .bg-gradient-to-br {
@@ -7541,14 +7521,6 @@ input:checked + .custom-switch:before {
 .dark .dark\:bg-gray-300 {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(209 213 219 / var(--tw-bg-opacity)) !important;
-}
-
-.dark .dark\:bg-\[url\(\'\.\.\/images\/bg-body-2\.png\'\)\] {
-  background-image: url('../images/bg-body-2.png') !important;
-}
-
-.dark .dark\:bg-\[url\(\'\.\.\/images\/widgets\/dark-map\.svg\'\)\] {
-  background-image: url('../images/widgets/dark-map.svg') !important;
 }
 
 .dark .dark\:text-slate-200 {
