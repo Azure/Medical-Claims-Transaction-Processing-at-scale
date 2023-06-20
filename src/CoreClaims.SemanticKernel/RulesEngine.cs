@@ -6,6 +6,7 @@ namespace CoreClaims.SemanticKernel
     {
         public async Task<string> ReviewClaim(ClaimDetail claim)
         {
+            await Task.CompletedTask;
             return "Approve";
         }
     }

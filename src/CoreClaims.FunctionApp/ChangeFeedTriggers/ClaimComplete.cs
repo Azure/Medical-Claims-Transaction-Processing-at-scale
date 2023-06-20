@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CoreClaims.FunctionApp.Models.Output;
 using CoreClaims.Infrastructure;
 using CoreClaims.Infrastructure.Domain.Entities;
 using CoreClaims.Infrastructure.Domain.Enums;
+using CoreClaims.Infrastructure.Events;
 using CoreClaims.Infrastructure.Repository;
+using Microsoft.Azure.Amqp.Framing;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
@@ -15,13 +16,18 @@ namespace CoreClaims.FunctionApp.ChangeFeedTriggers
     public class ClaimComplete
     {
         private readonly IMemberRepository _memberRepository;
-        public ClaimComplete(IMemberRepository memberRepository)
+        private readonly IEventHubService _eventHub;
+
+        public ClaimComplete(
+            IMemberRepository memberRepository,
+            IEventHubService eventHub)
         {
             _memberRepository = memberRepository;
+            _eventHub = eventHub;
         }
 
         [Function("ClaimComplete")]
-        public async Task<OutputBase> Run(
+        public async Task Run(
             [CosmosDBTrigger(
                 databaseName: Constants.Connections.CosmosDbName,
                 containerName: "Claim",
@@ -39,17 +45,19 @@ namespace CoreClaims.FunctionApp.ChangeFeedTriggers
                              c.Type == ClaimDetail.EntityName &&
                              c.ClaimStatus is ClaimStatus.Approved or ClaimStatus.Denied))
                 {
-                    logger.LogInformation($"Claim {claim.ClaimId} will be published to EventHub/{claim.ClaimStatus}");
-
                     switch (claim.ClaimStatus)
                     {
                         case ClaimStatus.Approved:
                             //TODO: Consider moving to workflow ChangeFeed
                             await _memberRepository.IncrementMemberTotals(claim.MemberId, 1, claim.TotalAmount);
-                            return new ClaimApprovedOutput { Claim = claim };
+                            await _eventHub.TriggerEventAsync(claim, Constants.EventHubTopics.Approved);
+                            break;
                         case ClaimStatus.Denied:
-                            return new ClaimDeniedOutput { Claim = claim };
+                            await _eventHub.TriggerEventAsync(claim, Constants.EventHubTopics.Denied);
+                            break;
                     }
+
+                    logger.LogInformation($"Claim {claim.ClaimId} published to EventHub/{claim.ClaimStatus}");
                 }
             }
             catch (Exception ex)

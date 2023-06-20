@@ -81,5 +81,10 @@ namespace CoreClaims.Infrastructure.Repository
 
             return response.Resource;
         }
+
+        public async Task UpsertClaim(ClaimHeader claim)
+        {
+            await Container.UpsertItemAsync(claim);
+        }
     }
 }
