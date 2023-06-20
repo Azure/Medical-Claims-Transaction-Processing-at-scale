@@ -7,7 +7,7 @@ using CoreClaims.Infrastructure.BusinessRules;
 using CoreClaims.Infrastructure.Domain.Entities;
 using CoreClaims.Infrastructure.Domain.Enums;
 using CoreClaims.Infrastructure.Repository;
-using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
 namespace CoreClaims.FunctionApp.ChangeFeedTriggers
@@ -25,7 +25,7 @@ namespace CoreClaims.FunctionApp.ChangeFeedTriggers
             _coreBusinessRule = coreBusinessRule;
         }
 
-        [FunctionName("AssignClaimAdjudicator")]
+        [Function("AssignClaimAdjudicator")]
         public async Task Run([CosmosDBTrigger(
             databaseName: Constants.Connections.CosmosDbName,
             containerName: "Claim",

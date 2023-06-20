@@ -1,26 +1,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreClaims.FunctionApp.Models.Output;
 using CoreClaims.Infrastructure;
 using CoreClaims.Infrastructure.Domain.Entities;
-using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
 namespace CoreClaims.FunctionApp.ChangeFeedTriggers
 {
     public class ClaimUpdated
     {
-        [FunctionName("ClaimUpdated")]
-        public async Task Run(
+        [Function("ClaimUpdated")]
+        public async Task<OutputBase> Run(
             [CosmosDBTrigger(databaseName: Constants.Connections.CosmosDbName,
                 containerName: "Claim",
                 Connection = Constants.Connections.CosmosDb,
                 LeaseContainerName = "ClaimLeases",
                 LeaseContainerPrefix = "PropagateClaimHeader")] IReadOnlyList<ClaimHeader> input,
-            [CosmosDB(databaseName: Constants.Connections.CosmosDbName,
+            [CosmosDBOutput(databaseName: Constants.Connections.CosmosDbName,
                 containerName: "Member",
                 Connection = Constants.Connections.CosmosDb)] IAsyncCollector<ClaimHeader> members,
-            [CosmosDB(databaseName: Constants.Connections.CosmosDbName,
+            [CosmosDBOutput(databaseName: Constants.Connections.CosmosDbName,
                 containerName: "Adjudicator",
                 Connection = Constants.Connections.CosmosDb)] IAsyncCollector<ClaimHeader> adjudicator,
             ILogger logger)
@@ -33,8 +34,8 @@ namespace CoreClaims.FunctionApp.ChangeFeedTriggers
             {
                 if (!string.IsNullOrEmpty(claim.MemberId))
                 {
-                    await members.AddAsync(claim);
                     logger.LogInformation($"Updating ClaimHeader/{claim.ClaimId}/{claim.AdjustmentId} for Member/{claim.MemberId}");
+                    return new ClaimToMemberOutput { Claim = claim };
                 }
 
                 if (!string.IsNullOrEmpty(claim.AdjudicatorId))

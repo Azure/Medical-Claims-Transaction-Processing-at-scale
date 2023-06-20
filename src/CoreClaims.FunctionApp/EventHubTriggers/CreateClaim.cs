@@ -4,12 +4,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Azure.Messaging.EventHubs;
 using CoreClaims.Infrastructure;
-using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using CoreClaims.Infrastructure.Domain.Entities;
 using CoreClaims.Infrastructure.Domain.Enums;
 using CoreClaims.Infrastructure.Repository;
 using CoreClaims.Infrastructure.Helpers;
+using Microsoft.Azure.Functions.Worker;
 
 namespace CoreClaims.FunctionApp.EventHubTriggers
 {
@@ -27,12 +27,12 @@ namespace CoreClaims.FunctionApp.EventHubTriggers
             _payerRepository = payerRepository;
         }
 
-        [FunctionName("CreateClaim")]
+        [Function("CreateClaim")]
         public async Task Run(
             [EventHubTrigger(Constants.EventHubTopics.Incoming,
                 Connection = Constants.Connections.EventHub)]
                 EventData incoming,
-            [EventHub(Constants.EventHubTopics.Rejected,
+            [EventHubOutput(Constants.EventHubTopics.Rejected,
                 Connection = Constants.Connections.EventHub)]
                 IAsyncCollector<ClaimDetail> rejected,
             ILogger logger)
