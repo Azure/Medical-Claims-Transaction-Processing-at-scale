@@ -16,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploy", "deploy", "{BC4B44
 		..\deploy\Synthea-CSV-to-Json.ipynb = ..\deploy\Synthea-CSV-to-Json.ipynb
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreClaims.SemanticKernel", "CoreClaims.SemanticKernel\CoreClaims.SemanticKernel.csproj", "{DF7328DF-4AF9-4F3E-8936-4490CCE007C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreClaims.SemanticKernel", "CoreClaims.SemanticKernel\CoreClaims.SemanticKernel.csproj", "{DF7328DF-4AF9-4F3E-8936-4490CCE007C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -7,18 +7,17 @@ using CoreClaims.Infrastructure;
 using CoreClaims.Infrastructure.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
 namespace CoreClaims.FunctionApp.HttpTriggers
 {
     public class GetMember
     {
-        [FunctionName("GetMember")]
+        [Function("GetMember")]
         public IActionResult Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "member/{memberId}")] HttpRequest req,
-            [CosmosDB(
+            [CosmosDBInput(
                 databaseName: Constants.Connections.CosmosDbName, 
                 containerName: "Member", 
                 Connection = Constants.Connections.CosmosDb,
