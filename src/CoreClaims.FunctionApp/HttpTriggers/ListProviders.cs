@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using CoreClaims.Infrastructure.Repository;
 using Microsoft.Azure.Functions.Worker;
+using CoreClaims.FunctionApp.HttpTriggers.Claims;
 
 namespace CoreClaims.FunctionApp.HttpTriggers
 {
@@ -21,9 +22,10 @@ namespace CoreClaims.FunctionApp.HttpTriggers
             [HttpTrigger(AuthorizationLevel.Function,
             "get",
             Route = "providers")] HttpRequest req,
-            ILogger log)
+            FunctionContext context)
         {
-            using (log.BeginScope("HttpTrigger: ListPayers"))
+            var logger = context.GetLogger<ListProviders>();
+            using (logger.BeginScope("HttpTrigger: ListPayers"))
             {
                 var (offset, limit) = req.GetPagingQuery();
                 var result = await _repository.ListProviders(offset, limit);

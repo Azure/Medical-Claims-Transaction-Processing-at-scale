@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using CoreClaims.FunctionApp.HttpTriggers.Claims;
 using CoreClaims.Infrastructure.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +20,10 @@ namespace CoreClaims.FunctionApp.HttpTriggers
         [Function("ListMembers")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "member")] HttpRequest req,
-            ILogger log)
+            FunctionContext context)
         {
-            using (log.BeginScope("HttpTrigger: ListPayers"))
+            var logger = context.GetLogger<ListMembers>();
+            using (logger.BeginScope("HttpTrigger: ListPayers"))
             {
                 var (offset, limit) = req.GetPagingQuery();
 

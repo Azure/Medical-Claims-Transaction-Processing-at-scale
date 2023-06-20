@@ -20,9 +20,10 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "member/{memberId}/claims")] HttpRequest req,
             string memberId,
-            ILogger log)
+            FunctionContext context)
         {
-            using (log.BeginScope("HttpTrigger: ListMemberClaims"))
+            var logger = context.GetLogger<ListMemberClaims>();
+            using (logger.BeginScope("HttpTrigger: ListMemberClaims"))
             {
                 var (offset, limit) = req.GetPagingQuery();
                 var (startDate, endDate) = req.GetDateRangeQuery();

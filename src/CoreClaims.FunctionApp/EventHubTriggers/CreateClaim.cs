@@ -12,6 +12,7 @@ using CoreClaims.Infrastructure.Helpers;
 using Microsoft.Azure.Functions.Worker;
 using Azure.Messaging.EventHubs.Producer;
 using CoreClaims.Infrastructure.Events;
+using CoreClaims.FunctionApp.HttpTriggers.Claims;
 
 namespace CoreClaims.FunctionApp.EventHubTriggers
 {
@@ -40,8 +41,9 @@ namespace CoreClaims.FunctionApp.EventHubTriggers
                 Connection = Constants.Connections.EventHub,
                 IsBatched = false)]
                 EventData incoming,
-            ILogger logger)
+            FunctionContext context)
         {
+            var logger = context.GetLogger<CreateClaim>();
             using var logScope = logger.BeginScope("EventHubTrigger: CreateClaim");
 
             try

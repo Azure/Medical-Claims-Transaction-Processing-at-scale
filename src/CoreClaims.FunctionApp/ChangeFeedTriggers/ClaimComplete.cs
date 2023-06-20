@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreClaims.FunctionApp.HttpTriggers.Claims;
 using CoreClaims.Infrastructure;
 using CoreClaims.Infrastructure.Domain.Entities;
 using CoreClaims.Infrastructure.Domain.Enums;
@@ -34,9 +35,10 @@ namespace CoreClaims.FunctionApp.ChangeFeedTriggers
                 Connection = Constants.Connections.CosmosDb,
                 LeaseContainerName = "ClaimLeases",
                 LeaseContainerPrefix = "ClaimComplete")] IReadOnlyList<ClaimDetail> input,
-            ILogger logger
+            FunctionContext context
             )
         {
+            var logger = context.GetLogger<ClaimComplete>();
             using var logScope = logger.BeginScope("CosmosDbTrigger: ClaimComplete");
 
             try

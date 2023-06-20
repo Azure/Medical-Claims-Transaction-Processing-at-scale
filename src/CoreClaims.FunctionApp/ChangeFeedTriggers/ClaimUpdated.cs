@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreClaims.FunctionApp.HttpTriggers.Claims;
 using CoreClaims.Infrastructure;
 using CoreClaims.Infrastructure.Domain.Entities;
 using CoreClaims.Infrastructure.Events;
@@ -31,8 +32,9 @@ namespace CoreClaims.FunctionApp.ChangeFeedTriggers
                 Connection = Constants.Connections.CosmosDb,
                 LeaseContainerName = "ClaimLeases",
                 LeaseContainerPrefix = "PropagateClaimHeader")] IReadOnlyList<ClaimHeader> input,
-            ILogger logger)
+            FunctionContext context)
         {
+            var logger = context.GetLogger<ClaimUpdated>();
             using var logScope = logger.BeginScope("CosmosDbTrigger: ClaimUpdated");
 
             var headers = input.Where(i => i.Type == ClaimHeader.EntityName);

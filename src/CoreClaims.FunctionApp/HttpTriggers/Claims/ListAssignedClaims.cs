@@ -20,9 +20,10 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "adjudicator/{adjudicatorId}/claims")] HttpRequest req,
             string adjudicatorId,
-            ILogger log)
+            FunctionContext context)
         {
-            using (log.BeginScope("HttpTrigger: ListAssignedClaims"))
+            var logger = context.GetLogger<ListAssignedClaims>();
+            using (logger.BeginScope("HttpTrigger: ListAssignedClaims"))
             {
                 var (offset, limit) = req.GetPagingQuery();
 
