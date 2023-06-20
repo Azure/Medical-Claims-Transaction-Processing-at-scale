@@ -1,5 +1,4 @@
-﻿using AzureIdentity = Azure.Identity;
-using CoreClaims.Infrastructure.BusinessRules;
+﻿using CoreClaims.Infrastructure.BusinessRules;
 using CoreClaims.Infrastructure.Repository;
 using CoreClaims.SemanticKernel;
 using Microsoft.Azure.Cosmos.Fluent;
@@ -8,19 +7,13 @@ using Microsoft.Extensions.Hosting;
 using CoreClaims.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using System.IO;
-
-//// Setup configuration sources.
-//var config = new ConfigurationBuilder()
-//    .SetBasePath(Directory.GetCurrentDirectory())
-//    .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
-//    .AddJsonFile("settings.json", optional: true, reloadOnChange: true)
-//    .AddEnvironmentVariables()
-//    .Build();
+using Microsoft.Extensions.Azure;
+using CoreClaims.Infrastructure.Events;
 
 
 var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults()
-    .ConfigureServices((hostContext,services) =>
+    .ConfigureServices((hostContext, services) =>
     {
         services.Configure<BusinessRuleOptions>(hostContext.Configuration.GetSection(nameof(BusinessRuleOptions)));
 
@@ -28,9 +21,11 @@ var host = new HostBuilder()
         {
             var endpoint = hostContext.Configuration[Constants.Connections.CosmosDbEndpoint];
 
-            return new CosmosClientBuilder(endpoint, new AzureIdentity.DefaultAzureCredential())
+            return new CosmosClientBuilder(endpoint, new Azure.Identity.DefaultAzureCredential())
                 .Build();
         });
+        services.AddSingleton<IEventHubService, EventHubService>(s => new EventHubService(
+            hostContext.Configuration[Constants.Connections.EventHubNamespace]));
 
         services.AddSingleton<IClaimRepository, ClaimRepository>();
         services.AddSingleton<IAdjudicatorRepository, AdjudicatorRepository>();

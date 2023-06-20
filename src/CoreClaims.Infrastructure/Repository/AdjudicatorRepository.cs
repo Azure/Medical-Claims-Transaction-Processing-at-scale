@@ -47,5 +47,10 @@ namespace CoreClaims.Infrastructure.Repository
         {
             return ReadItem<Adjudicator>(adjudicatorId, adjudicatorId);
         }
+
+        public async Task UpsertClaim(ClaimHeader claim)
+        {
+            await Container.UpsertItemAsync(claim);
+        }
     }
 }

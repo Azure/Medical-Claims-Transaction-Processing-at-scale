@@ -9,6 +9,8 @@ using CoreClaims.FunctionApp.Models.Response;
 using CoreClaims.Infrastructure.Repository;
 using CoreClaims.SemanticKernel;
 using Microsoft.Azure.Functions.Worker;
+using CoreClaims.Infrastructure.Events;
+using CoreClaims.Infrastructure;
 
 namespace CoreClaims.FunctionApp.HttpTriggers.Claims
 {
@@ -16,19 +18,25 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
     {
         private readonly IClaimRepository _claimRepository;
         private readonly IRulesEngine _rulesEngine;
+        private readonly IEventHubService _eventHub;
 
-        public GetClaimRecommendation(IClaimRepository claimRepository, IRulesEngine rulesEngine)
+        public GetClaimRecommendation(
+            IClaimRepository claimRepository,
+            IRulesEngine rulesEngine,
+            IEventHubService eventHub)
         {
             _claimRepository = claimRepository;
             _rulesEngine = rulesEngine;
+            _eventHub = eventHub;
         }
 
         [Function("GetClaimRecommendation")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "claim/{claimId}/recommendation")] HttpRequest req,
             string claimId,
-            ILogger log)
+            FunctionContext context)
         {
+            var log = context.GetLogger<GetClaimRecommendation>();
             using (log.BeginScope("HttpTrigger: GetClaimRecommendation"))
             {
                 try
@@ -43,6 +51,9 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
                     var recommendation = await _rulesEngine.ReviewClaim(claim);
 
                     log.LogInformation($"Successfully retrieved recommendation for Claim: {claimId}");
+
+                    if (recommendation == "Approve")
+                        await _eventHub.TriggerEventAsync($"Recommendation for Claim {claimId}: {recommendation}", Constants.EventHubTopics.Approved);
                     return new OkObjectResult(recommendation);
                 }
                 catch (Exception ex)
