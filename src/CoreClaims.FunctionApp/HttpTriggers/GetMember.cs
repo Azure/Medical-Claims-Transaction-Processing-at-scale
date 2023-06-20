@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CoreClaims.FunctionApp.HttpTriggers.Claims;
 using CoreClaims.Infrastructure;
 using CoreClaims.Infrastructure.Domain.Entities;
 using Microsoft.AspNetCore.Http;
@@ -22,9 +23,10 @@ namespace CoreClaims.FunctionApp.HttpTriggers
                 containerName: "Member", 
                 Connection = Constants.Connections.CosmosDb,
                 PartitionKey = "{memberId}", Id = "{memberId}")] Member member,
-            ILogger log)
+            FunctionContext context)
         {
-            using (log.BeginScope("HttpTrigger: GetMember"))
+            var logger = context.GetLogger<GetMember>();
+            using (logger.BeginScope("HttpTrigger: GetMember"))
             {
                 if (member == null) return new NotFoundResult();
 

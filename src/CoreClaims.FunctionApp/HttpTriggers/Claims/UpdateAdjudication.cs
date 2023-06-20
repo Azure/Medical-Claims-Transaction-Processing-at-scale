@@ -24,9 +24,10 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "put", "get", Route = "claim/{claimId}")] HttpRequest req,
             string claimId,
-            ILogger log)
+            FunctionContext context)
         {
-            using (log.BeginScope("HttpTrigger: UpdateClaimAdjudication"))
+            var logger = context.GetLogger<UpdateClaimAdjudication>();
+            using (logger.BeginScope("HttpTrigger: UpdateClaimAdjudication"))
             {
                 var existing = await _repository.GetClaim(claimId);
                 if (existing == null) return new NotFoundResult();

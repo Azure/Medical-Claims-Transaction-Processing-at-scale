@@ -22,9 +22,10 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
         [Function("AcknowledgeClaim")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "claim/{claimId}/acknowledge")] HttpRequest req,
-            ILogger log, string claimId)
+            string claimId, FunctionContext context)
         {
-            using (log.BeginScope("HttpTrigger: AcknowledgeClaim"))
+            var logger = context.GetLogger<AcknowledgeClaim>();
+            using (logger.BeginScope("HttpTrigger: AcknowledgeClaim"))
             {
                 var claim = await _repository.GetClaim(claimId);
 
