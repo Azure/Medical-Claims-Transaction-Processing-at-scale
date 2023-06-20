@@ -7,6 +7,7 @@ using CoreClaims.Infrastructure.BusinessRules;
 using CoreClaims.Infrastructure.Repository;
 using Microsoft.Azure.Cosmos.Fluent;
 using Constants = CoreClaims.Infrastructure.Constants;
+using CoreClaims.SemanticKernel;
 
 [assembly: FunctionsStartup(typeof(CoreClaims.FunctionApp.Startup))]
 namespace CoreClaims.FunctionApp
@@ -42,6 +43,8 @@ namespace CoreClaims.FunctionApp
             builder.Services.AddSingleton<IProviderRepository, ProviderRepository>();
 
             builder.Services.AddSingleton<ICoreBusinessRule, CoreBusinessRule>();
+
+            builder.Services.AddSingleton<IRulesEngine, RulesEngine>();
         }
     }
 }

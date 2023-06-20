@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CoreClaims.Infrastructure\CoreClaims.Infrastructure.csproj" />
+    <ProjectReference Include="..\CoreClaims.SemanticKernel\CoreClaims.SemanticKernel.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
