@@ -9,5 +9,13 @@ namespace CoreClaims.Infrastructure.BusinessRules
 
         [Range(0.0, 20000.0)]
         public decimal RequireManagerApproval { get; set; } = 500;
+
+        /// <summary>
+        /// If true, use the DemoAdjudicatorId and DemoManagerAdjudicatorId values
+        /// to override automatic assignments.
+        /// </summary>
+        public bool DemoMode { get; set; } = true;
+        public string DemoAdjudicatorId { get; set; }
+        public string DemoManagerAdjudicatorId { get; set; }
     }
 }
