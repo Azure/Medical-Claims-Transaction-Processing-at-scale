@@ -90,7 +90,7 @@ namespace CoreClaims.Infrastructure.BusinessRules
             var manager = await _adjudicatorRepository.GetRandomAdjudicator("Manager");
 
             if (manager == null)
-                throw new NullReferenceException("Unable to find an appropriate manager to assign approval too");
+                throw new NullReferenceException("Unable to find an appropriate manager to assign approval to");
 
             claim.PreviousAdjudicatorId = claim.AdjudicatorId;
             claim.AdjudicatorId = manager.Id;
