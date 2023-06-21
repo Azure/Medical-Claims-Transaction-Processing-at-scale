@@ -1,7 +1,7 @@
 {
   "IsEncrypted": false,
   "Values": {
-    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "AzureWebJobsStorage__accountName": "adlcoreclaims${SUFFIX}",
     "CoreClaimsCosmosDB__accountEndpoint": "https://db-coreclaims-${SUFFIX}.documents.azure.com:443/",
     "CoreClaimsEventHub__fullyQualifiedNamespace": "eh-coreclaims-${SUFFIX}.servicebus.windows.net"
   }
