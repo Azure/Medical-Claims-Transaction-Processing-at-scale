@@ -28,7 +28,7 @@ const getMember = (memberId) => {
 
 const getCoverageByMember = (memberId) => {
 	return useSWR(
-		`${API_URL}/member/${memberId}`,
+		`${API_URL}/member/${memberId}/coverage`,
 		fetcher
 	);
 };
@@ -74,7 +74,7 @@ export const updateClaim = (claimId) =>
 export const acknowledgeClaim = (claimId) =>
 	useSWRMutation(`${API_URL}/claim/${claimId}/acknowledge`, post);
 
-const TransactionsStatement={
+const TransactionsStatement = {
     getMembersList,
     getMember,
     getCoverageByMember,
