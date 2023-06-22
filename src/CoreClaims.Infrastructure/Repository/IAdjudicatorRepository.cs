@@ -9,5 +9,7 @@ namespace CoreClaims.Infrastructure.Repository
         Task<Adjudicator> GetRandomAdjudicator(string role = "Adjudicator", int offset = 0, int limit = Constants.DefaultPageSize);
 
         Task<Adjudicator> GetAdjudicator(string adjudicatorId);
+
+        Task UpsertClaim(ClaimHeader claim);
     }
 }
