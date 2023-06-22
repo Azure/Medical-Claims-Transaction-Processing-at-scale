@@ -1,15 +1,13 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using CoreClaims.Infrastructure.Repository;
 using System;
 using System.Linq;
 using CoreClaims.Infrastructure.Domain.Enums;
-using System.Web.Http;
 using CoreClaims.FunctionApp.HttpTriggers.Claims.Requests;
+using Microsoft.Azure.Functions.Worker;
 
 namespace CoreClaims.FunctionApp.HttpTriggers.Claims
 {
@@ -22,13 +20,14 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
             _repository = repository;
         }
 
-        [FunctionName("UpdateClaimAdjudication")]
+        [Function("UpdateClaimAdjudication")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "put", "get", Route = "claim/{claimId}")] HttpRequest req,
             string claimId,
-            ILogger log)
+            FunctionContext context)
         {
-            using (log.BeginScope("HttpTrigger: UpdateClaimAdjudication"))
+            var logger = context.GetLogger<UpdateClaimAdjudication>();
+            using (logger.BeginScope("HttpTrigger: UpdateClaimAdjudication"))
             {
                 var existing = await _repository.GetClaim(claimId);
                 if (existing == null) return new NotFoundResult();
@@ -36,12 +35,12 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
                 if (req.Method == "GET") return new OkObjectResult(existing);
 
                 if (existing.ClaimStatus is not (ClaimStatus.Acknowledged or ClaimStatus.ApprovalRequired or ClaimStatus.Proposed))
-                    return new BadRequestErrorMessageResult("Only claims in the 'Acknowledged', 'ApprovalRequired' or 'Proposed' states may be Adjudicated");
+                    return new BadRequestObjectResult("Only claims in the 'Acknowledged', 'ApprovalRequired' or 'Proposed' states may be Adjudicated");
 
                 var claimDetail = await req.GetRequest<UpdateClaimModel>();
 
                 if (claimDetail.ClaimStatus is not (ClaimStatus.Proposed or ClaimStatus.Denied))
-                    return new BadRequestErrorMessageResult("Claim Status must be set to 'Proposed' or 'Rejected'");
+                    return new BadRequestObjectResult("Claim Status must be set to 'Proposed' or 'Rejected'");
 
                 existing.ClaimStatus = claimDetail.ClaimStatus;
                 if (claimDetail.LineItems != null) existing.LineItems = claimDetail.LineItems;

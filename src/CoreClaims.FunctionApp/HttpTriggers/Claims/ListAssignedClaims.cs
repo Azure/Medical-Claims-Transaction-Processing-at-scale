@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using CoreClaims.Infrastructure.Repository;
+using Microsoft.Azure.Functions.Worker;
 
 namespace CoreClaims.FunctionApp.HttpTriggers.Claims
 {
@@ -17,13 +16,14 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
             this.repository = repository;
         }
 
-        [FunctionName("ListAssignedClaims")]
+        [Function("ListAssignedClaims")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "adjudicator/{adjudicatorId}/claims")] HttpRequest req,
             string adjudicatorId,
-            ILogger log)
+            FunctionContext context)
         {
-            using (log.BeginScope("HttpTrigger: ListAssignedClaims"))
+            var logger = context.GetLogger<ListAssignedClaims>();
+            using (logger.BeginScope("HttpTrigger: ListAssignedClaims"))
             {
                 var (offset, limit) = req.GetPagingQuery();
 
