@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreClaims.FunctionApp.HttpTriggers.Claims;
 using CoreClaims.Infrastructure;
 using CoreClaims.Infrastructure.BusinessRules;
 using CoreClaims.Infrastructure.Domain.Entities;
 using CoreClaims.Infrastructure.Domain.Enums;
 using CoreClaims.Infrastructure.Repository;
-using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
 namespace CoreClaims.FunctionApp.ChangeFeedTriggers
@@ -25,15 +26,16 @@ namespace CoreClaims.FunctionApp.ChangeFeedTriggers
             _coreBusinessRule = coreBusinessRule;
         }
 
-        [FunctionName("AssignClaimAdjudicator")]
+        [Function("AssignClaimAdjudicator")]
         public async Task Run([CosmosDBTrigger(
             databaseName: Constants.Connections.CosmosDbName,
             containerName: "Claim",
             Connection = Constants.Connections.CosmosDb,
             LeaseContainerName = "ClaimLeases",
             LeaseContainerPrefix = "ReviewClaim")] IReadOnlyList<ClaimHeader> input,
-            ILogger logger)
+            FunctionContext context)
         {
+            var logger = context.GetLogger<AssignClaimAdjudicator>();
             using var logScope = logger.BeginScope("CosmosDbTrigger: AssignClaimAdjudicator");
 
             // Get all claims that has initial status.
