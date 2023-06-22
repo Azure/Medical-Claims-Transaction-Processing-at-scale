@@ -1,12 +1,12 @@
 using System;
 using System.Threading.Tasks;
 using CoreClaims.FunctionApp.Models.Response;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using CoreClaims.Infrastructure.Repository;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace CoreClaims.FunctionApp.HttpTriggers.Claims
 {
@@ -19,13 +19,14 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
             _claimRepository = claimRepository;
         }
 
-        [FunctionName("GetClaimHistory")]
+        [Function("GetClaimHistory")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "claim/{claimId}/history")] HttpRequest req,
             string claimId,
-            ILogger log)
+            FunctionContext context)
         {
-            using (log.BeginScope("HttpTrigger: GetClaimHistory"))
+            var logger = context.GetLogger<GetClaimHistory>();
+            using (logger.BeginScope("HttpTrigger: GetClaimHistory"))
             {
                 try
                 {
@@ -33,7 +34,7 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
                     var (header, details) = await _claimRepository.GetClaimHistory(claimId);
                     if (header == null)
                     {
-                        log.LogError($"Claim {claimId} not found.");
+                        logger.LogError($"Claim {claimId} not found.");
                         return new NotFoundResult();
                     }
 
@@ -43,7 +44,7 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
                         History = details
                     };
 
-                    log.LogInformation($"Successfully retrieved history of Claim: {claimId}");
+                    logger.LogInformation($"Successfully retrieved history of Claim: {claimId}");
                     return new OkObjectResult(claimHistory);
                 }
                 catch (Exception ex)

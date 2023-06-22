@@ -1,30 +1,40 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreClaims.FunctionApp.HttpTriggers.Claims;
 using CoreClaims.Infrastructure;
 using CoreClaims.Infrastructure.Domain.Entities;
-using Microsoft.Azure.WebJobs;
+using CoreClaims.Infrastructure.Events;
+using CoreClaims.Infrastructure.Repository;
+using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
 namespace CoreClaims.FunctionApp.ChangeFeedTriggers
 {
     public class ClaimUpdated
     {
-        [FunctionName("ClaimUpdated")]
+        private readonly IAdjudicatorRepository _adjudicatorRepository;
+        private readonly IMemberRepository _memberRepository;
+
+        public ClaimUpdated(
+            IAdjudicatorRepository adjudicatorRepository,
+            IMemberRepository memberRepository)
+        {
+            _adjudicatorRepository = adjudicatorRepository;
+            _memberRepository = memberRepository;
+        }
+
+        [Function("ClaimUpdated")]
         public async Task Run(
             [CosmosDBTrigger(databaseName: Constants.Connections.CosmosDbName,
                 containerName: "Claim",
                 Connection = Constants.Connections.CosmosDb,
                 LeaseContainerName = "ClaimLeases",
                 LeaseContainerPrefix = "PropagateClaimHeader")] IReadOnlyList<ClaimHeader> input,
-            [CosmosDB(databaseName: Constants.Connections.CosmosDbName,
-                containerName: "Member",
-                Connection = Constants.Connections.CosmosDb)] IAsyncCollector<ClaimHeader> members,
-            [CosmosDB(databaseName: Constants.Connections.CosmosDbName,
-                containerName: "Adjudicator",
-                Connection = Constants.Connections.CosmosDb)] IAsyncCollector<ClaimHeader> adjudicator,
-            ILogger logger)
+            FunctionContext context)
         {
+            var logger = context.GetLogger<ClaimUpdated>();
             using var logScope = logger.BeginScope("CosmosDbTrigger: ClaimUpdated");
 
             var headers = input.Where(i => i.Type == ClaimHeader.EntityName);
@@ -33,13 +43,13 @@ namespace CoreClaims.FunctionApp.ChangeFeedTriggers
             {
                 if (!string.IsNullOrEmpty(claim.MemberId))
                 {
-                    await members.AddAsync(claim);
+                    await _memberRepository.UpsertClaim(claim);
                     logger.LogInformation($"Updating ClaimHeader/{claim.ClaimId}/{claim.AdjustmentId} for Member/{claim.MemberId}");
                 }
 
                 if (!string.IsNullOrEmpty(claim.AdjudicatorId))
                 {
-                    await adjudicator.AddAsync(claim);
+                    await _adjudicatorRepository.UpsertClaim(claim);
                     logger.LogInformation($"Updating ClaimHeader/{claim.ClaimId}/{claim.AdjustmentId} for Adjudicator/{claim.AdjudicatorId}");
                 }
             }
