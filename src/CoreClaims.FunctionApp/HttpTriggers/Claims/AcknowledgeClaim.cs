@@ -13,10 +13,13 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
     public class AcknowledgeClaim
     {
         private readonly IClaimRepository _repository;
+        private readonly IOptions<BusinessRuleOptions> _options;
 
-        public AcknowledgeClaim(IClaimRepository repository)
+        public AcknowledgeClaim(IClaimRepository repository,
+            IOptions<BusinessRuleOptions> options)
         {
             _repository = repository;
+            _options = options;
         }
 
         [Function("AcknowledgeClaim")]
@@ -36,6 +39,16 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
 
                 claim.ClaimStatus = ClaimStatus.Acknowledged;
                 claim.Comment = "Claim Acknowledged";
+
+                // If we are running demo mode and have configured a specific Adjudicator Id, override the adjudicator on acknowledgement.
+                if (_options.Value.DemoMode && !string.IsNullOrWhiteSpace(_options.Value.DemoAdjudicatorId))
+                {
+                    // Only change this if the current adjudicator is not the demo manager adjudicator.
+                    if (claim.AdjudicatorId != _options.Value.DemoManagerAdjudicatorId)
+                    {
+                        claim.AdjudicatorId = _options.Value.DemoAdjudicatorId;
+                    }
+                }
 
                 var result = await _repository.UpdateClaim(claim);
 
