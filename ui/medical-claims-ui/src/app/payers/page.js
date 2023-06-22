@@ -41,7 +41,6 @@ function PayersTable({ data, page, setPage }){
       <Pagination
         className="p-6 self-center"
         currentPage={page}
-        layout="navigation"
         onPageChange={(page) => {
           setPage(page);
           //setContinuationToken(data.continuationToken);

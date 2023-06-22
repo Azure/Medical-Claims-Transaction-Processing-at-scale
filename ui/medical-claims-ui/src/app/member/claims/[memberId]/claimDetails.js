@@ -5,11 +5,12 @@ import { Table, Spinner, Pagination } from 'flowbite-react';
 import Link from 'next/link'
 import Moment from 'moment'
 import TransactionsStatement from '../../../hooks/TransactionsStatement'
+import { AcknowledgeButton, DenyClaimButton, ProposeClaimButton, ApproveClaimButton } from './ClaimActions'
 
 let money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 
-export default function ClaimDetails({ claimId }){
-	const { data, isLoading } = TransactionsStatement.getClaimDetails(claimId);
+export default function ClaimDetails({ claimId, requestClaims }){
+	const { data, isLoading, mutate } = TransactionsStatement.getClaimDetails(claimId);
 
 	return((!isLoading && data) ? (
 		<>
@@ -24,7 +25,10 @@ export default function ClaimDetails({ claimId }){
 							<div className='px-4 font-bold gap-2'>Claim Id:</div>
 							<div className='float-left'>{data.claimId}</div>
 							<div className='px-4 font-bold gap-2'>Claim Status:</div>
-							<div>{data.claimStatus} <ClaimsActions claimStatus={data.claimStatus}/></div>
+							<div>
+								{data.claimStatus} 
+								<ClaimsActions claimStatus={data.claimStatus} claimId={data.claimId} {...{data, requestClaims, mutate}}/>
+							</div>
 							<div className='px-4 font-bold gap-2'>Payer Name:</div>
 							<div>{data.payerName ? data.payerName : '-'}</div>
 							<div className='px-4 font-bold gap-2'>Total Amount:</div>
@@ -45,29 +49,29 @@ export default function ClaimDetails({ claimId }){
 	) : <Spinner aria-label="Loading..." />);
 }
 
-function ClaimsActions({claimStatus}){
+function ClaimsActions({claimStatus, claimId, requestClaims }){
 	switch(claimStatus){
 		case "Assigned":
-			return(<button className='btn bg-gray-300 hover:bg-gray-100 ml-5'>Acknowledge Claim Assignment</button>);
+			return (<AcknowledgeButton claimId={claimId} {...{requestClaims}} />);
 			break;
 		case "Acknowledged":
-			return(
+			return (
 				<>
-					<button className='btn bg-red-500 hover:bg-red-600 text-white mr-5 ml-5'>Deny Claim</button>
-					<button className='btn bg-gray-300 hover:bg-gray-100'>Propose Claim</button>
+					<DenyClaimButton claimId={claimId} {...{requestClaims}}/>
+					<ProposeClaimButton claimId={claimId} {...{requestClaims}}/>
 				</>
 			);
 			break;
 		case "ApprovalRequired":
-			return(
+			return (
 				<>
-					<button className='btn bg-red-500 hover:bg-red-600 text-white mr-5 ml-5'>Deny Claim</button>
-					<button className='btn bg-green-500 hover:bg-green-600 text-white'>Approve Claim</button>
+					<DenyClaimButton claimId={claimId} {...{requestClaims}}/>
+					<ApproveClaimButton claimId={claimId} {...{requestClaims}}/>
 				</>
 			);
 			break;
 		default:
-			return(<></>);
+			return(null);
 			break;
 	}
 }

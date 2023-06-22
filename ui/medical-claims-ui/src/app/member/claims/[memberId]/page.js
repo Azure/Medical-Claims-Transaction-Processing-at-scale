@@ -27,7 +27,6 @@ export default function page(){
 					Member Claims for {requestMember.data.firstName} {requestMember.data.lastName}
 				</h3>
 			) : null}
-
 			{ /*Claims List*/ }
 			<div className="card mb-10 mt-10">
 				<div className="card-header">
@@ -36,7 +35,7 @@ export default function page(){
 				<div className="card-body">
 					<div className="relative overflow-x-auto sm:rounded">
 						{ (!requestClaims.isLoading && requestClaims.data) ? (
-							<ClaimsTable data={requestClaims.data} {...{claimId, setClaimId, setShowClaimDetail, setShowHistory, page, setPage}}/>
+							<ClaimsTable data={requestClaims.data} {...{claimId, setClaimId, setShowClaimDetail, setShowHistory, page, setPage }}/>
 						) : <Spinner aria-label="Loading..." />}
 					</div>
 				</div>
@@ -44,7 +43,7 @@ export default function page(){
 
 			{ /*Claim Detail*/ }
 			{showClaimDetail ? (
-				<ClaimDetails {...{claimId}}/>
+				<ClaimDetails {...{claimId, requestClaims}}/>
 			) : null}		
 
 			{ /*Claim History*/ }
@@ -71,12 +70,11 @@ function ClaimsTable({ data, claimId, setClaimId, setShowClaimDetail, setShowHis
       <Pagination
         className="p-6 self-center"
         currentPage={page}
-        layout="navigation"
         onPageChange={(page) => {
           setPage(page);
           //setContinuationToken(data.continuationToken);
         }}
-        totalPages={100}
+        totalPages={100} 
       />
 		</>
 	);
@@ -134,6 +132,9 @@ function formatValues(headerKey, value){
 	switch(headerKey){
 		case "filingDate":
 			return Moment(value).format('YYYY-MM-DD');
+			break;		
+		case "lastAdjudicatedDate":
+			return value ? Moment(value).format('YYYY-MM-DD hh:mm a') : '-';
 			break;
 		case "totalAmount":
 			return money.format(value);

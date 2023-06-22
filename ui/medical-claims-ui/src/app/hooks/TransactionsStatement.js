@@ -1,6 +1,7 @@
 "use client";
 
 import useSWR from "swr";
+import useSWRMutation from 'swr/mutation'
 import axios from "axios";
 
 const 
@@ -8,6 +9,8 @@ const
 	X_FUNCTION_KEY = process.env.NEXT_PUBLIC_X_FUNCTION_KEY//'-3VTIyOmv6Fj3cMi_kaVcwPHEr2nN8qM7ks4zNzdfzZ0AzFu8YepTw=='
 
 const fetcher = (url) => axios.get(url, { headers: { 'x-functions-key': X_FUNCTION_KEY } }).then((res) => res.data);
+const put = async (url, { arg }) => await axios.put(url, arg, { headers: { 'x-functions-key': X_FUNCTION_KEY } });
+const post = async (url, { arg }) => await axios.post(url, arg, { headers: { 'x-functions-key': X_FUNCTION_KEY } });
 
 const getMembersList = (offset = 0, pageSize = 10) => {
 	return useSWR(
@@ -65,6 +68,12 @@ const getClaimHistory = (claimId) => {
 	);
 };
 
+export const updateClaim = (claimId) =>
+	useSWRMutation(`${API_URL}/claim/${claimId}`, put);
+
+export const acknowledgeClaim = (claimId) =>
+	useSWRMutation(`${API_URL}/claim/${claimId}/acknowledge`, post);
+
 const TransactionsStatement={
     getMembersList,
     getMember,
@@ -73,7 +82,8 @@ const TransactionsStatement={
     getClaimDetails,
     getProviders,
     getPayers,
-    getClaimHistory
+    getClaimHistory,
+    updateClaim
 }
 
 export default TransactionsStatement;
