@@ -1,10 +1,9 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using CoreClaims.Infrastructure.Repository;
+using Microsoft.Azure.Functions.Worker;
 
 namespace CoreClaims.FunctionApp.HttpTriggers.Claims
 {
@@ -17,13 +16,14 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
             this._repository = repository;
         }
 
-        [FunctionName("ListMemberClaims")]
+        [Function("ListMemberClaims")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "member/{memberId}/claims")] HttpRequest req,
             string memberId,
-            ILogger log)
+            FunctionContext context)
         {
-            using (log.BeginScope("HttpTrigger: ListMemberClaims"))
+            var logger = context.GetLogger<ListMemberClaims>();
+            using (logger.BeginScope("HttpTrigger: ListMemberClaims"))
             {
                 var (offset, limit) = req.GetPagingQuery();
                 var (startDate, endDate) = req.GetDateRangeQuery();
