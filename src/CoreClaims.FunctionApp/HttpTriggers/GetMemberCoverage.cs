@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using CoreClaims.Infrastructure.Repository;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
+using System.Net;
 
 namespace CoreClaims.FunctionApp.HttpTriggers.Claims
 {
@@ -18,8 +20,8 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
         }
 
         [Function("GetMemberCoverage")]
-        public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "member/{memberId}/coverage")] HttpRequest req,
+        public async Task<HttpResponseData> Run(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "member/{memberId}/coverage")] HttpRequestData req,
             string memberId,
             ILogger log)
         {
@@ -28,7 +30,9 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
                 var result = await _repository.GetMemberCoverage(memberId);
                 var coverage = result.FirstOrDefault();
 
-                return new OkObjectResult(coverage);
+                var response = req.CreateResponse(HttpStatusCode.OK);
+                await response.WriteAsJsonAsync(coverage);
+                return response;
             }
         }
     }

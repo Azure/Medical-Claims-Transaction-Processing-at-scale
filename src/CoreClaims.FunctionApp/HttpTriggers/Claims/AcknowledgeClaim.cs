@@ -25,8 +25,8 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
         }
 
         [Function("AcknowledgeClaim")]
-        public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "claim/{claimId}/acknowledge")] HttpRequest req,
+        public async Task<HttpResponseData> Run(
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "claim/{claimId}/acknowledge")] HttpRequestData req,
             string claimId, FunctionContext context)
         {
             var logger = context.GetLogger<AcknowledgeClaim>();
@@ -34,10 +34,14 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
             {
                 var claim = await _repository.GetClaim(claimId);
 
-                if (claim == null) return new NotFoundResult();
+                if (claim == null) return req.CreateResponse(HttpStatusCode.NotFound);
 
                 if (claim.ClaimStatus is not ClaimStatus.Assigned)
-                    return new BadRequestObjectResult("Only claims in the 'Assigned' state may be Acknowledged");
+                {
+                    var badResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                    await badResponse.WriteStringAsync("Only claims in the 'Assigned' state may be Acknowledged");
+                    return badResponse;
+                }
 
                 claim.ClaimStatus = ClaimStatus.Acknowledged;
                 claim.Comment = "Claim Acknowledged";
@@ -53,8 +57,9 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
                 }
 
                 var result = await _repository.UpdateClaim(claim);
-
-                return new OkObjectResult(result);
+                var response = req.CreateResponse(HttpStatusCode.OK);
+                await response.WriteAsJsonAsync(result);
+                return response;
             }
         }
     }

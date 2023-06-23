@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using CoreClaims.FunctionApp.HttpTriggers.Claims;
@@ -9,6 +10,7 @@ using CoreClaims.Infrastructure.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 
 namespace CoreClaims.FunctionApp.HttpTriggers
@@ -16,8 +18,8 @@ namespace CoreClaims.FunctionApp.HttpTriggers
     public class GetMember
     {
         [Function("GetMember")]
-        public IActionResult Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "member/{memberId}")] HttpRequest req,
+        public async Task<HttpResponseData> Run(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "member/{memberId}")] HttpRequestData req,
             [CosmosDBInput(
                 databaseName: Constants.Connections.CosmosDbName, 
                 containerName: "Member", 
@@ -28,9 +30,11 @@ namespace CoreClaims.FunctionApp.HttpTriggers
             var logger = context.GetLogger<GetMember>();
             using (logger.BeginScope("HttpTrigger: GetMember"))
             {
-                if (member == null) return new NotFoundResult();
+                if (member == null) return req.CreateResponse(System.Net.HttpStatusCode.NotFound);
 
-                return new OkObjectResult(member);
+                var response = req.CreateResponse(HttpStatusCode.OK);
+                await response.WriteAsJsonAsync(member);
+                return response;
             }
         }
     }
