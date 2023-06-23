@@ -19,7 +19,6 @@ var host = new HostBuilder()
         con.AddUserSecrets<Program>(optional: true, reloadOnChange: false);
         con.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true);
     })
-    .ConfigureFunctionsWorkerDefaults()
     .ConfigureServices((hostContext, services) =>
     {
         services.Configure<BusinessRuleOptions>(hostContext.Configuration.GetSection(nameof(BusinessRuleOptions)));
