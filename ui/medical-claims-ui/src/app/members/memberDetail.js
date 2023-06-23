@@ -33,6 +33,9 @@ export default function MemberDetail({memberId}){
 					</div>  
 				</div>
 			</div>
-		) : <Spinner aria-label="Loading..." />		
+		) : 
+			<div className='text-center mt-20'>
+				<Spinner aria-label="Loading..." />
+			</div>	
 	);
 }

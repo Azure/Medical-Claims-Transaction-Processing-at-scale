@@ -20,24 +20,34 @@ export default function page(){
 	const [ showClaimDetail, setShowClaimDetail ] = useState(false);
 	const [ showHistory, setShowHistory ] = useState(false);
 
+	const cardClass = (isLoading)=>{
+		let classList = 'card mb-10';
+		if(isLoading) classList += ' h-full';
+		return classList;
+	}
+
 	return(
 		<>
 			{(!requestMember.isLoading && requestMember.data) ? (
-				<h3 className='text-3xl'>
+				<h3 className='text-2xl mb-10'>
 					Member Claims for {requestMember.data.firstName} {requestMember.data.lastName}
 				</h3>
 			) : null}
 			{ /*Claims List*/ }
-			<div className="card mb-10 mt-10">
+			<div className={cardClass(requestClaims.isLoading)}>
 				<div className="card-header">
 					<h4 className="card-title">Claims</h4>
 				</div>
 				<div className="card-body">
-					<div className="relative overflow-x-auto sm:rounded">
 						{ (!requestClaims.isLoading && requestClaims.data) ? (
-							<ClaimsTable data={requestClaims.data} {...{claimId, setClaimId, setShowClaimDetail, setShowHistory, page, setPage }}/>
-						) : <Spinner aria-label="Loading..." />}
-					</div>
+							<div className="relative overflow-x-auto sm:rounded">
+									<ClaimsTable data={requestClaims.data} {...{claimId, setClaimId, setShowClaimDetail, setShowHistory, page, setPage }}/>
+							</div>
+						) : 
+							<div className='text-center mt-20'>
+								<Spinner aria-label="Loading..." />
+							</div>
+						}
 				</div>
 			</div>
 
