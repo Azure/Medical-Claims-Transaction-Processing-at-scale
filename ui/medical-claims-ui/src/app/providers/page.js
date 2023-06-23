@@ -8,18 +8,28 @@ export default function Providers(){
   const [page, setPage] = useState(1);
 	const { data, isLoading } = TransactionsStatement.getProviders(page, 10);
 
+	const cardClass = (isLoading)=>{
+		let classList = 'card mb-10';
+		if(isLoading) classList += ' h-full';
+		return classList;
+	}
+
 	return(
 		<>
-			<div className="card mb-10">
+			<div className={cardClass(isLoading)}>
 				<div className="card-header">
 					<h4 className="card-title">Providers</h4>
 				</div>
 				<div className="card-body">
-					<div className="relative overflow-x-auto sm:rounded">
 						{!isLoading ? (
-							<ProvidersTable data={data} {...{page, setPage }} />
-						) : <Spinner aria-label="Loading..." /> }
-					</div>  
+							<div className="relative overflow-x-auto sm:rounded">
+									<ProvidersTable data={data} {...{page, setPage }} />
+							</div>  
+						) :
+							<div className='text-center mt-20'>
+								<Spinner aria-label="Loading..." />
+							</div>
+					}
 				</div>
 			</div>
 		</>
