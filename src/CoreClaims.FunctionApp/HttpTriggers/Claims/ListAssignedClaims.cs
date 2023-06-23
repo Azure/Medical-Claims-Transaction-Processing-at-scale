@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using CoreClaims.Infrastructure.Repository;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
+using System.Net;
 
 namespace CoreClaims.FunctionApp.HttpTriggers.Claims
 {
@@ -17,8 +19,8 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
         }
 
         [Function("ListAssignedClaims")]
-        public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "adjudicator/{adjudicatorId}/claims")] HttpRequest req,
+        public async Task<HttpResponseData> Run(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "adjudicator/{adjudicatorId}/claims")] HttpRequestData req,
             string adjudicatorId,
             FunctionContext context)
         {
@@ -28,7 +30,9 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
                 var (offset, limit) = req.GetPagingQuery();
 
                 var result = await repository.GetAssignedClaims(adjudicatorId, offset, limit);
-                return new OkObjectResult(result);
+                var response = req.CreateResponse(HttpStatusCode.OK);
+                await response.WriteAsJsonAsync(result);
+                return response;
             }
         }
     }

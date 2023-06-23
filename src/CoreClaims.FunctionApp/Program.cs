@@ -9,9 +9,16 @@ using Microsoft.Extensions.Configuration;
 using System.IO;
 using Microsoft.Extensions.Azure;
 using CoreClaims.Infrastructure.Events;
-
-
 var host = new HostBuilder()
+    .ConfigureFunctionsWorkerDefaults(builder =>
+    {
+        builder.Services.AddLogging();
+    })
+    .ConfigureAppConfiguration(con =>
+    {
+        con.AddUserSecrets<Program>(optional: true, reloadOnChange: false);
+        con.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true);
+    })
     .ConfigureFunctionsWorkerDefaults()
     .ConfigureServices((hostContext, services) =>
     {
