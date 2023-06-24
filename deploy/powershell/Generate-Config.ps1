@@ -23,11 +23,6 @@ if (-not $rg) {
 ### Getting Resources
 $tokens=@{}
 
-## Getting storage info
-# $storage=$(az storage account list -g $resourceGroup --query "[].{name: name, blob: primaryEndpoints.blob}" -o json | ConvertFrom-Json)
-# $storage=EnsureAndReturnFirstItem $storage "Storage Account"
-# Write-Host "Storage Account: $($storage.name)" -ForegroundColor Yellow
-
 ## Getting Datalake info
 $dataLakeEndpoint=$(az storage account list -g $resourceGroup -o json | ConvertFrom-Json).primaryEndpoints.dfs
 
