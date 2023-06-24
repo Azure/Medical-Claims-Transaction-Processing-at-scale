@@ -5,6 +5,7 @@ Param(
     [parameter(Mandatory=$true)][string]$location,
     [parameter(Mandatory=$true)][string]$subscription,
     [parameter(Mandatory=$false)][string]$suffix,
+    [parameter(Mandatory=$false)][string]$synapseWorkspace,
     [parameter(Mandatory=$false)][bool]$stepDeployBicep=$true,
     [parameter(Mandatory=$false)][bool]$stepPublishFunctionApp=$true,
     [parameter(Mandatory=$false)][bool]$stepSetupSynapse=$true,
@@ -40,7 +41,7 @@ if ($stepPublishFunctionApp) {
 }
 
 if ($stepSetupSynapse) {
-    & ./Setup-Synapse.ps1 -resourceGroup $resourceGroup
+    & ./Setup-Synapse.ps1 -resourceGroup $resourceGroup -synapseWorkspace $synapseWorkspace -suffix $suffix
 }
 
 Pop-Location
