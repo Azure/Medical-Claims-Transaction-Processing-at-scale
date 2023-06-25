@@ -39,10 +39,10 @@ export default function Payers(){
 
 function PayersTable({ data, page, setPage }){
 	const headers = [
-		{ key: 'name', name: 'Name'},
-		{ key: 'email', name: 'Email'},
-		{ key: 'phoneNumber', name: 'Phone Number'},
-		{ key: 'country', name: 'Country'}
+		{ key: 'Name', name: 'Name'},
+		{ key: 'Email', name: 'Email'},
+		{ key: 'PhoneNumber', name: 'Phone Number'},
+		{ key: 'Country', name: 'Country'}
 	];
 
 	return(

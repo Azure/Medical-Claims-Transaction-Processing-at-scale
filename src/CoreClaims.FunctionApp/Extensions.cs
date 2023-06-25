@@ -4,12 +4,13 @@ using System.Threading.Tasks;
 using CoreClaims.Infrastructure;
 using CoreClaims.Infrastructure.Helpers;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.Functions.Worker.Http;
 
 namespace CoreClaims.FunctionApp
 {
     internal static class Extensions
     {
-        public static (int, int) GetPagingQuery(this HttpRequest req)
+        public static (int, int) GetPagingQuery(this HttpRequestData req)
         {
             int offset = int.TryParse(req.Query["offset"], out offset) ? offset : 0;
             int limit = int.TryParse(req.Query["limit"], out limit) ? limit : Constants.DefaultPageSize;
@@ -17,7 +18,7 @@ namespace CoreClaims.FunctionApp
             return (offset, limit);
         }
 
-        public static (DateTime?, DateTime?) GetDateRangeQuery(this HttpRequest req)
+        public static (DateTime?, DateTime?) GetDateRangeQuery(this HttpRequestData req)
         {
             DateTime? startDate = DateTime.TryParse(req.Query["startDate"], out DateTime start) ? start : null;
             DateTime? endDate = DateTime.TryParse(req.Query["endDate"], out DateTime end) ? end : null;
@@ -25,7 +26,7 @@ namespace CoreClaims.FunctionApp
             return (startDate, endDate);
         }
 
-        public static async Task<TRequest> GetRequest<TRequest>(this HttpRequest req) where TRequest : class
+        public static async Task<TRequest> GetRequest<TRequest>(this HttpRequestData req) where TRequest : class
         {
             var body = await new StreamReader(req.Body).ReadToEndAsync();
             return JsonSerializationHelper.DeserializeItem<TRequest>(body);
