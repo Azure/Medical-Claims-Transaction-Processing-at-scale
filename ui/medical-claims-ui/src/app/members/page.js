@@ -7,26 +7,36 @@ import MemberDetail from './memberDetail'
 import MemberCoverageModal from './memberCoverageModal'
 
 export default function Members(){	
-  const [page, setPage] = useState(1);
+  const [ page, setPage ] = useState(1);
 	const { data, isLoading } = TransactionsStatement.getMembersList(page, 10);
 	const [ showMemberDetail, setShowMemberDetail ] = useState(false);
 	const [ showCoverageModal, setShowCoverageModal ] = useState(false);
 	const [ memberId, setMemberId ] = useState(null);
 	const [ coverageByMemberId, setCoverageByMemberId ] = useState(null);
 
+	const cardClass = (isLoading)=>{
+		let classList = 'card mb-10';
+		if(isLoading) classList += ' h-full';
+		return classList;
+	}
+
 	return(
 		<>
-			<div className="card mb-10">
+			<div className={cardClass(isLoading)}>
 				<div className="card-header">
 					<h4 className="card-title">Members</h4>
 				</div>
 				<div className="card-body">
-					<div className="relative overflow-x-auto sm:rounded">
 						{!isLoading ? (
-							<MembersTable data={data} {...{showCoverageModal, setShowCoverageModal, 
-								setShowMemberDetail, setMemberId, setCoverageByMemberId, page, setPage }} />
-						) : <Spinner aria-label="Loading..." /> }
-					</div>  
+							<div className="relative overflow-x-auto sm:rounded">
+									<MembersTable data={data} {...{showCoverageModal, setShowCoverageModal, 
+										setShowMemberDetail, setMemberId, setCoverageByMemberId, page, setPage }} />
+							</div>  
+						) : 
+							<div className='text-center mt-20'>
+								<Spinner aria-label="Loading..." />
+							</div>
+						}
 				</div>
 			</div>
 
