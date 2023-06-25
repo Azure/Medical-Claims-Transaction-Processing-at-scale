@@ -21,11 +21,11 @@ namespace CoreClaims.FunctionApp.HttpTriggers
 
         [Function("ListMembers")]
         public async Task<HttpResponseData> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "member")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "members")] HttpRequestData req,
             FunctionContext context)
         {
             var logger = context.GetLogger<ListMembers>();
-            using (logger.BeginScope("HttpTrigger: ListPayers"))
+            using (logger.BeginScope("HttpTrigger: ListMembers"))
             {
                 var (offset, limit) = req.GetPagingQuery();
 

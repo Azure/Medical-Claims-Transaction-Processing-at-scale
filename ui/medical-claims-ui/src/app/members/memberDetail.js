@@ -14,20 +14,20 @@ export default function MemberDetail({memberId}){
 					<div className="relative overflow-x-auto sm:rounded">
 						<div className='grid grid-cols-2'>
 							<div className='grid grid-cols-2'>
-								<div className='px-4 font-bold gap-2'>Title:</div><div>{data.title}</div>
-								<div className='px-4 font-bold gap-2'>First Name:</div><div>{data.firstName}</div>
-								<div className='px-4 font-bold gap-2'>Last Name:</div><div>{data.lastName}</div>
-								<div className='px-4 font-bold gap-2'>Member Type:</div><div>{data.type}</div>
-								<div className='px-4 font-bold gap-2'>Email:</div><div>{data.email}</div>
-								<div className='px-4 font-bold gap-2'>Phone Number:</div><div>{data.phoneNumber}</div>
+								<div className='px-4 font-bold gap-2'>Title:</div><div>{data.Title}</div>
+								<div className='px-4 font-bold gap-2'>First Name:</div><div>{data.FirstName}</div>
+								<div className='px-4 font-bold gap-2'>Last Name:</div><div>{data.LastName}</div>
+								<div className='px-4 font-bold gap-2'>Member Type:</div><div>{data.Type}</div>
+								<div className='px-4 font-bold gap-2'>Email:</div><div>{data.Email}</div>
+								<div className='px-4 font-bold gap-2'>Phone Number:</div><div>{data.PhoneNumber}</div>
 							</div>
 							<div className='grid grid-cols-2'>
-								<div className='px-4 font-bold gap-2'>Address:</div><div>{data.address}</div>
-								<div className='px-4 font-bold gap-2'>City:</div><div>{data.city}</div>
-								<div className='px-4 font-bold gap-2'>State:</div><div>{data.state}</div>
-								<div className='px-4 font-bold gap-2'>Country:</div><div>{data.country}</div>
-								<div className='px-4 font-bold gap-2'>Approved Count:</div><div>{data.approvedCount}</div>
-								<div className='px-4 font-bold gap-2'>Approved Total:</div><div>{data.approvedTotal}</div>
+								<div className='px-4 font-bold gap-2'>Address:</div><div>{data.Address}</div>
+								<div className='px-4 font-bold gap-2'>City:</div><div>{data.City}</div>
+								<div className='px-4 font-bold gap-2'>State:</div><div>{data.State}</div>
+								<div className='px-4 font-bold gap-2'>Country:</div><div>{data.Country}</div>
+								<div className='px-4 font-bold gap-2'>Approved Count:</div><div>{data.ApprovedCount}</div>
+								<div className='px-4 font-bold gap-2'>Approved Total:</div><div>{data.ApprovedTotal}</div>
 							</div>
 						</div>
 					</div>  

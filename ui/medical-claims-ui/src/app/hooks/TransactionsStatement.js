@@ -13,10 +13,11 @@ const put = async (url, { arg }) => await axios.put(url, arg, { headers: { 'x-fu
 const post = async (url, { arg }) => await axios.post(url, arg, { headers: { 'x-functions-key': X_FUNCTION_KEY } });
 
 const getMembersList = (offset = 0, pageSize = 10) => {
-	return useSWR(
-		`${API_URL}/member?offset=${offset}&limit=${pageSize}`,
+	var temp =  useSWR(
+		`${API_URL}/members?offset=${offset}&limit=${pageSize}`,
 		fetcher
 	);
+	return temp;
 };
 
 const getMember = (memberId) => {
@@ -68,6 +69,10 @@ const getClaimHistory = (claimId) => {
 	);
 };
 
+const getClaimRecommendation = (claimId) => 
+	useSWRMutation(`${API_URL}/claim/${claimId}/recommendation`,fetcher);
+
+
 export const updateClaim = (claimId) =>
 	useSWRMutation(`${API_URL}/claim/${claimId}`, put);
 
@@ -83,6 +88,7 @@ const TransactionsStatement={
     getProviders,
     getPayers,
     getClaimHistory,
+	getClaimRecommendation,
     updateClaim
 }
 

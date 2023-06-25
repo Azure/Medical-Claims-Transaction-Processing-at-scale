@@ -13,14 +13,6 @@ export const metadata = {
 export default function RootLayout({ children }) {
   const menuItems = [
     {
-      href: '/search',
-      title: 'Search',
-    },
-    {
-      href: '/',
-      title: 'Home',
-    },
-    {
       href: '/members',
       title: 'Members',
     },
