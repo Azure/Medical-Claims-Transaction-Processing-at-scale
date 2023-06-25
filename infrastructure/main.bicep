@@ -12,6 +12,15 @@ param synapseWorkspace string
 @allowed(['Y1', 'B1'])
 param appServicePlanSku string = 'Y1'
 
+@description('OpenAI service name')
+param openAiName string = 'openaipayments${suffix}'
+
+@description('OpenAi Deployment')
+param openAiDeployment string = 'completions'
+
+@description('OpenAI Resource Group')
+param openAiResourceGroup string
+
 var appName = 'coreclaims-${suffix}'
 var serviceNames = {
   cosmosDb: replace('db-${appName}', '-', '')
@@ -64,6 +73,26 @@ module synapse 'synapse.bicep' = [for i in range(0, synapseWorkspace == null ? 1
   dependsOn: [storage, cosmosDb]
 }]
 
+// TODO: Deploy via Bicep. Presently, attempting this results in the following error:
+//   {"code": "ApiSetDisabledForCreation", "message": "It's not allowed to create new accounts with type 'OpenAI'."}
+// module openAi 'openai.bicep' = {
+//   name: 'openAiDeploy'
+//   params: {
+//     openAiName: openAiName
+//     location: locArray[0]
+//     deployments: [
+//       {
+//         name: 'completions'
+//         model: 'text-davinci-003'
+//         version: '1'
+//         sku: {
+//           name: 'Standard'
+//           capacity: 60
+//         }
+//       }
+//     ]
+//   }
+// }
 
 module functionApp 'functions.bicep' = {
   scope: resourceGroup()
@@ -76,6 +105,9 @@ module functionApp 'functions.bicep' = {
     storageAccountName: serviceNames.storage
     location: location
     appServicePlanSku: appServicePlanSku
+    openAiName: openAiName
+    openAiDeployment: openAiDeployment
+    openAiResourceGroup: openAiResourceGroup
   }
   dependsOn: [storage, cosmosDb]
 }
