@@ -22,6 +22,7 @@ var host = new HostBuilder()
     .ConfigureServices((hostContext, services) =>
     {
         services.Configure<BusinessRuleOptions>(hostContext.Configuration.GetSection(nameof(BusinessRuleOptions)));
+        services.Configure<RulesEngineSettings>(hostContext.Configuration.GetSection("RulesEngine"));
 
         services.AddSingleton(s =>
         {
