@@ -11,7 +11,7 @@ const RecommendActionForm = ({ claimId, setOpenModal }) => {
     claimId
   });
 
-  const { trigger } = TransactionsStatement.getClaimRecommendation(claimId);
+  const { trigger } = TransactionsStatement.GetClaimRecommendation(claimId);
   const [isLoading, setIsLoading] = useState(false);
   const onClickCancel = () => {
     setForm({ claimId: ''});

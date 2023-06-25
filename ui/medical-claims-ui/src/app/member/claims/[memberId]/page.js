@@ -9,12 +9,12 @@ import Moment from 'moment'
 import ClaimDetails from './claimDetails'
 import ClaimHistory from './claimHistory'
 
-export default function page(){
+export default function Page(){
 	const params = useParams();
 	const [page, setPage] = useState(1);
 
-	const requestMember = TransactionsStatement.getMember(params.memberId);
-	const requestClaims = TransactionsStatement.getClaimsByMemberId(params.memberId, page, 5);
+	const requestMember = TransactionsStatement.GetMember(params.memberId);
+	const requestClaims = TransactionsStatement.GetClaimsByMemberId(params.memberId, page, 5);
 
 	const [claimId, setClaimId] = useState(null);
 	const [ showClaimDetail, setShowClaimDetail ] = useState(false);

@@ -8,7 +8,7 @@ import MemberCoverageModal from './memberCoverageModal'
 
 export default function Members(){	
   const [ page, setPage ] = useState(1);
-	const { data, isLoading } = TransactionsStatement.getMembersList(page, 10);
+	const { data, isLoading } = TransactionsStatement.GetMembersList(page, 10);
 	const [ showMemberDetail, setShowMemberDetail ] = useState(false);
 	const [ showCoverageModal, setShowCoverageModal ] = useState(false);
 	const [ memberId, setMemberId ] = useState(null);

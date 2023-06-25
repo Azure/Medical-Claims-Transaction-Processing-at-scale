@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import TransactionsStatement, { updateClaim, acknowledgeClaim } from '../../../hooks/TransactionsStatement'
+import TransactionsStatement, { UpdateClaim, AcknowledgeClaim } from '../../../hooks/TransactionsStatement'
 import Modal from '../../../components/modal'
 
 export function AcknowledgeButton ({ claimId, requestClaims, mutate }){
 	const [ showModal, setShowModal ] = useState(false);
 	const [ comment, setComment ] = useState('');
-	const { trigger } = acknowledgeClaim(claimId);
+	const { trigger } = AcknowledgeClaim(claimId);
 
 	const onSave = async ()=>{
 		var resp = await trigger({claimId: claimId});	
@@ -31,7 +31,7 @@ export function AcknowledgeButton ({ claimId, requestClaims, mutate }){
 export function DenyClaimButton ({claimId, requestClaims, mutate}){
 	const [ showModal, setShowModal ] = useState(false);
 	const [ comment, setComment ] = useState('');
-	const { trigger } = updateClaim(claimId);
+	const { trigger } = UpdateClaim(claimId);
 
 	const onClickButton = ()=>{
 		setShowModal(true)
@@ -67,7 +67,7 @@ export function DenyClaimButton ({claimId, requestClaims, mutate}){
 export function ProposeClaimButton ({claimId, requestClaims}){
 	const [ showModal, setShowModal ] = useState(false);
 	const [ comment, setComment ] = useState('');
-	const { trigger } = updateClaim(claimId);
+	const { trigger } = UpdateClaim(claimId);
 
 	const onClickButton = ()=>{
 		setShowModal(true)
@@ -103,7 +103,7 @@ export function ProposeClaimButton ({claimId, requestClaims}){
 export function ApproveClaimButton ({claimId, requestClaims}){
 	const [ showModal, setShowModal ] = useState(false);
 	const [ comment, setComment ] = useState('');
-	const { trigger } = updateClaim(claimId);
+	const { trigger } = UpdateClaim(claimId);
 
 	const onClickButton = ()=>{
 		setShowModal(true)

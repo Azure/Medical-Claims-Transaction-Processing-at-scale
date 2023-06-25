@@ -3,8 +3,8 @@ import TransactionsStatement from '../hooks/TransactionsStatement'
 import Moment from 'moment'
 
 export default function MemberCoverageModal({memberId, showCoverageModal, setShowCoverageModal}){
-	const memberRequest = TransactionsStatement.getMember(memberId);
-	const coverageRequest = TransactionsStatement.getCoverageByMember(memberId);
+	const memberRequest = TransactionsStatement.GetMember(memberId);
+	const coverageRequest = TransactionsStatement.GetCoverageByMember(memberId);
 
 	return(
 		<Modal title='Member Coverage' showModal={showCoverageModal} setShowModal={setShowCoverageModal} showSaveButton={false}>

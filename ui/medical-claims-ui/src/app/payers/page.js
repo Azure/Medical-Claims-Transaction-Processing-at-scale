@@ -6,7 +6,7 @@ import TransactionsStatement from '../hooks/TransactionsStatement'
 
 export default function Payers(){	
   const [page, setPage] = useState(1);
-	const { data, isLoading } = TransactionsStatement.getPayers(page, 10);
+	const { data, isLoading } = TransactionsStatement.GetPayers(page, 10);
 
 	const cardClass = (isLoading)=>{
 		let classList = 'card mb-10';

@@ -24,7 +24,7 @@ if (-not $rg) {
 $tokens=@{}
 
 ## Getting Datalake info
-$dataLakeEndpoint=$(az storage account list -g $resourceGroup -o json | ConvertFrom-Json).primaryEndpoints.dfs
+$dataLakeEndpoint=$(az storage account list -g $resourceGroup -o json | ConvertFrom-Json)[0].primaryEndpoints.dfs
 
 ## Getting CosmosDb info
 $docdb=$(az cosmosdb list -g $resourceGroup --query "[?kind=='GlobalDocumentDB'].{name: name, kind:kind, documentEndpoint:documentEndpoint}" -o json | ConvertFrom-Json)

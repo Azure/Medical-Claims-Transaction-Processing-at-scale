@@ -7,8 +7,8 @@ import TransactionsStatement from '../../../hooks/TransactionsStatement'
 let money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 
 export default function ClaimHistory({ claimId }){
-	const claimRequest = TransactionsStatement.getClaimDetails(claimId);
-	const historyRequest = TransactionsStatement.getClaimHistory(claimId);
+	const claimRequest = TransactionsStatement.GetClaimDetails(claimId);
+	const historyRequest = TransactionsStatement.GetClaimHistory(claimId);
 
 	return((!claimRequest.isLoading && claimRequest.data) ? (
 		<>
@@ -50,7 +50,7 @@ export default function ClaimHistory({ claimId }){
 			</div>
 			{(!historyRequest.isLoading && historyRequest.data) ? (
 				historyRequest.data.History.map((item)=>{
-					return(<HistoryItem data={item}/>)
+					return(<HistoryItem key={item.id} data={item}/>)
 				})
 			) : null}
 		</>
