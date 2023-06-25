@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using CoreClaims.Infrastructure.Repository;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
+using System.Net;
 
 namespace CoreClaims.FunctionApp.HttpTriggers.Claims
 {
@@ -17,8 +19,8 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
         }
 
         [Function("ListMemberClaims")]
-        public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "member/{memberId}/claims")] HttpRequest req,
+        public async Task<HttpResponseData> Run(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "member/{memberId}/claims")] HttpRequestData req,
             string memberId,
             FunctionContext context)
         {
@@ -29,8 +31,9 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
                 var (startDate, endDate) = req.GetDateRangeQuery();
 
                 var result = await _repository.ListMemberClaims(memberId, offset, limit, startDate, endDate);
-
-                return new OkObjectResult(result);
+                var response = req.CreateResponse(HttpStatusCode.OK);
+                await response.WriteAsJsonAsync(result);
+                return response;
             }
         }
     }

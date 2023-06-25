@@ -43,7 +43,7 @@ namespace CoreClaims.Infrastructure.Repository
 
         public async Task<ClaimHeader> CreateClaim(ClaimDetail detail)
         {
-            detail.CreatedOn = detail.ModifiedOn = DateTime.UtcNow;
+            detail.CreatedOn = detail.ModifiedOn = DateTime.UtcNow.ToString();
 
             var header = new ClaimHeader(detail);
 
@@ -64,7 +64,7 @@ namespace CoreClaims.Infrastructure.Repository
 
         public async Task<ClaimHeader> UpdateClaim(ClaimDetail detail)
         {
-            detail.ModifiedOn = DateTime.UtcNow;
+            detail.ModifiedOn = DateTime.UtcNow.ToString();
             detail.AdjustmentId++;
 
             var header = new ClaimHeader(detail);

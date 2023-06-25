@@ -5,6 +5,8 @@ using Microsoft.Extensions.Logging;
 using CoreClaims.Infrastructure.Repository;
 using Microsoft.Azure.Functions.Worker;
 using CoreClaims.FunctionApp.HttpTriggers.Claims;
+using Microsoft.Azure.Functions.Worker.Http;
+using System.Net;
 
 namespace CoreClaims.FunctionApp.HttpTriggers
 {
@@ -18,19 +20,21 @@ namespace CoreClaims.FunctionApp.HttpTriggers
         }
 
         [Function("ListProviders")]
-        public async Task<IActionResult> Run(
+        public async Task<HttpResponseData> Run(
             [HttpTrigger(AuthorizationLevel.Function,
             "get",
-            Route = "providers")] HttpRequest req,
+            Route = "providers")] HttpRequestData req,
             FunctionContext context)
         {
             var logger = context.GetLogger<ListProviders>();
-            using (logger.BeginScope("HttpTrigger: ListPayers"))
+            using (logger.BeginScope("HttpTrigger: ListProviders"))
             {
                 var (offset, limit) = req.GetPagingQuery();
                 var result = await _repository.ListProviders(offset, limit);
+                var response = req.CreateResponse(HttpStatusCode.OK);
+                await response.WriteAsJsonAsync(result);
 
-                return new OkObjectResult(result);
+                return response;
             }
         }
     }

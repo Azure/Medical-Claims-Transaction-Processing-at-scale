@@ -29,11 +29,11 @@ export default function Providers(){
 
 function ProvidersTable({ data, page, setPage }){
 	const headers = [
-		{ key: 'name', name: 'Name'},
-		{ key: 'email', name: 'Email'},
-		{ key: 'country', name: 'Country'},
-		{ key: 'city', name: 'City'},
-		{ key: 'state', name: 'State'}
+		{ key: 'Name', name: 'Name'},
+		{ key: 'Email', name: 'Email'},
+		{ key: 'PhoneNumber', name: 'PhoneNumber'},
+		{ key: 'City', name: 'City'},
+		{ key: 'State', name: 'State'}
 	];
 
 	return(
