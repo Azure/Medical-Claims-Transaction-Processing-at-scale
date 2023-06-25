@@ -15,7 +15,7 @@ export default function ClaimHistory({ claimId }){
 			<div className="card">
 				<div className="card-header grid grid-cols-2">
 					<h4 className="card-title">Claim Details</h4>
-					<div className='text-right'><label>Filing Date: </label>{ Moment(claimRequest.data.filingDate).format('MMMM DD, YYYY') }</div>
+					<div className='text-right'><label>Filing Date: </label>{ Moment(claimRequest.data.FilingDate).format('MMMM DD, YYYY') }</div>
 				</div>
 				<div className="card-body">
 					<div className="relative overflow-x-auto sm:rounded">
@@ -23,33 +23,33 @@ export default function ClaimHistory({ claimId }){
 							<div>
 								<div className='grid grid-cols-2 w-9/12'>
 									<div className='px-4 font-bold gap-2'>Claim Id:</div>
-									<div className='float-left'>{claimRequest.data.claimId}</div>
+									<div className='float-left'>{claimRequest.data.ClaimId}</div>
 									<div className='px-4 font-bold gap-2'>Claim Status:</div>
-									<div>{claimRequest.data.claimStatus}</div>
+									<div>{claimRequest.data.ClaimStatus}</div>
 									<div className='px-4 font-bold gap-2'>Payer Name:</div>
-									<div>{claimRequest.data.payerName ? data.header.payerName : '-'}</div>
+									<div>{claimRequest.data.PayerName ? data.header.PayerName : '-'}</div>
 									<div className='px-4 font-bold gap-2'>Total Amount:</div>
-									<div>{money.format(claimRequest.data.totalAmount)}</div>
+									<div>{money.format(claimRequest.data.TotalAmount)}</div>
 									<div className='px-4 font-bold gap-2'>Provider Name:</div>
-									<div>{claimRequest.data.providerName}</div>
+									<div>{claimRequest.data.ProviderName}</div>
 									<div className='px-4 font-bold gap-2'>Comment:</div>
-									<div>{claimRequest.data.comment}</div>
+									<div>{claimRequest.data.Comment}</div>
 								</div>
 							</div>
 							<div className='align-text-top text-right'>
-								<div>Modified By: {claimRequest.data.modifiedBy}</div>
-								<div>Modified On: {Moment(claimRequest.data.modifiedOn).format('MMMM DD, YYYY hh:mm a')}</div>
+								<div>Modified By: {claimRequest.data.ModifiedBy}</div>
+								<div>Modified On: {Moment(claimRequest.data.ModifiedOn).format('MMMM DD, YYYY hh:mm a')}</div>
 							</div>
 						</div>
 						<div>
 							<h4 className="card-title mt-10 mb-10">Line Items</h4>
-							<LineItemsTable data={claimRequest.data.lineItems ? claimRequest.data.lineItems : []}/>
+							<LineItemsTable data={claimRequest.data.LineItems ? claimRequest.data.LineItems : []}/>
 						</div>
 					</div>
 				</div>
 			</div>
 			{(!historyRequest.isLoading && historyRequest.data) ? (
-				historyRequest.data.history.map((item)=>{
+				historyRequest.data.History.map((item)=>{
 					return(<HistoryItem data={item}/>)
 				})
 			) : null}
@@ -66,27 +66,27 @@ function HistoryItem({data}){
 						<div>
 							<div className='grid grid-cols-2 w-9/12'>
 								<div className='px-4 font-bold gap-2'>Claim Id:</div>
-								<div className='float-left'>{data.claimId}</div>
+								<div className='float-left'>{data.ClaimId}</div>
 								<div className='px-4 font-bold gap-2'>Claim Status:</div>
-								<div>{data.claimStatus}</div>
+								<div>{data.ClaimStatus}</div>
 								<div className='px-4 font-bold gap-2'>Payer Name:</div>
-								<div>{data.payerName ? data.payerName : '-'}</div>
+								<div>{data.PayerName ? data.PayerName : '-'}</div>
 								<div className='px-4 font-bold gap-2'>Total Amount:</div>
-								<div>{money.format(data.totalAmount)}</div>
+								<div>{money.format(data.TotalAmount)}</div>
 								<div className='px-4 font-bold gap-2'>Provider Name:</div>
-								<div>{data.providerName}</div>
+								<div>{data.ProviderName}</div>
 								<div className='px-4 font-bold gap-2'>Comment:</div>
-								<div>{data.comment}</div>
+								<div>{data.Comment}</div>
 							</div>							
 						</div>
 						<div className='align-text-top text-right'>
-							<div>Modified By: {data.modifiedBy}</div>
-							<div>Modified On: {Moment(data.modifiedOn).format('MMMM DD, YYYY hh:mm a')}</div>
+							<div>Modified By: {data.ModifiedBy}</div>
+							<div>Modified On: {Moment(data.ModifiedOn).format('MMMM DD, YYYY hh:mm a')}</div>
 						</div>
 					</div>
 					<div>
 						<h4 className="card-title mt-10 mb-10">Line Items</h4>
-						<LineItemsTable data={data.lineItems ? data.lineItems : []}/>
+						<LineItemsTable data={data.LineItems ? data.LineItems : []}/>
 					</div>
 				</div>
 			</div>
@@ -96,11 +96,11 @@ function HistoryItem({data}){
 
 function LineItemsTable({ data }){
 	const headers = [
-		{ key: 'procedureCode', name: 'Procedure Code'},
-		{ key: 'description', name: 'Description'},
-		{ key: 'serviceDate', name: 'Service Date'},
-		{ key: 'amount', name: 'Amount'},
-		{ key: 'discount', name: 'Discount'},
+		{ key: 'ProcedureCode', name: 'Procedure Code'},
+		{ key: 'Description', name: 'Description'},
+		{ key: 'ServiceDate', name: 'Service Date'},
+		{ key: 'Amount', name: 'Amount'},
+		{ key: 'Discount', name: 'Discount'},
 	];
 
 	return(<LineItemsDataTable {...{data, headers}}/>);
@@ -137,11 +137,11 @@ function LineItemsDataTable({headers, data}){
 
 function formatValues(headerKey, value){
 	switch(headerKey){
-		case "serviceDate":
+		case "ServiceDate":
 			return Moment(value).format('YYYY-MM-DD');
 			break;
-		case "amount":
-		case "discount":
+		case "Amount":
+		case "Discount":
 			return money.format(value);
 			break;
 		default:

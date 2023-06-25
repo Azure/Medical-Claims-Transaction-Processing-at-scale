@@ -27,7 +27,7 @@ namespace CoreClaims.FunctionApp.HttpTriggers
             FunctionContext context)
         {
             var logger = context.GetLogger<ListProviders>();
-            using (logger.BeginScope("HttpTrigger: ListPayers"))
+            using (logger.BeginScope("HttpTrigger: ListProviders"))
             {
                 var (offset, limit) = req.GetPagingQuery();
                 var result = await _repository.ListProviders(offset, limit);
