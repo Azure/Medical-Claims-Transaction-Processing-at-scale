@@ -26,7 +26,7 @@ export default function NavBar({children, menuItems}){
             </ul>
           </nav>
         </aside>
-        <main className='p-10'>{children}</main>
+        <main className='p-10 w-full'>{children}</main>
       </div>
     </div>
   );
