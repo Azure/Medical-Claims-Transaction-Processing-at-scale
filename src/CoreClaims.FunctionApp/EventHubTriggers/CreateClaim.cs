@@ -69,7 +69,7 @@ namespace CoreClaims.FunctionApp.EventHubTriggers
                     detail.CreatedBy = existingClaim.CreatedBy;
                     detail.CreatedOn = existingClaim.CreatedOn;
                     detail.ModifiedBy = "EventTrigger/CreateClaim/Update";
-                    detail.ModifiedOn = DateTime.UtcNow;
+                    detail.ModifiedOn = DateTime.UtcNow.ToString();
                     detail.PayerName = payer?.Name;
                     detail.ProviderName = provider?.Name;
                     detail.Comment = "Claim updated from Upstream";

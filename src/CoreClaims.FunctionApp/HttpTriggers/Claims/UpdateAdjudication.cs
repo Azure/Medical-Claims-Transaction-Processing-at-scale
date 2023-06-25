@@ -8,6 +8,8 @@ using System.Linq;
 using CoreClaims.Infrastructure.Domain.Enums;
 using CoreClaims.FunctionApp.HttpTriggers.Claims.Requests;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
+using System.Net;
 
 namespace CoreClaims.FunctionApp.HttpTriggers.Claims
 {
@@ -21,8 +23,8 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
         }
 
         [Function("UpdateClaimAdjudication")]
-        public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "put", "get", Route = "claim/{claimId}")] HttpRequest req,
+        public async Task<HttpResponseData> Run(
+            [HttpTrigger(AuthorizationLevel.Function, "put", "get", Route = "claim/{claimId}")] HttpRequestData req,
             string claimId,
             FunctionContext context)
         {
@@ -30,17 +32,27 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
             using (logger.BeginScope("HttpTrigger: UpdateClaimAdjudication"))
             {
                 var existing = await _repository.GetClaim(claimId);
-                if (existing == null) return new NotFoundResult();
+                if (existing == null) return req.CreateResponse(HttpStatusCode.NotFound);
 
-                if (req.Method == "GET") return new OkObjectResult(existing);
+                var existingResponse = req.CreateResponse(HttpStatusCode.OK);
+                await existingResponse.WriteAsJsonAsync(existing);
+                if (req.Method == "GET") return existingResponse;
 
                 if (existing.ClaimStatus is not (ClaimStatus.Acknowledged or ClaimStatus.ApprovalRequired or ClaimStatus.Proposed))
-                    return new BadRequestObjectResult("Only claims in the 'Acknowledged', 'ApprovalRequired' or 'Proposed' states may be Adjudicated");
-
+                {
+                    var badResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                    await badResponse.WriteStringAsync("Only claims in the 'Acknowledged', 'ApprovalRequired' or 'Proposed' states may be Adjudicated");
+                    return badResponse;
+                }
+                
                 var claimDetail = await req.GetRequest<UpdateClaimModel>();
 
                 if (claimDetail.ClaimStatus is not (ClaimStatus.Proposed or ClaimStatus.Denied))
-                    return new BadRequestObjectResult("Claim Status must be set to 'Proposed' or 'Rejected'");
+                {
+                    var badResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                    await badResponse.WriteStringAsync("Claim Status must be set to 'Proposed' or 'Rejected'");
+                    return badResponse;
+                }
 
                 existing.ClaimStatus = claimDetail.ClaimStatus;
                 if (claimDetail.LineItems != null) existing.LineItems = claimDetail.LineItems;
@@ -53,8 +65,9 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
                 existing.TotalAmount = existing.LineItems.Sum(m => m.Amount - m.Discount);
 
                 var claim = await _repository.UpdateClaim(existing);
-
-                return new OkObjectResult(claim);
+                var response = req.CreateResponse(HttpStatusCode.OK);
+                await response.WriteAsJsonAsync(claim);
+                return response;
             }
         }
 

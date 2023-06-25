@@ -11,6 +11,8 @@ using CoreClaims.SemanticKernel;
 using Microsoft.Azure.Functions.Worker;
 using CoreClaims.Infrastructure.Events;
 using CoreClaims.Infrastructure;
+using Microsoft.Azure.Functions.Worker.Http;
+using System.Net;
 
 namespace CoreClaims.FunctionApp.HttpTriggers.Claims
 {
@@ -29,10 +31,10 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
             _rulesEngine = rulesEngine;
             _eventHub = eventHub;
         }
-
+        
         [Function("GetClaimRecommendation")]
-        public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "claim/{claimId}/recommendation")] HttpRequest req,
+        public async Task<HttpResponseData> Run(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "claim/{claimId}/recommendation")] HttpRequestData req,
             string claimId,
             FunctionContext context)
         {
@@ -45,7 +47,7 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
                     if (claim == null)
                     {
                         log.LogError($"Claim {claimId} not found.");
-                        return new NotFoundResult();
+                        return req.CreateResponse(System.Net.HttpStatusCode.NotFound);
                     }
 
                     var recommendation = await _rulesEngine.ReviewClaim(claim);
@@ -54,11 +56,15 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
 
                     if (recommendation == "Approve")
                         await _eventHub.TriggerEventAsync($"Recommendation for Claim {claimId}: {recommendation}", Constants.EventHubTopics.Approved);
-                    return new OkObjectResult(recommendation);
+                    var response = req.CreateResponse(HttpStatusCode.OK);
+                    await response.WriteAsJsonAsync(recommendation);
+                    return response;
                 }
                 catch (Exception ex)
                 {
-                    return new BadRequestObjectResult(ex.Message);
+                    var response = req.CreateResponse(HttpStatusCode.BadRequest);
+                    await response.WriteStringAsync(ex.Message);
+                    return response;
                 }
             }
         }

@@ -4,49 +4,13 @@
 
 This repository provides a code sample in .NET on how you might use a combination of Azure Functions, Cosmos DB, and EventHub to implement an event-driven medical insurance claims process. With minimal changes this could be modified to work for other insurance processes.
 
-## Requirements to deploy
-> Setup shell was tested on WSL2 (Ubuntu 22.04.5 LTS)
+## Deployment
 
-* <a href="https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux?pivots=apt#option-1-install-with-one-command" target="_blank">Install Azure CLI</a>
+From the `deploy/powershell` folder, run the following:
 
-* <a href="https://learn.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=v4%2Clinux%2Ccsharp%2Cportal%2Cbash#install-the-azure-functions-core-tools" target="_blank">Install Azure Functions Core Tools</a>
-
-* <a href="https://learn.microsoft.com/en-us/dotnet/core/install/linux-ubuntu#install-the-sdk" target="_blank">Install .NET SDK 6.0</a>
-
-* <a href="https://git-scm.com/download/linux" target="_blank">Install Git</a>
-
-* Install `jq` JSON Processor command line tool
-```bash
-sudo apt install jq
+```pwsh
+.\Unified-Deploy.ps1 -resourceGroup <resource-group-name> -subscription <subscription-id>
 ```
-
-## Setup environment
-
-> The setup will provision and configure all the resources required.
-
-* Sign in with Azure CLI
-
-```bash
-az login
-```
-
-* Clone the repo
-```bash
-git clone https://github.com/AzureCosmosDB/medical-claims
-cd medical-claims/deploy/
-```
-
-* Run setup.sh with the appropriate parameters. Take note of the API's URIs for use when completed.
-> Provide a non-existent resource group name. Setup will provision.
-
-```bash
-#SAMPLE
-#./setup.sh 00000000-0000-0000-0000-000000000000 rg-coreclaims-demo WestUS3 myrandomsuffix
-
-./setup.sh <subscription id> <resource group> <location> <resources suffix>
-```
-
-> Setup has some pause stages. Hit enter to continue when prompted. 
 > 
 > It takes around 3min to provision and configure resoures.
 >
@@ -59,16 +23,7 @@ cd medical-claims/deploy/
 > - Azure Application Insights
 > - Synapse Workspace (public access enabled)
 > - Apache Spark Pool
-
-* Run setup-synapse.sh with the appropriate parameters.
-
-```bash
-#SAMPLE
-#./setup-synapse.sh 00000000-0000-0000-0000-000000000000 myrandomsuffix
-
-./setup-synapse.sh <subscription id> <resources suffix>
-```
-
+>
 > This setup will provision the Ingestion pipeline and supporting components in the Synapse workspace created in the previous step.
 >
 > Resources Created:
