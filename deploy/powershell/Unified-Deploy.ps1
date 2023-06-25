@@ -4,6 +4,9 @@ Param(
     [parameter(Mandatory=$true)][string]$resourceGroup,
     [parameter(Mandatory=$true)][string]$location,
     [parameter(Mandatory=$true)][string]$subscription,
+    [parameter(Mandatory=$false)][string]$openAiName,
+    [parameter(Mandatory=$false)][string]$openAiRg,
+    [parameter(Mandatory=$false)][string]$openAiDeployment,
     [parameter(Mandatory=$false)][string]$suffix,
     [parameter(Mandatory=$false)][string]$synapseWorkspace,
     [parameter(Mandatory=$false)][bool]$stepDeployBicep=$true,
@@ -31,11 +34,23 @@ if ($stepLoginAzure) {
 
 az account set --subscription $subscription
 
-if ($stepDeployBicep) {
-    & ./Deploy-Bicep.ps1 -resourceGroup $resourceGroup -location $location -suffix $suffix
+if ($stepDeployOpenAi) {
+    if (-not $openAiName) {
+        $openAiName="openai-$suffix"
+    }
+
+    if (-not $openAiRg) {
+        $openAiRg=$resourceGroup
+    }
+
+    & ./Deploy-OpenAi.ps1 -name $openAiName -resourceGroup $openAiRg -location $location -suffix $suffix -deployment $openAiDeployment
 }
 
-& ./Generate-Config.ps1 -resourceGroup $resourceGroup -suffix $suffix
+if ($stepDeployBicep) {
+    & ./Deploy-Bicep.ps1 -resourceGroup $resourceGroup -location $location -suffix $suffix -openAiName $openAiName -openAiRg $openAiRg -openAiDeployment $openAiDeployment
+}
+
+& ./Generate-Config.ps1 -resourceGroup $resourceGroup -suffix $suffix -openAiName $openAiName -openAiRg $openAiRg -openAiDeployment $openAiDeployment
 
 if ($stepPublishFunctionApp) {
     & ./Publish-FunctionApp.ps1 -resourceGroup $resourceGroup -functionAppPath "..,..,src,CoreClaims.FunctionApp"

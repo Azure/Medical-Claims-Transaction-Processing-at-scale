@@ -20,6 +20,15 @@ param location string = resourceGroup().location
 @allowed(['Y1', 'B1'])
 param appServicePlanSku string = 'Y1'
 
+@description('OpenAI Endpoint')
+param openAiName string
+
+@description('OpenAI Deployment')
+param openAiDeployment string
+
+@description('OpenAI Resource Group')
+param openAiResourceGroup string
+
 resource plan 'Microsoft.Web/serverfarms@2020-12-01' = {
   name: servicePlanName
   location: location
@@ -31,6 +40,11 @@ resource plan 'Microsoft.Web/serverfarms@2020-12-01' = {
 
 resource blob 'Microsoft.Storage/storageAccounts@2022-09-01' existing = {
   name: storageAccountName
+}
+
+resource openAi 'Microsoft.CognitiveServices/accounts@2023-05-01' existing = {
+  name: openAiName
+  scope: resourceGroup(openAiResourceGroup)
 }
 
 resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
@@ -82,7 +96,20 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         {
           name: 'CoreClaimsEventHub__fullyQualifiedNamespace'
           value: '${eventHubNamespaceName}.servicebus.windows.net'
-        }           
+        }
+        {
+          name: 'RulesEngine__OpenAIEndpoint'
+          value: openAi.properties.endpoint
+        }
+        {
+          name: 'RulesEngine__OpenAIKey'
+          value: openAi.listKeys().key1
+        }
+        {
+          name: 'RulesEngine__OpenAICompletionsDeployment'
+          value: openAiDeployment
+        }
+           
       ]
     }
     httpsOnly: true
