@@ -11,10 +11,10 @@ param appServicePlanSku string = 'Y1'
 
 var appName = 'coreclaims-${suffix}'
 var serviceNames = {
-  cosmosDb: 'db-${appName}'
-  functionApp: 'fa-${appName}'
+  cosmosDb: replace('db-${appName}', '-', '')
+  functionApp: replace('fa-${appName}', '-', '')
   servicePlan: 'asp-${appName}'
-  eventHub: 'eh-${appName}'
+  eventHub: replace('eh-${appName}', '-', '')
   storage: replace('adl-${appName}', '-', '')
   synapse: 'synapse-${appName}'
   identity: 'id-${appName}'

@@ -1,9 +1,9 @@
 {
   "IsEncrypted": false,
   "Values": {
-    "AzureWebJobsStorage__accountName": "adlcoreclaims${SUFFIX}",
-    "CoreClaimsCosmosDB__accountEndpoint": "https://db-coreclaims-${SUFFIX}.documents.azure.com:443/",
-    "CoreClaimsEventHub__fullyQualifiedNamespace": "eh-coreclaims-${SUFFIX}.servicebus.windows.net"
+    "AzureWebJobsStorage__accountName": "adlcoreclaims{{suffix}}",
+    "CoreClaimsCosmosDB__accountEndpoint": "https://db-coreclaims-{{suffix}}.documents.azure.com:443/",
+    "CoreClaimsEventHub__fullyQualifiedNamespace": "eh-coreclaims-{{suffix}}.servicebus.windows.net"
   },
   "Host": {
     "LocalHttpPort": 7061,
