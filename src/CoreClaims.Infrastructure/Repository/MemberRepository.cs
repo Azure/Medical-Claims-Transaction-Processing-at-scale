@@ -15,16 +15,18 @@ namespace CoreClaims.Infrastructure.Repository
             int offset = 0,
             int limit = Constants.DefaultPageSize,
             DateTime? startDate = null,
-            DateTime? endDate = null)
+            DateTime? endDate = null,
+            bool includeDenied = false)
         {
             string sql;
             QueryDefinition query;
+            var filterClause = includeDenied ? string.Empty : " AND m.claimStatus != 'Denied'";
 
             if (startDate != null && endDate != null)
             {
-                sql = @"
+                sql = @$"
                     SELECT * FROM m
-                    WHERE m.memberId = @memberId AND m.type = 'ClaimHeader' AND
+                    WHERE m.memberId = @memberId AND m.type = 'ClaimHeader'{filterClause} AND
                           m.filingDate >= @startDate AND m.filingDate <= @endDate
                     OFFSET @offset LIMIT @limit";
 
@@ -37,9 +39,9 @@ namespace CoreClaims.Infrastructure.Repository
             }
             else
             {
-                sql = @"
+                sql = @$"
                     SELECT * FROM m
-                    WHERE m.memberId = @memberId AND m.type = 'ClaimHeader'
+                    WHERE m.memberId = @memberId AND m.type = 'ClaimHeader'{filterClause}
                     OFFSET @offset LIMIT @limit";
 
                 query = new QueryDefinition(sql)

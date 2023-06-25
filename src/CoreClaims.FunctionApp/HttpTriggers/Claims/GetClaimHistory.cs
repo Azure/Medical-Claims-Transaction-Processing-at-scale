@@ -7,6 +7,8 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.Cosmos.Serialization.HybridRow;
+using System.Net;
 
 namespace CoreClaims.FunctionApp.HttpTriggers.Claims
 {
@@ -20,8 +22,8 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
         }
 
         [Function("GetClaimHistory")]
-        public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "claim/{claimId}/history")] HttpRequest req,
+        public async Task<HttpResponseData> Run(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "claim/{claimId}/history")] HttpRequestData req,
             string claimId,
             FunctionContext context)
         {
@@ -35,7 +37,7 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
                     if (header == null)
                     {
                         logger.LogError($"Claim {claimId} not found.");
-                        return new NotFoundResult();
+                        return req.CreateResponse(System.Net.HttpStatusCode.NotFound);
                     }
 
                     var claimHistory = new ClaimHistoryResponse
@@ -45,11 +47,15 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
                     };
 
                     logger.LogInformation($"Successfully retrieved history of Claim: {claimId}");
-                    return new OkObjectResult(claimHistory);
+                    var response = req.CreateResponse(HttpStatusCode.OK);
+                    await response.WriteAsJsonAsync(claimHistory);
+                    return response;
                 }
                 catch (Exception ex)
                 {
-                    return new BadRequestObjectResult(ex.Message);
+                    var response = req.CreateResponse(HttpStatusCode.BadRequest);
+                    await response.WriteStringAsync(ex.Message);
+                    return response;
                 }
             }
         }

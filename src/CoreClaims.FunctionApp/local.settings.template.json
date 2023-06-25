@@ -4,5 +4,14 @@
     "AzureWebJobsStorage__accountName": "adlcoreclaims${SUFFIX}",
     "CoreClaimsCosmosDB__accountEndpoint": "https://db-coreclaims-${SUFFIX}.documents.azure.com:443/",
     "CoreClaimsEventHub__fullyQualifiedNamespace": "eh-coreclaims-${SUFFIX}.servicebus.windows.net"
+  },
+  "Host": {
+    "LocalHttpPort": 7061,
+    "CORS": "http://localhost:3000"
+  },
+  "RulesEngine": {
+    "OpenAIEndpoint": "https://<deployment>.openai.azure.com/",
+    "OpenAIKey": "...",
+    "OpenAICompletionsDeployment": "<model_deployment>"
   }
 }

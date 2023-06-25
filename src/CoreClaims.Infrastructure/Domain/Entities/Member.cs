@@ -20,8 +20,9 @@ namespace CoreClaims.Infrastructure.Domain.Entities
         public string MemberId { get; set; }
 
         [JsonProperty("memberType")]
-        [JsonConverter(typeof(StringEnumConverter))]
-        public MemberTypeEnum MemberType { get; set; }
+        //[JsonConverter(typeof(StringEnumConverter))]
+        public string MemberType { get; set; }
+        //public MemberTypeEnum MemberType { get; set; }
 
         [JsonProperty("title")]
         public string Title { get; set; }
