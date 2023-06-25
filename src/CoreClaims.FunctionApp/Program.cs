@@ -9,13 +9,20 @@ using Microsoft.Extensions.Configuration;
 using System.IO;
 using Microsoft.Extensions.Azure;
 using CoreClaims.Infrastructure.Events;
-
-
 var host = new HostBuilder()
-    .ConfigureFunctionsWorkerDefaults()
+    .ConfigureFunctionsWorkerDefaults(builder =>
+    {
+        builder.Services.AddLogging();
+    })
+    .ConfigureAppConfiguration(con =>
+    {
+        con.AddUserSecrets<Program>(optional: true, reloadOnChange: false);
+        con.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true);
+    })
     .ConfigureServices((hostContext, services) =>
     {
         services.Configure<BusinessRuleOptions>(hostContext.Configuration.GetSection(nameof(BusinessRuleOptions)));
+        services.Configure<RulesEngineSettings>(hostContext.Configuration.GetSection("RulesEngine"));
 
         services.AddSingleton(s =>
         {

@@ -32,7 +32,8 @@ export default function Members(){
 
 			{	showMemberDetail ? (<MemberDetail memberId={memberId}/>) : null }
 
-			<MemberCoverageModal memberId={coverageByMemberId} {...{showCoverageModal, setShowCoverageModal, setCoverageByMemberId}} />
+			{ showCoverageModal ? <MemberCoverageModal memberId={coverageByMemberId} {...{showCoverageModal, setShowCoverageModal, setCoverageByMemberId}} /> : null}
+			
 		</>
 	);
 }
@@ -40,12 +41,12 @@ export default function Members(){
 
 function MembersTable({ data, setShowMemberDetail, showCoverageModal, setShowCoverageModal, setMemberId, setCoverageByMemberId, page, setPage }){
 	const headers = [
-		{ key: 'firstName', name: 'name'},
-		{ key: 'state', name: 'State/Province'},
-		{ key: 'country', name: 'Country'},
-		{ key: 'memberType', name: 'Member Type'},
-		{ key: 'approvedCount', name: 'Approved Count'},
-		{ key: 'approvedTotal', name: 'Approved Total'}
+		{ key: 'FirstName', name: 'First Name'},
+		{ key: 'LastName', name: 'Last Name'},
+		{ key: 'State', name: 'State'},
+		{ key: 'MemberType', name: 'Member Type'},
+		{ key: 'ApprovedCount', name: 'Approved Count'},
+		{ key: 'ApprovedTotal', name: 'Approved Total'}
 	];
 
 	return(
@@ -86,13 +87,13 @@ const Datatable = ({ setShowMemberDetail, setShowCoverageModal, setMemberId, set
               </Table.Cell>
             ))}
             <Table.Cell className="!p-4">
-            	<Link href='#' onClick={()=> onClickMemberDetail(row.memberId, setShowMemberDetail, setMemberId)}>Details</Link>
+            	<Link href='#' onClick={()=> onClickMemberDetail(row.MemberId, setShowMemberDetail, setMemberId)}>Details</Link>
             </Table.Cell>
             <Table.Cell className="!p-4">
-            	<Link href='#' onClick={()=> onClickMemberCoverage(row.memberId, setShowCoverageModal, setCoverageByMemberId)}>View Coverage</Link>
+            	<Link href='#' onClick={()=> onClickMemberCoverage(row.MemberId, setShowCoverageModal, setCoverageByMemberId)}>View Coverage</Link>
             </Table.Cell>
            <Table.Cell className="!p-4">
-            	<Link href={`/member/claims/${row.memberId}`}>View Claims</Link>
+            	<Link href={`/member/claims/${row.MemberId}`}>View Claims</Link>
             </Table.Cell>
           </Table.Row>
         ))}
