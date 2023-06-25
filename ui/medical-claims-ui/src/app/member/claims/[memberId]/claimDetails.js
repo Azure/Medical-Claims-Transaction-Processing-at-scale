@@ -26,7 +26,7 @@ const RecommendActionForm = ({ claimId, setOpenModal }) => {
 	  claimId
 	});
   
-	const { trigger } = TransactionsStatement.getClaimRecommendation(claimId);
+	const { trigger } = TransactionsStatement.GetClaimRecommendation(claimId);
 	const [isLoading, setIsLoading] = useState(false);
 	const onClickCancel = () => {
 	  setForm({ claimId: ''});
@@ -65,7 +65,7 @@ const RecommendActionForm = ({ claimId, setOpenModal }) => {
 let money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 
 export default function ClaimDetails({ claimId, requestClaims }){
-	const { data, isLoading, mutate } = TransactionsStatement.getClaimDetails(claimId);
+	const { data, isLoading, mutate } = TransactionsStatement.GetClaimDetails(claimId);
 
 	const ref = useRef(null);
 	const [isRecModalOpen, setIsRecModalOpen] = useState(false);

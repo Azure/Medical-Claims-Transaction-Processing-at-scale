@@ -9,6 +9,7 @@ Param(
     [parameter(Mandatory=$false)][bool]$stepDeployBicep=$true,
     [parameter(Mandatory=$false)][bool]$stepPublishFunctionApp=$true,
     [parameter(Mandatory=$false)][bool]$stepSetupSynapse=$true,
+    [parameter(Mandatory=$false)][bool]$stepPublishSite=$true,
     [parameter(Mandatory=$false)][bool]$stepLoginAzure=$true
 )
 
@@ -42,6 +43,10 @@ if ($stepPublishFunctionApp) {
 
 if ($stepSetupSynapse) {
     & ./Setup-Synapse.ps1 -resourceGroup $resourceGroup -synapseWorkspace $synapseWorkspace -suffix $suffix
+}
+
+if ($stepPublishSite) {
+    & ./Publish-Site.ps1 -resourceGroup $resourceGroup -storageAccount "webcoreclaims$suffix"
 }
 
 Pop-Location

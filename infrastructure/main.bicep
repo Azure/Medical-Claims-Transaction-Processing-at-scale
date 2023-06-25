@@ -5,6 +5,9 @@ param suffix string = uniqueString(resourceGroup().id)
 @description('Location for resource deployment')
 param location string = resourceGroup().location
 
+@description('Synapse workspace')
+param synapseWorkspace string
+
 @description('Function App Service Plan SKU')
 @allowed(['Y1', 'B1'])
 param appServicePlanSku string = 'Y1'
@@ -18,6 +21,7 @@ var serviceNames = {
   storage: replace('adl-${appName}', '-', '')
   synapse: 'synapse-${appName}'
   identity: 'id-${appName}'
+  webStorage: replace('web-${appName}', '-', '')
 }
 
 module storage 'storage.bicep' = {
@@ -47,7 +51,8 @@ module eventHub 'eventhub.bicep' = {
   }
 }
 
-module synapse 'synapse.bicep' = {
+#disable-next-line BCP179
+module synapse 'synapse.bicep' = [for i in range(0, synapseWorkspace == null ? 1 : 0): {
   scope: resourceGroup()
   name: 'synapseDeploy'
   params: {
@@ -57,7 +62,7 @@ module synapse 'synapse.bicep' = {
     location: location
   }
   dependsOn: [storage, cosmosDb]
-}
+}]
 
 
 module functionApp 'functions.bicep' = {
@@ -74,3 +79,13 @@ module functionApp 'functions.bicep' = {
   }
   dependsOn: [storage, cosmosDb]
 }
+
+module staticwebsite 'staticwebsite.bicep' = {
+  name: 'staticwebsiteDeploy'
+  params: {
+    storageAccountName: serviceNames.webStorage
+    location: location
+  }
+}
+
+output staticWebsiteUrl string = staticwebsite.outputs.staticWebsiteUrl

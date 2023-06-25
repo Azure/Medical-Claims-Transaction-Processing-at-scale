@@ -12,7 +12,7 @@ const fetcher = (url) => axios.get(url, { headers: { 'x-functions-key': X_FUNCTI
 const put = async (url, { arg }) => await axios.put(url, arg, { headers: { 'x-functions-key': X_FUNCTION_KEY } });
 const post = async (url, { arg }) => await axios.post(url, arg, { headers: { 'x-functions-key': X_FUNCTION_KEY } });
 
-const getMembersList = (offset = 0, pageSize = 10) => {
+const GetMembersList = (offset = 0, pageSize = 10) => {
 	var temp =  useSWR(
 		`${API_URL}/members?offset=${offset}&limit=${pageSize}`,
 		fetcher
@@ -20,76 +20,76 @@ const getMembersList = (offset = 0, pageSize = 10) => {
 	return temp;
 };
 
-const getMember = (memberId) => {
+const GetMember = (memberId) => {
 	return useSWR(
 		`${API_URL}/member/${memberId}`,
 		fetcher
 	);
 };
 
-const getCoverageByMember = (memberId) => {
+const GetCoverageByMember = (memberId) => {
 	return useSWR(
 		`${API_URL}/member/${memberId}/coverage`,
 		fetcher
 	);
 };
 
-const getClaimsByMemberId = (memberId, offset = 0, pageSize = 10) => {
+const GetClaimsByMemberId = (memberId, offset = 0, pageSize = 10) => {
 	return useSWR(
 		`${API_URL}/member/${memberId}/claims?offset=${offset}&limit=${pageSize}`,
 		fetcher
 	);
 };
 
-const getClaimDetails = (claimId) => {
+const GetClaimDetails = (claimId) => {
 	return useSWR(
 		`${API_URL}/claim/${claimId}`,
 		fetcher
 	);
 };
 
-const getProviders = (offset = 0, pageSize = 10) => {
+const GetProviders = (offset = 0, pageSize = 10) => {
 	return useSWR(
 		`${API_URL}/payers?offset=${offset}&limit=${pageSize}`,
 		fetcher
 	);
 };
 
-const getPayers = (offset = 0, pageSize = 10) => {
+const GetPayers = (offset = 0, pageSize = 10) => {
 	return useSWR(
 		`${API_URL}/providers?offset=${offset}&limit=${pageSize}`,
 		fetcher
 	);
 };
 
-const getClaimHistory = (claimId) => {
+const GetClaimHistory = (claimId) => {
 	return useSWR(
 		`${API_URL}/claim/${claimId}/history`,
 		fetcher
 	);
 };
 
-const getClaimRecommendation = (claimId) => 
+const GetClaimRecommendation = (claimId) => 
 	useSWRMutation(`${API_URL}/claim/${claimId}/recommendation`,fetcher);
 
 
-export const updateClaim = (claimId) =>
+export const UpdateClaim = (claimId) =>
 	useSWRMutation(`${API_URL}/claim/${claimId}`, put);
 
-export const acknowledgeClaim = (claimId) =>
+export const AcknowledgeClaim = (claimId) =>
 	useSWRMutation(`${API_URL}/claim/${claimId}/acknowledge`, post);
 
 const TransactionsStatement = {
-    getMembersList,
-    getMember,
-    getCoverageByMember,
-    getClaimsByMemberId,
-    getClaimDetails,
-    getProviders,
-    getPayers,
-    getClaimHistory,
-	getClaimRecommendation,
-    updateClaim
+    GetMembersList,
+    GetMember,
+    GetCoverageByMember,
+    GetClaimsByMemberId,
+    GetClaimDetails,
+    GetProviders,
+    GetPayers,
+    GetClaimHistory,
+	GetClaimRecommendation,
+    UpdateClaim
 }
 
 export default TransactionsStatement;
