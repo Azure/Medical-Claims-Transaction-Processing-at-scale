@@ -357,3 +357,6 @@ appsettings.json
 /src/CoreClaims.FunctionApp/Properties/ServiceDependencies/fa-coreclaims-ios38n2l - Zip Deploy1/storage1.arm.json
 /src/CoreClaims.FunctionApp/Properties/serviceDependencies.fa-coreclaims-ios38n2l - Zip Deploy.json
 /src/CoreClaims.FunctionApp/Properties/serviceDependencies.fa-coreclaims-ios38n2l - Zip Deploy1.json
+
+synapse/linkedService/CoreClaimsCosmosDb.json
+synapse/linkedService/CoreClaimsDataLake.json
