@@ -26,3 +26,6 @@ body {
     rgb(var(--background-start-rgb));
 }
 
+.h-14 {
+  z-index: 999;
+}

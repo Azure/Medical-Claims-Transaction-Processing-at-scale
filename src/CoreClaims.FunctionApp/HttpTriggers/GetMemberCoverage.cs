@@ -23,9 +23,10 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
         public async Task<HttpResponseData> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "member/{memberId}/coverage")] HttpRequestData req,
             string memberId,
-            ILogger log)
+            FunctionContext context)
         {
-            using (log.BeginScope("HttpTrigger: GetMemberCoverage"))
+            var logger = context.GetLogger<GetMemberCoverage>();
+            using (logger.BeginScope("HttpTrigger: GetMemberCoverage"))
             {
                 var result = await _repository.GetMemberCoverage(memberId);
                 var coverage = result.FirstOrDefault();
