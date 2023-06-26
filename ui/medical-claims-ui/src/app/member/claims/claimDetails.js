@@ -5,7 +5,6 @@ import Moment from 'moment'
 import TransactionsStatement from '../../hooks/TransactionsStatement'
 import { AcknowledgeButton, DenyClaimButton, ProposeClaimButton, ApproveClaimButton } from './ClaimActions'
 import { SparklesIcon } from '@heroicons/react/24/outline';
-
 import { Modal } from 'flowbite-react';
 
 const FormModal = ({ children, header, setOpenModal, openModal }) => {
