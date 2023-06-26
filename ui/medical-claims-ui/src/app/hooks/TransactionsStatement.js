@@ -86,8 +86,6 @@ const GetClaimHistory = (claimId) => {
 const GetClaimRecommendation = (claimId) => 
 	useSWRMutation(`${API_URL}/claim/${claimId}/recommendation`,fetcher);
 
-
-
 export const UpdateClaim = (claimId) =>
 	useSWRMutation(`${API_URL}/claim/${claimId}`, put);
 
