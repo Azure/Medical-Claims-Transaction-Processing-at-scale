@@ -7,7 +7,7 @@
   },
   "Host": {
     "LocalHttpPort": 7061,
-    "CORS": "http://localhost:3000"
+    "CORS": "*"
   },
   "RulesEngine": {
     "OpenAIEndpoint": "{{openAiEndpoint}}",

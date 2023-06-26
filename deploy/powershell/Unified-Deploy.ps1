@@ -10,6 +10,7 @@ Param(
     [parameter(Mandatory=$false)][string]$suffix,
     [parameter(Mandatory=$false)][string]$synapseWorkspace,
     [parameter(Mandatory=$false)][bool]$stepDeployBicep=$true,
+    [parameter(Mandatory=$false)][bool]$stepDeployOpenAi=$true
     [parameter(Mandatory=$false)][bool]$stepPublishFunctionApp=$true,
     [parameter(Mandatory=$false)][bool]$stepSetupSynapse=$true,
     [parameter(Mandatory=$false)][bool]$stepPublishSite=$true,
@@ -53,7 +54,7 @@ if ($stepDeployBicep) {
 & ./Generate-Config.ps1 -resourceGroup $resourceGroup -suffix $suffix -openAiName $openAiName -openAiRg $openAiRg -openAiDeployment $openAiDeployment
 
 if ($stepPublishFunctionApp) {
-    & ./Publish-FunctionApp.ps1 -resourceGroup $resourceGroup -functionAppPath "..,..,src,CoreClaims.FunctionApp"
+    & ./Publish-FunctionApp.ps1 -resourceGroup $resourceGroup projectName "CoreClaims.FunctionApp"
 }
 
 if ($stepSetupSynapse) {
