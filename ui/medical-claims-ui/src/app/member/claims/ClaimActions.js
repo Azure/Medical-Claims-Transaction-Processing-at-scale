@@ -9,7 +9,6 @@ export function AcknowledgeButton ({ claimId, requestClaims, mutate }){
 
 	const onSave = async ()=>{
 		var resp = await trigger({claimId: claimId});	
-		mutate();
 		requestClaims.mutate();
 		setShowModal(false);
 	}
@@ -40,7 +39,6 @@ export function DenyClaimButton ({claimId, requestClaims, mutate}){
 
 	const onSave = async ()=>{
 		var resp = await trigger({ claimStatus: 'Denied', comment: comment});
-		mutate();
 		requestClaims.mutate();
 		setShowModal(false);
 	}

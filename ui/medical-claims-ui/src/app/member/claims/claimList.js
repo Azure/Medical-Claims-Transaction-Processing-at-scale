@@ -6,6 +6,7 @@ import Link from 'next/link'
 import Moment from 'moment'
 import ClaimDetails from './claimDetails'
 import ClaimHistory from './claimHistory'
+import ClaimStatusMap from './ClaimStatusMap'
 
 export default function ClaimList({ memberId }){
 	const params = useParams();
@@ -147,6 +148,9 @@ function formatValues(headerKey, value){
 			break;
 		case "TotalAmount":
 			return money.format(value);
+			break;
+		case "ClaimStatus":
+			return ClaimStatusMap.CodeToDisplayName(value);
 			break;
 		default:
 			return value ? value : '-';
