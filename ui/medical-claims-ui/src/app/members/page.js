@@ -103,7 +103,7 @@ const Datatable = ({ setShowMemberDetail, setShowCoverageModal, setMemberId, set
             	<Link href='#' onClick={()=> onClickMemberCoverage(row.MemberId, setShowCoverageModal, setCoverageByMemberId)}>View Coverage</Link>
             </Table.Cell>
            <Table.Cell className="!p-4">
-            	<Link href={`/member/claims/${row.MemberId}`}>View Claims</Link>
+            	<Link href={`/member/claims?memberId=${row.MemberId}`}>View Claims</Link>
             </Table.Cell>
           </Table.Row>
         ))}

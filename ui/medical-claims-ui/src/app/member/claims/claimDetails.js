@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Table, Spinner, Pagination, Button, Textarea } from 'flowbite-react';
 import Link from 'next/link'
 import Moment from 'moment'
-import TransactionsStatement from '../../../hooks/TransactionsStatement'
+import TransactionsStatement from '../../hooks/TransactionsStatement'
 import { AcknowledgeButton, DenyClaimButton, ProposeClaimButton, ApproveClaimButton } from './ClaimActions'
 import { SparklesIcon } from '@heroicons/react/24/outline';
 // import FormModal from '~/components/modal/form';
