@@ -24,7 +24,7 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
 
         [Function("UpdateClaimAdjudication")]
         public async Task<HttpResponseData> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "put", "get", Route = "claim/{claimId}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", "get", Route = "claim/{claimId}")] HttpRequestData req,
             string claimId,
             FunctionContext context)
         {

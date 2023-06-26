@@ -21,7 +21,7 @@ namespace CoreClaims.FunctionApp.HttpTriggers
 
         [Function("ListClaimProcedures")]
         public async Task<HttpResponseData> Run(
-            [HttpTrigger(AuthorizationLevel.Function,
+            [HttpTrigger(AuthorizationLevel.Anonymous,
             "get",
             Route = "claim-procedures")] HttpRequestData req,
             FunctionContext context)
