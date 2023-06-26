@@ -21,7 +21,7 @@ namespace CoreClaims.FunctionApp.HttpTriggers
 
         [Function("ListMembers")]
         public async Task<HttpResponseData> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "members")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "members")] HttpRequestData req,
             FunctionContext context)
         {
             var logger = context.GetLogger<ListMembers>();

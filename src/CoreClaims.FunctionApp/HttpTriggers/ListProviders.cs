@@ -21,7 +21,7 @@ namespace CoreClaims.FunctionApp.HttpTriggers
 
         [Function("ListProviders")]
         public async Task<HttpResponseData> Run(
-            [HttpTrigger(AuthorizationLevel.Function,
+            [HttpTrigger(AuthorizationLevel.Anonymous,
             "get",
             Route = "providers")] HttpRequestData req,
             FunctionContext context)

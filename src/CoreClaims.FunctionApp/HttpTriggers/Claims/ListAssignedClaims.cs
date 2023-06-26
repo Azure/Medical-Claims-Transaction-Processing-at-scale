@@ -20,7 +20,7 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
 
         [Function("ListAssignedClaims")]
         public async Task<HttpResponseData> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "adjudicator/{adjudicatorId}/claims")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "adjudicator/{adjudicatorId}/claims")] HttpRequestData req,
             string adjudicatorId,
             FunctionContext context)
         {

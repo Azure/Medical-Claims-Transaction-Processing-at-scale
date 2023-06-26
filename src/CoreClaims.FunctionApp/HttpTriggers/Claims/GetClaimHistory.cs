@@ -23,7 +23,7 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
 
         [Function("GetClaimHistory")]
         public async Task<HttpResponseData> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "claim/{claimId}/history")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "claim/{claimId}/history")] HttpRequestData req,
             string claimId,
             FunctionContext context)
         {
