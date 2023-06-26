@@ -9,7 +9,7 @@ export default function NavBar({children, menuItems}){
       </header>
 
       <button className="float-left absolute w-20">
-        <i class="fas fa-align-justify dark:text-slate-300 group-hover:text-blue-400"></i>
+        <i className="fas fa-align-justify dark:text-slate-300 group-hover:text-blue-400"></i>
       </button>
 
       <div className='flex flex-col md:flex-row flex-1'>

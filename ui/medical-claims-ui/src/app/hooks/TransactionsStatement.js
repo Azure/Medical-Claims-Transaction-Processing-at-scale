@@ -27,6 +27,13 @@ const GetMember = (memberId) => {
 	);
 };
 
+const GetAdjudicator = (adjudicatorId) => {
+	return useSWR(
+		`${API_URL}/adjudicator/${adjudicatorId}`,
+		fetcher
+	);
+};
+
 const GetCoverageByMember = (memberId) => {
 	return useSWR(
 		`${API_URL}/member/${memberId}/coverage`,
@@ -37,6 +44,13 @@ const GetCoverageByMember = (memberId) => {
 const GetClaimsByMemberId = (memberId, offset = 0, pageSize = 10) => {
 	return useSWR(
 		`${API_URL}/member/${memberId}/claims?offset=${offset}&limit=${pageSize}`,
+		fetcher
+	);
+};
+
+const GetClaimsByAdjudicatorId = (adjudicatorId, offset = 0, pageSize = 10) => {
+	return useSWR(
+		`${API_URL}/adjudicator/${adjudicatorId}/claims?offset=${offset}&limit=${pageSize}`,
 		fetcher
 	);
 };
@@ -73,17 +87,22 @@ const GetClaimRecommendation = (claimId) =>
 	useSWRMutation(`${API_URL}/claim/${claimId}/recommendation`,fetcher);
 
 
+
 export const UpdateClaim = (claimId) =>
 	useSWRMutation(`${API_URL}/claim/${claimId}`, put);
 
 export const AcknowledgeClaim = (claimId) =>
 	useSWRMutation(`${API_URL}/claim/${claimId}/acknowledge`, post);
 
+
+
 const TransactionsStatement = {
     GetMembersList,
     GetMember,
+    GetAdjudicator,
     GetCoverageByMember,
     GetClaimsByMemberId,
+	GetClaimsByAdjudicatorId,
     GetClaimDetails,
     GetProviders,
     GetPayers,
