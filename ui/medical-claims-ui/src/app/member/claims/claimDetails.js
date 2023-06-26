@@ -161,7 +161,7 @@ function LineItemsTable({ data }){
 
 function LineItemsDataTable({headers, data}){
 	return(
-	    <Table className="w-full" hoverable>
+	    <Table  id='claimsList' className="w-full" hoverable>
 	      <Table.Head>
 	        {headers.map((header) => (
 	          <Table.HeadCell key={header.key} className="!p-4">
