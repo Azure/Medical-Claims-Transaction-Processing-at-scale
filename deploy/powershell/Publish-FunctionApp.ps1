@@ -1,34 +1,76 @@
 #!/usr/bin/pwsh
  
- Param(
+Param(
     [parameter(Mandatory=$true)][string]$resourceGroup,
-    [parameter(Mandatory=$true)][string]$functionAppPath
+    [parameter(Mandatory=$true)][string]$projectName
  )
 
+function log {
+    Param(
+        $text
+    )
+
+    Write-Host $text -ForegroundColor Yellow -BackgroundColor DarkGreen
+}
+
+function publish {
+    Param( 
+        $projectName
+    )
+
+    $projectPath="src/${projectName}/${projectName}.csproj"
+    $publishDestPath="publish/" + [guid]::NewGuid().ToString()
+
+    log "Publishing project '$($projectName)' in folder '$($publishDestPath)' ..."
+    dotnet publish $projectPath -c Release -o $publishDestPath
+
+    $zipArchiveFullPath="$($publishDestPath).Zip"
+    log "Creating zip archive '$($zipArchiveFullPath)'"
+    $compress = @{
+        Path = $publishDestPath + "/*"
+        CompressionLevel = "Fastest"
+        DestinationPath = $zipArchiveFullPath
+    }
+    Compress-Archive @compress
+
+    log "Cleaning up..."
+    Remove-Item -Path "$($publishDestPath)" -recurse
+
+    return $zipArchiveFullPath
+}
+
+function deploy {
+    Param(
+        $zipArchiveFullPath,
+        $resourceGroup,
+        $appName
+    )
+
+    log "Deploying '$($appName)' to Resource Group '$($resourceGroup)' from zip '$($zipArchiveFullPath)' ..."
+    az functionapp deployment source config-zip -g "$($resourceGroup)" -n "$($appName)" --src "$($zipArchiveFullPath)"
+}
+
+function createArtifact {
+    Param(
+        $appName
+    )
+
+    $zipPath = publish $appName
+    if ($zipPath -is [array]) {
+        $zipPath = $zipPath[$zipPath.Length - 1]
+    }
+
+    return $zipPath
+}
+
 Push-Location $($MyInvocation.InvocationName | Split-Path)
-Push-Location $(./Join-Path-Recursively.ps1 -pathParts $functionAppPath.Split(","))
+Push-Location $(./Join-Path-Recursively.ps1 -pathParts "..,..".Split(","))
 
-$functionAppName=$(az functionapp list -g $resourceGroup -o json | ConvertFrom-Json).name
+$functionAppNames=$(az functionapp list -g $resourceGroup -o json | ConvertFrom-Json).name
+$zipPath = createArtifact $projectName
 
-Write-Host "===========================================================" -ForegroundColor Yellow
-Write-Host " Building the function app $functionAppName" -ForegroundColor Yellow
-Write-Host "===========================================================" -ForegroundColor Yellow
-Remove-Item -Path ./bin/Release -Recurse -Force
-dotnet build /p:DeployOnBuild=true /p:DeployTarget=Package -c Release
-
-Write-Host "===========================================================" -ForegroundColor Yellow
-Write-Host " Archiving the function app $functionAppName" -ForegroundColor Yellow
-Write-Host "===========================================================" -ForegroundColor Yellow
-Compress-Archive -LiteralPath ./bin/Release/net7.0/publish -DestinationPath ./bin/Release/$functionAppName.zip
-
-Write-Host "===========================================================" -ForegroundColor Yellow
-Write-Host " Deploying to function app $functionAppName" -ForegroundColor Yellow
-Write-Host "===========================================================" -ForegroundColor Yellow
-$deployment=$(az functionapp deployment source config-zip -g $resourceGroup -n $functionAppName --src ./bin/Release/$functionAppName.zip -o json | ConvertFrom-Json)
-if ($deployment.provisioningState -eq "Succeeded") {
-    Write-Host "Function app deployment succeeded!" -ForegroundColor Green
-} else {
-    Write-Host "Function app deployment failed!" -ForegroundColor Red
+foreach ($functionAppName in $functionAppNames) {
+    deploy $zipPath $resourceGroup $functionAppName
 }
 
 Pop-Location

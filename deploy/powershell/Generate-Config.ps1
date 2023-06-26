@@ -28,7 +28,9 @@ $tokens=@{}
 
 ## Getting Datalake info
 $dataLakeEndpoint=$(az storage account list -g $resourceGroup -o json | ConvertFrom-Json)[0].primaryEndpoints.dfs
-$siteStorageEndpoint=$(az storage account list -g $resourceGroup -o json | ConvertFrom-Json)[1].primaryEndpoints.web
+
+## Getting Function App info
+$functionAppHostname=$(az functionapp list -g $resourceGroup -o json | ConvertFrom-Json).hostNames
 
 ## Getting CosmosDb info
 $docdb=$(az cosmosdb list -g $resourceGroup --query "[?kind=='GlobalDocumentDB'].{name: name, kind:kind, documentEndpoint:documentEndpoint}" -o json | ConvertFrom-Json)
@@ -78,7 +80,7 @@ $tokens.eventHubKey=$eventHubKey
 $tokens.openAiEndpoint=$openAi.properties.endpoint
 $tokens.openAiKey=$openAiKey
 $tokens.openAiDeployment=$openAiDeployment
-$tokens.apiUrl="${siteStorageEndpoint}api"
+$tokens.apiUrl="https://${functionAppHostName}/api"
 
 Write-Host ($tokens | ConvertTo-Json) -ForegroundColor Yellow
 Write-Host "===========================================================" -ForegroundColor Yellow
