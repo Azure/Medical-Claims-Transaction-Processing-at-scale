@@ -26,7 +26,7 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
 
         [Function("AcknowledgeClaim")]
         public async Task<HttpResponseData> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "claim/{claimId}/acknowledge")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "claim/{claimId}/acknowledge")] HttpRequestData req,
             string claimId, FunctionContext context)
         {
             var logger = context.GetLogger<AcknowledgeClaim>();

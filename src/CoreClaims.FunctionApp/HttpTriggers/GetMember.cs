@@ -19,7 +19,7 @@ namespace CoreClaims.FunctionApp.HttpTriggers
     {
         [Function("GetMember")]
         public async Task<HttpResponseData> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "member/{memberId}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "member/{memberId}")] HttpRequestData req,
             [CosmosDBInput(
                 databaseName: Constants.Connections.CosmosDbName, 
                 containerName: "Member", 
