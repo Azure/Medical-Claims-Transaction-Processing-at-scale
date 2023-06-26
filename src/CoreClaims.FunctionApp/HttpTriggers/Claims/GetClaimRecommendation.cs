@@ -34,7 +34,7 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
         
         [Function("GetClaimRecommendation")]
         public async Task<HttpResponseData> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "claim/{claimId}/recommendation")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "claim/{claimId}/recommendation")] HttpRequestData req,
             string claimId,
             FunctionContext context)
         {

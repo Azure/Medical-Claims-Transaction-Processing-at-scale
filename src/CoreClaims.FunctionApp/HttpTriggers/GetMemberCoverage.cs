@@ -21,7 +21,7 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
 
         [Function("GetMemberCoverage")]
         public async Task<HttpResponseData> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "member/{memberId}/coverage")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "member/{memberId}/coverage")] HttpRequestData req,
             string memberId,
             FunctionContext context)
         {
