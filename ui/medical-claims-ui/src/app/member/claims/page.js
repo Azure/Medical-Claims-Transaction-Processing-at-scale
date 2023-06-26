@@ -1,20 +1,28 @@
 "use client";
 
-import { useParams  } from 'next/navigation'
+import { useParams, useRouter  } from 'next/navigation'
 import React, { useState, useEffect } from 'react'
-import TransactionsStatement from '../../../hooks/TransactionsStatement'
+import TransactionsStatement from '../../hooks/TransactionsStatement'
 import { Table, Pagination, Spinner } from 'flowbite-react';
 import Link from 'next/link'
 import Moment from 'moment'
 import ClaimDetails from './claimDetails'
 import ClaimHistory from './claimHistory'
 
-export default function Page(){
-	const params = useParams();
+export default function Page({ params }){
+	//const params = useParams();
+	
+	const router = useRouter()
 	const [page, setPage] = useState(1);
+	const [memberId, setMemberId] = useState('');
 
-	const requestMember = TransactionsStatement.GetMember(params.memberId);
-	const requestClaims = TransactionsStatement.GetClaimsByMemberId(params.memberId, page, 5);
+	useEffect(() => {
+        const queryParams = new URLSearchParams(window.location.search)
+		setMemberId(queryParams.get('memberId'))
+    }, [])
+
+	const requestMember = TransactionsStatement.GetMember(memberId);
+	const requestClaims = TransactionsStatement.GetClaimsByMemberId(memberId, page, 5);
 
 	const [claimId, setClaimId] = useState(null);
 	const [ showClaimDetail, setShowClaimDetail ] = useState(false);
