@@ -1,5 +1,5 @@
 {
-  "name": "medical-claims-ui",
+  "name": "Azure Cosmos DB Medical Claims Demo App",
   "version": "0.1.0",
   "private": true,
   "scripts": {
