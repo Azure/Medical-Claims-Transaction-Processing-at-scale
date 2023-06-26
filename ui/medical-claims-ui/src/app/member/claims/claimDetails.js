@@ -1,13 +1,10 @@
-"use client";
-
 import React, { useState, useEffect, useRef } from 'react'
 import { Table, Spinner, Pagination, Button, Textarea } from 'flowbite-react';
 import Link from 'next/link'
 import Moment from 'moment'
-import TransactionsStatement from '../../../hooks/TransactionsStatement'
+import TransactionsStatement from '../../hooks/TransactionsStatement'
 import { AcknowledgeButton, DenyClaimButton, ProposeClaimButton, ApproveClaimButton } from './ClaimActions'
 import { SparklesIcon } from '@heroicons/react/24/outline';
-// import FormModal from '~/components/modal/form';
 
 import { Modal } from 'flowbite-react';
 
@@ -93,7 +90,7 @@ export default function ClaimDetails({ claimId, requestClaims }){
 							<div className='float-left'>{data.ClaimId}</div>
 							<div className='px-4 font-bold gap-2'>Claim Status:</div>
 							<div>
-								{data.ClaimStatus} 
+								{/* {data.ClaimStatus}  */}
 								<ClaimsActions claimStatus={data.ClaimStatus} claimId={data.ClaimId} {...{data, requestClaims, mutate}}/>
 							</div>
 							<div className='px-4 font-bold gap-2'>Payer Name:</div>

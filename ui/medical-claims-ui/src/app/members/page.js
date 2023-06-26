@@ -6,13 +6,17 @@ import TransactionsStatement from '../hooks/TransactionsStatement'
 import MemberDetail from './memberDetail'
 import MemberCoverageModal from './memberCoverageModal'
 
+import ClaimList from '../member/claims/claimList'
+
 export default function Members(){	
   const [ page, setPage ] = useState(1);
 	const { data, isLoading } = TransactionsStatement.GetMembersList(page, 10);
+	const [ showClaimsList, setShowClaimsList ] = useState(false);
 	const [ showMemberDetail, setShowMemberDetail ] = useState(false);
 	const [ showCoverageModal, setShowCoverageModal ] = useState(false);
 	const [ memberId, setMemberId ] = useState(null);
 	const [ coverageByMemberId, setCoverageByMemberId ] = useState(null);
+
 
 	const cardClass = (isLoading)=>{
 		let classList = 'card mb-10';
@@ -29,8 +33,7 @@ export default function Members(){
 				<div className="card-body">
 						{!isLoading ? (
 							<div className="relative overflow-x-auto sm:rounded">
-									<MembersTable data={data} {...{showCoverageModal, setShowCoverageModal, 
-										setShowMemberDetail, setMemberId, setCoverageByMemberId, page, setPage }} />
+									<MembersTable data={data} {...{setShowMemberDetail, setShowClaimsList, setMemberId, setCoverageByMemberId, setShowCoverageModal, page, setPage }} />
 							</div>  
 						) : 
 							<div className='text-center mt-20'>
@@ -40,16 +43,18 @@ export default function Members(){
 				</div>
 			</div>
 
+			{	showClaimsList ? (<ClaimList memberId={memberId}/>) : null }
+
 			{	showMemberDetail ? (<MemberDetail memberId={memberId}/>) : null }
 
-			{ showCoverageModal ? <MemberCoverageModal memberId={coverageByMemberId} {...{showCoverageModal, setShowCoverageModal, setCoverageByMemberId}} /> : null}
+			{ showCoverageModal ? <MemberCoverageModal memberId={coverageByMemberId} {...{setShowCoverageModal, setCoverageByMemberId}} /> : null}
 			
 		</>
 	);
 }
 
 
-function MembersTable({ data, setShowMemberDetail, showCoverageModal, setShowCoverageModal, setMemberId, setCoverageByMemberId, page, setPage }){
+function MembersTable({ data, setShowMemberDetail, setShowClaimsList, setMemberId, setCoverageByMemberId, setShowCoverageModal, page, setPage }){
 	const headers = [
 		{ key: 'FirstName', name: 'First Name'},
 		{ key: 'LastName', name: 'Last Name'},
@@ -61,7 +66,7 @@ function MembersTable({ data, setShowMemberDetail, showCoverageModal, setShowCov
 
 	return(
 		<>
-			<Datatable headers={headers} {...{data, setShowMemberDetail, showCoverageModal, setShowCoverageModal, setMemberId, setCoverageByMemberId }}/>
+			<Datatable headers={headers} {...{data, setShowMemberDetail, setShowCoverageModal, setShowClaimsList, setMemberId, setCoverageByMemberId }}/>
       <Pagination
         className="p-6 self-center"
         currentPage={page}
@@ -75,7 +80,7 @@ function MembersTable({ data, setShowMemberDetail, showCoverageModal, setShowCov
 	);
 }
 
-const Datatable = ({ setShowMemberDetail, setShowCoverageModal, setMemberId, setCoverageByMemberId, headers = [], data = [] }) => {
+const Datatable = ({ setShowMemberDetail, setShowCoverageModal, setShowClaimsList, setMemberId, setCoverageByMemberId, headers = [], data = [] }) => {
   return (
     <Table className="w-full" hoverable>
       <Table.Head>
@@ -103,7 +108,7 @@ const Datatable = ({ setShowMemberDetail, setShowCoverageModal, setMemberId, set
             	<Link href='#' onClick={()=> onClickMemberCoverage(row.MemberId, setShowCoverageModal, setCoverageByMemberId)}>View Coverage</Link>
             </Table.Cell>
            <Table.Cell className="!p-4">
-            	<Link href={`/member/claims/${row.MemberId}`}>View Claims</Link>
+				<Link href='#' onClick={()=> onClickViewClaims(row.MemberId, setShowClaimsList, setMemberId)}>View Claims</Link>
             </Table.Cell>
           </Table.Row>
         ))}
@@ -119,6 +124,11 @@ const onClickMemberDetail = (memberId, setShowMemberDetail, setMemberId)=>{
 
 const onClickMemberCoverage = (memberId, setShowCoverageModal, setMemberId)=>{
 	setShowCoverageModal(true);
+	setMemberId(memberId);
+}
+
+const onClickViewClaims = (memberId, setShowClaimsList, setMemberId)=>{
+	setShowClaimsList(true);
 	setMemberId(memberId);
 }
 
