@@ -16,7 +16,7 @@ export default function Members(){
 	const [ showCoverageModal, setShowCoverageModal ] = useState(false);
 	const [ memberId, setMemberId ] = useState(null);
 	const [ coverageByMemberId, setCoverageByMemberId ] = useState(null);
-
+	const [ showMembersTable, setshowMembersTable ] = useState(true);
 
 	const cardClass = (isLoading)=>{
 		let classList = 'card mb-10';
@@ -33,7 +33,7 @@ export default function Members(){
 				<div className="card-body">
 						{!isLoading ? (
 							<div className="relative overflow-x-auto sm:rounded">
-									<MembersTable data={data} {...{setShowMemberDetail, setShowClaimsList, setMemberId, setCoverageByMemberId, setShowCoverageModal, page, setPage }} />
+									<MembersTable data={data} {...{setShowMemberDetail, setShowClaimsList, setMemberId, setCoverageByMemberId, setShowCoverageModal, setshowMembersTable, page, setPage }} />
 							</div>  
 						) : 
 							<div className='text-center mt-20'>
@@ -47,14 +47,14 @@ export default function Members(){
 
 			{	showMemberDetail ? (<MemberDetail memberId={memberId}/>) : null }
 
-			{ showCoverageModal ? <MemberCoverageModal memberId={coverageByMemberId} {...{setShowCoverageModal, setCoverageByMemberId}} /> : null}
+			{ showCoverageModal ? <MemberCoverageModal memberId={memberId} {...{showCoverageModal, setShowCoverageModal}} /> : null}
 			
 		</>
 	);
 }
 
 
-function MembersTable({ data, setShowMemberDetail, setShowClaimsList, setMemberId, setCoverageByMemberId, setShowCoverageModal, page, setPage }){
+function MembersTable({ data, setShowMemberDetail, setShowClaimsList, setMemberId, setCoverageByMemberId, setShowCoverageModal, setshowMembersTable, page, setPage }){
 	const headers = [
 		{ key: 'FirstName', name: 'First Name'},
 		{ key: 'LastName', name: 'Last Name'},
@@ -66,7 +66,7 @@ function MembersTable({ data, setShowMemberDetail, setShowClaimsList, setMemberI
 
 	return(
 		<>
-			<Datatable headers={headers} {...{data, setShowMemberDetail, setShowCoverageModal, setShowClaimsList, setMemberId, setCoverageByMemberId }}/>
+			<Datatable headers={headers} {...{data, setShowMemberDetail, setShowCoverageModal, setShowClaimsList, setMemberId, setCoverageByMemberId, setshowMembersTable }}/>
       <Pagination
         className="p-6 self-center"
         currentPage={page}
@@ -80,7 +80,7 @@ function MembersTable({ data, setShowMemberDetail, setShowClaimsList, setMemberI
 	);
 }
 
-const Datatable = ({ setShowMemberDetail, setShowCoverageModal, setShowClaimsList, setMemberId, setCoverageByMemberId, headers = [], data = [] }) => {
+const Datatable = ({ setShowMemberDetail, setShowCoverageModal, setShowClaimsList, setMemberId, setCoverageByMemberId, setshowMembersTable, headers = [], data = [] }) => {
   return (
     <Table className="w-full" hoverable>
       <Table.Head>
@@ -105,10 +105,10 @@ const Datatable = ({ setShowMemberDetail, setShowCoverageModal, setShowClaimsLis
             	<Link href='#' onClick={()=> onClickMemberDetail(row.MemberId, setShowMemberDetail, setMemberId)}>Details</Link>
             </Table.Cell>
             <Table.Cell className="!p-4">
-            	<Link href='#' onClick={()=> onClickMemberCoverage(row.MemberId, setShowCoverageModal, setCoverageByMemberId)}>View Coverage</Link>
+            	<Link href='#' onClick={()=> onClickMemberCoverage(row.MemberId, setShowCoverageModal, setMemberId)}>View Coverage</Link>
             </Table.Cell>
            <Table.Cell className="!p-4">
-				<Link href='#' onClick={()=> onClickViewClaims(row.MemberId, setShowClaimsList, setMemberId)}>View Claims</Link>
+				<Link href='#claimsList' onClick={()=> onClickViewClaims(row.MemberId, setShowClaimsList, setMemberId, setshowMembersTable)}>View Claims</Link>
             </Table.Cell>
           </Table.Row>
         ))}
@@ -127,8 +127,9 @@ const onClickMemberCoverage = (memberId, setShowCoverageModal, setMemberId)=>{
 	setMemberId(memberId);
 }
 
-const onClickViewClaims = (memberId, setShowClaimsList, setMemberId)=>{
+const onClickViewClaims = (memberId, setShowClaimsList, setMemberId, setshowMembersTable)=>{
 	setShowClaimsList(true);
+	setshowMembersTable(false);
 	setMemberId(memberId);
 }
 
