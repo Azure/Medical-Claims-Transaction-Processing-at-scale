@@ -2,7 +2,7 @@ Param(
     [parameter(Mandatory=$true)][string]$resourceGroup,
     [parameter(Mandatory=$false)][string]$openAiName,
     [parameter(Mandatory=$false)][string]$openAiRg,
-    [parameter(Mandatory=$false)][string]$openAiDeployment
+    [parameter(Mandatory=$false)][string]$openAiDeployment,
     [parameter(Mandatory=$true)][string]$suffix
 )
 
@@ -28,6 +28,7 @@ $tokens=@{}
 
 ## Getting Datalake info
 $dataLakeEndpoint=$(az storage account list -g $resourceGroup -o json | ConvertFrom-Json)[0].primaryEndpoints.dfs
+$siteStorageEndpoint=$(az storage account list -g $resourceGroup -o json | ConvertFrom-Json)[1].primaryEndpoints.web
 
 ## Getting CosmosDb info
 $docdb=$(az cosmosdb list -g $resourceGroup --query "[?kind=='GlobalDocumentDB'].{name: name, kind:kind, documentEndpoint:documentEndpoint}" -o json | ConvertFrom-Json)
@@ -57,7 +58,7 @@ if ($openAiName) {
 } else {
     $openAi=$(az cognitiveservices account list -g $openAiRg --query "[?kind=='OpenAI'].{name: name, kind:kind, endpoint: properties.endpoint}" -o json | ConvertFrom-Json)
 }
-Write-Host $openAi
+
 $openAiKey=$(az cognitiveservices account keys list -g $openAiRg -n $openAi.name -o json --query key1 | ConvertFrom-Json)
 
 if (-not $openAiDeployment) {
@@ -77,6 +78,7 @@ $tokens.eventHubKey=$eventHubKey
 $tokens.openAiEndpoint=$openAi.properties.endpoint
 $tokens.openAiKey=$openAiKey
 $tokens.openAiDeployment=$openAiDeployment
+$tokens.apiUrl="${siteStorageEndpoint}api"
 
 Write-Host ($tokens | ConvertTo-Json) -ForegroundColor Yellow
 Write-Host "===========================================================" -ForegroundColor Yellow
@@ -111,4 +113,12 @@ Push-Location $($MyInvocation.InvocationName | Split-Path)
 $coreClaimsCosmosDbTemplatePath=$(./Join-Path-Recursively -pathParts $coreClaimsCosmosDbTemplate.Split(","))
 $coreClaimsCosmosDbPath=$(./Join-Path-Recursively -pathParts $coreClaimsCosmosDb.Split(","))
 & ./Token-Replace.ps1 -inputFile $coreClaimsCosmosDbTemplatePath -outputFile $coreClaimsCosmosDbPath -tokens $tokens
+Pop-Location
+
+$siteSettingsTemplate="..,..,ui,medical-claims-ui,env.template"
+$siteSettings="..,..,ui,medical-claims-ui,.env.local"
+Push-Location $($MyInvocation.InvocationName | Split-Path)
+$siteSettingsTemplatePath=$(./Join-Path-Recursively -pathParts $siteSettingsTemplate.Split(","))
+$siteSettingsPath=$(./Join-Path-Recursively -pathParts $siteSettings.Split(","))
+& ./Token-Replace.ps1 -inputFile $siteSettingsTemplatePath -outputFile $siteSettingsPath -tokens $tokens
 Pop-Location
