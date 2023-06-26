@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Table } from 'flowbite-react';
 import Link from 'next/link'
 import Moment from 'moment'
-import TransactionsStatement from '../../../hooks/TransactionsStatement'
+import TransactionsStatement from '../../hooks/TransactionsStatement'
 
 let money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 

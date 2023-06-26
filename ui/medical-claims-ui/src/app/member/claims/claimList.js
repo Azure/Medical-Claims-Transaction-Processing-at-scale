@@ -1,20 +1,18 @@
-"use client";
-
 import { useParams  } from 'next/navigation'
 import React, { useState, useEffect } from 'react'
-import TransactionsStatement from '../../../hooks/TransactionsStatement'
+import TransactionsStatement from '../../hooks/TransactionsStatement'
 import { Table, Pagination, Spinner } from 'flowbite-react';
 import Link from 'next/link'
 import Moment from 'moment'
 import ClaimDetails from './claimDetails'
 import ClaimHistory from './claimHistory'
 
-export default function Page(){
+export default function ClaimList({ memberId }){
 	const params = useParams();
 	const [page, setPage] = useState(1);
 
-	const requestMember = TransactionsStatement.GetMember(params.memberId);
-	const requestClaims = TransactionsStatement.GetClaimsByMemberId(params.memberId, page, 5);
+	const requestMember = TransactionsStatement.GetMember(memberId);
+	const requestClaims = TransactionsStatement.GetClaimsByMemberId(memberId, page, 5);
 
 	const [claimId, setClaimId] = useState(null);
 	const [ showClaimDetail, setShowClaimDetail ] = useState(false);
@@ -60,6 +58,7 @@ export default function Page(){
 			{showHistory ? (
 				<ClaimHistory {...{claimId}}/>
 			) : null}	
+
 		</>
 	);
 }
