@@ -32,6 +32,7 @@ namespace CoreClaims.FunctionApp.ChangeFeedTriggers
             [CosmosDBTrigger(
                 databaseName: Constants.Connections.CosmosDbName,
                 containerName: "Claim",
+                StartFromBeginning = true,
                 Connection = Constants.Connections.CosmosDb,
                 LeaseContainerName = "ClaimLeases",
                 LeaseContainerPrefix = "ClaimComplete")] IReadOnlyList<ClaimDetail> input,
