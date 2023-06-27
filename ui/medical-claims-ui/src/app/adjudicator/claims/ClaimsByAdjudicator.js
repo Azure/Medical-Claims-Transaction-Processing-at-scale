@@ -10,7 +10,7 @@ import ClaimDetails from './claimDetails'
 import ClaimHistory from './claimHistory'
 import ClaimStatusMap from './ClaimStatusMap'
 
-export default function ClaimsByAdjudicator({adjudicatorId}){
+export default function ClaimsByAdjudicator({adjudicatorId, isManager}){
 	const params = useParams();
 	const [page, setPage] = useState(1);
 
@@ -39,7 +39,7 @@ export default function ClaimsByAdjudicator({adjudicatorId}){
 
 			{ /*Claim Detail*/ }
 			{showClaimDetail ? (
-				<ClaimDetails {...{claimId, requestClaims}}/>
+				<ClaimDetails {...{claimId, requestClaims, isManager}}/>
 			) : null}		
 
 			{ /*Claim History*/ }

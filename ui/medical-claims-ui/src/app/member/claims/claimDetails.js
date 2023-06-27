@@ -196,9 +196,9 @@ function LineItemsDataTable({headers, data, setLineItems}){
 	                { formatValues(header.key, row[header.key])}
 	              </Table.Cell>
 	            ))}
-	            <Table.Cell className="!p-4">
-	            	<ApplyDicount {...{row, data, setLineItems}}/>
-	            </Table.Cell>
+{/*	            <Table.Cell className="!p-4">
+	            	<ApplyDiscount {...{row, data, setLineItems}}/>
+	            </Table.Cell>*/}
 	          </Table.Row>
 	        ))}
 	      </Table.Body>
@@ -206,7 +206,7 @@ function LineItemsDataTable({headers, data, setLineItems}){
 	);
 }
 
-const ApplyDicount = ({row, data, setLineItems}) => {
+const ApplyDiscount = ({row, data, setLineItems}) => {
 	const [ openModal, setOpenModal ] = useState(false);
 	const [ discountValue, setDiscountValue ] = useState(0);
 	const dicountRef = useRef(0);
