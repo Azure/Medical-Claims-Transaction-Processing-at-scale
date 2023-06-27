@@ -1,18 +1,19 @@
 {
-	"name": "CosmosClaimProcedure",
-	"properties": {
-		"linkedServiceName": {
-			"referenceName": "CoreClaimsCosmosDb",
-			"type": "LinkedServiceReference"
-		},
-		"folder": {
-			"name": "CosmoDB_Output"
-		},
-		"annotations": [],
-		"type": "CosmosDbSqlApiCollection",
-		"schema": {},
-		"typeProperties": {
-			"collectionName": "ClaimProcedure"
-		}
-	}
+    "name": "CosmosClaimProcedure",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "CoreClaimsCosmosDb",
+            "type": "LinkedServiceReference"
+        },
+        "folder": {
+            "name": "CosmoDB_Output"
+        },
+        "annotations": [],
+        "type": "CosmosDbSqlApiCollection",
+        "schema": {},
+        "typeProperties": {
+            "collectionName": "ClaimProcedure"
+        }
+    },
+    "type": "Microsoft.Synapse/workspaces/datasets"
 }

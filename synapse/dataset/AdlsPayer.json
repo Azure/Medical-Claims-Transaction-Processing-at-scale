@@ -1,53 +1,54 @@
 {
-	"name": "AdlsPayer",
-	"properties": {
-		"linkedServiceName": {
-			"referenceName": "CoreClaimsDataLake",
-			"type": "LinkedServiceReference"
-		},
-		"folder": {
-			"name": "DataLake_Input"
-		},
-		"annotations": [],
-		"type": "Json",
-		"typeProperties": {
-			"location": {
-				"type": "AzureBlobFSLocation",
-				"folderPath": "SyntheaOutput/payers.json",
-				"fileSystem": "claimsfs"
-			}
-		},
-		"schema": {
-			"type": "object",
-			"properties": {
-				"id": {
-					"type": "string"
-				},
-				"payerId": {
-					"type": "string"
-				},
-				"name": {
-					"type": "string"
-				},
-				"email": {
-					"type": "string"
-				},
-				"phoneNumber": {
-					"type": "string"
-				},
-				"address": {
-					"type": "string"
-				},
-				"city": {
-					"type": "string"
-				},
-				"state": {
-					"type": "string"
-				},
-				"country": {
-					"type": "string"
-				}
-			}
-		}
-	}
+    "name": "AdlsPayer",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "solliancepublicdata",
+            "type": "LinkedServiceReference"
+        },
+        "folder": {
+            "name": "DataLake_Input"
+        },
+        "annotations": [],
+        "type": "Json",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobStorageLocation",
+                "folderPath": "payers.json",
+                "container": "medical-claims"
+            }
+        },
+        "schema": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "payerId": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "phoneNumber": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "state": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "type": "Microsoft.Synapse/workspaces/datasets"
 }
