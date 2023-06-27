@@ -55,27 +55,6 @@ resource synapsefirewall 'Microsoft.Synapse/workspaces/firewallRules@2021-06-01'
   }
 }
 
-resource sparkPool 'Microsoft.Synapse/workspaces/bigDataPools@2021-06-01' = {
-  location: location
-  parent: synapse
-  name: 'ingestion'
-  properties: {
-    nodeSize: 'Small'
-    nodeSizeFamily: 'MemoryOptimized'
-    nodeCount: 4
-    sparkVersion: '3.3'
-    autoScale: {
-      enabled: true
-      minNodeCount: 3
-      maxNodeCount: 8
-    }
-    autoPause: {
-      delayInMinutes: 15
-      enabled: true
-    }
-  }
-}
-
 // Grant Permissions to Identity for CosmosDB
 resource cosmos 'Microsoft.DocumentDB/databaseAccounts@2022-08-15' existing = {
   name: cosmosAccountName
