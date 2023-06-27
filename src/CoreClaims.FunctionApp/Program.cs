@@ -7,8 +7,14 @@ using Microsoft.Extensions.Hosting;
 using CoreClaims.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using System.Text.Json.Serialization;
+using Azure.Core.Serialization;
 using Microsoft.Extensions.Azure;
 using CoreClaims.Infrastructure.Events;
+using Microsoft.Azure.Functions.Worker;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
+
 var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults(builder =>
     {
@@ -44,6 +50,14 @@ var host = new HostBuilder()
         services.AddSingleton<ICoreBusinessRule, CoreBusinessRule>();
 
         services.AddSingleton<IRulesEngine, RulesEngine>();
+
+        services.Configure<WorkerOptions>(workerOptions =>
+        {
+            var settings = NewtonsoftJsonObjectSerializer.CreateJsonSerializerSettings();
+            settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            settings.Converters.Add(new StringEnumConverter());
+            workerOptions.Serializer = new NewtonsoftJsonObjectSerializer(settings);
+        });
     })
     .Build();
 
