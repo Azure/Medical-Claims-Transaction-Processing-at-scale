@@ -50,7 +50,7 @@ export default function ClaimHistory({ claimId }){
 			</div>
 			{(!historyRequest.isLoading && historyRequest.data) ? (
 				historyRequest.data.History.map((item)=>{
-					return(<HistoryItem data={item}/>)
+					return(<HistoryItem key={item.id} data={item}/>)
 				})
 			) : null}
 		</>

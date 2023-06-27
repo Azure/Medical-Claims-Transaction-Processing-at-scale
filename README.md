@@ -4,11 +4,29 @@
 
 This repository provides a code sample in .NET on how you might use a combination of Azure Functions, Cosmos DB, and EventHub to implement an event-driven medical insurance claims process. With minimal changes this could be modified to work for other insurance processes.
 
+## Scenario
+
+The scenario centers around a medical claims management solution. Members having coverage and making claims, providers who deliver services to the member and payers who provide the insurance coverage that pays providers for services to the members. 
+
+Claims submitted are submitted in a stream and loaded into the backing database for review and approval.
+
+Business rules govern the automated or human approval of claims. 
+
+An AI powered co-pilot empowers agents with recommendations on how to process the claim.
+
+## Solution Architecture
+
+The solution architecture is represented by this diagram:
+
+<p align="center">
+    <img src="img/architecture.png" width="100%">
+</p>
+
 ## Deployment
 
 ### Standard Deployments
 
-From the `deploy/powershell` folder, run the following:
+From the `deploy/powershell` folder, run the following command. This should provision all of the necessary infrastructure, deploy builds to the function apps, deploy the frontend, and deploy necessary artifacts to the Synapse workspace.
 
 ```pwsh
 .\Unified-Deploy.ps1 -resourceGroup <resource-group-name> `
@@ -17,7 +35,7 @@ From the `deploy/powershell` folder, run the following:
 
 ### Deployments using an existing OpenAI service
 
-From the `deploy/powershell` folder, run the following:
+For deployments that need to use an existing OpenAI service, run the following from the `deploy/powershell`.  This will provision all of the necessary infrastruction except the Azure OpenAI service and will deploy the function apps, the frontend, and Synapse artifacts.
 
 ```pwsh
 .\Unified-Deploy.ps1 -resourceGroup <resource-group-name> `
@@ -25,16 +43,6 @@ From the `deploy/powershell` folder, run the following:
                      -openAiName <openAi-service-name> `
                      -openAiRg <openAi-resource-group-name> `
                      -openAiDeployment <openAi-completions-deployment-name>
-```
-
-### Deployments using an existing Synapse workspace
-
-From the `deploy/powershell` folder, run the following:
-
-```pwsh
-.\Unified-Deploy.ps1 -resourceGroup <resource-group-name> `
-                     -subscription <subscription-id> `
-                     -synapseWorkspace <synapse-workspace-name>
 ```
 
 ### Enabling/Disabling Deployment Steps
@@ -74,8 +82,8 @@ cd deploy/powershell
 > - Azure Event Hub standard
 > - Azure Functions Consumption Plan
 > - Azure Application Insights
+> - Azure OpenAI
 > - Synapse Workspace (public access enabled)
-> - Apache Spark Pool
 >
 > This setup will provision the Ingestion pipeline and supporting components in the Synapse workspace created in the previous step.
 >
@@ -84,7 +92,6 @@ cd deploy/powershell
 >   - Azure Blob Storage
 >   - Azure Cosmos DB
 > - Source/Sink datasets for the ingestion process
-> - Notebook for transforming Synthea output
 > - Pipeline for ingesting Synthea output into Cosmos Db Containers
 
 ## Generate Sample Data (Optional)
