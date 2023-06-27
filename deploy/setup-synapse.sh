@@ -39,14 +39,6 @@ do
         --file @"./dataset/$file"
 done
 
-echo 'Creating notebook...'
-az synapse notebook create \
-    --workspace-name $WORKSPACE \
-    --file @"../deploy/Synthea-CSV-to-Json.ipynb" \
-    --name Synthea-CSV-to-Json \
-    --folder-path 'Ingestion' \
-    --spark-pool-name ingestion
-
 echo 'Creating pipeline...'
 az synapse pipeline create \
     --workspace-name $WORKSPACE \
