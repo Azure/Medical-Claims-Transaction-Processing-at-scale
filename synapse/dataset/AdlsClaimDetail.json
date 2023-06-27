@@ -1,88 +1,89 @@
 {
-	"name": "AdlsClaimDetail",
-	"properties": {
-		"linkedServiceName": {
-			"referenceName": "CoreClaimsDataLake",
-			"type": "LinkedServiceReference"
-		},
-		"folder": {
-			"name": "DataLake_Input"
-		},
-		"annotations": [],
-		"type": "Json",
-		"typeProperties": {
-			"location": {
-				"type": "AzureBlobFSLocation",
-				"folderPath": "SyntheaOutput/claims.json",
-				"fileSystem": "claimsfs"
-			}
-		},
-		"schema": {
-			"type": "object",
-			"properties": {
-				"practitionerId": {
-					"type": "string"
-				},
-				"claimId": {
-					"type": "string"
-				},
-				"memberId": {
-					"type": "string"
-				},
-				"filingDate": {
-					"type": "string"
-				},
-				"adjustmentId": {
-					"type": "integer"
-				},
-				"claimStatus": {
-					"type": "string"
-				},
-				"headerId": {
-					"type": "string"
-				},
-				"detailId": {
-					"type": "string"
-				},
-				"lineItems": {
-					"type": "array",
-					"items": {
-						"type": "object",
-						"properties": {
-							"lineItemNo": {
-								"type": "integer"
-							},
-							"procedureCode": {
-								"type": "string"
-							},
-							"description": {
-								"type": "string"
-							},
-							"amount": {
-								"type": "number"
-							},
-							"discount": {
-								"type": "number"
-							},
-							"serviceDate": {
-								"type": "string"
-							},
-							"providerId": {
-								"type": "string"
-							}
-						}
-					}
-				},
-				"totalAmount": {
-					"type": "number"
-				},
-				"providerId": {
-					"type": "string"
-				},
-				"providerName": {
-					"type": "string"
-				}
-			}
-		}
-	}
+    "name": "AdlsClaimDetail",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "solliancepublicdata",
+            "type": "LinkedServiceReference"
+        },
+        "folder": {
+            "name": "DataLake_Input"
+        },
+        "annotations": [],
+        "type": "Json",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobStorageLocation",
+                "folderPath": "claims-small.json",
+                "container": "medical-claims"
+            }
+        },
+        "schema": {
+            "type": "object",
+            "properties": {
+                "practitionerId": {
+                    "type": "string"
+                },
+                "claimId": {
+                    "type": "string"
+                },
+                "memberId": {
+                    "type": "string"
+                },
+                "filingDate": {
+                    "type": "string"
+                },
+                "adjustmentId": {
+                    "type": "integer"
+                },
+                "claimStatus": {
+                    "type": "string"
+                },
+                "headerId": {
+                    "type": "string"
+                },
+                "detailId": {
+                    "type": "string"
+                },
+                "lineItems": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "lineItemNo": {
+                                "type": "integer"
+                            },
+                            "procedureCode": {
+                                "type": "string"
+                            },
+                            "description": {
+                                "type": "string"
+                            },
+                            "amount": {
+                                "type": "number"
+                            },
+                            "discount": {
+                                "type": "number"
+                            },
+                            "serviceDate": {
+                                "type": "string"
+                            },
+                            "providerId": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "totalAmount": {
+                    "type": "number"
+                },
+                "providerId": {
+                    "type": "string"
+                },
+                "providerName": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "type": "Microsoft.Synapse/workspaces/datasets"
 }
