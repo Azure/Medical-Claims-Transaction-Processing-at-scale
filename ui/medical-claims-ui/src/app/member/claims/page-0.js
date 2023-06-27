@@ -125,7 +125,7 @@ const Datatable = ({ claimId, setClaimId, setShowClaimDetail, setShowHistory, he
       <Table.Body className="divide-y">
         {data.map((row) => (
           <Table.Row key={row.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-            {Object.values(headers).map((header, index) => (
+     				{Object.values(headers).map((header, index) => (
               <Table.Cell key={`${row.id}-${index}`} className="!p-4">
                 { formatValues(header.key, row[header.key])}
               </Table.Cell>

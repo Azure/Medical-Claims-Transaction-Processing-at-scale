@@ -1,3 +1,5 @@
+"use client";
+
 import { useParams  } from 'next/navigation'
 import React, { useState, useEffect } from 'react'
 import TransactionsStatement from '../../hooks/TransactionsStatement'
@@ -8,45 +10,30 @@ import ClaimDetails from './claimDetails'
 import ClaimHistory from './claimHistory'
 import ClaimStatusMap from './ClaimStatusMap'
 
-export default function ClaimList({ memberId }){
+export default function ClaimsByAdjudicator({adjudicatorId}){
 	const params = useParams();
 	const [page, setPage] = useState(1);
 
-	const requestMember = TransactionsStatement.GetMember(memberId);
-	const requestClaims = TransactionsStatement.GetClaimsByMemberId(memberId, page, 5);
+	//const requestAdjudicator = TransactionsStatement.GetAdjudicator(params.adjudicatorId);
+	const requestClaims = TransactionsStatement.GetClaimsByAdjudicatorId(adjudicatorId, page, 5);
 
 	const [claimId, setClaimId] = useState(null);
 	const [ showClaimDetail, setShowClaimDetail ] = useState(false);
 	const [ showHistory, setShowHistory ] = useState(false);
 
-	const cardClass = (isLoading)=>{
-		let classList = 'card mb-10';
-		if(isLoading) classList += ' h-full';
-		return classList;
-	}
-
 	return(
 		<>
-			{(!requestMember.isLoading && requestMember.data) ? (
-				<h3 className='text-2xl mb-10'>
-					Member Claims for {requestMember.data.FirstName} {requestMember.data.LastName}
-				</h3>
-			) : null}
 			{ /*Claims List*/ }
-			<div className={cardClass(requestClaims.isLoading)}>
+			<div className="card mb-10">
 				<div className="card-header">
 					<h4 className="card-title">Claims</h4>
 				</div>
 				<div className="card-body">
+					<div className="relative overflow-x-auto sm:rounded">
 						{ (!requestClaims.isLoading && requestClaims.data) ? (
-							<div className="relative overflow-x-auto sm:rounded">
-									<ClaimsTable data={requestClaims.data} {...{claimId, setClaimId, setShowClaimDetail, setShowHistory, page, setPage }}/>
-							</div>
-						) : 
-							<div className='text-center mt-20'>
-								<Spinner aria-label="Loading..." />
-							</div>
-						}
+							<ClaimsTable data={requestClaims.data} {...{claimId, setClaimId, setShowClaimDetail, setShowHistory, page, setPage }}/>
+						) : <Spinner aria-label="Loading..." />}
+					</div>
 				</div>
 			</div>
 
@@ -59,7 +46,6 @@ export default function ClaimList({ memberId }){
 			{showHistory ? (
 				<ClaimHistory {...{claimId}}/>
 			) : null}	
-
 		</>
 	);
 }
@@ -156,3 +142,4 @@ function formatValues(headerKey, value){
 			return value ? value : '-';
 	}	
 }
+
