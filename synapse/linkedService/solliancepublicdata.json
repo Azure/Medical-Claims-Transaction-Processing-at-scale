@@ -1,16 +1,16 @@
 {
     "name": "solliancepublicdata",
+    "type": "Microsoft.Synapse/workspaces/linkedservices",
     "properties": {
         "annotations": [],
         "type": "AzureBlobStorage",
         "typeProperties": {
-            "containerUri": "https://solliancepublicdata.blob.core.windows.net/medical-claims",
-            "authenticationType": "Anonymous"
+            "sasUri": "https://solliancepublicdata.blob.core.windows.net/medical-claims",
+            "encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIlNZTkFQU0VANkNERUY2MDMtRDE2NS00QkU5LTk1OEYtREIxREE3OTA1RTU1XzgyYjE3YzAwLTY3YWEtNDg3Ni05M2FjLTJkMzMxZDdlNTcwNyINCn0="
         },
         "connectVia": {
             "referenceName": "AutoResolveIntegrationRuntime",
             "type": "IntegrationRuntimeReference"
         }
-    },
-    "type": "Microsoft.Synapse/workspaces/linkedservices"
+    }
 }

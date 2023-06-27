@@ -74,6 +74,14 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
           value: '500'
         }
         {
+          name: 'BusinessRuleOptions__DemoAdjudicatorId'
+          value: 'df166300-5a78-3502-a46a-832842197811'
+        }
+        {
+          name: 'BusinessRuleOptions__DemoManagerAdjudicatorId'
+          value: 'a735bf55-83e9-331a-899d-a82a60b9f60c'
+        }
+        {
           name: 'AzureWebJobsStorage__accountName'
           value: storageAccountName
         }
