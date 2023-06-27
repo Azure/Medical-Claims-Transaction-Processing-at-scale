@@ -56,12 +56,12 @@ export default function Members(){
 
 function MembersTable({ data, setShowMemberDetail, setShowClaimsList, setMemberId, setCoverageByMemberId, setShowCoverageModal, setshowMembersTable, page, setPage }){
 	const headers = [
-		{ key: 'FirstName', name: 'First Name'},
-		{ key: 'LastName', name: 'Last Name'},
-		{ key: 'State', name: 'State'},
-		{ key: 'MemberType', name: 'Member Type'},
-		{ key: 'ApprovedCount', name: 'Approved Count'},
-		{ key: 'ApprovedTotal', name: 'Approved Total'}
+		{ key: 'firstName', name: 'First Name'},
+		{ key: 'lastName', name: 'Last Name'},
+		{ key: 'state', name: 'State'},
+		{ key: 'memberType', name: 'Member Type'},
+		{ key: 'approvedCount', name: 'Approved Count'},
+		{ key: 'approvedTotal', name: 'Approved Total'}
 	];
 
 	return(
@@ -102,13 +102,13 @@ const Datatable = ({ setShowMemberDetail, setShowCoverageModal, setShowClaimsLis
               </Table.Cell>
             ))}
             <Table.Cell className="!p-4">
-            	<Link href='#' onClick={()=> onClickMemberDetail(row.MemberId, setShowMemberDetail, setMemberId)}>Details</Link>
+            	<Link href='#' onClick={()=> onClickMemberDetail(row.memberId, setShowMemberDetail, setMemberId)}>Details</Link>
             </Table.Cell>
             <Table.Cell className="!p-4">
-            	<Link href='#' onClick={()=> onClickMemberCoverage(row.MemberId, setShowCoverageModal, setMemberId)}>View Coverage</Link>
+            	<Link href='#' onClick={()=> onClickMemberCoverage(row.memberId, setShowCoverageModal, setMemberId)}>View Coverage</Link>
             </Table.Cell>
            <Table.Cell className="!p-4">
-				<Link href='#claimsList' onClick={()=> onClickViewClaims(row.MemberId, setShowClaimsList, setMemberId, setshowMembersTable)}>View Claims</Link>
+				<Link href='#claimsList' onClick={()=> onClickViewClaims(row.memberId, setShowClaimsList, setMemberId, setshowMembersTable)}>View Claims</Link>
             </Table.Cell>
           </Table.Row>
         ))}
@@ -141,7 +141,7 @@ function formatValues(headerKey, value, row){
 			return money.format(value);
 			break;
 		case "FirstName":
-			return `${row.FirstName} ${row.LastName}`;
+			return `${row.firstName} ${row.lastName}`;
 			break;
 		default:
 			return value ? value : '-';
