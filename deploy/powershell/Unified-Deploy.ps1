@@ -64,7 +64,7 @@ if ($stepPublishFunctionApp) {
 }
 
 if ($stepSetupSynapse) {
-    & ./Setup-Synapse.ps1 -resourceGroup $resourceGroup -synapseWorkspace $synapseWorkspace -suffix $suffix
+    & ./Setup-Synapse.ps1 -resourceGroup $resourceGroup
 }
 
 if ($stepPublishSite) {

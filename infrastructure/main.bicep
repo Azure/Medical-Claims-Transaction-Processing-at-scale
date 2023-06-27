@@ -5,9 +5,6 @@ param suffix string = uniqueString(resourceGroup().id)
 @description('Location for resource deployment')
 param location string = resourceGroup().location
 
-@description('Synapse workspace')
-param synapseWorkspace string
-
 @description('Function App Service Plan SKU')
 @allowed(['Y1', 'B1'])
 param appServicePlanSku string = 'Y1'
@@ -61,7 +58,7 @@ module eventHub 'eventhub.bicep' = {
 }
 
 #disable-next-line BCP179
-module synapse 'synapse.bicep' = [for i in range(0, synapseWorkspace == null ? 1 : 0): {
+module synapse 'synapse.bicep' = {
   scope: resourceGroup()
   name: 'synapseDeploy'
   params: {
@@ -71,7 +68,7 @@ module synapse 'synapse.bicep' = [for i in range(0, synapseWorkspace == null ? 1
     location: location
   }
   dependsOn: [storage, cosmosDb]
-}]
+}
 
 // TODO: Deploy via Bicep. Presently, attempting this results in the following error:
 //   {"code": "ApiSetDisabledForCreation", "message": "It's not allowed to create new accounts with type 'OpenAI'."}
