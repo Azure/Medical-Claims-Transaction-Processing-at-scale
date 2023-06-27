@@ -186,7 +186,7 @@ function LineItemsDataTable({headers, data, setLineItems}){
 	            {header.name}
 	          </Table.HeadCell>
 	        ))}
-	        <Table.HeadCell className="!p-4"/>
+	        {/*<Table.HeadCell className="!p-4"/>*/}
 	      </Table.Head>
 	      <Table.Body className="divide-y">
 	        {data.map((row) => (
