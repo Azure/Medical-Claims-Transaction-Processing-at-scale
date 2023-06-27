@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import TransactionsStatement, { UpdateClaim, AcknowledgeClaim } from '../../hooks/TransactionsStatement'
 import Modal from '../../components/modal'
 
-export function AcknowledgeButton ({ claimId, requestClaims, lineItems }){
+export function AcknowledgeButton ({ claimId, requestClaims, mutate }){
 	const [ showModal, setShowModal ] = useState(false);
 	const [ comment, setComment ] = useState('');
 	const { trigger } = AcknowledgeClaim(claimId);
@@ -27,7 +27,7 @@ export function AcknowledgeButton ({ claimId, requestClaims, lineItems }){
 	);
 }
 
-export function DenyClaimButton ({claimId, requestClaims, lineItems}){
+export function DenyClaimButton ({claimId, requestClaims, mutate}){
 	const [ showModal, setShowModal ] = useState(false);
 	const [ comment, setComment ] = useState('');
 	const { trigger } = UpdateClaim(claimId);
@@ -38,7 +38,7 @@ export function DenyClaimButton ({claimId, requestClaims, lineItems}){
 	}
 
 	const onSave = async ()=>{
-		var resp = await trigger({ claimStatus: 'Denied', comment: comment, lineItems: lineItems});
+		var resp = await trigger({ claimStatus: 'Denied', comment: comment});
 		requestClaims.mutate();
 		setShowModal(false);
 	}
@@ -62,7 +62,7 @@ export function DenyClaimButton ({claimId, requestClaims, lineItems}){
 	);
 }
 
-export function ProposeClaimButton ({claimId, requestClaims, lineItems}){
+export function ProposeClaimButton ({claimId, requestClaims}){
 	const [ showModal, setShowModal ] = useState(false);
 	const [ comment, setComment ] = useState('');
 	const { trigger } = UpdateClaim(claimId);
@@ -73,7 +73,7 @@ export function ProposeClaimButton ({claimId, requestClaims, lineItems}){
 	}
 
 	const onSave = async ()=>{
-		var resp = await trigger({ claimStatus: 'Proposed', comment: comment, lineItems: lineItems});
+		var resp = await trigger({ claimStatus: 'Proposed', comment: comment});
 		requestClaims.mutate(null);	
 		setShowModal(false);
 	}
@@ -98,7 +98,7 @@ export function ProposeClaimButton ({claimId, requestClaims, lineItems}){
 	);
 }
 
-export function ApproveClaimButton ({claimId, requestClaims, lineItems}){
+export function ApproveClaimButton ({claimId, requestClaims}){
 	const [ showModal, setShowModal ] = useState(false);
 	const [ comment, setComment ] = useState('');
 	const { trigger } = UpdateClaim(claimId);
@@ -109,7 +109,7 @@ export function ApproveClaimButton ({claimId, requestClaims, lineItems}){
 	}
 
 	const onSave = async ()=>{
-		var resp = await trigger({ claimStatus: 'Approved', comment: comment, lineItems: lineItems});
+		var resp = await trigger({ claimStatus: 'Approved', comment: comment});
 		requestClaims.mutate(null);	
 		setShowModal(false);
 	}

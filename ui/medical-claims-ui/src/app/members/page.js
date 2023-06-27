@@ -137,11 +137,11 @@ function formatValues(headerKey, value, row){
 	let money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 
 	switch(headerKey){
-		case "approvedTotal":
+		case "ApprovedTotal":
 			return money.format(value);
 			break;
-		case "firstName":
-			return `${row.firstName} ${row.lastName}`;
+		case "FirstName":
+			return `${row.FirstName} ${row.LastName}`;
 			break;
 		default:
 			return value ? value : '-';
