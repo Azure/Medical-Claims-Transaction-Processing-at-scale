@@ -16,23 +16,17 @@ if (-not $workspaceName) {
     $suffix=""
 }
 
-# az synapse linked-service create --workspace-name $workspaceName --name CoreClaimsDataLake$suffix --file '@"linkedService/CoreClaimsDataLake.json"'
-# az synapse linked-service create --workspace-name $workspaceName --name CoreClaimsCosmosDb$suffix --file '@"linkedService/CoreClaimsCosmosDb.json"'
+az synapse linked-service create --workspace-name $workspaceName --name CoreClaimsDataLake$suffix --file '@"linkedService/CoreClaimsDataLake.json"'
+az synapse linked-service create --workspace-name $workspaceName --name CoreClaimsCosmosDb$suffix --file '@"linkedService/CoreClaimsCosmosDb.json"'
 az synapse linked-service create --workspace-name $workspaceName --name solliancepublicdata$suffix --file '@"linkedService/solliancepublicdata.json"'
 
 $datasets = Get-ChildItem ./dataset
 foreach ($dataset in $datasets) {
     $name = $dataset.BaseName
-    # az synapse dataset create --workspace-name $workspaceName --name "${name}${suffix}" --file "@""./dataset/$dataset"
+    az synapse dataset create --workspace-name $workspaceName --name "${name}${suffix}" --file "@""./dataset/$dataset"
 }
 
-# Pop-Location
-
-# az synapse notebook create --workspace-name $workspaceName --file '@"../Synthea-CSV-to-Json.ipynb"' --name Synthea-CSV-to-Json$suffix --folder-path 'Ingestion' --spark-pool-name ingestion
-
-# Push-Location $(./Join-Path-Recursively.ps1 -pathParts $synapsePath.Split(","))
-
-# az synapse pipeline create --workspace-name $workspaceName --file '@"pipeline/Initial-Ingestion.json"' --name Initial-Ingestion$suffix
+az synapse pipeline create --workspace-name $workspaceName --file '@"pipeline/Initial-Ingestion.json"' --name Initial-Ingestion$suffix
 
 Pop-Location
 Pop-Location

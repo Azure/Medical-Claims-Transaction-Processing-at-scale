@@ -95,7 +95,6 @@ resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/container
   properties: {
     resource:{
       id: config.name
-      analyticalStorageTtl: analyticsTTL
       partitionKey: {
         paths: [ config.partitionKey ]
         kind: 'Hash'
