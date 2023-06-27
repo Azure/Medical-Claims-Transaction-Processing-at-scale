@@ -11,12 +11,18 @@ import ClaimStatusMap from './ClaimStatusMap'
 
 let money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 
-export default function ClaimDetails({ claimId, requestClaims }){
+export default function ClaimDetails({ claimId, requestClaims, isManager }){
 	const { data, isLoading, mutate } = TransactionsStatement.GetClaimDetails(claimId);
 
 	const [isRecModalOpen, setIsRecModalOpen] = useState('');
 	const onClickRecommend = () => setIsRecModalOpen(true);
 	const recModalHeader = <div className="text-xl p-4">Recommendation</div>;
+
+	const [ lineItems, setLineItems ] = useState([]);
+
+	useEffect(()=>{
+		setLineItems(data ? data.LineItems : []);
+	}, [data]);
 
 	return((!isLoading && data) ? (
 		<>
@@ -39,7 +45,7 @@ export default function ClaimDetails({ claimId, requestClaims }){
 							<div className='px-4 font-bold gap-2'>Claim Status:</div>
 							<div>
 								{ClaimStatusMap.CodeToDisplayName(data.ClaimStatus)} 
-								<ClaimsActions claimStatus={data.ClaimStatus} claimId={data.ClaimId} {...{data, requestClaims, mutate}}/>
+								<ClaimsActions claimStatus={data.ClaimStatus} claimId={data.ClaimId} {...{data, requestClaims, lineItems}}/>
 							</div>
 							<div className='px-4 font-bold gap-2'>Payer Name:</div>
 							<div>{data.PayerName ? data.PayerName : '-'}</div>
@@ -52,7 +58,7 @@ export default function ClaimDetails({ claimId, requestClaims }){
 						</div>
 						<div>
 							<h4 className="card-title mt-10 mb-10">Line Items</h4>
-							<LineItemsTable data={data.LineItems ? data.LineItems : []}/>
+							<LineItemsTable data={data.LineItems ? data.LineItems : []} isManager={isManager} setLineItems={setLineItems}/>
 						</div>
 					</div>
 				</div>
@@ -125,26 +131,26 @@ const RecommendActionForm = ({ claimId, setOpenModal, openModal }) => {
 	);
   };
 
-function ClaimsActions({claimStatus, claimId, requestClaims }){
+function ClaimsActions({claimStatus, claimId, requestClaims, lineItems }){
 	let status = ClaimStatusMap.CodeToDisplayName(claimStatus);
 
 	switch(status){
 		case "Assigned":
-			return (<AcknowledgeButton claimId={claimId} {...{requestClaims}} />);
+			return (<AcknowledgeButton claimId={claimId} {...{requestClaims, lineItems}} />);
 			break;
 		case "Acknowledged":
 			return (
 				<>
-					<DenyClaimButton claimId={claimId} {...{requestClaims}}/>
-					<ProposeClaimButton claimId={claimId} {...{requestClaims}}/>
+					<DenyClaimButton claimId={claimId} {...{requestClaims, lineItems}}/>
+					<ProposeClaimButton claimId={claimId} {...{requestClaims, lineItems}}/>
 				</>
 			);
 			break;
 		case "ApprovalRequired":
 			return (
 				<>
-					<DenyClaimButton claimId={claimId} {...{requestClaims}}/>
-					<ApproveClaimButton claimId={claimId} {...{requestClaims}}/>
+					<DenyClaimButton claimId={claimId} {...{requestClaims, lineItems}}/>
+					<ApproveClaimButton claimId={claimId} {...{requestClaims, lineItems}}/>
 				</>
 			);
 			break;
@@ -154,7 +160,7 @@ function ClaimsActions({claimStatus, claimId, requestClaims }){
 	}
 }
 
-function LineItemsTable({ data }){
+function LineItemsTable({ data, setLineItems, isManager }){
 	const headers = [
 		{ key: 'ProcedureCode', name: 'Procedure Code'},
 		{ key: 'Description', name: 'Description'},
@@ -165,12 +171,12 @@ function LineItemsTable({ data }){
 
 	return(
 		<>
-			<LineItemsDataTable {...{data, headers}}/>
+			<LineItemsDataTable {...{data, headers, setLineItems, isManager}}/>
 		</>
 	);
 }
 
-function LineItemsDataTable({headers, data}){
+function LineItemsDataTable({headers, data, setLineItems, isManager}){
 	return(
 	    <Table className="w-full" hoverable>
 	      <Table.Head>
@@ -179,7 +185,7 @@ function LineItemsDataTable({headers, data}){
 	            {header.name}
 	          </Table.HeadCell>
 	        ))}
-	        <Table.HeadCell className="!p-4"/>
+	        { isManager ? (<Table.HeadCell className="!p-4"/>) : null}
 	      </Table.Head>
 	      <Table.Body className="divide-y">
 	        {data.map((row) => (
@@ -189,13 +195,56 @@ function LineItemsDataTable({headers, data}){
 	                { formatValues(header.key, row[header.key])}
 	              </Table.Cell>
 	            ))}
-	            <Table.Cell className="!p-4">
-	            	<Link href='#' onClick={()=> setClaimId(row.ClaimId)}>Apply Discount</Link>
-	            </Table.Cell>
+	            {isManager ? (
+		            <Table.Cell className="!p-4">
+		            	<ApplyDiscount {...{row, data, setLineItems, isManager}}/>
+		            </Table.Cell>
+            	) : null}
 	          </Table.Row>
 	        ))}
 	      </Table.Body>
 	    </Table>
+	);
+}
+
+const ApplyDiscount = ({row, data, setLineItems}) => {
+	const [ openModal, setOpenModal ] = useState(false);
+	const [ discountValue, setDiscountValue ] = useState(0);
+	const dicountRef = useRef(0);
+
+	const onSave = ()=>{
+    var list = [...data];
+    var lineItem = list.filter(x => x.LineItemNo == row.LineItemNo)[0];
+    lineItem.Discount = parseFloat(dicountRef.current);
+    setLineItems(list);
+    setOpenModal(false);
+	}
+
+	const onChange = (e) => {
+		dicountRef.current = e.target.value;
+	}
+
+	return(
+		<>
+			<Link href='#' onClick={()=> setOpenModal(true)}>Apply Discount</Link>
+	    <Modal show={openModal} size="xl" popup onClose={() => setOpenModal(false)} 
+	    	className='justify-center items-center flex overflow-x-hidden overflow-y-auto 
+	    	fixed inset-0 z-50 outline-none focus:outline-none'
+    	>
+	      <Modal.Header className="items-center">Apply Dicount</Modal.Header>
+	      <Modal.Body className='mt-10'>
+					<input type="number" ref={dicountRef} onChange={(e)=>onChange(e)}
+						className='shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' />
+	      </Modal.Body>
+	      <Modal.Footer>
+  				<button
+						className="bg-green-500 text-white active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+						type="button" onClick={onSave}>
+						Apply
+					</button>
+	      </Modal.Footer>
+	    </Modal>
+		</>
 	);
 }
 
