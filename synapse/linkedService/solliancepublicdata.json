@@ -1,16 +1,16 @@
 {
     "name": "solliancepublicdata",
-    "type": "Microsoft.Synapse/workspaces/linkedservices",
     "properties": {
         "annotations": [],
         "type": "AzureBlobStorage",
         "typeProperties": {
-            "sasUri": "https://solliancepublicdata.blob.core.windows.net/medical-claims",
-            "encryptedCredential": ""
+            "containerUri": "https://solliancepublicdata.blob.core.windows.net/medical-claims",
+            "authenticationType": "Anonymous"
         },
         "connectVia": {
             "referenceName": "AutoResolveIntegrationRuntime",
             "type": "IntegrationRuntimeReference"
         }
-    }
+    },
+    "type": "Microsoft.Synapse/workspaces/linkedservices"
 }
