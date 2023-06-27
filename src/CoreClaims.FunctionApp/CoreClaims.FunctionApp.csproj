@@ -15,6 +15,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+	<PackageReference Include="Microsoft.Azure.Core.NewtonsoftJson" Version="1.0.0" />
 	<PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.14.1" />
 	<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.CosmosDB" Version="4.3.0" />
 	<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.EventHubs" Version="5.4.0" />
