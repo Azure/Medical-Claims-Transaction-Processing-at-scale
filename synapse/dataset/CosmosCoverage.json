@@ -1,18 +1,19 @@
 {
-	"name": "CosmosCoverage",
-	"properties": {
-		"linkedServiceName": {
-			"referenceName": "CoreClaimsCosmosDb",
-			"type": "LinkedServiceReference"
-		},
-		"folder": {
-			"name": "CosmoDB_Output"
-		},
-		"annotations": [],
-		"type": "CosmosDbSqlApiCollection",
-		"schema": {},
-		"typeProperties": {
-			"collectionName": "Member"
-		}
-	}
+    "name": "CosmosCoverage",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "CoreClaimsCosmosDb",
+            "type": "LinkedServiceReference"
+        },
+        "folder": {
+            "name": "CosmoDB_Output"
+        },
+        "annotations": [],
+        "type": "CosmosDbSqlApiCollection",
+        "schema": {},
+        "typeProperties": {
+            "collectionName": "Member"
+        }
+    },
+    "type": "Microsoft.Synapse/workspaces/datasets"
 }
