@@ -6,7 +6,6 @@ import Link from 'next/link'
 import Moment from 'moment'
 import ClaimDetails from './claimDetails'
 import ClaimHistory from './claimHistory'
-import ClaimStatusMap from './ClaimStatusMap'
 
 export default function ClaimList({ memberId }){
 	const params = useParams();
@@ -29,7 +28,7 @@ export default function ClaimList({ memberId }){
 		<>
 			{(!requestMember.isLoading && requestMember.data) ? (
 				<h3 className='text-2xl mb-10'>
-					Member Claims for {requestMember.data.FirstName} {requestMember.data.LastName}
+					Member Claims for {requestMember.data.firstName} {requestMember.data.lastName}
 				</h3>
 			) : null}
 			{ /*Claims List*/ }
@@ -66,12 +65,12 @@ export default function ClaimList({ memberId }){
 
 function ClaimsTable({ data, claimId, setClaimId, setShowClaimDetail, setShowHistory, page, setPage }){
 	const headers = [
-		{ key: 'FilingDate', name: 'Filing Date'},
-		{ key: 'ClaimStatus', name: 'Claim Status'},
-		{ key: 'PayerName', name: 'Payer'},
-		{ key: 'LastAdjudicatedDate', name: 'Last Adjucated Date'},
-		{ key: 'LastAmount', name: 'Last Amout'},
-		{ key: 'TotalAmount', name: 'Total Amount'}
+		{ key: 'filingDate', name: 'Filing Date'},
+		{ key: 'claimStatus', name: 'Claim Status'},
+		{ key: 'payerName', name: 'Payer'},
+		{ key: 'lastAdjudicatedDate', name: 'Last Adjucated Date'},
+		{ key: 'lastAmount', name: 'Last Amout'},
+		{ key: 'totalAmount', name: 'Total Amount'}
 	];
 
 	return(
@@ -123,10 +122,10 @@ const Datatable = ({ claimId, setClaimId, setShowClaimDetail, setShowHistory, he
               </Table.Cell>
             ))}
             <Table.Cell className="!p-4">
-            	<Link href='#' onClick={()=> viewDetails(row.ClaimId)}>Details</Link>
+            	<Link href='#' onClick={()=> viewDetails(row.claimId)}>Details</Link>
             </Table.Cell>
            <Table.Cell className="!p-4">
-            	<Link href='#' onClick={()=> viewHistory(row.ClaimId)}>View History</Link>
+            	<Link href='#' onClick={()=> viewHistory(row.claimId)}>View History</Link>
             </Table.Cell>
           </Table.Row>
         ))}
@@ -140,17 +139,14 @@ function formatValues(headerKey, value){
 	let money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 
 	switch(headerKey){
-		case "FilingDate":
+		case "filingDate":
 			return Moment(value).format('YYYY-MM-DD');
 			break;		
-		case "LastAdjudicatedDate":
+		case "lastAdjudicatedDate":
 			return value ? Moment(value).format('YYYY-MM-DD hh:mm a') : '-';
 			break;
-		case "TotalAmount":
+		case "totalAmount":
 			return money.format(value);
-			break;
-		case "ClaimStatus":
-			return ClaimStatusMap.CodeToDisplayName(value);
 			break;
 		default:
 			return value ? value : '-';
