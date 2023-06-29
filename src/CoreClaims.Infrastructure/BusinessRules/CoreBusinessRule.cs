@@ -10,6 +10,7 @@ namespace CoreClaims.Infrastructure.BusinessRules
         private readonly IAdjudicatorRepository _adjudicatorRepository;
         private readonly IMemberRepository _memberRepository;
         private readonly IOptions<BusinessRuleOptions> _options;
+        private readonly Random random;
 
         public CoreBusinessRule(
             IAdjudicatorRepository adjudicatorRepository,
@@ -19,6 +20,7 @@ namespace CoreClaims.Infrastructure.BusinessRules
             _adjudicatorRepository = adjudicatorRepository;
             _memberRepository = memberRepository;
             _options = options;
+            random = new Random();
         }
 
         public async Task<ClaimDetail> AssignClaim(ClaimDetail claim)
@@ -53,9 +55,31 @@ namespace CoreClaims.Infrastructure.BusinessRules
             if (string.IsNullOrEmpty(claim.AdjudicatorId))
             {
                 Adjudicator adjudicator;
-                if (_options.Value.DemoMode && !string.IsNullOrWhiteSpace(_options.Value.DemoAdjudicatorId))
+                if (_options.Value.DemoMode)
                 {
-                    adjudicator = await _adjudicatorRepository.GetAdjudicator(_options.Value.DemoAdjudicatorId) ?? await _adjudicatorRepository.GetRandomAdjudicator();
+                    var demoAdjudicatorId = _options.Value.DemoAdjudicatorId;
+                    var demoManagerAdjudicatorId = _options.Value.DemoManagerAdjudicatorId;
+
+                    if (!string.IsNullOrWhiteSpace(demoAdjudicatorId) && !string.IsNullOrWhiteSpace(demoManagerAdjudicatorId))
+                    {
+                        var randomIndex = random.Next(0, 2);
+
+                        var selectedAdjudicatorId = randomIndex == 0 ? demoAdjudicatorId : demoManagerAdjudicatorId;
+
+                        adjudicator = await _adjudicatorRepository.GetAdjudicator(selectedAdjudicatorId) ?? await _adjudicatorRepository.GetRandomAdjudicator();
+                    }
+                    else if (!string.IsNullOrWhiteSpace(demoAdjudicatorId))
+                    {
+                        adjudicator = await _adjudicatorRepository.GetAdjudicator(demoAdjudicatorId) ?? await _adjudicatorRepository.GetRandomAdjudicator();
+                    }
+                    else if (!string.IsNullOrWhiteSpace(demoManagerAdjudicatorId))
+                    {
+                        adjudicator = await _adjudicatorRepository.GetAdjudicator(demoManagerAdjudicatorId) ?? await _adjudicatorRepository.GetRandomAdjudicator();
+                    }
+                    else
+                    {
+                        adjudicator = await _adjudicatorRepository.GetRandomAdjudicator();
+                    }
                 }
                 else
                 {
