@@ -71,7 +71,7 @@ export default function ClaimDetails({ claimId, requestClaims, isManager }){
 
 const FormModal = ({ children, header, setOpenModal, openModal }) => {
   return (
-    <Modal show={openModal} size="xl" popup onClose={() => setOpenModal(false)} 
+    <Modal show={openModal} size="xxl" popup onClose={() => setOpenModal(false)} 
     	className='justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none'>
       <Modal.Header className="items-center">{header}</Modal.Header>
       <Modal.Body>{children}</Modal.Body>
