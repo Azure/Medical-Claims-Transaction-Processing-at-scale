@@ -13,12 +13,20 @@ export default function ClaimsByAdjudicator({adjudicatorId, isManager}){
 	const params = useParams();
 	const [page, setPage] = useState(1);
 
-	//const requestAdjudicator = TransactionsStatement.GetAdjudicator(params.adjudicatorId);
 	const requestClaims = TransactionsStatement.GetClaimsByAdjudicatorId(adjudicatorId, page, 5);
 
 	const [ claimId, setClaimId ] = useState(null);
 	const [ showClaimDetail, setShowClaimDetail ] = useState(false);
 	const [ showHistory, setShowHistory ] = useState(false);
+
+	const [changeDetail, setChangeDetail] = useState(false);
+
+	useEffect(()=>{
+		if(changeDetail) {
+			requestClaims.mutate();	
+			setChangeDetail(false);
+		}
+	}, [changeDetail]);
 
 	return(
 		<>
@@ -30,7 +38,7 @@ export default function ClaimsByAdjudicator({adjudicatorId, isManager}){
 				<div className="card-body">
 					<div className="relative overflow-x-auto sm:rounded">
 						{ (!requestClaims.isLoading && requestClaims.data) ? (
-							<ClaimsTable data={requestClaims.data} {...{claimId, setClaimId, setShowClaimDetail, setShowHistory, page, setPage }}/>
+							<ClaimsTable data={requestClaims.data ? requestClaims.data : []} {...{claimId, setClaimId, setShowClaimDetail, setShowHistory, page, setPage }}/>
 						) : <Spinner aria-label="Loading..." />}
 					</div>
 				</div>
@@ -38,7 +46,7 @@ export default function ClaimsByAdjudicator({adjudicatorId, isManager}){
 
 			{ /*Claim Detail*/ }
 			{showClaimDetail ? (
-				<ClaimDetails {...{claimId, requestClaims, isManager}}/>
+				<ClaimDetails {...{claimId, requestClaims, isManager, setChangeDetail}}/>
 			) : null}		
 
 			{ /*Claim History*/ }
@@ -130,6 +138,9 @@ function formatValues(headerKey, value){
 			break;		
 		case "lastAdjudicatedDate":
 			return value ? Moment(value).format('YYYY-MM-DD hh:mm a') : '-';
+			break;
+		case "lastAmount":
+			return money.format(value);
 			break;
 		case "totalAmount":
 			return money.format(value);
