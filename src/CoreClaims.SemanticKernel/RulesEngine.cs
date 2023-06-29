@@ -37,7 +37,7 @@ namespace CoreClaims.SemanticKernel
             - [Deny]
             - [Send to supervisor]
 
-            First summarize the claim by providing the ""TotalAmount"" and the sum of ""Amount"" values. 
+            First summarize the claim by providing the ""TotalAmount"" and the sum of ""Amount"" values.
             Then evaluate the claim according to the review rules and your summary. You must base your review result only on the rules provided and not use any other source for your decision. 
             You must also explain your reasoning for the review result you provide.
 
@@ -45,8 +45,8 @@ namespace CoreClaims.SemanticKernel
 
             Review Rules
             - [No Action]: if the value of ""ClaimStatus"" is either 3, 4 or 5 the claim has already been processed so the result is No Action.  
-            - [Deny]: compute the sum of the ""Amount"" values in the ""LineItems"" collection. If the sum does not equal the ""TotalAmount"" value then the result is Deny.
-            - [Approve]: if none of the Deny rules match, approve the claim if the ""TotalAmount"" value is less than 100.00.
+            - [Deny]: Let X = the ""TotalAmount"" value. Let Y = the sum of ""Amount"" values. If X is not equal to Y then the result is Deny.
+            - [Approve]: if none of the Deny rules match, approve the claim.
             - [Send to supervisor]: send the claim to the supervisor if you don't know what to do, the applicable rules are contradictory or the rules do not explain what to do in this case.
 
             For example:
@@ -55,18 +55,7 @@ namespace CoreClaims.SemanticKernel
 
             [INPUT]
             {
-              ""Id"": ""claim:274338ee-05e5-961f-bbc3-008e71bcb418:1"",
-              ""ClaimId"": ""274338ee-05e5-961f-bbc3-008e71bcb418"",
-              ""MemberId"": ""b5df3956-a8d3-0f6b-0d31-11275f285c12"",
-              ""AdjustmentId"": 1,
-              ""ClaimStatus"": 3,
-              ""AdjudicatorId"": null,
               ""TotalAmount"": 0.91,
-              ""PayerId"": null,
-              ""PayerName"": null,
-              ""ProviderId"": ""a14e698d-a9ba-3eae-9c8b-682ec726433d"",
-              ""ProviderName"": ""LYNN URGENT CARE LLC"",
-              ""FilingDate"": ""2023-01-17T21:02:18Z"",
               ""LineItems"": [
                 {
                   ""LineItemNo"": 1,
@@ -77,15 +66,8 @@ namespace CoreClaims.SemanticKernel
                   ""ServiceDate"": ""2023-01-17T21:02:18Z""
                 }
               ],
-              ""LastAdjudicatedDate"": null,
-              ""LastAmount"": null,
               ""Comment"": ""[Automatic] Approved: Less than threshold of 200"",
               ""PreviousAdjudicatorId"": null,
-              ""Type"": ""ClaimDetail"",
-              ""CreatedBy"": ""Synapse/Ingestion"",
-              ""CreatedOn"": ""2023-06-13T22:11:06-04:00"",
-              ""ModifiedBy"": ""ChangeFeed/Adjudication"",
-              ""ModifiedOn"": ""2023-06-14T05:03:09.4097975Z""
             }
             [END INPUT]
 
@@ -102,18 +84,9 @@ namespace CoreClaims.SemanticKernel
 
             [INPUT]
             {
-              ""Id"": ""claim:274338ee-05e5-961f-bbc3-008e71bcb418:1"",
-              ""ClaimId"": ""274338ee-05e5-961f-bbc3-008e71bcb418"",
-              ""MemberId"": ""b5df3956-a8d3-0f6b-0d31-11275f285c12"",
               ""AdjustmentId"": 1,
               ""ClaimStatus"": 1,
-              ""AdjudicatorId"": null,
               ""TotalAmount"": 231.91,
-              ""PayerId"": null,
-              ""PayerName"": null,
-              ""ProviderId"": ""a14e698d-a9ba-3eae-9c8b-682ec726433d"",
-              ""ProviderName"": ""LYNN URGENT CARE LLC"",
-              ""FilingDate"": ""2023-01-17T21:02:18Z"",
               ""LineItems"": [
                 {
                   ""LineItemNo"": 1,
@@ -124,15 +97,7 @@ namespace CoreClaims.SemanticKernel
                   ""ServiceDate"": ""2023-01-17T21:02:18Z""
                 }
               ],
-              ""LastAdjudicatedDate"": null,
-              ""LastAmount"": null,
               ""Comment"": """",
-              ""PreviousAdjudicatorId"": null,
-              ""Type"": ""ClaimDetail"",
-              ""CreatedBy"": ""Synapse/Ingestion"",
-              ""CreatedOn"": ""2023-06-13T22:11:06-04:00"",
-              ""ModifiedBy"": ""ChangeFeed/Adjudication"",
-              ""ModifiedOn"": ""2023-06-14T05:03:09.4097975Z""
             }
             [END INPUT]
 
@@ -142,7 +107,7 @@ namespace CoreClaims.SemanticKernel
             - Review Result: 
                 Deny
             - Reasoning: 
-                The sum of ""Amount"" values in the ""LineItems"" (0.91) does not equal the ""TotalAmount"" (231.91).
+                The ""TotalAmount"" (231.91) is greater than 200.00.
 
             +++
 
