@@ -22,6 +22,28 @@ The solution architecture is represented by this diagram:
     <img src="img/architecture.png" width="100%">
 </p>
 
+## Prerequisites
+
+### Prerequisites for running/debugging locally
+
+- Backend (Function App, Console Apps, etc.)
+  - Visual Studio Code or Visual Studio 2022
+  - .NET 7 SDK
+- Frontend (React web app)
+  - Visual Studio Code
+  - Ensure you have the latest version of NPM and node.js:
+    - Install NVM from https://github.com/coreybutler/nvm-windows
+    - Run nvm install latest
+    - Run nvm list (to see the versions of NPM/node.js available)
+    - Run nvm use latest (to use the latest available version)
+
+To start the React web app:
+
+1. Navigate to the `ui/medical-claims-ui` folder
+2. Run npm install to restore the packages
+3. Run npm run dev
+4. Open localhost:3000 in a web browser
+
 ## Deployment
 
 ### Standard Deployments
@@ -84,8 +106,6 @@ cd deploy/powershell
 1. Browse to the URL copied in the previous step to access the web app.
  
 > 
-> It takes around 3min to provision and configure resoures.
->
 > Resources created:
 > - Resource group
 > - Azure Blob Storage (ADLS Gen2)
@@ -105,52 +125,24 @@ cd deploy/powershell
 > - Source/Sink datasets for the ingestion process
 > - Pipeline for ingesting Synthea output into Cosmos Db Containers
 
-## Generate Sample Data (Optional)
-> Requirements: Java 11 or newer.
-> 
-> This step is **optional** if you want to create and load large historical dataset based on Synthea data generator.
->
-> The repo has pre-generated small dataset files ready to use under `/deploy/csv` (this sample data has around 100 patients).
-> If you want to continue with this step - note that building and generating sample data may take more than 15 minutes to complete.
-```bash
-sudo apt install openjdk-11-jdk
-```
-
-1. Clone and build Synthea
-```bash
-git clone https://github.com/synthetichealth/synthea
-cd synthea
-./gradlew build -x check
-```
-
-2. Run Synthea to generate patient information
-```bash
-./run_synthea -c <medical-claims-path>/deploy/synthea-settings.properties
-```
-This config file will generate 10000 patients, each with a random number of claims. These files will be output to the `./output/csv` directory. Creating 10000 records took me around 15 minutes.
-
-> For more information customizing this generated patient data see: https://github.com/synthetichealth/synthea
-
 ## Ingest Sample Data
 
 This will require logging into the azure portal, and accessing the Synapse workspace.
 
-1. Create a folder `SyntheaInput` in blob storage container `claimsfs` created by `setup.sh` script and upload generated csv files 
-    - Pre-generated data can be found in this repo under `/deploy/csv` (this sample data has around 100 patients)
-    - If you generated your own using the above instructions these will be in `{clone-path}/synthea/output/csv` folder
 1. Log into the Synapse workspace in Synapse Studio
 2. Locate the **Initial-Ingestion** pipeline in the **Integrate** section in the side menu
 3. Click the **Add trigger -> Trigger now** button to run the pipeline
 
-> The time this pipeline takes to run will heavily depend on the volume of data generated from Synthea. In addition, the Spark pool will often take 2-3 minutes to start up the first time it's used.
-
+> The pipeline execution should take about 5 minutes to complete.  You can monitor the progress of the pipeline by clicking on the **Monitor** section in the side menu and selecting the **Pipeline runs** tab.
 
 ## Running the sample
 
-You can call Function APIs from Azure Portal or your favorite tool.
+You can run the sample application through the static website that was deployed as part of the setup process.
+
+You can also work directly with the REST API by calling the Function App APIs from Azure Portal or your favorite tool.
 > Postman Exports are included in the `/postman` folder
 
-### 1. Run the Claim Publisher
+### Run the Claim Publisher
 
 > This console app will generate random claims and publish them to the EventHub topic the FunctionApp subscribes to which then will be injested into Cosmos `Claim` container where we will store all Claim and Claim line item events data. **Take note of one of the ClaimId uuids output from this tool which has value over $500**.
 >
@@ -175,13 +167,57 @@ You can call Function APIs from Azure Portal or your favorite tool.
 }
 ```
 
-
 ```bash
 cd ../src/CoreClaims.Publisher
 dotnet run
 ```
 
-### 2. Call GetSingleClaimById or GetClaimHistory functions to see Claim Status changes:
+## Interact with the React web app
+
+Browse to the URL copied in the previous step to access the web app.
+
+### Managing the claims flow
+
+- When a new claim is added:
+  - If the member this claim belongs to doesn't have a Coverage record that is active for the `filingDate`, the claim should be `Rejected`
+  - If the `totalAmount` value is less than 200.00 (configurable) it should be `Approved`
+  - If the `totalAmount` value is greater than 200.00, it should be `Assigned`
+  - Finally, if your initial ingestion run has a large volume of claims, it's possible the ChangeFeed triggers are still catching up, and the status may be `Initial`
+- When the claim is assigned to an adjudicator:
+  - Go to the Adjudicator page and select **Acknowledge Claim Assignment** and observe the flow of the claim through the system (change feed triggers, etc.). There should be claims assigned to both the Non-Manager and the Manager Adjudicators.
+- When the claim is acknowledged:
+  - The claim should be `Assigned` to the Adjudicator
+  - Selecting **Deny Claim** will finalize the claim as `Denied` and publish the final status of the claim to a `ClaimDenied` topic on the event hub
+  - Selecting **Propose Claim** without applying discounts on the Line Items, or changing them such that the difference between the total before and after is less than $500.00 (configurable) will trigger an automatic approval
+  - Selecting **Propose Claim** while applying discounts on the Line Items so the total before and after differs by more than $500.00 will trigger manager approval, updating the status to `ApprovalRequired` and assigning a new adjudicator manager to the claim. Since we are hard-coding the Non-Manager and Manager Adjudicators, you should be able to select the Manager tab and see the claim assigned to the Manager Adjudicator.
+
+  > **Note**: If you propose a claim as an adjudicator manager, the claim will always be approved, regardless of the total discount amount.
+
+- Reviewing the claim history:
+  - Select **View History** on a claim row to see the history of the claim
+  - All claims start in the `Initial` state, from here they can transition to
+    - `Denied` if the member is uninsured
+    - `Approved` if the total is less than 200
+    - `Assigned` if the total is more than 200
+  - From `Assigned` it transitions to `Acknowledged` when the adjudicator acknowledges the claim
+  - From `Acknowledge` to
+    - `Denied` if the adjudicator declines the claim
+    - `Proposed` if the adjudicator proposes some updates
+  - From `Proposed`
+    - `Approved` if the changes are under a configured threshold
+    - `ApprovalRequired` if the changes are over a threshold
+  - From `ApprovalRequired` to
+    - `Denied` or `Proposed`
+- Final claim state:
+  - Once a Claim reaches the `Denied` or `Approved` state, it will get published to another pair of EventHub topics for hypothetical downstream processing
+  - Note that when a Claim gets to a final `Approved` state, the associated Member document within the `Member` container will get updated with increments of the following two attributes:
+    - `approvedCount` - the number of claims that have been approved for this member
+    - `approvedTotal` - the total amount of all claims that have been approved for this member
+
+
+### Interact with the Function App REST endpoints
+
+### 1. Call GetSingleClaimById or GetClaimHistory functions to see Claim Status changes:
 
 ```bash
 #Setting variables
@@ -216,7 +252,7 @@ Check the status of the claim response. At this point it should be one of a few 
 
 *Repeat these steps till you find a claim that has the status `Assigned` which will be assigned to random AdjudicatorId*
 
-### 3. Call AcknowledgeClaim function
+### 2. Call AcknowledgeClaim function
 
 For simulation of manual claims Adjudication process we first need to call Claim Ackowledgement API to trigger downstream processing logic.
 This is simulating an Adjudicator acknowledging the claim has been assigned to them in preparation for adjudication.
@@ -230,6 +266,7 @@ curl "https://fa-coreclaims-$SUFFIX.azurewebsites.net/api/claim/$CLAIM_ID/acknow
 ```
 
 ### 3. Call AdjudicateClaim function
+
 This is simulating an Adjudicator making any adjustments to a claim (applying discounts), and proposing an update, or denying a claim.
 
 Once it is acknowledged in a previous step  - you can now execute this API to do a manual Adjudication based on following conditions for this API payload:
@@ -302,7 +339,6 @@ curl "https://fa-coreclaims-$SUFFIX.azurewebsites.net/api/member/$MEMBER_ID" \
     --request GET \
     --header "x-functions-key: $FUNCTION_KEY"
 ```
-
 
 
 2. List Claims for MemberId
