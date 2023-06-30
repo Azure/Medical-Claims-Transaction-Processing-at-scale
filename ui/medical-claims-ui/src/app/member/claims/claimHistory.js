@@ -49,7 +49,7 @@ export default function ClaimHistory({ claimId }){
 				</div>
 			</div>
 			{(!historyRequest.isLoading && historyRequest.data) ? (
-				historyRequest.data.History.map((item)=>{
+				historyRequest.data.history.map((item)=>{
 					return(<HistoryItem key={item.id} data={item}/>)
 				})
 			) : null}
