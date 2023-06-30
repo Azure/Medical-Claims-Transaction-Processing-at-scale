@@ -18,9 +18,15 @@ const post = async (url, { arg }) =>
     headers: { "x-functions-key": X_FUNCTION_KEY },
   });
 
-const GetMembersList = (offset = 1, pageSize = 10) => {
+// Function to calculate the offset
+const calculateOffset = (currentPage, pageSize) => {
+  return (currentPage - 1) * pageSize;
+};
+
+const GetMembersList = (currentPage = 1, pageSize = 10) => {
+  const offset = calculateOffset(currentPage, pageSize);
   var temp = useSWR(
-    `${API_URL}/members?offset=${offset - 1}&limit=${pageSize}`,
+    `${API_URL}/members?offset=${offset}&limit=${pageSize}`,
     fetcher
   );
   return temp;
@@ -38,19 +44,21 @@ const GetCoverageByMember = (memberId) => {
   return useSWR(`${API_URL}/member/${memberId}/coverage`, fetcher);
 };
 
-const GetClaimsByMemberId = (memberId, offset = 1, pageSize = 10) => {
+const GetClaimsByMemberId = (memberId, currentPage = 1, pageSize = 10) => {
+  const offset = calculateOffset(currentPage, pageSize);
   return useSWR(
     `${API_URL}/member/${memberId}/claims?offset=${
-      offset - 1
+      offset
     }&limit=${pageSize}`,
     fetcher
   );
 };
 
-const GetClaimsByAdjudicatorId = (adjudicatorId, offset = 1, pageSize = 10) => {
+const GetClaimsByAdjudicatorId = (adjudicatorId, currentPage = 1, pageSize = 10) => {
+  const offset = calculateOffset(currentPage, pageSize);
   return useSWR(
     `${API_URL}/adjudicator/${adjudicatorId}/claims?offset=${
-      offset - 1
+      offset
     }&limit=${pageSize}`,
     fetcher
   );
@@ -60,16 +68,18 @@ const GetClaimDetails = (claimId) => {
   return useSWR(`${API_URL}/claim/${claimId}`, fetcher);
 };
 
-const GetProviders = (offset = 1, pageSize = 10) => {
+const GetProviders = (currentPage = 1, pageSize = 10) => {
+  const offset = calculateOffset(currentPage, pageSize);
   return useSWR(
-    `${API_URL}/payers?offset=${offset - 1}&limit=${pageSize}`,
+    `${API_URL}/payers?offset=${offset}&limit=${pageSize}`,
     fetcher
   );
 };
 
-const GetPayers = (offset = 1, pageSize = 10) => {
+const GetPayers = (currentPage = 1, pageSize = 10) => {
+  const offset = calculateOffset(currentPage, pageSize);
   return useSWR(
-    `${API_URL}/providers?offset=${offset - 1}&limit=${pageSize}`,
+    `${API_URL}/providers?offset=${offset}&limit=${pageSize}`,
     fetcher
   );
 };
