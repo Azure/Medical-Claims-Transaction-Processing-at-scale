@@ -44,7 +44,7 @@ namespace CoreClaims.SemanticKernel
             Evaluate the following rules in order such that all Deny rules are evaluated before Approve rules.
 
             Review Rules
-            - [No Action]: if the value of ""ClaimStatus"" is either 3, 4 or 5 the claim has already been processed so the result is No Action.  
+            - [No Action]: if the value of ""ClaimStatus"" is either 3, 4, 5, or 6 the claim has already been processed so the result is No Action.  
             - [Deny]: Let X = the ""TotalAmount"" value. Let Y = the sum of ""Amount"" values. If X is not equal to Y then the result is Deny.
             - [Approve]: if none of the Deny rules match, approve the claim.
             - [Send to supervisor]: send the claim to the supervisor if you don't know what to do, the applicable rules are contradictory or the rules do not explain what to do in this case.
