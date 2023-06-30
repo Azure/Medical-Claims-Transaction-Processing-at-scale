@@ -1,15 +1,22 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import TransactionsStatement, { UpdateClaim, AcknowledgeClaim } from '../../hooks/TransactionsStatement'
 import Modal from '../../components/modal'
 
-export function AcknowledgeButton ({ claimId, requestClaims, lineItems }){
+const delayTimeAcknowledge = 4000;
+const delayTime = 2000;
+
+export function AcknowledgeButton ({ claimId, requestClaims, lineItems, mutate, setChangeDetail }){
 	const [ showModal, setShowModal ] = useState(false);
 	const [ comment, setComment ] = useState('');
 	const { trigger } = AcknowledgeClaim(claimId);
 
+
+
 	const onSave = async ()=>{
 		var resp = await trigger({claimId: claimId});	
-		requestClaims.mutate();
+		mutate();
+		await sleep(delayTimeAcknowledge);
+		setChangeDetail(true);
 		setShowModal(false);
 	}
 
@@ -27,13 +34,14 @@ export function AcknowledgeButton ({ claimId, requestClaims, lineItems }){
 	);
 }
 
-export function DenyClaimButton ({claimId, requestClaims, lineItems}){
+export function DenyClaimButton ({claimId, requestClaims, lineItems, setChangeDetail}){
 	const [ showModal, setShowModal ] = useState(false);
 	const [ comment, setComment ] = useState('');
 	const { trigger } = UpdateClaim(claimId);
 
 	const onClickButton = ()=>{
 		setShowModal(true)
+		setChangeDetail(true)
 		setComment('')
 	}
 
@@ -62,13 +70,14 @@ export function DenyClaimButton ({claimId, requestClaims, lineItems}){
 	);
 }
 
-export function ProposeClaimButton ({claimId, requestClaims, lineItems}){
+export function ProposeClaimButton ({claimId, requestClaims, lineItems, setChangeDetail}){
 	const [ showModal, setShowModal ] = useState(false);
 	const [ comment, setComment ] = useState('');
 	const { trigger } = UpdateClaim(claimId);
 
 	const onClickButton = ()=>{
 		setShowModal(true)
+		setChangeDetail(true)
 		setComment('')
 	}
 
@@ -98,13 +107,14 @@ export function ProposeClaimButton ({claimId, requestClaims, lineItems}){
 	);
 }
 
-export function ApproveClaimButton ({claimId, requestClaims, lineItems}){
+export function ApproveClaimButton ({claimId, requestClaims, lineItems, setChangeDetail}){
 	const [ showModal, setShowModal ] = useState(false);
 	const [ comment, setComment ] = useState('');
 	const { trigger } = UpdateClaim(claimId);
 
 	const onClickButton = ()=>{
 		setShowModal(true)
+		setChangeDetail(true)
 		setComment('')
 	}
 
@@ -132,4 +142,8 @@ export function ApproveClaimButton ({claimId, requestClaims, lineItems}){
 			</Modal>
 		</>
 	);
+}
+
+const sleep = (time) => {
+	return new Promise((resolve)=>setTimeout(resolve,time))
 }

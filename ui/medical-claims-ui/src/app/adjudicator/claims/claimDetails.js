@@ -10,7 +10,7 @@ import { AcknowledgeButton, DenyClaimButton, ProposeClaimButton, ApproveClaimBut
 
 let money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 
-export default function ClaimDetails({ claimId, requestClaims, isManager }){
+export default function ClaimDetails({ claimId, requestClaims, isManager, setChangeDetail }){
 	const { data, isLoading, mutate } = TransactionsStatement.GetClaimDetails(claimId);
 
 	const [isRecModalOpen, setIsRecModalOpen] = useState('');
@@ -44,7 +44,7 @@ export default function ClaimDetails({ claimId, requestClaims, isManager }){
 							<div className='px-4 font-bold gap-2'>Claim Status:</div>
 							<div>
 								{ data.claimStatus } 
-								<ClaimsActions claimStatus={data.claimStatus} claimId={data.claimId} {...{data, requestClaims, lineItems}}/>
+								<ClaimsActions claimStatus={data.claimStatus} claimId={data.claimId} {...{data, requestClaims, lineItems, mutate, setChangeDetail}}/>
 							</div>
 							<div className='px-4 font-bold gap-2'>Payer Name:</div>
 							<div>{data.PayerName ? data.payerName : '-'}</div>
@@ -57,7 +57,8 @@ export default function ClaimDetails({ claimId, requestClaims, isManager }){
 						</div>
 						<div>
 							<h4 className="card-title mt-10 mb-10">Line Items</h4>
-							<LineItemsTable data={data.lineItems ? data.lineItems : []} isManager={isManager} setLineItems={setLineItems}/>
+							<LineItemsTable data={data.lineItems ? data.lineItems : []} 
+							isManager={isManager} setLineItems={setLineItems} claimStatus={data.claimStatus}/>
 						</div>
 					</div>
 				</div>
@@ -130,24 +131,24 @@ const RecommendActionForm = ({ claimId, setOpenModal, openModal }) => {
 	);
   };
 
-function ClaimsActions({claimStatus, claimId, requestClaims, lineItems }){
+function ClaimsActions({claimStatus, claimId, requestClaims, lineItems, mutate, setChangeDetail }){
 	switch(claimStatus){
 		case "Assigned":
-			return (<AcknowledgeButton claimId={claimId} {...{requestClaims, lineItems}} />);
+			return (<AcknowledgeButton claimId={claimId} {...{requestClaims, lineItems, mutate, setChangeDetail}} />);
 			break;
 		case "Acknowledged":
 			return (
 				<>
-					<DenyClaimButton claimId={claimId} {...{requestClaims, lineItems}}/>
-					<ProposeClaimButton claimId={claimId} {...{requestClaims, lineItems}}/>
+					<DenyClaimButton claimId={claimId} {...{requestClaims, lineItems,setChangeDetail}}/>
+					<ProposeClaimButton claimId={claimId} {...{requestClaims, lineItems,setChangeDetail}}/>
 				</>
 			);
 			break;
 		case "ApprovalRequired":
 			return (
 				<>
-					<DenyClaimButton claimId={claimId} {...{requestClaims, lineItems}}/>
-					<ApproveClaimButton claimId={claimId} {...{requestClaims, lineItems}}/>
+					<DenyClaimButton claimId={claimId} {...{requestClaims, lineItems, setChangeDetail}}/>
+					<ApproveClaimButton claimId={claimId} {...{requestClaims, lineItems, setChangeDetail}}/>
 				</>
 			);
 			break;
@@ -157,7 +158,7 @@ function ClaimsActions({claimStatus, claimId, requestClaims, lineItems }){
 	}
 }
 
-function LineItemsTable({ data, setLineItems, isManager }){
+function LineItemsTable({ data, setLineItems, isManager, claimStatus }){
 	const headers = [
 		{ key: 'procedureCode', name: 'Procedure Code'},
 		{ key: 'description', name: 'Description'},
@@ -168,12 +169,12 @@ function LineItemsTable({ data, setLineItems, isManager }){
 
 	return(
 		<>
-			<LineItemsDataTable {...{data, headers, setLineItems, isManager}}/>
+			<LineItemsDataTable {...{data, headers, setLineItems, isManager, claimStatus}}/>
 		</>
 	);
 }
 
-function LineItemsDataTable({headers, data, setLineItems, isManager}){
+function LineItemsDataTable({headers, data, setLineItems, isManager, claimStatus}){
 	return(
 	    <Table className="w-full" hoverable>
 	      <Table.Head>
@@ -182,7 +183,7 @@ function LineItemsDataTable({headers, data, setLineItems, isManager}){
 	            {header.name}
 	          </Table.HeadCell>
 	        ))}
-	        { isManager ? (<Table.HeadCell className="!p-4"/>) : null}
+	        <Table.HeadCell className="!p-4"/>
 	      </Table.Head>
 	      <Table.Body className="divide-y">
 	        {data.map((row) => (
@@ -192,16 +193,25 @@ function LineItemsDataTable({headers, data, setLineItems, isManager}){
 	                { formatValues(header.key, row[header.key])}
 	              </Table.Cell>
 	            ))}
-	            {isManager ? (
+	       
 		            <Table.Cell className="!p-4">
-		            	<ApplyDiscount {...{row, data, setLineItems, isManager}}/>
+		            	 { ableApplyDiscount(claimStatus) ? 
+		            	 	<ApplyDiscount {...{row, data, setLineItems, isManager}}/>
+		            	 	: null }
 		            </Table.Cell>
-            	) : null}
+   
 	          </Table.Row>
 	        ))}
 	      </Table.Body>
 	    </Table>
 	);
+}
+
+const ableApplyDiscount = (claimStatus) => {
+	if (claimStatus.toLowerCase() == 'denied' || claimStatus.toLowerCase() == 'approved') 
+		return false;
+	else
+		return true;
 }
 
 const ApplyDiscount = ({row, data, setLineItems}) => {

@@ -145,6 +145,9 @@ function formatValues(headerKey, value){
 		case "lastAdjudicatedDate":
 			return value ? Moment(value).format('YYYY-MM-DD hh:mm a') : '-';
 			break;
+		case "lastAmount":
+			return money.format(value);
+			break;
 		case "totalAmount":
 			return money.format(value);
 			break;
