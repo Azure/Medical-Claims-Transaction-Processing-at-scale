@@ -24,6 +24,8 @@ export default function ClaimHistory({ claimId }){
 								<div className='grid grid-cols-2 w-9/12'>
 									<div className='px-4 font-bold gap-2'>Claim Id:</div>
 									<div className='float-left'>{claimRequest.data.claimId}</div>
+									<div className='px-4 font-bold gap-2'>Member Id:</div>
+									<div className='float-left'>{claimRequest.data.memberId}</div>
 									<div className='px-4 font-bold gap-2'>Claim Status:</div>
 									<div>{claimRequest.data.claimStatus}</div>
 									<div className='px-4 font-bold gap-2'>Payer Name:</div>
@@ -67,6 +69,8 @@ function HistoryItem({data}){
 							<div className='grid grid-cols-2 w-9/12'>
 								<div className='px-4 font-bold gap-2'>Claim Id:</div>
 								<div className='float-left'>{data.claimId}</div>
+								<div className='px-4 font-bold gap-2'>Member Id:</div>
+								<div className='float-left'>{data.memberId}</div>
 								<div className='px-4 font-bold gap-2'>Claim Status:</div>
 								<div>{data.claimStatus}</div>
 								<div className='px-4 font-bold gap-2'>Payer Name:</div>
@@ -96,6 +100,7 @@ function HistoryItem({data}){
 
 function LineItemsTable({ data }){
 	const headers = [
+		{ key: 'lineItemNo', name: 'Line Item #'},
 		{ key: 'procedureCode', name: 'Procedure Code'},
 		{ key: 'description', name: 'Description'},
 		{ key: 'serviceDate', name: 'Service Date'},
