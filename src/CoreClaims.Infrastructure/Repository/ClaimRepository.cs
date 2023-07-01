@@ -43,7 +43,8 @@ namespace CoreClaims.Infrastructure.Repository
 
         public async Task<ClaimHeader> CreateClaim(ClaimDetail detail)
         {
-            detail.CreatedOn = detail.ModifiedOn = DateTime.UtcNow.ToString();
+            //detail.CreatedOn = detail.ModifiedOn = DateTime.UtcNow.ToString();
+            detail.CreatedOn = detail.ModifiedOn = DateTime.UtcNow;
 
             var header = new ClaimHeader(detail);
 
@@ -64,7 +65,8 @@ namespace CoreClaims.Infrastructure.Repository
 
         public async Task<ClaimHeader> UpdateClaim(ClaimDetail detail)
         {
-            detail.ModifiedOn = DateTime.UtcNow.ToString();
+            //detail.ModifiedOn = DateTime.UtcNow.ToString();
+            detail.ModifiedOn = DateTime.UtcNow;
             detail.AdjustmentId++;
 
             var header = new ClaimHeader(detail);
@@ -86,7 +88,7 @@ namespace CoreClaims.Infrastructure.Repository
 
         public async Task<(ClaimHeader, IEnumerable<ClaimDetail>)> GetClaimHistory(string claimId)
         {
-            var query = new QueryDefinition("SELECT * FROM c WHERE c.claimId = @claimId")
+            var query = new QueryDefinition("SELECT * FROM c WHERE c.claimId = @claimId ORDER BY c.modifiedOn DESC")
                 .WithParameter("@claimId", claimId);
 
             var results = await Query<JObject>(query, new PartitionKey(claimId));
