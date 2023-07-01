@@ -60,6 +60,7 @@ export default function ClaimsByAdjudicator({adjudicatorId, isManager}){
 function ClaimsTable({ data, claimId, setClaimId, setShowClaimDetail, setShowHistory, page, setPage }){
 	const headers = [
 		{ key: 'filingDate', name: 'Filing Date'},
+		{ key: 'claimId', name: 'Claim ID'},
 		{ key: 'claimStatus', name: 'Claim Status'},
 		{ key: 'payerName', name: 'Payer'},
 		{ key: 'lastAdjudicatedDate', name: 'Last Adjudicated Date'},
