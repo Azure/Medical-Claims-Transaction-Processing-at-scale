@@ -40,7 +40,7 @@ namespace CoreClaims.FunctionApp.EventHubTriggers
             [EventHubTrigger(Constants.EventHubTopics.Incoming,
                 Connection = Constants.Connections.EventHub,
                 IsBatched = false)]
-                EventData incoming,
+            string messageBody,
             FunctionContext context)
         {
             var logger = context.GetLogger<CreateClaim>();
@@ -48,7 +48,7 @@ namespace CoreClaims.FunctionApp.EventHubTriggers
 
             try
             {
-                var messageBody = Encoding.UTF8.GetString(incoming.EventBody.ToArray());
+                //var messageBody = Encoding.UTF8.GetString(incoming.EventBody.ToArray());
                 var detail = JsonSerializationHelper.DeserializeItem<ClaimDetail>(messageBody);
 
                 var existingClaim = await _claimRepository.GetClaim(detail.ClaimId);
@@ -69,7 +69,8 @@ namespace CoreClaims.FunctionApp.EventHubTriggers
                     detail.CreatedBy = existingClaim.CreatedBy;
                     detail.CreatedOn = existingClaim.CreatedOn;
                     detail.ModifiedBy = "EventTrigger/CreateClaim/Update";
-                    detail.ModifiedOn = DateTime.UtcNow.ToString();
+                    //detail.ModifiedOn = DateTime.UtcNow.ToString();
+                    detail.ModifiedOn = DateTime.UtcNow;
                     detail.PayerName = payer?.Name;
                     detail.ProviderName = provider?.Name;
                     detail.Comment = "Claim updated from Upstream";
@@ -92,6 +93,9 @@ namespace CoreClaims.FunctionApp.EventHubTriggers
                     detail.CreatedBy = detail.ModifiedBy = "EventTrigger/ClaimCreation";
                     detail.Comment = "Claim created Upstream";
                     detail.TotalAmount = detail.LineItems.Sum(i => i.Amount - i.Discount);
+
+                    detail.CreatedOn ??= detail.FilingDate;
+                    detail.ModifiedOn ??= detail.FilingDate;
 
                     await _claimRepository.CreateClaim(detail);
                 }
