@@ -14,14 +14,14 @@ namespace CoreClaims.Infrastructure.Domain
         public string CreatedBy { get; set; }
 
         [JsonProperty("createdOn")]
-        public string CreatedOn { get; set; }
-        //public DateTime? CreatedOn { get; set; }
+        //public string CreatedOn { get; set; }
+        public DateTime? CreatedOn { get; set; }
 
         [JsonProperty("modifiedBy")]
         public string ModifiedBy { get; set; }
 
         [JsonProperty("modifiedOn")]
-        public string ModifiedOn { get; set; }
-        //public DateTime? ModifiedOn { get; set; }
+        //public string ModifiedOn { get; set; }
+        public DateTime? ModifiedOn { get; set; }
     }
 }

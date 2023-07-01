@@ -119,7 +119,7 @@ export function ApproveClaimButton ({claimId, requestClaims, lineItems, setChang
 	}
 
 	const onSave = async ()=>{
-		var resp = await trigger({ claimStatus: 'Approved', comment: comment, lineItems: lineItems});
+		var resp = await trigger({ claimStatus: 'Proposed', comment: comment, lineItems: lineItems});
 		requestClaims.mutate(null);	
 		setShowModal(false);
 	}
