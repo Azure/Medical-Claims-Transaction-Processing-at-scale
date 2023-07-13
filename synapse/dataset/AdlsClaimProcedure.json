@@ -1,0 +1,36 @@
+{
+    "name": "AdlsClaimProcedure",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "solliancepublicdata",
+            "type": "LinkedServiceReference"
+        },
+        "folder": {
+            "name": "DataLake_Input"
+        },
+        "annotations": [],
+        "type": "Json",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobStorageLocation",
+                "folderPath": "claimprocedure.json",
+                "container": "medical-claims"
+            }
+        },
+        "schema": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "category": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "type": "Microsoft.Synapse/workspaces/datasets"
+}

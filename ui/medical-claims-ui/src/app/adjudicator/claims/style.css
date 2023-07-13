@@ -1,0 +1,7 @@
+#claimsAdjudicatorTabs {
+	margin-bottom: -28px;
+}
+
+#claimsAdjudicatorTabs button[role=tab]{
+	color: #000 !important;
+}
