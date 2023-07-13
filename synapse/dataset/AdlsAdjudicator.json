@@ -1,0 +1,45 @@
+{
+    "name": "AdlsAdjudicator",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "solliancepublicdata",
+            "type": "LinkedServiceReference"
+        },
+        "folder": {
+            "name": "DataLake_Input"
+        },
+        "annotations": [],
+        "type": "Json",
+        "typeProperties": {
+            "location": {
+                "type": "AzureBlobStorageLocation",
+                "folderPath": "adjudicator.json",
+                "container": "medical-claims"
+            }
+        },
+        "schema": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "adjudicatorId": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "type": "Microsoft.Synapse/workspaces/datasets"
+}
