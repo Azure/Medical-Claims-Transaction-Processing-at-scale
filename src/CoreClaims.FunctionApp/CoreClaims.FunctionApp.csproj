@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <AzureFunctionsVersion>v4</AzureFunctionsVersion>
+	<OutputType>Exe</OutputType>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="local.settings.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="local.settings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+	<PackageReference Include="Microsoft.Azure.Core.NewtonsoftJson" Version="1.0.0" />
+	<PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.14.1" />
+	<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.CosmosDB" Version="4.3.0" />
+	<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.EventHubs" Version="5.4.0" />
+	<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.0.13" />
+	<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http.AspNetCore" Version="1.0.0-preview1" />
+	<PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.10.0" />
+	<PackageReference Include="Microsoft.Extensions.Azure" Version="1.6.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CoreClaims.Infrastructure\CoreClaims.Infrastructure.csproj" />
+    <ProjectReference Include="..\CoreClaims.SemanticKernel\CoreClaims.SemanticKernel.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="host.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

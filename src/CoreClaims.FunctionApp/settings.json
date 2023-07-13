@@ -1,0 +1,9 @@
+{
+  "BusinessRuleOptions": {
+    "AutoApproveThreshold": 200,
+    "RequireManagerApproval": 500,
+    "DemoMode": true,
+    "DemoAdjudicatorId": "df166300-5a78-3502-a46a-832842197811",
+    "DemoManagerAdjudicatorId": "a735bf55-83e9-331a-899d-a82a60b9f60c"
+  }
+}
