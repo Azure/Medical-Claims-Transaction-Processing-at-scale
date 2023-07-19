@@ -2,7 +2,7 @@
 
 Param(
     [parameter(Mandatory=$true)][string]$resourceGroup,
-    [parameter(Mandatory=$true)][string]$location,
+    [parameter(Mandatory=$false)][string]$location="SouthCentralUS",
     [parameter(Mandatory=$true)][string]$subscription,
     [parameter(Mandatory=$false)][string]$openAiName,
     [parameter(Mandatory=$false)][string]$openAiRg,
@@ -10,7 +10,7 @@ Param(
     [parameter(Mandatory=$false)][string]$suffix,
     [parameter(Mandatory=$false)][string]$synapseWorkspace,
     [parameter(Mandatory=$false)][bool]$stepDeployBicep=$true,
-    [parameter(Mandatory=$false)][bool]$stepDeployOpenAi=$true,
+    [parameter(Mandatory=$false)][bool]$stepDeployOpenAi=$false,
     [parameter(Mandatory=$false)][bool]$stepPublishFunctionApp=$true,
     [parameter(Mandatory=$false)][bool]$stepSetupSynapse=$true,
     [parameter(Mandatory=$false)][bool]$stepPublishSite=$true,
