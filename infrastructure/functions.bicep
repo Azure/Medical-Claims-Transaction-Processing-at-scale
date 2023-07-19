@@ -42,7 +42,7 @@ resource blob 'Microsoft.Storage/storageAccounts@2022-09-01' existing = {
   name: storageAccountName
 }
 
-resource openAi 'Microsoft.CognitiveServices/accounts@2023-05-01' existing = {
+resource openAi 'Microsoft.CognitiveServices/accounts@2023-05-01' existing = if (!empty(openAiResourceGroup)) {
   name: openAiName
   scope: resourceGroup(openAiResourceGroup)
 }
@@ -112,11 +112,11 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         }
         {
           name: 'RulesEngine__OpenAIEndpoint'
-          value: openAi.properties.endpoint
+          value: (!empty(openAiResourceGroup) ? openAi.properties.endpoint : null)
         }
         {
           name: 'RulesEngine__OpenAIKey'
-          value: openAi.listKeys().key1
+          value: (!empty(openAiResourceGroup) ? openAi.listKeys().key1 : null)
         }
         {
           name: 'RulesEngine__OpenAICompletionsDeployment'
