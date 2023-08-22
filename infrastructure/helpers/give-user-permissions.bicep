@@ -1,8 +1,8 @@
 @description('Deployment suffix')
 param suffix string = 'uswest3'
 
-var cosmosAccountName  = 'db-coreclaims-${suffix}'
-var eventHubNamespace  = 'eh-coreclaims-${suffix}'
+var cosmosAccountName  = 'dbcoreclaims${suffix}'
+var eventHubNamespace  = 'ehcoreclaims${suffix}'
 var storageAccountName = 'adlcoreclaims${suffix}'
 
 @description('Guid identity of the user you\'re trying to give permissions')
