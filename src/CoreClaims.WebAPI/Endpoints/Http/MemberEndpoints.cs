@@ -10,14 +10,12 @@ namespace CoreClaims.WebAPI.Endpoints.Http
     public class MemberEndpoints : EndpointsBase
     {
         private readonly IMemberRepository _repository;
-        private readonly IOptions<BusinessRuleOptions> _options;
 
         public MemberEndpoints(IMemberRepository repository,
             IOptions<BusinessRuleOptions> options,
             ILogger<MemberEndpoints> logger)
         {
             _repository = repository;
-            _options = options;
             Logger = logger;
             UrlFragment = "api/member";
         }
@@ -28,7 +26,7 @@ namespace CoreClaims.WebAPI.Endpoints.Http
                 .WithName("ListMemberClaims");
             app.MapGet($"/{UrlFragment}/{{memberId}}", async (string memberId) => await GetMember(memberId))
                 .WithName("GetMember");
-            app.MapGet($"/{UrlFragment}", async (HttpRequest request) => await ListMembers(request))
+            app.MapGet($"/{UrlFragment}s", async (HttpRequest request) => await ListMembers(request))
                 .WithName("ListMembers");
             app.MapGet($"/{UrlFragment}/{{memberId}}/coverage", async (string memberId) => await GetMemberCoverage(memberId))
                 .WithName("GetMemberCoverage");
