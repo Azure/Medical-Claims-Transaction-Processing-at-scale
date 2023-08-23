@@ -1,24 +1,37 @@
 ﻿using CoreClaims.Infrastructure.BusinessRules;
 using CoreClaims.Infrastructure.Repository;
+using CoreClaims.WebAPI.Components;
 using Microsoft.Extensions.Options;
 
 namespace CoreClaims.WebAPI.Endpoints.Http
 {
-    public class ProviderEndpoints
+    public class ProviderEndpoints : EndpointsBase
     {
         private readonly IProviderRepository _repository;
-        private readonly IOptions<BusinessRuleOptions> _options;
-
+        
         public ProviderEndpoints(IProviderRepository repository,
-            IOptions<BusinessRuleOptions> options)
+            ILogger<ProviderEndpoints> logger)
         {
             _repository = repository;
-            _options = options;
+            Logger = logger;
+            UrlFragment = "api/providers";
         }
 
-        public void Map(WebApplication app)
+        public override void AddRoutes(WebApplication app)
         {
-            // TODO: Add provider endpoints here.
+            app.MapGet($"/{UrlFragment}", async (HttpRequest req) => await Get(req))
+                .WithName("ListProviders");
+        }
+
+        protected virtual async Task<IResult> Get(HttpRequest req)
+        {
+            using (Logger.BeginScope("ListProviders"))
+            {
+                var (offset, limit) = req.GetPagingQuery();
+
+                var result = await _repository.ListProviders(offset, limit);
+                return Results.Ok(result);
+            }
         }
     }
 }
