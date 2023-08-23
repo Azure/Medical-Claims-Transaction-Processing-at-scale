@@ -1,43 +1,35 @@
 ﻿using System.Net;
 using CoreClaims.Infrastructure.BusinessRules;
 using CoreClaims.Infrastructure.Repository;
+using CoreClaims.WebAPI.Components;
+using Microsoft.Azure.Cosmos.Serialization.HybridRow;
 using Microsoft.Extensions.Options;
 
 namespace CoreClaims.WebAPI.Endpoints.Http
 {
-    public class BusinessRuleEndpoints
+    public class BusinessRuleEndpoints : EndpointsBase
     {
         private readonly IOptions<BusinessRuleOptions> _options;
-        private readonly ILogger _logger;
 
         public BusinessRuleEndpoints(IOptions<BusinessRuleOptions> options,
             ILogger<BusinessRuleEndpoints> logger)
         {
             _options = options;
-            _logger = logger;
+            Logger = logger;
+            UrlFragment = "api/business-rules";
         }
 
-        public void Map(WebApplication app)
+        public override void AddRoutes(WebApplication app)
         {
-            app.MapGet("/business-rules/", async context =>
-                {
-                    var logger = app.ApplicationServices.GetRequiredService<ILogger<BusinessRuleEndpoints>>();
-                    using (logger.BeginScope("HttpTrigger: GetBusinessRules"))
-                    {
-                        if (_options == null)
-                        {
-                            context.Response.StatusCode = (int)HttpStatusCode.NotFound;
-                            return;
-                        }
+            app.MapGet($"/{UrlFragment}", () => Get())
+                .WithName("GetBusinessRules");
+        }
 
-                        var response = await context.Response.WriteAsJsonAsync(_options.Value);
+        protected virtual IResult Get()
+        {
+            Logger.LogInformation("Getting business rules.");
 
-                        if (!response.IsSuccessStatusCode)
-                        {
-                            logger.LogError($"Error occurred: {response}");
-                        }
-                    }
-                }).WithName("GetBusinessRules");
+            return Results.Ok(_options.Value);
         }
     }
 }
