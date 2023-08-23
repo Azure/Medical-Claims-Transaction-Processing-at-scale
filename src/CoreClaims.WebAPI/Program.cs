@@ -29,7 +29,7 @@ namespace CoreClaims.WebAPI
             //);
 
             // Add services to the container.
-            builder.Services.AddAuthorization();
+            //builder.Services.AddAuthorization();
 
             builder.Services.Configure<BusinessRuleOptions>(builder.Configuration.GetSection(nameof(BusinessRuleOptions)));
             builder.Services.Configure<RulesEngineSettings>(builder.Configuration.GetSection("RulesEngine"));
@@ -77,7 +77,6 @@ namespace CoreClaims.WebAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -86,7 +85,7 @@ namespace CoreClaims.WebAPI
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             // Map the REST endpoints:
             using (var scope = app.Services.CreateScope())
