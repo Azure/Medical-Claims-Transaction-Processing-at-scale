@@ -19,11 +19,11 @@ namespace CoreClaims.WebAPI
 
             builder.Logging.ClearProviders();
             builder.Logging.AddConsole();
-            builder.Logging.AddApplicationInsights(
-                configureTelemetryConfiguration: (config) =>
-                    config.ConnectionString = builder.Configuration.GetValue<string>("APPLICATIONINSIGHTS_CONNECTION_STRING"),
-                configureApplicationInsightsLoggerOptions: (options) => { }
-            );
+            //builder.Logging.AddApplicationInsights(
+            //    configureTelemetryConfiguration: (config) =>
+            //        config.ConnectionString = builder.Configuration.GetValue<string>("APPLICATIONINSIGHTS_CONNECTION_STRING"),
+            //    configureApplicationInsightsLoggerOptions: (options) => { }
+            //);
 
             // Add services to the container.
             builder.Services.AddAuthorization();
