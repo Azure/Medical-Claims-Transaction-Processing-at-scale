@@ -27,8 +27,9 @@ The solution architecture is represented by this diagram:
 ### Prerequisites for running/debugging locally
 
 - Backend (Function App, Console Apps, etc.)
-  - Visual Studio Code or Visual Studio 2022
+  - Visual Studio 2022 17.6 or later (required for passthrough Visual Studio authentication for the Docker container)
   - .NET 7 SDK
+  - Docker Desktop (with WSL for Windows machines)
 - Frontend (React web app)
   - Visual Studio Code
   - Ensure you have the latest version of NPM and node.js:

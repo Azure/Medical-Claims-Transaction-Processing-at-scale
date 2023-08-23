@@ -357,3 +357,4 @@ appsettings.json
 
 synapse/linkedService/CoreClaimsCosmosDb.json
 synapse/linkedService/CoreClaimsDataLake.json
+/src/CoreClaims.WebAPI/appsettings.Development.json
