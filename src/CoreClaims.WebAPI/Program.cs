@@ -1,4 +1,5 @@
 
+using System.Text.Json.Serialization;
 using Azure.Core.Serialization;
 using CoreClaims.Infrastructure;
 using CoreClaims.Infrastructure.BusinessRules;
@@ -65,13 +66,9 @@ namespace CoreClaims.WebAPI
             builder.Services.AddScoped<EndpointsBase, ProviderEndpoints>();
 
             // TODO: Implement serialization resolver and rules
-            //builder.Services.ConfigureHttpJsonOptions(workerOptions =>
-            //{
-            //    var settings = NewtonsoftJsonObjectSerializer.CreateJsonSerializerSettings();
-            //    settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            //    settings.Converters.Add(new StringEnumConverter());
-            //    workerOptions.Serializer = new NewtonsoftJsonObjectSerializer(settings);
-            //});
+            builder.Services.ConfigureHttpJsonOptions(options => {
+                options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
