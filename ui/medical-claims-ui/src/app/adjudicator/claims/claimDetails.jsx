@@ -118,7 +118,7 @@ const RecommendActionForm = ({ claimId, setOpenModal, openModal }) => {
 	  <div className="space-y-6">
 		<div className="mb-4">
 		  <div className="mb-2 block">
-			<Textarea id="results" name="results" value={recommendation} className='h-20'/>
+			<Textarea id="results" name="results" value={recommendation} className='h-30 p-5'/>
 		  </div>
 		</div>
 		<div className="w-full flex justify-between pt-4">
