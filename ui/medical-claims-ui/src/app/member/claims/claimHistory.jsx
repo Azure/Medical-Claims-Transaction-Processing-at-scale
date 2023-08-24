@@ -101,13 +101,13 @@ function LineItemsTable({ data }){
 		{ key: 'description', name: 'Description'},
 		{ key: 'serviceDate', name: 'Service Date'},
 		{ key: 'amount', name: 'Amount'},
-		{ key: 'discount', name: 'Discount'},
+		// { key: 'discount', name: 'Discount'},
 	];
 
 	return(<LineItemsDataTable {...{data, headers}}/>);
 }
 
-function LineItemsDataTable({headers, data}){
+function LineItemsDataTable({ headers, data }){
 	return(
 	    <Table className="w-full" hoverable>
 	      <Table.Head>
@@ -116,19 +116,16 @@ function LineItemsDataTable({headers, data}){
 	            {header.name}
 	          </Table.HeadCell>
 	        ))}
-	        <Table.HeadCell className="!p-4"/>
 	      </Table.Head>
+
 	      <Table.Body className="divide-y">
 	        {data.map((row) => (
-	          <Table.Row key={row.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-	            {Object.values(headers).map((header, index) => (
-	              <Table.Cell key={`${row.id}-${index}`} className="!p-4">
+	          <Table.Row key={row.lineItemNo} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+	            {headers.map((header, index) => (
+	              <Table.Cell key={`${row.lineItemNo}-${index}`} className="!p-4">
 	                { formatValues(header.key, row[header.key])}
 	              </Table.Cell>
 	            ))}
-	            <Table.Cell className="!p-4">
-	            	<Link href='#' onClick={()=> setClaimId(row.claimId)}>Apply Discount</Link>
-	            </Table.Cell>
 	          </Table.Row>
 	        ))}
 	      </Table.Body>
