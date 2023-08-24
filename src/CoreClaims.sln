@@ -20,7 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreClaims.SemanticKernel",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreClaims.WebAPI", "CoreClaims.WebAPI\CoreClaims.WebAPI.csproj", "{A7DA3ABF-3335-4636-B7F9-905FC5A55679}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreClaims.WorkerService", "ClaimsWorkerService\CoreClaims.WorkerService.csproj", "{BC2BB87A-3A48-4ED4-8750-755C684BC2B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreClaims.WorkerService", "CoreClaims.WorkerService\CoreClaims.WorkerService.csproj", "{BC2BB87A-3A48-4ED4-8750-755C684BC2B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
