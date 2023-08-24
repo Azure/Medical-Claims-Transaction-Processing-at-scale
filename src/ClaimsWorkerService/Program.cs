@@ -1,9 +1,9 @@
 using System.Configuration;
-using ClaimsWorkerService;
 using CoreClaims.Infrastructure;
 using CoreClaims.Infrastructure.BusinessRules;
 using CoreClaims.Infrastructure.Events;
 using CoreClaims.Infrastructure.Repository;
+using CoreClaims.WorkerService;
 using Microsoft.Azure.Cosmos.Fluent;
 
 var builder = Host.CreateApplicationBuilder(args);

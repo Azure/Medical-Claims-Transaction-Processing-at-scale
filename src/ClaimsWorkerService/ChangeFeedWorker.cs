@@ -1,6 +1,6 @@
 using CoreClaims.Infrastructure.Events;
 
-namespace ClaimsWorkerService
+namespace CoreClaims.WorkerService
 {
     public class ChangeFeedWorker : BackgroundService
     {
@@ -16,11 +16,6 @@ namespace ClaimsWorkerService
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            //while (!stoppingToken.IsCancellationRequested)
-            //{
-            //    _logger.LogInformation("ChangeFeedWorker running at: {time}", DateTimeOffset.Now);
-            //    await Task.Delay(1000, stoppingToken);
-            //}
             _logger.LogInformation("{time}: Starting the ChangeFeedWorker", DateTimeOffset.Now);
             await _cosmosDbChangeFeedService.StartChangeFeedProcessorsAsync();
         }
