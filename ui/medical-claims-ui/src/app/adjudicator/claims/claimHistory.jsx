@@ -99,7 +99,7 @@ function HistoryItem({data}){
 	);
 }
 
-function LineItemsTable({ data }){
+function LineItemsTable({ data }) {
 	const headers = [
 		{ key: 'lineItemNo', name: 'Line Item #'},
 		{ key: 'procedureCode', name: 'Procedure Code'},
@@ -112,7 +112,7 @@ function LineItemsTable({ data }){
 	return(<LineItemsDataTable {...{data, headers}}/>);
 }
 
-function LineItemsDataTable({headers, data}){
+function LineItemsDataTable({ headers, data }) {
 	return(
 	    <Table className="w-full" hoverable>
 	      <Table.Head>
@@ -125,7 +125,7 @@ function LineItemsDataTable({headers, data}){
 	      </Table.Head>
 	      <Table.Body className="divide-y">
 	        {data.map((row) => (
-	          <Table.Row key={row.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+	          <Table.Row key={row.lineItemNo} className="bg-white dark:border-gray-700 dark:bg-gray-800">
 	            {Object.values(headers).map((header, index) => (
 	              <Table.Cell key={`${row.id}-${index}`} className="!p-4">
 	                { formatValues(header.key, row[header.key])}
