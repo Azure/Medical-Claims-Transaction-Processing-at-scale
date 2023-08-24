@@ -21,6 +21,7 @@ namespace CoreClaims.WebAPI
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var allowAllCorsOrigins = "AllowAllOrigins";
 
             builder.Logging.ClearProviders();
             builder.Logging.AddConsole();
@@ -35,6 +36,16 @@ namespace CoreClaims.WebAPI
 
             builder.Services.Configure<BusinessRuleOptions>(builder.Configuration.GetSection(nameof(BusinessRuleOptions)));
             builder.Services.Configure<RulesEngineSettings>(builder.Configuration.GetSection("RulesEngine"));
+            builder.Services.AddCors(policyBuilder =>
+            {
+                policyBuilder.AddPolicy(allowAllCorsOrigins,
+                    policy =>
+                    {
+                        policy.AllowAnyOrigin();
+                        policy.AllowAnyHeader();
+                        policy.AllowAnyMethod();
+                    });
+            });
 
             builder.Services.AddSingleton(s =>
             {
@@ -82,8 +93,6 @@ namespace CoreClaims.WebAPI
 
             app.UseHttpsRedirection();
 
-            //app.UseAuthorization();
-
             // Map the REST endpoints:
             using (var scope = app.Services.CreateScope())
             {
@@ -96,6 +105,10 @@ namespace CoreClaims.WebAPI
                     item.AddRoutes(app);
                 }
             }
+
+            app.UseCors(allowAllCorsOrigins);
+
+            //app.UseAuthorization();
 
             app.Run();
         }
