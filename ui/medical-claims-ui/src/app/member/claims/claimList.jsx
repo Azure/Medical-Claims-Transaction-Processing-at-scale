@@ -67,7 +67,7 @@ function ClaimsTable({ data, claimId, setClaimId, setShowClaimDetail, setShowHis
 	const headers = [
 		{ key: 'filingDate', name: 'Filing Date'},
 		{ key: 'claimStatus', name: 'Claim Status'},
-		{ key: 'payerName', name: 'Payer'},
+		{ key: 'providerName', name: 'Provider'},
 		{ key: 'lastAdjudicatedDate', name: 'Last Adjucated Date'},
 		{ key: 'lastAmount', name: 'Last Amout'},
 		{ key: 'totalAmount', name: 'Total Amount'}
