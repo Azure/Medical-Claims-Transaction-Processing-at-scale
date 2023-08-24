@@ -360,3 +360,5 @@ synapse/linkedService/CoreClaimsDataLake.json
 /src/CoreClaims.WebAPI/appsettings.Development.json
 /src/ClaimsWorkerService/appsettings.Development.json
 /src/ClaimsWorkerService/appsettings.Development.json
+/src/CoreClaims.WorkerService/appsettings.Development.json
+/src/CoreClaims.WorkerService/appsettings.Development.json
