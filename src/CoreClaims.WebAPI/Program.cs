@@ -10,6 +10,7 @@ using CoreClaims.WebAPI.Components;
 using CoreClaims.WebAPI.Endpoints.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Azure.Cosmos.Fluent;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
@@ -53,7 +54,6 @@ namespace CoreClaims.WebAPI
             builder.Services.AddSingleton<IProviderRepository, ProviderRepository>();
 
             builder.Services.AddSingleton<ICoreBusinessRule, CoreBusinessRule>();
-
             builder.Services.AddSingleton<IRulesEngine, RulesEngine>();
 
             // Add Endpoint classes.
