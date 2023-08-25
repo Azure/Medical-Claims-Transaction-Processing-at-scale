@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
-import TransactionsStatement, { UpdateClaim, AcknowledgeClaim } from '../../hooks/TransactionsStatement'
-import Modal from '../../components/modal'
+
+import React, { useState } from 'react';
+import TransactionsStatement, { UpdateClaim, AcknowledgeClaim } from '../../hooks/TransactionsStatement';
+import Modal from '../../components/Modal';
+
 
 export function AcknowledgeButton ({ claimId, requestClaims, lineItems }){
 	const [ showModal, setShowModal ] = useState(false);

@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react'
-import TransactionsStatement, { UpdateClaim, AcknowledgeClaim } from '../../hooks/TransactionsStatement'
-import Modal from '../../components/modal'
+
+import React, { useState, useEffect } from 'react';
+import TransactionsStatement, { UpdateClaim, AcknowledgeClaim } from '../../hooks/TransactionsStatement';
+import Modal from '../../components/Modal';
 
 const delayTimeAcknowledge = 4000;
 const delayTime = 2000;
+
 
 export function AcknowledgeButton ({ claimId, requestClaims, lineItems, mutate, setChangeDetail }){
 	const [ showModal, setShowModal ] = useState(false);
 	const [ comment, setComment ] = useState('');
 	const { trigger } = AcknowledgeClaim(claimId);
-
-
 
 	const onSave = async ()=>{
 		var resp = await trigger({claimId: claimId});	

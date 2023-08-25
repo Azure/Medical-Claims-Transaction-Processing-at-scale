@@ -1,15 +1,27 @@
-import { useParams  } from 'next/navigation'
-import React, { useState, useEffect } from 'react'
-import TransactionsStatement from '../../hooks/TransactionsStatement'
-import { Table, Pagination, Spinner } from 'flowbite-react';
-import Link from 'next/link'
-import Moment from 'moment'
-import ClaimDetails from './claimDetails'
-import ClaimHistory from './claimHistory'
+'use client';
 
-export default function ClaimList({ memberId }){
-	const params = useParams();
+import React, { useState, useEffect } from 'react';
+import { Table, Pagination, Spinner } from 'flowbite-react';
+import { useParams, useRouter  } from 'next/navigation';
+import Link from 'next/link';
+import Moment from 'moment';
+
+import TransactionsStatement from '../../hooks/TransactionsStatement'
+import ClaimDetails from './ClaimDetails'
+import ClaimHistory from './ClaimHistory'
+
+
+export default function Page({ params }){
+	//const params = useParams();
+	
+	const router = useRouter()
 	const [page, setPage] = useState(1);
+	const [memberId, setMemberId] = useState('');
+
+	useEffect(() => {
+        const queryParams = new URLSearchParams(window.location.search)
+		setMemberId(queryParams.get('memberId'))
+    }, [])
 
 	const requestMember = TransactionsStatement.GetMember(memberId);
 	const requestClaims = TransactionsStatement.GetClaimsByMemberId(memberId, page, 5);
@@ -58,7 +70,6 @@ export default function ClaimList({ memberId }){
 			{showHistory ? (
 				<ClaimHistory {...{claimId}}/>
 			) : null}	
-
 		</>
 	);
 }
@@ -66,8 +77,8 @@ export default function ClaimList({ memberId }){
 function ClaimsTable({ data, claimId, setClaimId, setShowClaimDetail, setShowHistory, page, setPage }){
 	const headers = [
 		{ key: 'filingDate', name: 'Filing Date'},
-		{ key: 'claimStatus', name: 'Claim Status', style: { backgroundColor: 'rgb(253, 248, 170)' }},
-		{ key: 'providerName', name: 'Provider'},
+		{ key: 'claimStatus', name: 'Claim Status'},
+		{ key: 'payerName', name: 'Payer'},
 		{ key: 'lastAdjudicatedDate', name: 'Last Adjucated Date'},
 		{ key: 'lastAmount', name: 'Last Amout'},
 		{ key: 'totalAmount', name: 'Total Amount'}
@@ -116,8 +127,8 @@ const Datatable = ({ claimId, setClaimId, setShowClaimDetail, setShowHistory, he
       <Table.Body className="divide-y">
         {data.map((row) => (
           <Table.Row key={row.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-            {Object.values(headers).map((header, index) => (
-              <Table.Cell key={`${row.id}-${index}`} className="!p-4" style={header.style}>
+     				{Object.values(headers).map((header, index) => (
+              <Table.Cell key={`${row.id}-${index}`} className="!p-4">
                 { formatValues(header.key, row[header.key])}
               </Table.Cell>
             ))}
@@ -144,9 +155,6 @@ function formatValues(headerKey, value){
 			break;		
 		case "lastAdjudicatedDate":
 			return value ? Moment(value).format('YYYY-MM-DD hh:mm a') : '-';
-			break;
-		case "lastAmount":
-			return money.format(value);
 			break;
 		case "totalAmount":
 			return money.format(value);
