@@ -66,7 +66,7 @@ export default function ClaimList({ memberId }){
 function ClaimsTable({ data, claimId, setClaimId, setShowClaimDetail, setShowHistory, page, setPage }){
 	const headers = [
 		{ key: 'filingDate', name: 'Filing Date'},
-		{ key: 'claimStatus', name: 'Claim Status'},
+		{ key: 'claimStatus', name: 'Claim Status', style: { backgroundColor: 'rgb(253, 248, 170)' }},
 		{ key: 'providerName', name: 'Provider'},
 		{ key: 'lastAdjudicatedDate', name: 'Last Adjucated Date'},
 		{ key: 'lastAmount', name: 'Last Amout'},
@@ -117,7 +117,7 @@ const Datatable = ({ claimId, setClaimId, setShowClaimDetail, setShowHistory, he
         {data.map((row) => (
           <Table.Row key={row.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
             {Object.values(headers).map((header, index) => (
-              <Table.Cell key={`${row.id}-${index}`} className="!p-4">
+              <Table.Cell key={`${row.id}-${index}`} className="!p-4" style={header.style}>
                 { formatValues(header.key, row[header.key])}
               </Table.Cell>
             ))}
