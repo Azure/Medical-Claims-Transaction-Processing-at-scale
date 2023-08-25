@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import TransactionsStatement from '../hooks/TransactionsStatement'
 import { Spinner } from 'flowbite-react';
-import Table from './Table';
+import DataTable from './DataTable';
 
 
 const tableHeaders = [
@@ -27,7 +27,7 @@ export default function Providers() {
 			<div className="card-body">
 				{!isLoading ? (
 					<div className="relative overflow-x-auto sm:rounded">
-						<Table headers={tableHeaders} data={data} page={page} onPageChange={(newPage) => setPage(newPage) } />
+						<DataTable headers={tableHeaders} data={data} page={page} onPageChange={(newPage) => setPage(newPage) } />
 					</div>
 				) :
 					<div className='text-center mt-20'>
