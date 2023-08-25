@@ -30,7 +30,7 @@ export default function Providers() {
 						headers={tableHeaders}
 						data={data}
 						page={page}
-						onPageChange={(newPage) => setPage(newPage) }
+						onPageChange={(newPage) => setPage(newPage)}
 					/>
 				</div>
 			</div>
