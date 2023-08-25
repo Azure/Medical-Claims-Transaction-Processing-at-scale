@@ -4,7 +4,20 @@ import { Table, Pagination, Spinner } from 'flowbite-react';
 
 
 export default function Datatable(props) {
-	let { isLoading, headers = [], data = [], page = 1, onPageChange, extraRowItems = [], extraHeaders = [] } = props;
+	let {
+		isLoading,
+		headers = [],
+		data = [],
+		page = 1,
+		onPageChange,
+		extraHeaders = [],
+		extraRowItems = [],
+		rowFormatter
+	} = props;
+
+	const formatRowItem = (header, value, row) => {
+		return rowFormatter ? rowFormatter(header, value, row) : (value ? value : '-');
+	}
 
 	return (
 		<>
@@ -29,7 +42,7 @@ export default function Datatable(props) {
 							<Table.Row key={row.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
 								{Object.values(headers).map((header, index) => (
 									<Table.Cell key={`${row.id}-${index}`} className="!p-4">
-										{row[header.key] ? row[header.key] : '-'}
+										{formatRowItem(header, row[header.key], row)}
 									</Table.Cell>
 								))}
 

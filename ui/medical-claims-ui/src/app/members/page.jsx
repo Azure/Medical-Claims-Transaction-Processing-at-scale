@@ -36,6 +36,18 @@ const onClickViewClaims = (memberId, setShowClaimsList, setMemberId, setShowMemb
 	setMemberId(memberId);
 }
 
+function formatValues(header, value, row) {
+	let money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+
+	switch (header.key) {
+		case 'approvedTotal':
+			return money.format(value);
+			break;
+		default:
+			return value ? value : '-';
+	}
+}
+
 export default function Members() {	
 	const [ page, setPage ] = useState(1);
 	const { data, isLoading } = TransactionsStatement.GetMembersList(page, 10);
@@ -60,6 +72,7 @@ export default function Members() {
 							data={data}
 							page={page}
 							onPageChange={(newPage) => setPage(newPage)}
+							rowFormatter={formatValues}
 							extraHeaders={
 								<>
 									<Table.HeadCell></Table.HeadCell>
