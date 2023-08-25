@@ -1,8 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import TransactionsStatement from '../hooks/TransactionsStatement'
-import { Spinner } from 'flowbite-react';
 import DataTable from './DataTable';
 
 
@@ -25,15 +24,15 @@ export default function Providers() {
 			</div>
 
 			<div className="card-body">
-				{!isLoading ? (
-					<div className="relative overflow-x-auto sm:rounded">
-						<DataTable headers={tableHeaders} data={data} page={page} onPageChange={(newPage) => setPage(newPage) } />
-					</div>
-				) :
-					<div className='text-center mt-20'>
-						<Spinner aria-label="Loading..." />
-					</div>
-				}
+				<div className="relative overflow-x-auto sm:rounded">
+					<DataTable
+						isLoading={isLoading}
+						headers={tableHeaders}
+						data={data}
+						page={page}
+						onPageChange={(newPage) => setPage(newPage) }
+					/>
+				</div>
 			</div>
 		</div>
 	);
