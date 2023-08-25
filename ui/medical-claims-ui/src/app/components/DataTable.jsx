@@ -10,8 +10,8 @@ export default function Datatable(props) {
 		data = [],
 		page = 1,
 		onPageChange,
-		extraHeaders = [],
-		extraRowItems = [],
+		extraHeaders,
+		extraRowItems,
 		rowFormatter
 	} = props;
 
