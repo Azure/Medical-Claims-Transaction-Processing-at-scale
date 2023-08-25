@@ -1,11 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react'
+
+import React, { useState, useEffect, useRef } from 'react';
 import { Table, Spinner, Pagination, Button, Textarea } from 'flowbite-react';
-import Link from 'next/link'
-import Moment from 'moment'
-import TransactionsStatement from '../../hooks/TransactionsStatement'
-import { AcknowledgeButton, DenyClaimButton, ProposeClaimButton, ApproveClaimButton } from './ClaimActions'
+import Link from 'next/link';
+import Moment from 'moment';
+
 import { SparklesIcon } from '@heroicons/react/24/outline';
+import TransactionsStatement from '../../hooks/TransactionsStatement';
+import { AcknowledgeButton, DenyClaimButton, ProposeClaimButton, ApproveClaimButton } from './ClaimActions';
 import { Modal } from 'flowbite-react';
+
 
 let money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 

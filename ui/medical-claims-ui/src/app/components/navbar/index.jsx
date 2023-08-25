@@ -1,33 +1,78 @@
-import Link from "next/link";
-import Image from "next/image";
+'use client';
 
-export default function NavBar({children, menuItems}){  
-  return(
-    <div className='min-h-screen flex flex-col'>
-      <header className='bg-white sticky top-0 h-14 flex justify-center items-center font-semibold'>
-        <h1 className='h-10'>Medical Claims</h1>        
-      </header>
+import React, { useState } from 'react';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
+import './navbar.scss';
 
-      <button className="float-left absolute w-20">
-        <i className="fas fa-align-justify dark:text-slate-300 group-hover:text-blue-400"></i>
-      </button>
+import { FaHouse, FaUserGroup, FaBriefcaseMedical } from 'react-icons/fa6';
+import { MdMenu, MdMonetizationOn, MdSpeakerNotes } from 'react-icons/md';
 
-      <div className='flex flex-col md:flex-row flex-1'>
-        <aside className='bg-gray-300 md:w-40'>
-          <nav>
-            <ul>
-              {menuItems.map(({ href, title }) => (
-                <li className='m-2' key={title}>
-                  <Link href={href} className={`flex p-2 rounded hover:bg-slate-400 cursor-pointer`}>
-                    {title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </aside>
-        <main className='p-10 w-full'>{children}</main>
-      </div>
-    </div>
-  );
+const menuItems = [
+	{
+		href: '/',
+		title: '',
+		icon: FaHouse
+	},
+	{
+		href: '/members',
+		title: 'Members',
+		icon: FaUserGroup
+	},
+	{
+		href: '/providers',
+		title: 'Providers',
+		icon: FaBriefcaseMedical
+	},
+	{
+		href: '/payers',
+		title: 'Payers',
+		icon: MdMonetizationOn
+	},
+	{
+		href: '/adjudicator/claims',
+		title: 'Adjudicators',
+		icon: MdSpeakerNotes
+	},
+];
+
+export default function NavBar({ children }) {
+	const [collapsed, setCollapsed] = useState(false);
+	const [title, setTitle] = useState('');
+	const pathname = usePathname()
+
+	return (
+		<div className="main">
+
+			{/* Header */}
+			<header className="header">
+				<button onClick={ () => setCollapsed(!collapsed) } className="header__button">
+					<MdMenu className="navbar__icon" />
+				</button>
+
+				<h1 className="header__text">@ Medical Claims { title && <>/ { title }</> }</h1>
+			</header>
+
+			{/* Inner wrapper */}
+			<div className="inner">
+
+				{/* Navbar */}
+				<nav className="navbar">
+					{menuItems.map(({ href, title, icon }) => (
+						<Link href={ href } key={ title } className={ `navbar__item ${pathname === href ? 'active' : '' }`}>
+							<button className="navbar__button" onClick={ () => setTitle(title) }>
+								{ React.createElement(icon, { className: 'navbar__icon' }) }
+							</button>
+						</Link>
+					))}
+				</nav>
+
+				{/* Main content */}
+				<main className="content">
+					{ children }
+				</main>
+			</div>
+
+		</div>
+	);
 }
