@@ -34,7 +34,7 @@ export default function Datatable({ headers = [], data = [], page = 1, onPageCha
 
 			{/* Pagination */}
 			<Pagination
-				className="p-6 self-center"
+				className="p-6 flex justify-center"
 				currentPage={page}
 				onPageChange={(newPage) => onPageChange(newPage)}
 				totalPages={100}
