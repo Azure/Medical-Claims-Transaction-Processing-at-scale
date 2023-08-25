@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
 import './navbar.scss';
 
 import { FaHouse, FaUserGroup, FaBriefcaseMedical } from 'react-icons/fa6';
@@ -39,6 +39,7 @@ const menuItems = [
 export default function NavBar({ children }) {
 	const [collapsed, setCollapsed] = useState(false);
 	const [title, setTitle] = useState('');
+	const pathname = usePathname()
 
 	return (
 		<div className="main">
@@ -56,7 +57,7 @@ export default function NavBar({ children }) {
 			<div className="inner">
 				<nav className="navbar">
 					{menuItems.map(({ href, title, icon }) => (
-						<Link href={ href } key={ title } className="navbar__item">
+						<Link href={ href } key={ title } className={ `navbar__item ${pathname === href ? 'active' : '' }`}>
 							<button className="navbar__button" onClick={ () => setTitle(title) }>
 								{ React.createElement(icon, { className: 'navbar__icon' }) }
 							</button>
