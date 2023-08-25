@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react'
+
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Moment from 'moment';
+
+import TransactionsStatement from '../../hooks/TransactionsStatement';
+import Formatters from '../../hooks/Formatters';
 import { Table } from 'flowbite-react';
-import Link from 'next/link'
-import Moment from 'moment'
-import TransactionsStatement from '../../hooks/TransactionsStatement'
-import Formatters from '../../hooks/Formatters'
+
 
 let money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 
@@ -25,10 +28,12 @@ export default function ClaimHistory({ claimId }){
 								<div className='grid grid-cols-2 w-9/12'>
 									<div className='px-4 font-bold gap-2'>Claim Id:</div>
 									<div className='float-left'>{claimRequest.data.claimId}</div>
+									<div className='px-4 font-bold gap-2'>Member Id:</div>
+									<div className='float-left'>{claimRequest.data.memberId}</div>
 									<div className='px-4 font-bold gap-2'>Claim Status:</div>
 									<div>{claimRequest.data.claimStatus}</div>
 									<div className='px-4 font-bold gap-2'>Payer Name:</div>
-									<div>{claimRequest.data.payerName ? data.header.payerName : '-'}</div>
+									<div>{claimRequest.data.payerName ? claimRequest.data.payerName  : '-'}</div>
 									<div className='px-4 font-bold gap-2'>Total Amount:</div>
 									<div>{money.format(claimRequest.data.totalAmount)}</div>
 									<div className='px-4 font-bold gap-2'>Provider Name:</div>
@@ -68,6 +73,8 @@ function HistoryItem({data}){
 							<div className='grid grid-cols-2 w-9/12'>
 								<div className='px-4 font-bold gap-2'>Claim Id:</div>
 								<div className='float-left'>{data.claimId}</div>
+								<div className='px-4 font-bold gap-2'>Member Id:</div>
+								<div className='float-left'>{data.memberId}</div>
 								<div className='px-4 font-bold gap-2'>Claim Status:</div>
 								<div>{data.claimStatus}</div>
 								<div className='px-4 font-bold gap-2'>Payer Name:</div>
@@ -95,41 +102,45 @@ function HistoryItem({data}){
 	);
 }
 
-function LineItemsTable({ data }){
+function LineItemsTable({ data }) {
 	const headers = [
+		{ key: 'lineItemNo', name: 'Line Item #'},
 		{ key: 'procedureCode', name: 'Procedure Code'},
 		{ key: 'description', name: 'Description'},
 		{ key: 'serviceDate', name: 'Service Date'},
 		{ key: 'amount', name: 'Amount'},
-		// { key: 'discount', name: 'Discount'},
+		{ key: 'discount', name: 'Discount'},
 	];
 
 	return(<LineItemsDataTable {...{data, headers}}/>);
 }
 
-function LineItemsDataTable({ headers, data }){
+function LineItemsDataTable({ headers, data }) {
 	return(
-	    <Table className="w-full" hoverable>
-	      <Table.Head>
-	        {headers.map((header) => (
-	          <Table.HeadCell key={header.key} className="!p-4">
-	            {header.name}
-	          </Table.HeadCell>
-	        ))}
-	      </Table.Head>
-
-	      <Table.Body className="divide-y">
-	        {data.map((row) => (
-	          <Table.Row key={row.lineItemNo} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-	            {headers.map((header, index) => (
-	              <Table.Cell key={`${row.lineItemNo}-${index}`} className="!p-4">
-	                { formatValues(header.key, row[header.key])}
-	              </Table.Cell>
-	            ))}
-	          </Table.Row>
-	        ))}
-	      </Table.Body>
-	    </Table>
+			<Table className="w-full" hoverable>
+				<Table.Head>
+					{headers.map((header) => (
+						<Table.HeadCell key={header.key} className="!p-4">
+							{header.name}
+						</Table.HeadCell>
+					))}
+					<Table.HeadCell className="!p-4"/>
+				</Table.Head>
+				<Table.Body className="divide-y">
+					{data.map((row) => (
+						<Table.Row key={row.lineItemNo} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+							{Object.values(headers).map((header, index) => (
+								<Table.Cell key={`${row.id}-${index}`} className="!p-4">
+									{ formatValues(header.key, row[header.key])}
+								</Table.Cell>
+							))}
+							<Table.Cell className="!p-4">
+								<Link href='#' onClick={()=> setClaimId(row.claimId)}>Apply Discount</Link>
+							</Table.Cell>
+						</Table.Row>
+					))}
+				</Table.Body>
+			</Table>
 	);
 }
 

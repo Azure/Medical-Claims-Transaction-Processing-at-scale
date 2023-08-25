@@ -1,15 +1,17 @@
-"use client";
-import React, { useState, useEffect } from 'react'
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import { Table, Pagination, Spinner } from 'flowbite-react';
-import Link from 'next/link'
-import TransactionsStatement from '../hooks/TransactionsStatement'
-import MemberDetail from './memberDetail'
-import MemberCoverageModal from './memberCoverageModal'
+import Link from 'next/link';
 
-import ClaimList from '../member/claims/claimList'
+import TransactionsStatement from '../hooks/TransactionsStatement';
+import MemberDetail from './MemberDetail';
+import MemberCoverageModal from './MemberCoverageModal';
+import ClaimList from '../member/claims/ClaimList';
 
-export default function Members(){	
-  const [ page, setPage ] = useState(1);
+
+export default function Members() {	
+	const [ page, setPage ] = useState(1);
 	const { data, isLoading } = TransactionsStatement.GetMembersList(page, 10);
 	const [ showClaimsList, setShowClaimsList ] = useState(false);
 	const [ showMemberDetail, setShowMemberDetail ] = useState(false);
@@ -67,54 +69,54 @@ function MembersTable({ data, setShowMemberDetail, setShowClaimsList, setMemberI
 	return(
 		<>
 			<Datatable headers={headers} {...{data, setShowMemberDetail, setShowCoverageModal, setShowClaimsList, setMemberId, setCoverageByMemberId, setShowMembersTable }}/>
-      <Pagination
-        className="p-6 self-center"
-        currentPage={page}
-        onPageChange={(page) => {
-          setPage(page);
-          //setContinuationToken(data.continuationToken);
-        }}
-        totalPages={100}
-      />
+			<Pagination
+				className="p-6 self-center"
+				currentPage={page}
+				onPageChange={(page) => {
+					setPage(page);
+					//setContinuationToken(data.continuationToken);
+				}}
+				totalPages={100}
+			/>
 		</>
 	);
 }
 
 const Datatable = ({ setShowMemberDetail, setShowCoverageModal, setShowClaimsList, setMemberId, setCoverageByMemberId, setShowMembersTable, headers = [], data = [] }) => {
-  return (
-    <Table className="w-full" hoverable>
-      <Table.Head>
-        {headers.map((header) => (
-          <Table.HeadCell key={header.key} className="!p-4">
-            {header.name}
-          </Table.HeadCell>
-        ))}
-        <Table.HeadCell className="!p-4"/>
-        <Table.HeadCell className="!p-4"/>
-         <Table.HeadCell className="!p-4"/>
-      </Table.Head>
-      <Table.Body className="divide-y">
-        {data.map((row) => (
-          <Table.Row key={row.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-            {Object.values(headers).map((header, index) => (
-              <Table.Cell key={`${row.id}-${index}`} className="!p-4">
-                {formatValues(header.key, row[header.key], row)}
-              </Table.Cell>
-            ))}
-            <Table.Cell className="!p-4">
-            	<Link href='#' onClick={()=> onClickMemberDetail(row.memberId, setShowMemberDetail, setMemberId)}>Details</Link>
-            </Table.Cell>
-            <Table.Cell className="!p-4">
-            	<Link href='#' onClick={()=> onClickMemberCoverage(row.memberId, setShowCoverageModal, setMemberId)}>View Coverage</Link>
-            </Table.Cell>
-           <Table.Cell className="!p-4">
+	return (
+		<Table className="w-full" hoverable>
+			<Table.Head>
+				{headers.map((header) => (
+					<Table.HeadCell key={header.key} className="!p-4">
+						{header.name}
+					</Table.HeadCell>
+				))}
+				<Table.HeadCell className="!p-4"/>
+				<Table.HeadCell className="!p-4"/>
+				 <Table.HeadCell className="!p-4"/>
+			</Table.Head>
+			<Table.Body className="divide-y">
+				{data.map((row) => (
+					<Table.Row key={row.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+						{Object.values(headers).map((header, index) => (
+							<Table.Cell key={`${row.id}-${index}`} className="!p-4">
+								{formatValues(header.key, row[header.key], row)}
+							</Table.Cell>
+						))}
+						<Table.Cell className="!p-4">
+							<Link href='#' onClick={()=> onClickMemberDetail(row.memberId, setShowMemberDetail, setMemberId)}>Details</Link>
+						</Table.Cell>
+						<Table.Cell className="!p-4">
+							<Link href='#' onClick={()=> onClickMemberCoverage(row.memberId, setShowCoverageModal, setMemberId)}>View Coverage</Link>
+						</Table.Cell>
+					 <Table.Cell className="!p-4">
 				<Link href='#claimsList' onClick={()=> onClickViewClaims(row.memberId, setShowClaimsList, setMemberId, setShowMembersTable)}>View Claims</Link>
-            </Table.Cell>
-          </Table.Row>
-        ))}
-      </Table.Body>
-    </Table>
-  );
+						</Table.Cell>
+					</Table.Row>
+				))}
+			</Table.Body>
+		</Table>
+	);
 };
 
 const onClickMemberDetail = (memberId, setShowMemberDetail, setMemberId)=>{

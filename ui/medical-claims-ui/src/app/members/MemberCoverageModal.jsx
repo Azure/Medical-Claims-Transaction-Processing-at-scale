@@ -1,6 +1,8 @@
-import Modal from '../components/modal'
-import TransactionsStatement from '../hooks/TransactionsStatement'
-import Moment from 'moment'
+
+import Moment from 'moment';
+import TransactionsStatement from '../hooks/TransactionsStatement';
+import Modal from '../components/Modal';
+
 
 export default function MemberCoverageModal({memberId, showCoverageModal, setShowCoverageModal}){
 	const memberRequest = TransactionsStatement.GetMember(memberId);
