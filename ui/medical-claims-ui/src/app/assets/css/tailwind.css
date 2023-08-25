@@ -687,7 +687,7 @@ input[type="checkbox"]:checked~ input[type="checkbox"]:checked~ input[type="chec
   color: #894e6c;
 }
 
-.navbar li button {
+/*.navbar li button {
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity));
 }
@@ -764,6 +764,7 @@ input[type="checkbox"]:checked~ input[type="checkbox"]:checked~ input[type="chec
   --tw-text-opacity: 1;
   color: rgb(17 24 39 / var(--tw-text-opacity));
 }
+*/
 
 .modal.form-control .modal-right {
   --tw-translate-x: 0px !important;
