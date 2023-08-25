@@ -3,7 +3,9 @@ import { useState } from 'react';
 import { Table, Pagination, Spinner } from 'flowbite-react';
 
 
-export default function Datatable({ isLoading, headers = [], data = [], page = 1, onPageChange }) {
+export default function Datatable(props) {
+	let { isLoading, headers = [], data = [], page = 1, onPageChange, extraRowItems = [], extraHeaders = [] } = props;
+
 	return (
 		<>
 			{!isLoading ? (
@@ -17,6 +19,8 @@ export default function Datatable({ isLoading, headers = [], data = [], page = 1
 								{header.name}
 							</Table.HeadCell>
 						))}
+
+						{ extraHeaders }
 					</Table.Head>
 
 					{/* Table body */}
@@ -28,6 +32,8 @@ export default function Datatable({ isLoading, headers = [], data = [], page = 1
 										{row[header.key] ? row[header.key] : '-'}
 									</Table.Cell>
 								))}
+
+								{ extraRowItems && extraRowItems(row) }
 							</Table.Row>
 						))}
 					</Table.Body>

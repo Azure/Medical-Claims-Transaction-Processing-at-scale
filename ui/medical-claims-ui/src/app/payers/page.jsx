@@ -28,7 +28,7 @@ export default function Payers() {
 						headers={tableHeaders}
 						data={data}
 						page={page}
-						onPageChange={(newPage) => setPage(newPage) }
+						onPageChange={(newPage) => setPage(newPage)}
 					/>
 				</div>
 			</div>
