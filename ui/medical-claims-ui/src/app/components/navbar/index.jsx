@@ -55,6 +55,8 @@ export default function NavBar({ children }) {
 
 			{/* Inner wrapper */}
 			<div className="inner">
+
+				{/* Navbar */}
 				<nav className="navbar">
 					{menuItems.map(({ href, title, icon }) => (
 						<Link href={ href } key={ title } className={ `navbar__item ${pathname === href ? 'active' : '' }`}>

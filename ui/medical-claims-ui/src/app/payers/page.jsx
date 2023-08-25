@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import TransactionsStatement from '../hooks/TransactionsStatement';
-import DataTable from '../providers/DataTable';
+import DataTable from '../components/DataTable';
 
 
 const tableHeaders = [
