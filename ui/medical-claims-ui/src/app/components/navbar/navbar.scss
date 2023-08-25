@@ -66,6 +66,10 @@ $dark-gray: rgb(68, 68, 68);
 	margin-top: 20px;
 }
 
+.navbar__item.active .navbar__button {
+	background-color: white;
+}
+
 .navbar__button {
 	width: 48px;
 	height: 48px;
@@ -76,7 +80,7 @@ $dark-gray: rgb(68, 68, 68);
 }
 
 .navbar__button:hover {
-	background-color: white;
+	background-color: rgba(0, 0, 0, 0.1);
 }
 
 .navbar__icon {
