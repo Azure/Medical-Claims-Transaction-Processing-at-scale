@@ -13,6 +13,7 @@ using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using Azure.Identity;
 
 namespace CoreClaims.WebAPI
 {
@@ -50,8 +51,14 @@ namespace CoreClaims.WebAPI
             builder.Services.AddSingleton(s =>
             {
                 var endpoint = builder.Configuration[Constants.Connections.CosmosDbEndpoint];
+                var clientId = builder.Configuration[Constants.Identity.ClientId];
 
-                return new CosmosClientBuilder(endpoint, new Azure.Identity.DefaultAzureCredential())
+                var credential = new ChainedTokenCredential(
+                    new ManagedIdentityCredential(clientId),
+                    new AzureCliCredential()
+                );
+
+                return new CosmosClientBuilder(endpoint, credential)
                     .Build();
             });
             builder.Services.AddSingleton<IEventHubService, EventHubService>(s => new EventHubService(

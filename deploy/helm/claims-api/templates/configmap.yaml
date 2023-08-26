@@ -20,3 +20,4 @@ data:
   BusinessRuleOptions__DemoManagerAdjudicatorId: {{ .Values.businessRuleOptions.demoManagerAdjudicatorId }}
   RulesEngine__OpenAIEndpoint: {{ .Values.rulesEngine.openAiEndpoint }}
   RulesEngine__OpenAICompletionsDeployment: {{ .Values.rulesEngine.openAiCompletionsDeployment }}
+  ClientId: {{ .Values.azureWorkloadIdentity.apiClientId }}

@@ -44,6 +44,7 @@ env:
     - name: BusinessRuleOptions__DemoMode
     - name: BusinessRuleOptions__DemoAdjudicatorId
     - name: BusinessRuleOptions__DemoManagerAdjudicatorId
+    - name: ClientId
   # secret:
   #   - name: RulesEngine__OpenAIKey
   values:
