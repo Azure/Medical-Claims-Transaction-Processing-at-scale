@@ -1,0 +1,20 @@
+azureWebJobsStorage:
+  accountName: "adlcoreclaims639d5"
+coreClaimsCosmosDb:
+  accountEndpoint: "https://dbcoreclaims639d5.documents.azure.com:443/"
+coreClaimsEventHub:
+  fullyQualifiedNamespace: "ehcoreclaims639d5.servicebus.windows.net"
+businessRuleOptions:
+  autoApproveThreshold: 200
+  requireManagerApproval: 500
+  demoMode: true
+  demoAdjudicatorId: df166300-5a78-3502-a46a-832842197811
+  demoManagerAdjudicatorId: a735bf55-83e9-331a-899d-a82a60b9f60c
+rulesEngine:
+  openAiEndpoint: "https://openai-coreclaims-639d5.openai.azure.com/"
+  openAiKey: "176130eff28e42d4ad7f8f0c89540ba5"
+  openAiCompletionsDeployment: "completions"
+azureWorkloadIdentity:
+  apiClientId: 4c1ef30a-3df7-459d-882c-bb0bb0c596cc
+  workerClientId: 3aeb0d76-c50c-4502-9f6e-20f8a9b360dd
+  tenantId: 154615cb-ca65-4874-bb69-e6b56a6cb169
