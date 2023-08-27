@@ -112,27 +112,27 @@ function LineItemsTable({ data }){
 
 function LineItemsDataTable({ headers, data }){
 	return(
-	    <Table className="w-full" hoverable>
-	      <Table.Head>
-	        {headers.map((header) => (
-	          <Table.HeadCell key={header.key} className="!p-4">
-	            {header.name}
-	          </Table.HeadCell>
-	        ))}
-	      </Table.Head>
+			<Table className="w-full" hoverable>
+				<Table.Head>
+					{headers.map((header) => (
+						<Table.HeadCell key={header.key} className="!p-4">
+							{header.name}
+						</Table.HeadCell>
+					))}
+				</Table.Head>
 
-	      <Table.Body className="divide-y">
-	        {data.map((row) => (
-	          <Table.Row key={row.lineItemNo} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-	            {headers.map((header, index) => (
-	              <Table.Cell key={`${row.lineItemNo}-${index}`} className="!p-4">
-	                { formatValues(header.key, row[header.key])}
-	              </Table.Cell>
-	            ))}
-	          </Table.Row>
-	        ))}
-	      </Table.Body>
-	    </Table>
+				<Table.Body className="divide-y">
+					{data.map((row) => (
+						<Table.Row key={row.lineItemNo} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+							{headers.map((header, index) => (
+								<Table.Cell key={`${row.lineItemNo}-${index}`} className="!p-4">
+									{ formatValues(header.key, row[header.key])}
+								</Table.Cell>
+							))}
+						</Table.Row>
+					))}
+				</Table.Body>
+			</Table>
 	);
 }
 
