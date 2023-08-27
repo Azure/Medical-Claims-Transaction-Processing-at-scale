@@ -2,6 +2,13 @@
 import { useState } from 'react';
 import { Table, Pagination, Spinner } from 'flowbite-react';
 
+const paginationTheme = {
+	pages: {
+		selector: {
+			active: 'bg-slate-200',
+		}
+	}
+};
 
 export default function DataTable(props) {
 	let {
@@ -60,6 +67,7 @@ export default function DataTable(props) {
 
 			{/* Pagination */}
 			{pagination && <Pagination
+				theme={paginationTheme}
 				className="p-6 flex justify-center"
 				currentPage={page}
 				onPageChange={(newPage) => onPageChange(newPage)}
