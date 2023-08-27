@@ -8,8 +8,9 @@ export default function DataTable(props) {
 		isLoading,
 		headers = [],
 		data = [],
+		pagination = false,
 		page = 1,
-		onPageChange,
+		onPageChange = () => {},
 		extraHeaders,
 		extraRowItems,
 		rowFormatter
@@ -58,12 +59,12 @@ export default function DataTable(props) {
 			}
 
 			{/* Pagination */}
-			<Pagination
+			{pagination && <Pagination
 				className="p-6 flex justify-center"
 				currentPage={page}
 				onPageChange={(newPage) => onPageChange(newPage)}
 				totalPages={100}
-			/>
+			/>}
 		</>
 	);
 };

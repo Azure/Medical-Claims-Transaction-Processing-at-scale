@@ -27,6 +27,7 @@ export default function Payers() {
 						isLoading={isLoading}
 						headers={tableHeaders}
 						data={data}
+						pagination={true}
 						page={page}
 						onPageChange={(newPage) => setPage(newPage)}
 					/>

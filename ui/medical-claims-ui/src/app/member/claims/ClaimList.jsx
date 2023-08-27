@@ -79,6 +79,7 @@ export default function ClaimList({ memberId }){
 						isLoading={requestClaims.isLoading}
 						headers={tableHeaders}
 						data={requestClaims.data}
+						pagination={true}
 						page={page}
 						onPageChange={(newPage) => setPage(newPage)}
 						rowFormatter={formatValues}
