@@ -67,20 +67,20 @@ export default function ClaimDetails({ claimId, requestClaims }){
 				</div>
 			</div>
 			<FormModal header={recModalHeader} openModal={isRecModalOpen} setOpenModal={setIsRecModalOpen} >
-			  <RecommendActionForm claimId={claimId} setOpenModal={setIsRecModalOpen} openModal={isRecModalOpen} />
+				<RecommendActionForm claimId={claimId} setOpenModal={setIsRecModalOpen} openModal={isRecModalOpen} />
 			</FormModal>
 		</>
 	) : <Spinner aria-label="Loading..." />);
 }
 
 const FormModal = ({ children, header, setOpenModal, openModal }) => {
-  return (
-    <Modal show={openModal} size="xl" popup onClose={() => setOpenModal(false)} 
-    	className='justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none'>
-      <Modal.Header className="items-center">{header}</Modal.Header>
-      <Modal.Body>{children}</Modal.Body>
-    </Modal>
-  );
+	return (
+		<Modal show={openModal} size="xl" popup onClose={() => setOpenModal(false)} 
+			className='justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none'>
+			<Modal.Header className="items-center">{header}</Modal.Header>
+			<Modal.Body>{children}</Modal.Body>
+		</Modal>
+	);
 };
 
 const RecommendActionForm = ({ claimId, setOpenModal, openModal }) => {
@@ -88,51 +88,51 @@ const RecommendActionForm = ({ claimId, setOpenModal, openModal }) => {
 	const [ recommendation, setRecommendation ] = useState('');
 
 	const [form, setForm] = useState({
-	  claimId
+		claimId
 	});
 
 	useEffect(()=>{
 		setRecommendation('');
 	}, [openModal]);
-  
+	
 
 	const {trigger} = TransactionsStatement.GetClaimRecommendation(claimId);
 
 	const [isLoading, setIsLoading] = useState(false);
 	const onClickCancel = () => {
-	  setForm({ claimId: ''});
-	  //ref.current.value = '';
-	  setRecommendation('');
-	  setIsLoading(false);
-	  setOpenModal(false);
+		setForm({ claimId: ''});
+		//ref.current.value = '';
+		setRecommendation('');
+		setIsLoading(false);
+		setOpenModal(false);
 	};
-  
+	
 	const onSubmit = async () => {		
-	  setIsLoading(true);
-	  const response = await trigger({});
-	  console.log(response.trim());
-	  setRecommendation(response.trim());
-	  setIsLoading(false);
+		setIsLoading(true);
+		const response = await trigger({});
+		console.log(response.trim());
+		setRecommendation(response.trim());
+		setIsLoading(false);
 	};
  
 	return (
-	  <div className="space-y-6">
+		<div className="space-y-6">
 		<div className="mb-4">
-		  <div className="mb-2 block">
+			<div className="mb-2 block">
 			<Textarea id="results" name="results" value={recommendation} className='h-20'/>
-		  </div>
+			</div>
 		</div>
 		<div className="w-full flex justify-between pt-4">
-		  <Button color="light" onClick={onClickCancel}>
+			<Button color="light" onClick={onClickCancel}>
 			Cancel
-		  </Button>
-		  <Button color="dark" onClick={()=>{ onSubmit() }}>
+			</Button>
+			<Button color="dark" onClick={()=>{ onSubmit() }}>
 			{isLoading ? <Spinner color="white" size="md" /> : 'Submit'}
-		  </Button>
+			</Button>
 		</div>
-	  </div>
+		</div>
 	);
-  };
+	};
 
 function ClaimsActions({claimStatus, claimId, requestClaims, lineItems }){
 	switch(claimStatus){
@@ -179,30 +179,30 @@ function LineItemsTable({ data, setLineItems }){
 
 function LineItemsDataTable({headers, data, setLineItems}){
 	return(
-	    <Table id='claimsList' className="w-full" hoverable>
-	      <Table.Head>
-	        {headers.map((header) => (
-	          <Table.HeadCell key={header.key} className="!p-4">
-	            {header.name}
-	          </Table.HeadCell>
-	        ))}
-	        {/*<Table.HeadCell className="!p-4"/>*/}
-	      </Table.Head>
-	      <Table.Body className="divide-y">
-	        {data.map((row) => (
-	          <Table.Row key={row.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-	            {Object.values(headers).map((header, index) => (
-	              <Table.Cell key={`${row.id}-${index}`} className="!p-4">
-	                { formatValues(header.key, row[header.key])}
-	              </Table.Cell>
-	            ))}
+			<Table id='claimsList' className="w-full" hoverable>
+				<Table.Head>
+					{headers.map((header) => (
+						<Table.HeadCell key={header.key} className="!p-4">
+							{header.name}
+						</Table.HeadCell>
+					))}
+					{/*<Table.HeadCell className="!p-4"/>*/}
+				</Table.Head>
+				<Table.Body className="divide-y">
+					{data.map((row) => (
+						<Table.Row key={row.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+							{Object.values(headers).map((header, index) => (
+								<Table.Cell key={`${row.id}-${index}`} className="!p-4">
+									{ formatValues(header.key, row[header.key])}
+								</Table.Cell>
+							))}
 {/*	            <Table.Cell className="!p-4">
-	            	<ApplyDiscount {...{row, data, setLineItems}}/>
-	            </Table.Cell>*/}
-	          </Table.Row>
-	        ))}
-	      </Table.Body>
-	    </Table>
+								<ApplyDiscount {...{row, data, setLineItems}}/>
+							</Table.Cell>*/}
+						</Table.Row>
+					))}
+				</Table.Body>
+			</Table>
 	);
 }
 
@@ -212,11 +212,11 @@ const ApplyDiscount = ({row, data, setLineItems}) => {
 	const dicountRef = useRef(0);
 
 	const onSave = ()=>{
-    var list = [...data];
-    var lineItem = list.filter(x => x.lineItemNo == row.lineItemNo)[0];
-    lineItem.discount = parseFloat(dicountRef.current);
-    setLineItems(list);
-    setOpenModal(false);
+		var list = [...data];
+		var lineItem = list.filter(x => x.lineItemNo == row.lineItemNo)[0];
+		lineItem.discount = parseFloat(dicountRef.current);
+		setLineItems(list);
+		setOpenModal(false);
 	}
 
 	const onChange = (e) => {
@@ -226,23 +226,23 @@ const ApplyDiscount = ({row, data, setLineItems}) => {
 	return(
 		<>
 			<Link href='#' onClick={()=> setOpenModal(true)}>Apply Discount</Link>
-	    <Modal show={openModal} size="xl" popup onClose={() => setOpenModal(false)} 
-	    	className='justify-center items-center flex overflow-x-hidden overflow-y-auto 
-	    	fixed inset-0 z-50 outline-none focus:outline-none'
-    	>
-	      <Modal.Header className="items-center">Apply Dicount</Modal.Header>
-	      <Modal.Body className='mt-10'>
+			<Modal show={openModal} size="xl" popup onClose={() => setOpenModal(false)} 
+				className='justify-center items-center flex overflow-x-hidden overflow-y-auto 
+				fixed inset-0 z-50 outline-none focus:outline-none'
+			>
+				<Modal.Header className="items-center">Apply Dicount</Modal.Header>
+				<Modal.Body className='mt-10'>
 					<input type="number" ref={dicountRef} onChange={(e)=>onChange(e)}
 						className='shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' />
-	      </Modal.Body>
-	      <Modal.Footer>
-  				<button
+				</Modal.Body>
+				<Modal.Footer>
+					<button
 						className="bg-green-500 text-white active:bg-green-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
 						type="button" onClick={onSave}>
 						Apply
 					</button>
-	      </Modal.Footer>
-	    </Modal>
+				</Modal.Footer>
+			</Modal>
 		</>
 	);
 }
