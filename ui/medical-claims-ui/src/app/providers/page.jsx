@@ -9,8 +9,9 @@ const tableHeaders = [
 	{ key: 'name', name: 'Name' },
 	{ key: 'email', name: 'Email' },
 	{ key: 'phoneNumber', name: 'PhoneNumber' },
-	{ key: 'city', name: 'City' },
-	{ key: 'state', name: 'State' }
+	{ key: 'country', name: 'Country' },
+	// { key: 'city', name: 'City' },
+	// { key: 'state', name: 'State' }
 ];
 
 export default function Providers() {	
