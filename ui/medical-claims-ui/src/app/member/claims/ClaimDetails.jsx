@@ -33,7 +33,7 @@ function formatValues(header, value, row) {
 	}
 }
 
-export default function ClaimDetails({ claimId, requestClaims }){
+export default function ClaimDetails({ claimId }){
 	const { data, isLoading } = TransactionsStatement.GetClaimDetails(claimId);
 	const [page, setPage] = useState(1);
 
