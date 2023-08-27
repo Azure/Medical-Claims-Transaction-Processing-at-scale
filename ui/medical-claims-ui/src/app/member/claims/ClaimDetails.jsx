@@ -22,6 +22,9 @@ function formatValues(header, value, row) {
 		case 'serviceDate':
 			return moment(value).format('YYYY-MM-DD');
 			break;
+		case 'amount':
+			return money.format(value);
+			break;
 		case 'discount':
 			return money.format(value);
 			break;
