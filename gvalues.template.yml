@@ -18,3 +18,5 @@ azureWorkloadIdentity:
   apiClientId: {{apiClientId}}
   workerClientId: {{workerClientId}}
   tenantId: {{tenantId}}
+applicationInsights:
+  connectionString: "{{aiConnectionString}}"

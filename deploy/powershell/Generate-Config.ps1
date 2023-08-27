@@ -29,6 +29,7 @@ if (-not $rg) {
 $tokens=@{}
 
 ## Getting Datalake info
+$dataLakeEndpoint=$(az storage account list -g $resourceGroup -o json | ConvertFrom-Json)[0].primaryEndpoints.dfs
 $dataLakeAccountName=$(az storage account list -g $resourceGroup -o json | ConvertFrom-Json)[0].name
 
 ## Getting Function App info
@@ -51,6 +52,7 @@ if ($appInsightsName -and $appInsightsName.Length -eq 1) {
 
     if ($appinsightsConfig) {
         $appinsightsId = $appinsightsConfig.instrumentationKey           
+        $appinsightsConnectionString = $appinsightsConfig.connectionString 
     }
 }
 Write-Host "App Insights Instrumentation Key: $appinsightsId" -ForegroundColor Yellow
@@ -72,6 +74,7 @@ Write-Host "settings.json files will be generated with values:"
 
 $tokens.suffix=$suffix
 $tokens.cosmosEndpoint=$docdb.documentEndpoint
+$tokens.dataLakeEndpoint=$dataLakeEndpoint
 $tokens.dataLakeAccountName=$dataLakeAccountName
 $tokens.eventHubKey=$eventHubKey
 $tokens.openAiEndpoint=$openAi.endpoint
@@ -80,6 +83,7 @@ $tokens.openAiCompletionsDeployment=$openAiDeployment
 $tokens.apiClientId=$apiIdentityClientId
 $tokens.workerClientId=$workerIdentityClientId
 $tokens.tenantId=$tenantId
+$tokens.aiConnectionString=$appinsightsConnectionString
 
 # Standard fixed tokens
 $tokens.ingressclass=$ingressClass

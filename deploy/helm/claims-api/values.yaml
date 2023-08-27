@@ -49,6 +49,7 @@ env:
     - name: ClientId
   secret:
     - name: RulesEngine__OpenAIKey
+    - name: ApplicationInsights__ConnectionString
   values:
     - name: ASPNETCORE_ENVIRONMENT
       value: Production

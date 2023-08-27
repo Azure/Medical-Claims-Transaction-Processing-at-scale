@@ -17,7 +17,7 @@ az synapse linked-service create --workspace-name $workspaceName --name sollianc
 $datasets = Get-ChildItem ./dataset
 foreach ($dataset in $datasets) {
     $name = $dataset.BaseName
-    az synapse dataset create --workspace-name $workspaceName --name "${name}${suffix}" --file "@""./dataset/$dataset"
+    az synapse dataset create --workspace-name $workspaceName --name "${name}" --file "@""./dataset/$dataset"
 }
 
 az synapse pipeline create --workspace-name $workspaceName --file '@"pipeline/Initial-Ingestion.json"' --name Initial-Ingestion
