@@ -58,7 +58,7 @@ export default function Members() {
 	const [ coverageByMemberId, setCoverageByMemberId ] = useState(null);
 	const [ showMembersTable, setShowMembersTable ] = useState(true);
 
-	return(
+	return (
 		<>
 			<div className="card">
 				<div className="card-header">
@@ -100,11 +100,11 @@ export default function Members() {
 				</div>
 			</div>
 
-			{	showMemberDetail ? (<MemberDetail memberId={memberId}/>) : null }
+			{	showMemberDetail && (<MemberDetail memberId={memberId} />) }
 
-			{ showCoverageModal ? <MemberCoverageModal memberId={memberId} {...{showCoverageModal, setShowCoverageModal}} /> : null}
+			{ showCoverageModal && <MemberCoverageModal memberId={memberId} {...{showCoverageModal, setShowCoverageModal}} /> }
 			
-			{	showClaimsList ? (<ClaimList memberId={memberId}/>) : null }
+			{	showClaimsList && (<ClaimList memberId={memberId} />) }
 
 		</>
 	);
