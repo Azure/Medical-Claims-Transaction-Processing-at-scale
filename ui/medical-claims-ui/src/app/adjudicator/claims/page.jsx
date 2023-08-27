@@ -1,11 +1,11 @@
 'use client';
 
 import { Tabs } from 'flowbite-react';
-import ClaimsByAdjudicator from './ClaimsByAdjudicator'
-import './style.css'
+import ClaimsByAdjudicator from './ClaimsByAdjudicator';
+import './style.css';
 
 
-export default function page() {
+export default function Adjudicator() {
 	return(
 		<>
 			<h3 className='text-3xl'>

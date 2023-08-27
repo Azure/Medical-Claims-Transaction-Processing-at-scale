@@ -12,7 +12,7 @@ import { AcknowledgeButton, DenyClaimButton, ProposeClaimButton, ApproveClaimBut
 
 let money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 
-export default function ClaimDetails({ claimId, requestClaims, isManager, setChangeDetail }){
+export default function ClaimDetails({ claimId, requestClaims, isManager, setChangeDetail }) {
 	const { data, isLoading, mutate } = TransactionsStatement.GetClaimDetails(claimId);
 
 	const [isRecModalOpen, setIsRecModalOpen] = useState('');

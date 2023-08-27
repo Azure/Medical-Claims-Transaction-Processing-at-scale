@@ -11,10 +11,10 @@ import DataTable from '../../components/DataTable';
 const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 
 const tableHeaders = [
-	{ key: 'procedureCode', name: 'Procedure Code'},
-	{ key: 'description', name: 'Description'},
-	{ key: 'serviceDate', name: 'Service Date'},
-	{ key: 'amount', name: 'Amount'}
+	{ key: 'procedureCode', name: 'Procedure Code' },
+	{ key: 'description', name: 'Description' },
+	{ key: 'serviceDate', name: 'Service Date' },
+	{ key: 'amount', name: 'Amount' }
 ];
 
 function formatValues(header, value, row) {
