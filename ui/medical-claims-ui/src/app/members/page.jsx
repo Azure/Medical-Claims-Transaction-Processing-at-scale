@@ -70,6 +70,7 @@ export default function Members() {
 							isLoading={isLoading}
 							headers={tableHeaders}
 							data={data}
+							pagination={true}
 							page={page}
 							onPageChange={(newPage) => setPage(newPage)}
 							rowFormatter={formatValues}

@@ -65,6 +65,7 @@ export default function ClaimDetails({ claimId }){
 							<DataTable
 								headers={tableHeaders}
 								data={data.lineItems ?? []}
+								pagination={true}
 								page={page}
 								onPageChange={(newPage) => setPage(newPage)}
 								rowFormatter={formatValues}

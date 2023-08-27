@@ -29,6 +29,7 @@ export default function Providers() {
 						isLoading={isLoading}
 						headers={tableHeaders}
 						data={data}
+						pagination={true}
 						page={page}
 						onPageChange={(newPage) => setPage(newPage)}
 					/>
