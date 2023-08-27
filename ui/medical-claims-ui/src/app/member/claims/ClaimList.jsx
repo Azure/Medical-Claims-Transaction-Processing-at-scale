@@ -79,15 +79,15 @@ function ClaimsTable({ data, claimId, setClaimId, setShowClaimDetail, setShowHis
 	return(
 		<>
 			<Datatable headers={headers} {...{data, claimId, setClaimId, setShowClaimDetail, setShowHistory }}/>
-      <Pagination
-        className="p-6 self-center"
-        currentPage={page}
-        onPageChange={(page) => {
-          setPage(page);
-          //setContinuationToken(data.continuationToken);
-        }}
-        totalPages={100} 
-      />
+			<Pagination
+				className="p-6 self-center"
+				currentPage={page}
+				onPageChange={(page) => {
+					setPage(page);
+					//setContinuationToken(data.continuationToken);
+				}}
+				totalPages={100} 
+			/>
 		</>
 	);
 }
@@ -105,40 +105,40 @@ const Datatable = ({ claimId, setClaimId, setShowClaimDetail, setShowHistory, he
 		setShowClaimDetail(false);
 	}
 
-  return (
-    <Table className="w-full" hoverable>
-      <Table.Head>
-        {headers.map((header) => (
-          <Table.HeadCell key={header.key} className="!p-4">
-            {header.name}
-          </Table.HeadCell>
-        ))}
-        <Table.HeadCell className="!p-4"/>
-        <Table.HeadCell className="!p-4"/>
-      </Table.Head>
-      <Table.Body className="divide-y">
-        {data.map((row) => (
-          <Table.Row key={row.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-            {Object.values(headers).map((header, index) => (
-              <Table.Cell key={`${row.id}-${index}`} className="!p-4" style={header.style}>
-                { formatValues(header.key, row[header.key])}
-              </Table.Cell>
-            ))}
-            <Table.Cell className="!p-4">
-            	<Link href='#' onClick={()=> viewDetails(row.claimId)}>Details</Link>
-            </Table.Cell>
-           <Table.Cell className="!p-4">
-            	<Link href='#' onClick={()=> viewHistory(row.claimId)}>View History</Link>
-            </Table.Cell>
-          </Table.Row>
-        ))}
-      </Table.Body>
-    </Table>
-  );
+	return (
+		<Table className="w-full" hoverable>
+			<Table.Head>
+				{headers.map((header) => (
+					<Table.HeadCell key={header.key} className="!p-4">
+						{header.name}
+					</Table.HeadCell>
+				))}
+				<Table.HeadCell className="!p-4"/>
+				<Table.HeadCell className="!p-4"/>
+			</Table.Head>
+			<Table.Body className="divide-y">
+				{data.map((row) => (
+					<Table.Row key={row.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+						{Object.values(headers).map((header, index) => (
+							<Table.Cell key={`${row.id}-${index}`} className="!p-4" style={header.style}>
+								{ formatValues(header.key, row[header.key])}
+							</Table.Cell>
+						))}
+						<Table.Cell className="!p-4">
+							<Link href='#' onClick={()=> viewDetails(row.claimId)}>Details</Link>
+						</Table.Cell>
+					 <Table.Cell className="!p-4">
+							<Link href='#' onClick={()=> viewHistory(row.claimId)}>View History</Link>
+						</Table.Cell>
+					</Table.Row>
+				))}
+			</Table.Body>
+		</Table>
+	);
 };
 
 
-function formatValues(headerKey, value){
+function formatValues(headerKey, value) {
 	let money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 
 	switch(headerKey){
