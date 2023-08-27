@@ -45,8 +45,8 @@ env:
     - name: BusinessRuleOptions__DemoAdjudicatorId
     - name: BusinessRuleOptions__DemoManagerAdjudicatorId
     - name: ClientId
-  # secret:
-  #   - name: RulesEngine__OpenAIKey
+  secret:
+    - name: ApplicationInsights__ConnectionString
   values:
     - name: ASPNETCORE_ENVIRONMENT
       value: Production
