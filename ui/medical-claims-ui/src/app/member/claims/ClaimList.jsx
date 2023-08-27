@@ -64,15 +64,11 @@ export default function ClaimList({ memberId }){
 
 	return (
 		<>
-			{(!requestMember.isLoading && requestMember.data) && (
-				<h3 className='text-2xl mb-10'>
-					Member Claims for {requestMember.data.firstName} {requestMember.data.lastName}
-				</h3>
-			)}
-
-			<div className="card">
+			<div className="card mt-10">
 				<div className="card-header">
-					<h4 className="card-title">Claims</h4>
+					{(!requestMember.isLoading && requestMember.data) && (
+						<h4 className="card-title">Member Claims for {requestMember.data.firstName} {requestMember.data.lastName}</h4>
+					)}
 				</div>
 				<div className="card-body">
 					<DataTable
