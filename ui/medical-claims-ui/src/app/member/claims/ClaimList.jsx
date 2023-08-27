@@ -64,7 +64,7 @@ export default function ClaimList({ memberId }){
 
 	return (
 		<>
-			<div className="card mt-10">
+			<div className="card mt-10 shadow-md">
 				<div className="card-header">
 					{(!requestMember.isLoading && requestMember.data) && (
 						<h4 className="card-title">Member Claims for {requestMember.data.firstName} {requestMember.data.lastName}</h4>

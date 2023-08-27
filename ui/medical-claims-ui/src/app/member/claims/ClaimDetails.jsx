@@ -39,7 +39,7 @@ export default function ClaimDetails({ claimId }){
 
 	return((!isLoading && data) ? (
 		<>
-			<div className="card mt-10">
+			<div className="card mt-10 shadow-md">
 				<div className="card-header grid grid-cols-2">
 					<h4 className="card-title">Claim Details</h4>
 					<div className='text-right'><label>Filing Date: </label>{ moment(data.filingDate).format('MMMM DD, YYYY') }</div>
@@ -65,7 +65,6 @@ export default function ClaimDetails({ claimId }){
 							<DataTable
 								headers={tableHeaders}
 								data={data.lineItems ?? []}
-								pagination={true}
 								page={page}
 								onPageChange={(newPage) => setPage(newPage)}
 								rowFormatter={formatValues}

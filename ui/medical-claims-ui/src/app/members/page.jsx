@@ -60,7 +60,7 @@ export default function Members() {
 
 	return (
 		<>
-			<div className="card">
+			<div className="card shadow-md">
 				<div className="card-header">
 					<h4 className="card-title">Members</h4>
 				</div>

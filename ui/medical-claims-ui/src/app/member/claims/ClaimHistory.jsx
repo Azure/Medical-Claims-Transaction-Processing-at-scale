@@ -36,10 +36,10 @@ export default function ClaimHistory({ claimId }) {
 	const historyRequest = TransactionsStatement.GetClaimHistory(claimId);
 
 	return ((!claimRequest.isLoading && claimRequest.data) ? (
-		<>
+		<div className="shadow-md">
 			<div className="card mt-10">
 				<div className="card-header grid grid-cols-2">
-					<h4 className="card-title">Claim Details</h4>
+					<h4 className="card-title">Claim History</h4>
 					<div className='text-right'><label>Filing Date: </label>{ moment(claimRequest.data.filingDate).format('MMMM DD, YYYY') }</div>
 				</div>
 				<div className="card-body">
@@ -71,6 +71,7 @@ export default function ClaimHistory({ claimId }) {
 							<DataTable
 								headers={tableHeaders}
 								data={claimRequest.data.lineItems}
+								rowFormatter={formatValues}
 							/>
 						</div>
 					</div>
@@ -82,13 +83,13 @@ export default function ClaimHistory({ claimId }) {
 					return(<HistoryItem key={item.id} data={item}/>)
 				})
 			) : null}
-		</>
+		</div>
 	) : null);
 }
 
 function HistoryItem({ data }) {
 	return (
-		<div className="card bg-gray-200 mb-10 mt-10">
+		<div className="card bg-gray-200 mt-1">
 			<div className="card-body">
 				<div className="relative overflow-x-auto sm:rounded">
 					<div className='grid grid-cols-2'>
@@ -118,6 +119,7 @@ function HistoryItem({ data }) {
 						<DataTable
 							headers={tableHeaders}
 							data={data.lineItems}
+							rowFormatter={formatValues}
 						/>
 					</div>
 				</div>
