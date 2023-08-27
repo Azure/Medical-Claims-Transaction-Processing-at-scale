@@ -27,7 +27,7 @@ export default function ClaimDetails({ claimId, requestClaims, isManager, setCha
 
 	return((!isLoading && data) ? (
 		<>
-			<div className="card">
+			<div className="card shadow-md">
 				<div className="card-header grid grid-cols-2">
 					<h4 className="card-title">Claim Details</h4>
 					<div className='text-right'><label>Filing Date: </label>{ Moment(data.filingDate).format('MMMM DD, YYYY') }</div>

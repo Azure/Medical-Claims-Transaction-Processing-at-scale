@@ -73,7 +73,7 @@ export default function ClaimsByAdjudicator({adjudicatorId, isManager}) {
 
 	return (
 		<>
-			<div className="card mb-10">
+			<div className="card mb-10 shadow-md">
 				<div className="card-header">
 					<h4 className="card-title">Claims</h4>
 				</div>
