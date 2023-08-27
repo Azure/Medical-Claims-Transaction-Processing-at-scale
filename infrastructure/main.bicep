@@ -22,6 +22,7 @@ var serviceNames = {
   openAi: 'openai-${appName}'
   apimi: 'mi-api-${appName}'
   workermi: 'mi-worker-${appName}'
+  ai: 'ai-${appName}'
 }
 
 module storage 'storage.bicep' = {
@@ -113,6 +114,21 @@ module aks 'AKS-construction/bicep/main.bicep' = {
     JustUseSystemPool: true
   }
   dependsOn: [cosmosDb, storage, openAi]
+}
+
+resource ai 'Microsoft.Insights/components@2020-02-02' = {
+  name: serviceNames.ai
+  location: location
+  kind: 'web'
+  properties: {
+    Application_Type: 'web'
+    Flow_Type: 'Bluefield'
+    IngestionMode: 'LogAnalytics'
+    publicNetworkAccessForIngestion: 'Enabled'
+    publicNetworkAccessForQuery: 'Enabled'
+    RetentionInDays: 30
+    WorkspaceResourceId: aks.outputs.LogAnalyticsId
+  }
 }
 
 resource apiIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' = {
