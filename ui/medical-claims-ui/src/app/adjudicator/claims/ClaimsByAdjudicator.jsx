@@ -7,7 +7,7 @@ import Moment from 'moment';
 
 import TransactionsStatement from '../../hooks/TransactionsStatement';
 import ClaimDetails from './ClaimDetails';
-import ClaimHistory from './ClaimHistory';
+import ClaimHistory from '../../member/claims/ClaimHistory';
 import DataTable from '../../components/DataTable';
 
 const tableHeaders = [
