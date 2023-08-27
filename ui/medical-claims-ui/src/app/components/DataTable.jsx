@@ -28,7 +28,7 @@ export default function DataTable(props) {
 					{/* Table headers */}
 					<Table.Head>
 						{headers.map((header) => (
-							<Table.HeadCell key={header.key} className="!p-4">
+							<Table.HeadCell key={header.key}>
 								{header.name}
 							</Table.HeadCell>
 						))}
@@ -41,7 +41,7 @@ export default function DataTable(props) {
 						{data.map((row, rowIndex) => (
 							<Table.Row key={rowIndex} className="bg-white dark:border-gray-700 dark:bg-gray-800">
 								{Object.values(headers).map((header, cellIndex) => (
-									<Table.Cell key={`${rowIndex}-${cellIndex}`} className="!p-4">
+									<Table.Cell key={`${rowIndex}-${cellIndex}`} style={header.itemStyle}>
 										{formatRowItem(header, row[header.key], row)}
 									</Table.Cell>
 								))}
