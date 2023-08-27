@@ -6,9 +6,9 @@ export default function MemberDetail({memberId}){
 
 	return(
 		!isLoading ? (
-			<div className="card mt-10">
+			<div className="card mt-10 shadow-md">
 				<div className="card-header">
-					<h4 className="card-title">Member Detail for {data.firstName} {data.lastName}</h4>
+					<h4 className="card-title">Member Details for {data.firstName} {data.lastName}</h4>
 				</div>
 				<div className="card-body">
 					<div className="relative overflow-x-auto sm:rounded">

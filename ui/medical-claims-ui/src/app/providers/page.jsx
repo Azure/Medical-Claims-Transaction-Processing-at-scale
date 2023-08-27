@@ -18,7 +18,7 @@ export default function Providers() {
 	const { data, isLoading } = TransactionsStatement.GetProviders(page, 10);
 
 	return (
-		<div className="card">
+		<div className="card shadow-md">
 			<div className="card-header">
 				<h4 className="card-title">Providers</h4>
 			</div>

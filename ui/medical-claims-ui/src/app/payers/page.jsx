@@ -18,7 +18,7 @@ export default function Payers() {
 
 	return(
 		<>
-			<div className="card">
+			<div className="card shadow-md">
 				<div className="card-header">
 					<h4 className="card-title">Payers</h4>
 				</div>
