@@ -19,10 +19,10 @@ const tableHeaders = [
 	{ key: 'totalAmount', name: 'Total Amount'}
 ];
 
-function formatValues(headerKey, value) {
+function formatValues(header, value, row) {
 	let money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 
-	switch(headerKey){
+	switch(header.key) {
 		case 'filingDate':
 			return moment(value).format('YYYY-MM-DD');
 			break;		
@@ -47,17 +47,17 @@ export default function ClaimList({ memberId }){
 	const requestClaims = TransactionsStatement.GetClaimsByMemberId(memberId, page, 5);
 
 	const [claimId, setClaimId] = useState(null);
-	const [ showClaimDetail, setShowClaimDetail ] = useState(false);
-	const [ showHistory, setShowHistory ] = useState(false);
+	const [showClaimDetail, setShowClaimDetail] = useState(false);
+	const [showHistory, setShowHistory] = useState(false);
 
-	const viewDetails = (claimId)=> {
-		setClaimId(claimId);
+	const viewDetails = (newClaimId)=> {
+		setClaimId(newClaimId);
 		setShowClaimDetail(true);
 		setShowHistory(false);
 	}
 
-	const viewHistory = (claimId)=> {
-		setClaimId(claimId);
+	const viewHistory = (newClaimId)=> {
+		setClaimId(newClaimId);
 		setShowHistory(true);
 		setShowClaimDetail(false);
 	}
