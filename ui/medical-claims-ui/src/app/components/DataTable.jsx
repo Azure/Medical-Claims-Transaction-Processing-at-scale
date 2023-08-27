@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Table, Pagination, Spinner } from 'flowbite-react';
 
 
-export default function Datatable(props) {
+export default function DataTable(props) {
 	let {
 		isLoading,
 		headers = [],
