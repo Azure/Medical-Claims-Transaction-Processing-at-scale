@@ -11,12 +11,12 @@ import DataTable from '../../components/DataTable';
 
 
 const tableHeaders = [
-	{ key: 'filingDate', name: 'Filing Date'},
-	{ key: 'claimStatus', name: 'Claim Status', itemStyle: { backgroundColor: 'rgb(253, 248, 170)' }},
-	{ key: 'providerName', name: 'Provider'},
-	{ key: 'lastAdjudicatedDate', name: 'Last Adjucated Date'},
-	{ key: 'lastAmount', name: 'Last Amout'},
-	{ key: 'totalAmount', name: 'Total Amount'}
+	{ key: 'filingDate', name: 'Filing Date' },
+	{ key: 'claimStatus', name: 'Claim Status', itemStyle: { backgroundColor: 'rgb(253, 248, 170)' } },
+	{ key: 'providerName', name: 'Provider' },
+	{ key: 'lastAdjudicatedDate', name: 'Last Adjucated Date' },
+	{ key: 'lastAmount', name: 'Last Amout' },
+	{ key: 'totalAmount', name: 'Total Amount' }
 ];
 
 function formatValues(header, value, row) {
@@ -40,7 +40,7 @@ function formatValues(header, value, row) {
 	}	
 }
 
-export default function ClaimList({ memberId }){
+export default function ClaimList({ memberId }) {
 	const [page, setPage] = useState(1);
 
 	const requestMember = TransactionsStatement.GetMember(memberId);

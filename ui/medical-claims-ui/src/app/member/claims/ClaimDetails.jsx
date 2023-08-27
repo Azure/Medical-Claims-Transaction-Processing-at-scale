@@ -10,11 +10,11 @@ import DataTable from '../../components/DataTable';
 let money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 
 const tableHeaders = [
-	{ key: 'procedureCode', name: 'Procedure Code'},
-	{ key: 'description', name: 'Description'},
-	{ key: 'serviceDate', name: 'Service Date'},
-	{ key: 'amount', name: 'Amount'},
-	{ key: 'discount', name: 'Discount'},
+	{ key: 'procedureCode', name: 'Procedure Code' },
+	{ key: 'description', name: 'Description' },
+	{ key: 'serviceDate', name: 'Service Date' },
+	{ key: 'amount', name: 'Amount' },
+	{ key: 'discount', name: 'Discount' }
 ];
 
 function formatValues(header, value, row) {
@@ -33,7 +33,7 @@ function formatValues(header, value, row) {
 	}
 }
 
-export default function ClaimDetails({ claimId }){
+export default function ClaimDetails({ claimId }) {
 	const { data, isLoading } = TransactionsStatement.GetClaimDetails(claimId);
 	const [page, setPage] = useState(1);
 

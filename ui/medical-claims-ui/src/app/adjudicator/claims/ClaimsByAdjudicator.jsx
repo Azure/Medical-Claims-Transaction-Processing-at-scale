@@ -11,13 +11,13 @@ import ClaimHistory from '../../member/claims/ClaimHistory';
 import DataTable from '../../components/DataTable';
 
 const tableHeaders = [
-	{ key: 'filingDate', name: 'Filing Date'},
-	{ key: 'claimId', name: 'Claim ID'},
-	{ key: 'claimStatus', name: 'Claim Status'},
-	{ key: 'payerName', name: 'Payer'},
-	{ key: 'lastAdjudicatedDate', name: 'Last Adjudicated Date'},
-	{ key: 'lastAmount', name: 'Last Amount'},
-	{ key: 'totalAmount', name: 'Total Amount'}
+	{ key: 'filingDate', name: 'Filing Date' },
+	{ key: 'claimId', name: 'Claim ID' },
+	{ key: 'claimStatus', name: 'Claim Status' },
+	{ key: 'payerName', name: 'Payer' },
+	{ key: 'lastAdjudicatedDate', name: 'Last Adjudicated Date' },
+	{ key: 'lastAmount', name: 'Last Amount' },
+	{ key: 'totalAmount', name: 'Total Amount' }
 ];
 
 function formatValues(header, value, row) {

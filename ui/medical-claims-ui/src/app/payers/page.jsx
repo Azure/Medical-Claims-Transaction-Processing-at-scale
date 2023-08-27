@@ -6,10 +6,10 @@ import DataTable from '../components/DataTable';
 
 
 const tableHeaders = [
-	{ key: 'name', name: 'Name'},
-	{ key: 'email', name: 'Email'},
-	{ key: 'phoneNumber', name: 'Phone Number'},
-	{ key: 'country', name: 'Country'}
+	{ key: 'name', name: 'Name' },
+	{ key: 'email', name: 'Email' },
+	{ key: 'phoneNumber', name: 'Phone Number' },
+	{ key: 'country', name: 'Country' }
 ];
 
 export default function Payers() {	

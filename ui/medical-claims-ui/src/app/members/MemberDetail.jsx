@@ -1,7 +1,7 @@
 import TransactionsStatement from '../hooks/TransactionsStatement'
 import { Spinner } from 'flowbite-react';
 
-export default function MemberDetail({memberId}){
+export default function MemberDetail({memberId}) {
 	const { data, error, isLoading } = TransactionsStatement.GetMember(memberId);
 
 	return(
