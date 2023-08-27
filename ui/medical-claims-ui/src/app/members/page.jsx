@@ -100,12 +100,12 @@ export default function Members() {
 				</div>
 			</div>
 
-			{	showClaimsList ? (<ClaimList memberId={memberId}/>) : null }
-
 			{	showMemberDetail ? (<MemberDetail memberId={memberId}/>) : null }
 
 			{ showCoverageModal ? <MemberCoverageModal memberId={memberId} {...{showCoverageModal, setShowCoverageModal}} /> : null}
 			
+			{	showClaimsList ? (<ClaimList memberId={memberId}/>) : null }
+
 		</>
 	);
 }
