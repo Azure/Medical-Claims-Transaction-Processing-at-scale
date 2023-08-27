@@ -38,10 +38,10 @@ export default function DataTable(props) {
 
 					{/* Table body */}
 					<Table.Body className="divide-y">
-						{data.map((row) => (
-							<Table.Row key={row.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-								{Object.values(headers).map((header, index) => (
-									<Table.Cell key={`${row.id}-${index}`} className="!p-4">
+						{data.map((row, rowIndex) => (
+							<Table.Row key={rowIndex} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+								{Object.values(headers).map((header, cellIndex) => (
+									<Table.Cell key={`${rowIndex}-${cellIndex}`} className="!p-4">
 										{formatRowItem(header, row[header.key], row)}
 									</Table.Cell>
 								))}
