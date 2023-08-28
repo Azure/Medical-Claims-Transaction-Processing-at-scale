@@ -6,6 +6,7 @@ import { Table, Pagination, Spinner } from 'flowbite-react';
 import Moment from 'moment';
 
 import TransactionsStatement from '../../hooks/TransactionsStatement';
+import { FormatMoney } from '../../hooks/Formatters';
 import ClaimDetails from './ClaimDetails';
 import ClaimHistory from '../../member/claims/ClaimHistory';
 import DataTable from '../../components/DataTable';
@@ -21,8 +22,6 @@ const tableHeaders = [
 ];
 
 function formatValues(header, value, row) {
-	let money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
-
 	switch(header.key) {
 		case 'filingDate':
 			return Moment(value).format('YYYY-MM-DD');
@@ -31,10 +30,10 @@ function formatValues(header, value, row) {
 			return value ? Moment(value).format('YYYY-MM-DD hh:mm a') : '-';
 			break;
 		case 'lastAmount':
-			return money.format(value);
+			return FormatMoney(value);
 			break;
 		case 'totalAmount':
-			return money.format(value);
+			return FormatMoney(value);
 			break;
 		default:
 			return value ? value : '-';
@@ -82,6 +81,7 @@ export default function ClaimsByAdjudicator({adjudicatorId, isManager}) {
 						<DataTable
 							isLoading={requestClaims.isLoading}
 							headers={tableHeaders}
+							// ! This becomes null/undefined on claim proposal
 							data={requestClaims.data}
 							pagination={true}
 							page={page}
@@ -97,10 +97,10 @@ export default function ClaimsByAdjudicator({adjudicatorId, isManager}) {
 								(row) => (
 									<>
 										<Table.Cell>
-											<Link href='#' onClick={()=> viewDetails(row.claimId)}>Details</Link>
+											<span className="hover:cursor-pointer" onClick={()=> viewDetails(row.claimId)}>Details</span>
 										</Table.Cell>
 									 	<Table.Cell>
-											<Link href='#' onClick={()=> viewHistory(row.claimId)}>View History</Link>
+											<span className="hover:cursor-pointer" onClick={()=> viewHistory(row.claimId)}>View History</span>
 										</Table.Cell>
 									</>
 								)
