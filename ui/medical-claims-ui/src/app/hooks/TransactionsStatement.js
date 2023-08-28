@@ -11,8 +11,10 @@ const fetcher = (url) =>
   axios
     .get(url, { headers: { "x-functions-key": X_FUNCTION_KEY } })
     .then((res) => res.data);
+
 const put = async (url, { arg }) =>
   await axios.put(url, arg, { headers: { "x-functions-key": X_FUNCTION_KEY } });
+
 const post = async (url, { arg }) =>
   await axios.post(url, arg, {
     headers: { "x-functions-key": X_FUNCTION_KEY },
@@ -97,6 +99,9 @@ export const UpdateClaim = (claimId) =>
 export const AcknowledgeClaim = (claimId) =>
   useSWRMutation(`${API_URL}/claim/${claimId}/acknowledge`, post);
 
+export const GetBusinessRules = () =>
+  useSWR(`${API_URL}/business-rules`, fetcher);
+
 const TransactionsStatement = {
   GetMembersList,
   GetMember,
@@ -110,6 +115,7 @@ const TransactionsStatement = {
   GetClaimHistory,
   GetClaimRecommendation,
   UpdateClaim,
+  GetBusinessRules
 };
 
 export default TransactionsStatement;

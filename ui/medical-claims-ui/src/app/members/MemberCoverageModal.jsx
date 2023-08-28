@@ -4,7 +4,7 @@ import TransactionsStatement from '../hooks/TransactionsStatement';
 import Modal from '../components/Modal';
 
 
-export default function MemberCoverageModal({memberId, showCoverageModal, setShowCoverageModal}){
+export default function MemberCoverageModal({memberId, showCoverageModal, setShowCoverageModal}) {
 	const memberRequest = TransactionsStatement.GetMember(memberId);
 	const coverageRequest = TransactionsStatement.GetCoverageByMember(memberId);
 

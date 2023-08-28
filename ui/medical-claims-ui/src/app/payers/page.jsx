@@ -6,10 +6,10 @@ import DataTable from '../components/DataTable';
 
 
 const tableHeaders = [
-	{ key: 'name', name: 'Name'},
-	{ key: 'email', name: 'Email'},
-	{ key: 'phoneNumber', name: 'Phone Number'},
-	{ key: 'country', name: 'Country'}
+	{ key: 'name', name: 'Name' },
+	{ key: 'email', name: 'Email' },
+	{ key: 'phoneNumber', name: 'Phone Number' },
+	{ key: 'country', name: 'Country' }
 ];
 
 export default function Payers() {	
@@ -18,7 +18,7 @@ export default function Payers() {
 
 	return(
 		<>
-			<div className="card">
+			<div className="card shadow-md">
 				<div className="card-header">
 					<h4 className="card-title">Payers</h4>
 				</div>
@@ -27,6 +27,7 @@ export default function Payers() {
 						isLoading={isLoading}
 						headers={tableHeaders}
 						data={data}
+						pagination={true}
 						page={page}
 						onPageChange={(newPage) => setPage(newPage)}
 					/>
