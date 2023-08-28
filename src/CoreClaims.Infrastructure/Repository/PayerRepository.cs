@@ -12,9 +12,10 @@ namespace CoreClaims.Infrastructure.Repository
         }
 
         public async Task<IPageResult<Payer>> ListPayers(int offset = 0, int limit = Constants.DefaultPageSize,
-            string sortColumn = "_ts",
+            string sortColumn = Constants.DefaultSortColumn,
             string sortDirection = "asc")
         {
+            sortColumn ??= Constants.DefaultSortColumn;
             const string countSql = @"
                             SELECT VALUE COUNT(1) FROM c";
 

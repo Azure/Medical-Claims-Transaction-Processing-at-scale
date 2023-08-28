@@ -19,9 +19,10 @@ namespace CoreClaims.Infrastructure.Repository
             DateTime? startDate = null,
             DateTime? endDate = null,
             bool includeDenied = false,
-            string sortColumn = "_ts",
+            string sortColumn = Constants.DefaultSortColumn,
             string sortDirection = "asc")
         {
+            sortColumn ??= Constants.DefaultSortColumn;
             string sql;
             int count = 0;
             QueryDefinition query;
@@ -93,9 +94,11 @@ namespace CoreClaims.Infrastructure.Repository
         }
 
         public async Task<IPageResult<Member>> ListMembers(int offset = 0, int limit = Constants.DefaultPageSize,
-            string sortColumn = "_ts",
+            string sortColumn = Constants.DefaultSortColumn,
             string sortDirection = "asc")
         {
+            sortColumn ??= Constants.DefaultSortColumn;
+
             const string countSql = @"
                 SELECT VALUE COUNT(1) FROM m WHERE m.type = 'Member'";
 

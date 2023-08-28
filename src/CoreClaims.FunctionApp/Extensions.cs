@@ -26,6 +26,20 @@ namespace CoreClaims.FunctionApp
             return (startDate, endDate);
         }
 
+        public static (string?, string?) GetSortQuery(this HttpRequestData req)
+        {
+            var sortColumn = req.Query["sortColumn"];
+            var sortDirection = req.Query["sortDirection"];
+
+            // Valid values for sortDirection are "asc" and "desc"
+            if (sortDirection != null && sortDirection != "asc" && sortDirection != "desc")
+            {
+                sortDirection = "asc";
+            }
+
+            return (sortColumn, sortDirection);
+        }
+
         public static async Task<TRequest> GetRequest<TRequest>(this HttpRequestData req) where TRequest : class
         {
             var body = await new StreamReader(req.Body).ReadToEndAsync();

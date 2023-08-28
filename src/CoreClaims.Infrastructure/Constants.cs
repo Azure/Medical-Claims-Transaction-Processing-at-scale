@@ -4,6 +4,8 @@
     {
         public const int DefaultPageSize = 50;
 
+        public const string DefaultSortColumn = "_ts";
+
         public static class EventHubTopics
         {
             public const string Rejected = "RejectedClaim";
