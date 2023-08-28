@@ -1,5 +1,6 @@
 ﻿using CoreClaims.Infrastructure.Domain.Entities;
 using Microsoft.Azure.Cosmos;
+using System.Security.Claims;
 
 namespace CoreClaims.Infrastructure.Repository
 {
@@ -10,7 +11,7 @@ namespace CoreClaims.Infrastructure.Repository
         {
         }
 
-        public async Task<IEnumerable<ClaimHeader>> ListMemberClaims(
+        public async Task<(IEnumerable<ClaimHeader>, int)> ListMemberClaims(
             string memberId,
             int offset = 0,
             int limit = Constants.DefaultPageSize,
@@ -19,11 +20,25 @@ namespace CoreClaims.Infrastructure.Repository
             bool includeDenied = false)
         {
             string sql;
+            int count = 0;
             QueryDefinition query;
             var filterClause = includeDenied ? string.Empty : " AND m.claimStatus != 'Denied'";
 
             if (startDate != null && endDate != null)
             {
+                var countSql = @$"
+                            SELECT VALUE COUNT(1) FROM m
+                            WHERE m.memberId = @memberId AND m.type = 'ClaimHeader'{filterClause} AND
+                                  m.filingDate >= @startDate AND m.filingDate <= @endDate";
+
+                var countQuery = new QueryDefinition(countSql)
+                    .WithParameter("@memberId", memberId)
+                    .WithParameter("@startDate", startDate)
+                    .WithParameter("@endDate", endDate);
+
+                var countResult = await Container.GetItemQueryIterator<int>(countQuery).ReadNextAsync();
+                count = countResult.Resource.FirstOrDefault();
+
                 sql = @$"
                     SELECT * FROM m
                     WHERE m.memberId = @memberId AND m.type = 'ClaimHeader'{filterClause} AND
@@ -39,6 +54,16 @@ namespace CoreClaims.Infrastructure.Repository
             }
             else
             {
+                var countSql = @$"
+                            SELECT VALUE COUNT(1) FROM m
+                            WHERE m.memberId = @memberId AND m.type = 'ClaimHeader'{filterClause}";
+
+                var countQuery = new QueryDefinition(countSql)
+                    .WithParameter("@memberId", memberId);
+
+                var countResult = await Container.GetItemQueryIterator<int>(countQuery).ReadNextAsync();
+                count = countResult.Resource.FirstOrDefault();
+
                 sql = @$"
                     SELECT * FROM m
                     WHERE m.memberId = @memberId AND m.type = 'ClaimHeader'{filterClause}
@@ -50,24 +75,34 @@ namespace CoreClaims.Infrastructure.Repository
                     .WithParameter("@limit", limit);
             }
 
-            return await Query<ClaimHeader>(query);
+            var result = await Query<ClaimHeader>(query);
+            return (result, count);
         }
 
-        public Task<IEnumerable<Coverage>> GetMemberCoverage(string memberId)
+        public async Task<IEnumerable<Coverage>> GetMemberCoverage(string memberId)
         {
             var query = new QueryDefinition("SELECT * FROM m WHERE m.memberId = @memberId AND m.type = 'Coverage'")
                 .WithParameter("@memberId", memberId);
 
-            return Query<Coverage>(query);
+            return await Query<Coverage>(query);
         }
 
-        public Task<IEnumerable<Member>> ListMembers(int offset = 0, int limit = Constants.DefaultPageSize)
+        public async Task<(IEnumerable<Member>, int)> ListMembers(int offset = 0, int limit = Constants.DefaultPageSize)
         {
+            const string countSql = @"
+                SELECT VALUE COUNT(1) FROM m WHERE m.type = 'Member'";
+
+            var countQuery = new QueryDefinition(countSql);
+
+            var countResult = await Container.GetItemQueryIterator<int>(countQuery).ReadNextAsync();
+            var count = countResult.Resource.FirstOrDefault();
+
             QueryDefinition query = new QueryDefinition("SELECT * FROM m WHERE m.type = 'Member' OFFSET @offset LIMIT @limit")
                 .WithParameter("@offset", offset)
                 .WithParameter("@limit", limit);
 
-            return Query<Member>(query);
+            var result = await Query<Member>(query);
+            return (result, count);
         }
 
         public async Task<Member> IncrementMemberTotals(string memberId, int count, decimal amount)

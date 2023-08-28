@@ -4,6 +4,6 @@ namespace CoreClaims.Infrastructure.Repository
 {
     public interface IClaimProcedureRepository
     {
-        Task<IEnumerable<ClaimProcedure>> ListClaimProcedures(int offset = 0, int limit = Constants.DefaultPageSize);
+        Task<(IEnumerable<ClaimProcedure>, int)> ListClaimProcedures(int offset = 0, int limit = Constants.DefaultPageSize);
     }
 }

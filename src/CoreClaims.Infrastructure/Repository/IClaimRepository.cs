@@ -8,7 +8,7 @@ namespace CoreClaims.Infrastructure.Repository
 
         Task<ClaimHeader> GetClaimHeader(string claimId);
 
-        Task<IEnumerable<ClaimDetail>> GetClaimDetails(string claimId, int offset = 0, int limit = Constants.DefaultPageSize);
+        Task<(IEnumerable<ClaimDetail>, int)> GetClaimDetails(string claimId, int offset = 0, int limit = Constants.DefaultPageSize);
 
         Task<ClaimHeader> CreateClaim(ClaimDetail detail);
 
