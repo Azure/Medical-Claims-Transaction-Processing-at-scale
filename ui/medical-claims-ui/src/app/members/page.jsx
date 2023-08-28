@@ -85,13 +85,13 @@ export default function Members() {
 								(row) => (
 									<>
 										<Table.Cell className="!p-4">
-											<Link href='#' onClick={()=> onClickMemberDetail(row.memberId, setShowMemberDetail, setMemberId)}>Details</Link>
+											<span className="hover:cursor-pointer" onClick={()=> onClickMemberDetail(row.memberId, setShowMemberDetail, setMemberId)}>Details</span>
 										</Table.Cell>
 										<Table.Cell className="!p-4">
-											<Link href='#' onClick={()=> onClickMemberCoverage(row.memberId, setShowCoverageModal, setMemberId)}>View Coverage</Link>
+											<span className="hover:cursor-pointer" onClick={()=> onClickMemberCoverage(row.memberId, setShowCoverageModal, setMemberId)}>View Coverage</span>
 										</Table.Cell>
 										<Table.Cell className="!p-4">
-											<Link href='#claimsList' onClick={()=> onClickViewClaims(row.memberId, setShowClaimsList, setMemberId, setShowMembersTable)}>View Claims</Link>
+											<span className="hover:cursor-pointer" onClick={()=> onClickViewClaims(row.memberId, setShowClaimsList, setMemberId, setShowMembersTable)}>View Claims</span>
 										</Table.Cell>
 									</>
 								)

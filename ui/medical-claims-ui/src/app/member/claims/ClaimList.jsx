@@ -89,10 +89,10 @@ export default function ClaimList({ memberId }) {
 							(row) => (
 								<>
 									<Table.Cell>
-										<Link href='#' onClick={()=> viewDetails(row.claimId)}>Details</Link>
+										<span className="hover:cursor-pointer" onClick={()=> viewDetails(row.claimId)}>Details</span>
 									</Table.Cell>
 								 <Table.Cell>
-										<Link href='#' onClick={()=> viewHistory(row.claimId)}>View History</Link>
+										<span className="hover:cursor-pointer" onClick={()=> viewHistory(row.claimId)}>View History</span>
 									</Table.Cell>
 								</>
 							)
