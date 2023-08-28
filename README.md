@@ -62,7 +62,7 @@ From the `deploy/powershell` folder, run the following command. This should prov
 Create a cloud shell environment in a tenant that contains the target subscription.  Clone the repository and then execute the `CloudShell-Deploy.ps1` script as illustrated in the following snippet.  This will provision all of the required infrastructure and deploy the API and web app services into AKS.
 
 ```pwsh
-git clone https://github.com/hatboyzero/ClaimsProcessing.git
+git clone --recurse-submodules https://github.com/hatboyzero/ClaimsProcessing.git
 cd ClaimsProcessing
 chmod +x ./deploy/powershell/*
 ./deploy/powershell/CloudShell-Deploy.ps1 -resourceGroup <rg-name> `
@@ -88,7 +88,7 @@ The deployed VM name used in deployment is libxarwttxjdevm
 Use RDP to remote into the freshly provisioned VM with the username `BYDtoChatGPTUser` and password `Test123456789!`.  Open up a powershell terminal and run the following script to provision the infrastructure and deploy the API and frontend. This will provision all of the required infrastructure, deploy the API and web app services into AKS, and import data into Cosmos.
 
 ```pwsh
-git clone https://github.com/hatboyzero/ClaimsProcessing.git
+git clone --recurse-submodules https://github.com/hatboyzero/ClaimsProcessing.git
 cd ClaimsProcessing
 ./deploy/powershell/Unified-Deploy.ps1 -resourceGroup <rg-name> `
                                        -location EastUS `
