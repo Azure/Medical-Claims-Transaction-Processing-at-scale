@@ -5,16 +5,16 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["ClaimsWorkerService/ClaimsWorkerService.csproj", "ClaimsWorkerService/"]
-RUN dotnet restore "ClaimsWorkerService/ClaimsWorkerService.csproj"
+COPY ["CoreClaims.WorkerService/CoreClaims.WorkerService.csproj", "CoreClaims.WorkerService/"]
+RUN dotnet restore "CoreClaims.WorkerService/CoreClaims.WorkerService.csproj"
 COPY . .
-WORKDIR "/src/ClaimsWorkerService"
-RUN dotnet build "ClaimsWorkerService.csproj" -c Release -o /app/build
+WORKDIR "/src/CoreClaims.WorkerService"
+RUN dotnet build "CoreClaims.WorkerService.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "ClaimsWorkerService.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "CoreClaims.WorkerService.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "ClaimsWorkerService.dll"]
+ENTRYPOINT ["dotnet", "CoreClaims.WorkerService.dll"]

@@ -1,18 +1,20 @@
 #!/usr/bin/pwsh
 
 Param(
+    [parameter(Mandatory=$false)][string]$acrName="bydtochatgptcr",
+    [parameter(Mandatory=$false)][string]$acrResourceGroup="ms-byd-to-chatgpt",
     [parameter(Mandatory=$true)][string]$resourceGroup,
     [parameter(Mandatory=$true)][string]$location,
     [parameter(Mandatory=$true)][string]$subscription,
     [parameter(Mandatory=$false)][string]$suffix,
     [parameter(Mandatory=$false)][bool]$stepDeployBicep=$true,
-    [parameter(Mandatory=$false)][bool]$stepBuildPush=$true,
+    [parameter(Mandatory=$false)][bool]$stepBuildPush=$false,
     [parameter(Mandatory=$false)][bool]$stepDeployCertManager=$true,
     [parameter(Mandatory=$false)][bool]$stepDeployTls=$true,
     [parameter(Mandatory=$false)][bool]$stepDeployImages=$true,
     [parameter(Mandatory=$false)][bool]$stepSetupSynapse=$true,
     [parameter(Mandatory=$false)][bool]$stepPublishSite=$true,
-    [parameter(Mandatory=$false)][bool]$stepLoginAzure=$true
+    [parameter(Mandatory=$false)][bool]$stepLoginAzure=$false
 )
 
 az extension add --name  application-insights
@@ -20,9 +22,6 @@ az extension update --name  application-insights
 
 az extension add --name storage-preview
 az extension update --name storage-preview
-
-winget install --id=Kubernetes.kubectl  -e --accept-package-agreements --accept-source-agreements --silent
-winget install --id=Microsoft.Azure.Kubelogin  -e --accept-package-agreements --accept-source-agreements --silent
 
 $gValuesFile="configFile.yaml"
 
@@ -67,6 +66,7 @@ $gValuesLocation=$(./Join-Path-Recursively.ps1 -pathParts ..,..,__values,$gValue
 if ([string]::IsNullOrEmpty($acrName))
 {
     $acrName = $(az acr list --resource-group $resourceGroup -o json | ConvertFrom-Json).name
+    $acrResourceGroup = $resourceGroup
 }
 
 Write-Host "The Name of your ACR: $acrName" -ForegroundColor Yellow
@@ -83,7 +83,7 @@ if ($stepDeployTls) {
 
 if ($stepBuildPush) {
     # Build an Push
-    & ./BuildPush.ps1 -resourceGroup $resourceGroup -acrName $acrName
+    & ./BuildPush.ps1 -resourceGroup $acrResourceGroup -acrName $acrName
 }
 
 if ($stepDeployImages) {
