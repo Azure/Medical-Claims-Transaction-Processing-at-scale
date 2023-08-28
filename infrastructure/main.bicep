@@ -90,7 +90,7 @@ module openAi 'openai.bicep' = {
   }
 }
 
-module aks 'AKS-construction/bicep/main.bicep' = {
+module aks 'AKS-Construction/bicep/main.bicep' = {
   name: 'aksconstruction'
   params: {
     location : location
