@@ -1,4 +1,5 @@
 ﻿using CoreClaims.Infrastructure.Domain.Entities;
+using CoreClaims.Infrastructure.Models;
 using Microsoft.Azure.Cosmos;
 
 namespace CoreClaims.Infrastructure.Repository
@@ -10,7 +11,7 @@ namespace CoreClaims.Infrastructure.Repository
         {
         }
 
-        public async Task<(IEnumerable<Provider>, int)> ListProviders(int offset = 0, int limit = Constants.DefaultPageSize)
+        public async Task<IPageResult<Provider>> ListProviders(int offset = 0, int limit = Constants.DefaultPageSize)
         {
             const string countSql = @"
                             SELECT VALUE COUNT(1) FROM c";
@@ -26,7 +27,7 @@ namespace CoreClaims.Infrastructure.Repository
 
             var result = await Query<Provider>(query);
 
-            return (result, count);
+            return new PageResult<Provider>(count, offset, limit, result);
         }
 
         public Task<Provider> GetProvider(string providerId)
