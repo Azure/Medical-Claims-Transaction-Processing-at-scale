@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import moment from 'moment';
 
-import Link from 'next/link';
 import TransactionsStatement from '../../hooks/TransactionsStatement';
 import Formatters from '../../hooks/Formatters';
 import DataTable from '../../components/DataTable';
