@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 
 import TransactionsStatement from '../hooks/TransactionsStatement';
+import { FormatMoney } from '../hooks/Formatters';
 import { Table } from 'flowbite-react';
 import MemberDetail from './MemberDetail';
 import MemberCoverageModal from './MemberCoverageModal';
@@ -37,11 +38,9 @@ const onClickViewClaims = (memberId, setShowClaimsList, setMemberId, setShowMemb
 }
 
 function formatValues(header, value, row) {
-	let money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
-
 	switch (header.key) {
 		case 'approvedTotal':
-			return money.format(value);
+			return FormatMoney(value);
 			break;
 		default:
 			return value ? value : '-';

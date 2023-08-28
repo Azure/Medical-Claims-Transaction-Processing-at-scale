@@ -3,10 +3,10 @@ import { useState } from 'react';
 import moment from 'moment';
 
 import TransactionsStatement from '../../hooks/TransactionsStatement';
+import { FormatMoney } from '../../hooks/Formatters';
 import { Spinner } from 'flowbite-react';
 import DataTable from '../../components/DataTable';
 
-let money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 
 const tableHeaders = [
 	{ key: 'procedureCode', name: 'Procedure Code' },
@@ -22,10 +22,10 @@ function formatValues(header, value, row) {
 			return moment(value).format('YYYY-MM-DD');
 			break;
 		case 'amount':
-			return money.format(value);
+			return FormatMoney(value);
 			break;
 		case 'discount':
-			return money.format(value);
+			return FormatMoney(value);
 			break;
 		default:
 			return value ? value : '-';
@@ -53,7 +53,7 @@ export default function ClaimDetails({ claimId }) {
 							<div className='px-4 font-bold gap-2'>Payer Name:</div>
 							<div>{data.payerName ? data.payerName : '-'}</div>
 							<div className='px-4 font-bold gap-2'>Total Amount:</div>
-							<div>{money.format(data.totalAmount)}</div>
+							<div>{FormatMoney(data.totalAmount)}</div>
 							<div className='px-4 font-bold gap-2'>Provider Name:</div>
 							<div>{data.providerName}</div>
 							<div className='px-4 font-bold gap-2'>Comment:</div>

@@ -4,14 +4,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Moment from 'moment';
 import TransactionsStatement from '../../hooks/TransactionsStatement';
+import { FormatMoney } from '../../hooks/Formatters';
 
 import { Table, Spinner, Pagination, Modal, Textarea, Button } from 'flowbite-react';
 import { SparklesIcon } from '@heroicons/react/24/outline';
 import { AcknowledgeButton, DenyClaimButton, ProposeClaimButton, ApproveClaimButton } from './ClaimActions';
 import DataTable from '../../components/DataTable';
 
-
-let money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 
 export default function ClaimDetails({ claimId, requestClaims, isManager, setChangeDetail }) {
 	const { data, isLoading, mutate } = TransactionsStatement.GetClaimDetails(claimId);
@@ -57,7 +56,7 @@ export default function ClaimDetails({ claimId, requestClaims, isManager, setCha
 							<div className='px-4 font-bold gap-2'>Payer Name:</div>
 							<div>{data.PayerName ? data.payerName : '-'}</div>
 							<div className='px-4 font-bold gap-2'>Total Amount:</div>
-							<div>{money.format(data.totalAmount)}</div>
+							<div>{FormatMoney(data.totalAmount)}</div>
 							<div className='px-4 font-bold gap-2'>Provider Name:</div>
 							<div>{data.providerName}</div>
 							<div className='px-4 font-bold gap-2'>Comment:</div>
@@ -176,7 +175,7 @@ function formatValues(header, value, row) {
 			break;
 		case 'amount':
 		case 'discount':
-			return money.format(value);
+			return FormatMoney(value);
 			break;
 		default:
 			return value ? value : '-';
