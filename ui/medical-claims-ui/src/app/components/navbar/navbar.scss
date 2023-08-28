@@ -67,12 +67,12 @@ $dark-gray: rgb(68, 68, 68);
 	width: 100%;
 }
 
-.navbar__item.active .navbar__button {
-	background-color: white;
-}
-
 .navbar__item:hover .navbar__button {
 	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.navbar__item.active .navbar__button {
+	background-color: white;
 }
 
 .navbar__button {
