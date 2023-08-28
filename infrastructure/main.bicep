@@ -5,21 +5,12 @@ param suffix string = uniqueString(resourceGroup().id)
 @description('Location for resource deployment')
 param location string = resourceGroup().location
 
-@description('Function App Service Plan SKU')
-@allowed(['Y1', 'B1'])
-param appServicePlanSku string = 'Y1'
-
-@description('OpenAI service name')
-param openAiName string = 'openaipayments${suffix}'
-
 @description('OpenAi Deployment')
 param openAiDeployment string = 'completions'
 
-@description('OpenAI Resource Group')
-param openAiResourceGroup string
-
 var appName = 'coreclaims-${suffix}'
 var serviceNames = {
+  aks: replace('aks-${appName}', '-', '')
   cosmosDb: replace('db-${appName}', '-', '')
   functionApp: replace('fa-${appName}', '-', '')
   servicePlan: 'asp-${appName}'
@@ -28,6 +19,10 @@ var serviceNames = {
   synapse: 'synapse-${appName}'
   identity: 'id-${appName}'
   webStorage: replace('web-${appName}', '-', '')
+  openAi: 'openai-${appName}'
+  apimi: 'mi-api-${appName}'
+  workermi: 'mi-worker-${appName}'
+  ai: 'ai-${appName}'
 }
 
 module storage 'storage.bicep' = {
@@ -36,6 +31,8 @@ module storage 'storage.bicep' = {
   params: {
     storageAccountName: serviceNames.storage
     location: location
+    apiPrincipalId: apiIdentity.properties.principalId
+    workerPrincipalId: workerIdentity.properties.principalId
   }
 }
 
@@ -45,6 +42,8 @@ module cosmosDb 'cosmos.bicep' = {
   params: {
     accountName: serviceNames.cosmosDb
     location: location
+    apiPrincipalId: apiIdentity.properties.principalId
+    workerPrincipalId: workerIdentity.properties.principalId
   }
 }
 
@@ -54,6 +53,8 @@ module eventHub 'eventhub.bicep' = {
   params: {
     eventHubNamespace: serviceNames.eventHub
     location: location
+    apiPrincipalId: apiIdentity.properties.principalId
+    workerPrincipalId: workerIdentity.properties.principalId
   }
 }
 
@@ -70,43 +71,92 @@ module synapse 'synapse.bicep' = {
   dependsOn: [storage, cosmosDb]
 }
 
-// TODO: Deploy via Bicep. Presently, attempting this results in the following error:
-//   {"code": "ApiSetDisabledForCreation", "message": "It's not allowed to create new accounts with type 'OpenAI'."}
-// module openAi 'openai.bicep' = {
-//   name: 'openAiDeploy'
-//   params: {
-//     openAiName: openAiName
-//     location: locArray[0]
-//     deployments: [
-//       {
-//         name: 'completions'
-//         model: 'text-davinci-003'
-//         version: '1'
-//         sku: {
-//           name: 'Standard'
-//           capacity: 60
-//         }
-//       }
-//     ]
-//   }
-// }
-
-module functionApp 'functions.bicep' = {
-  scope: resourceGroup()
-  name: 'functionDeploy'
+module openAi 'openai.bicep' = {
+  name: 'openAiDeploy'
   params: {
-    cosmosAccountName: serviceNames.cosmosDb
-    eventHubNamespaceName: serviceNames.eventHub
-    functionAppName: serviceNames.functionApp
-    servicePlanName: serviceNames.servicePlan
-    storageAccountName: serviceNames.storage
+    openAiName: serviceNames.openAi
     location: location
-    appServicePlanSku: appServicePlanSku
-    openAiName: openAiName
-    openAiDeployment: openAiDeployment
-    openAiResourceGroup: openAiResourceGroup
+    deployments: [
+      {
+        name: openAiDeployment
+        model: 'text-embedding-ada-002'
+        version: '2'
+        sku: {
+          name: 'Standard'
+          capacity: 60
+        }
+      }
+    ]
   }
-  dependsOn: [storage, cosmosDb]
+}
+
+module aks 'AKS-Construction/bicep/main.bicep' = {
+  name: 'aksconstruction'
+  params: {
+    location : location
+    resourceName: serviceNames.aks
+    enable_aad: true
+    enableAzureRBAC : true
+    registries_sku: 'Basic'
+    omsagent: true
+    retentionInDays: 30
+    agentCount: 1
+    
+    //Managed workload identity 
+    workloadIdentity: true
+
+    //Workload Identity requires OidcIssuer to be configured on AKS
+    oidcIssuer: true
+    
+    //We'll also enable the CSI driver for Key Vault
+    keyVaultAksCSI : true
+
+    JustUseSystemPool: true
+  }
+  dependsOn: [cosmosDb, storage, openAi]
+}
+
+resource ai 'Microsoft.Insights/components@2020-02-02' = {
+  name: serviceNames.ai
+  location: location
+  kind: 'web'
+  properties: {
+    Application_Type: 'web'
+    Flow_Type: 'Bluefield'
+    IngestionMode: 'LogAnalytics'
+    publicNetworkAccessForIngestion: 'Enabled'
+    publicNetworkAccessForQuery: 'Enabled'
+    RetentionInDays: 30
+    WorkspaceResourceId: aks.outputs.LogAnalyticsId
+  }
+}
+
+resource apiIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' = {
+  name: serviceNames.apimi
+  location: location
+
+  resource fedCreds 'federatedIdentityCredentials' = {
+    name: '${serviceNames.apimi}-fed'
+    properties: {
+      audiences: aks.outputs.aksOidcFedIdentityProperties.audiences
+      issuer: aks.outputs.aksOidcFedIdentityProperties.issuer
+      subject: 'system:serviceaccount:default:claims-api-sa'
+    }
+  }
+}
+
+resource workerIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' = {
+  name: serviceNames.workermi
+  location: location
+
+  resource fedCreds 'federatedIdentityCredentials' = {
+    name: '${serviceNames.workermi}-fed'
+    properties: {
+      audiences: aks.outputs.aksOidcFedIdentityProperties.audiences
+      issuer: aks.outputs.aksOidcFedIdentityProperties.issuer
+      subject: 'system:serviceaccount:default:claims-worker-sa'
+    }
+  }
 }
 
 module staticwebsite 'staticwebsite.bicep' = {

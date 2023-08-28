@@ -1,0 +1,40 @@
+# Default values for claims-worker.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+serviceAccountName: claims-worker-sa
+image:
+  repository: bhm7vnpxv6irqcr.azurecr.io/chatservicewebapi
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: latest
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+env:
+  configmap:
+    - name: AzureWebJobsStorage__accountName
+    - name: CoreClaimsCosmosDB__accountEndpoint
+    - name: CoreClaimsEventHub__fullyQualifiedNamespace
+    - name: BusinessRuleOptions__AutoApproveThreshold
+    - name: BusinessRuleOptions__RequireManagerApproval
+    - name: BusinessRuleOptions__DemoMode
+    - name: BusinessRuleOptions__DemoAdjudicatorId
+    - name: BusinessRuleOptions__DemoManagerAdjudicatorId
+    - name: ClientId
+  secret:
+    - name: ApplicationInsights__ConnectionString
+  values:
+    - name: ASPNETCORE_ENVIRONMENT
+      value: Production

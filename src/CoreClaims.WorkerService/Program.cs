@@ -5,6 +5,7 @@ using CoreClaims.Infrastructure.Events;
 using CoreClaims.Infrastructure.Repository;
 using CoreClaims.WorkerService;
 using Microsoft.Azure.Cosmos.Fluent;
+using Azure.Identity;
 
 var builder = Host.CreateApplicationBuilder(args);
 
@@ -13,8 +14,14 @@ builder.Services.Configure<BusinessRuleOptions>(builder.Configuration.GetSection
 builder.Services.AddSingleton(s =>
 {
     var endpoint = builder.Configuration[Constants.Connections.CosmosDbEndpoint];
+    var clientId = builder.Configuration[Constants.Identity.ClientId];
 
-    return new CosmosClientBuilder(endpoint, new Azure.Identity.DefaultAzureCredential())
+    var credential = new ChainedTokenCredential(
+        new ManagedIdentityCredential(clientId),
+        new AzureCliCredential()
+    );
+
+    return new CosmosClientBuilder(endpoint, credential)
         .Build();
 });
 builder.Services.AddSingleton<IEventHubService, EventHubService>(s => new EventHubService(

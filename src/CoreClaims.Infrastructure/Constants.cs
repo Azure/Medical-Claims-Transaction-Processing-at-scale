@@ -20,5 +20,10 @@
             public const string CosmosDbEndpoint = $"{CosmosDb}:accountEndpoint";
             public const string CosmosDbName = "CoreClaimsApp";
         }
+    
+        public static class Identity
+        {
+            public const string ClientId = "ClientId";
+        }
     }
 }
