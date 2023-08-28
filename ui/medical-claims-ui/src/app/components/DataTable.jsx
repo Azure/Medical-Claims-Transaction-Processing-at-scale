@@ -2,14 +2,22 @@
 import { useState } from 'react';
 import { Table, Pagination, Spinner } from 'flowbite-react';
 
+const paginationTheme = {
+	pages: {
+		selector: {
+			active: 'bg-slate-200',
+		}
+	}
+};
 
-export default function Datatable(props) {
+export default function DataTable(props) {
 	let {
 		isLoading,
 		headers = [],
 		data = [],
+		pagination = false,
 		page = 1,
-		onPageChange,
+		onPageChange = () => {},
 		extraHeaders,
 		extraRowItems,
 		rowFormatter
@@ -28,7 +36,7 @@ export default function Datatable(props) {
 					{/* Table headers */}
 					<Table.Head>
 						{headers.map((header) => (
-							<Table.HeadCell key={header.key} className="!p-4">
+							<Table.HeadCell key={header.key}>
 								{header.name}
 							</Table.HeadCell>
 						))}
@@ -38,10 +46,10 @@ export default function Datatable(props) {
 
 					{/* Table body */}
 					<Table.Body className="divide-y">
-						{data.map((row) => (
-							<Table.Row key={row.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-								{Object.values(headers).map((header, index) => (
-									<Table.Cell key={`${row.id}-${index}`} className="!p-4">
+						{data && data.map((row, rowIndex) => (
+							<Table.Row key={rowIndex} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+								{headers && Object.values(headers).map((header, cellIndex) => (
+									<Table.Cell key={`${rowIndex}-${cellIndex}`} style={header.itemStyle}>
 										{formatRowItem(header, row[header.key], row)}
 									</Table.Cell>
 								))}
@@ -58,12 +66,13 @@ export default function Datatable(props) {
 			}
 
 			{/* Pagination */}
-			<Pagination
+			{pagination && <Pagination
+				theme={paginationTheme}
 				className="p-6 flex justify-center"
 				currentPage={page}
 				onPageChange={(newPage) => onPageChange(newPage)}
 				totalPages={100}
-			/>
+			/>}
 		</>
 	);
 };

@@ -1,160 +1,109 @@
 
-import React, { useState, useEffect } from 'react';
-import { Table, Pagination, Spinner } from 'flowbite-react';
-import { useParams  } from 'next/navigation';
+import { useState } from 'react';
 import Link from 'next/link';
-import Moment from 'moment';
+import moment from 'moment';
 
-import TransactionsStatement from '../../hooks/TransactionsStatement'
+import { Table } from 'flowbite-react';
+import TransactionsStatement from '../../hooks/TransactionsStatement';
+import { FormatMoney } from '../../hooks/Formatters';
 import ClaimDetails from './ClaimDetails';
 import ClaimHistory from './ClaimHistory';
+import DataTable from '../../components/DataTable';
 
 
-export default function ClaimList({ memberId }){
-	const params = useParams();
+const tableHeaders = [
+	{ key: 'filingDate', name: 'Filing Date' },
+	{ key: 'claimStatus', name: 'Claim Status', itemStyle: { backgroundColor: 'rgb(253, 248, 170)' } },
+	{ key: 'providerName', name: 'Provider' },
+	{ key: 'lastAdjudicatedDate', name: 'Last Adjucated Date' },
+	{ key: 'lastAmount', name: 'Last Amout' },
+	{ key: 'totalAmount', name: 'Total Amount' }
+];
+
+function formatValues(header, value, row) {
+	switch(header.key) {
+		case 'filingDate':
+			return moment(value).format('YYYY-MM-DD');
+			break;		
+		case 'lastAdjudicatedDate':
+			return value ? moment(value).format('YYYY-MM-DD hh:mm a') : '-';
+			break;
+		case 'lastAmount':
+			return FormatMoney(value);
+			break;
+		case 'totalAmount':
+			return FormatMoney(value);
+			break;
+		default:
+			return value ? value : '-';
+	}	
+}
+
+export default function ClaimList({ memberId }) {
 	const [page, setPage] = useState(1);
 
 	const requestMember = TransactionsStatement.GetMember(memberId);
 	const requestClaims = TransactionsStatement.GetClaimsByMemberId(memberId, page, 5);
 
 	const [claimId, setClaimId] = useState(null);
-	const [ showClaimDetail, setShowClaimDetail ] = useState(false);
-	const [ showHistory, setShowHistory ] = useState(false);
+	const [showClaimDetail, setShowClaimDetail] = useState(false);
+	const [showHistory, setShowHistory] = useState(false);
 
-	const cardClass = (isLoading)=>{
-		let classList = 'card mb-10';
-		if(isLoading) classList += ' h-full';
-		return classList;
-	}
-
-	return(
-		<>
-			{(!requestMember.isLoading && requestMember.data) ? (
-				<h3 className='text-2xl mb-10'>
-					Member Claims for {requestMember.data.firstName} {requestMember.data.lastName}
-				</h3>
-			) : null}
-			{ /*Claims List*/ }
-			<div className={cardClass(requestClaims.isLoading)}>
-				<div className="card-header">
-					<h4 className="card-title">Claims</h4>
-				</div>
-				<div className="card-body">
-						{ (!requestClaims.isLoading && requestClaims.data) ? (
-							<div className="relative overflow-x-auto sm:rounded">
-									<ClaimsTable data={requestClaims.data} {...{claimId, setClaimId, setShowClaimDetail, setShowHistory, page, setPage }}/>
-							</div>
-						) : 
-							<div className='text-center mt-20'>
-								<Spinner aria-label="Loading..." />
-							</div>
-						}
-				</div>
-			</div>
-
-			{ /*Claim Detail*/ }
-			{showClaimDetail ? (
-				<ClaimDetails {...{claimId, requestClaims}}/>
-			) : null}		
-
-			{ /*Claim History*/ }
-			{showHistory ? (
-				<ClaimHistory {...{claimId}}/>
-			) : null}	
-
-		</>
-	);
-}
-
-function ClaimsTable({ data, claimId, setClaimId, setShowClaimDetail, setShowHistory, page, setPage }){
-	const headers = [
-		{ key: 'filingDate', name: 'Filing Date'},
-		{ key: 'claimStatus', name: 'Claim Status', style: { backgroundColor: 'rgb(253, 248, 170)' }},
-		{ key: 'providerName', name: 'Provider'},
-		{ key: 'lastAdjudicatedDate', name: 'Last Adjucated Date'},
-		{ key: 'lastAmount', name: 'Last Amout'},
-		{ key: 'totalAmount', name: 'Total Amount'}
-	];
-
-	return(
-		<>
-			<Datatable headers={headers} {...{data, claimId, setClaimId, setShowClaimDetail, setShowHistory }}/>
-      <Pagination
-        className="p-6 self-center"
-        currentPage={page}
-        onPageChange={(page) => {
-          setPage(page);
-          //setContinuationToken(data.continuationToken);
-        }}
-        totalPages={100} 
-      />
-		</>
-	);
-}
-
-const Datatable = ({ claimId, setClaimId, setShowClaimDetail, setShowHistory, headers = [], data = [] }) => {
-	const viewDetails = (claimId)=> {
-		setClaimId(claimId);
+	const viewDetails = (newClaimId)=> {
+		setClaimId(newClaimId);
 		setShowClaimDetail(true);
 		setShowHistory(false);
 	}
 
-	const viewHistory = (claimId)=> {
-		setClaimId(claimId);
+	const viewHistory = (newClaimId)=> {
+		setClaimId(newClaimId);
 		setShowHistory(true);
 		setShowClaimDetail(false);
 	}
 
-  return (
-    <Table className="w-full" hoverable>
-      <Table.Head>
-        {headers.map((header) => (
-          <Table.HeadCell key={header.key} className="!p-4">
-            {header.name}
-          </Table.HeadCell>
-        ))}
-        <Table.HeadCell className="!p-4"/>
-        <Table.HeadCell className="!p-4"/>
-      </Table.Head>
-      <Table.Body className="divide-y">
-        {data.map((row) => (
-          <Table.Row key={row.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-            {Object.values(headers).map((header, index) => (
-              <Table.Cell key={`${row.id}-${index}`} className="!p-4" style={header.style}>
-                { formatValues(header.key, row[header.key])}
-              </Table.Cell>
-            ))}
-            <Table.Cell className="!p-4">
-            	<Link href='#' onClick={()=> viewDetails(row.claimId)}>Details</Link>
-            </Table.Cell>
-           <Table.Cell className="!p-4">
-            	<Link href='#' onClick={()=> viewHistory(row.claimId)}>View History</Link>
-            </Table.Cell>
-          </Table.Row>
-        ))}
-      </Table.Body>
-    </Table>
-  );
-};
+	return (
+		<>
+			<div className="card mt-10 shadow-md">
+				<div className="card-header">
+					{(!requestMember.isLoading && requestMember.data) && (
+						<h4 className="card-title">Member Claims for {requestMember.data.firstName} {requestMember.data.lastName}</h4>
+					)}
+				</div>
+				<div className="card-body">
+					<DataTable
+						isLoading={requestClaims.isLoading}
+						headers={tableHeaders}
+						data={requestClaims.data}
+						pagination={true}
+						page={page}
+						onPageChange={(newPage) => setPage(newPage)}
+						rowFormatter={formatValues}
+						extraHeaders={
+							<>
+								<Table.HeadCell></Table.HeadCell>
+								<Table.HeadCell></Table.HeadCell>
+							</>
+						}
+						extraRowItems={
+							(row) => (
+								<>
+									<Table.Cell>
+										<span className="hover:cursor-pointer" onClick={()=> viewDetails(row.claimId)}>Details</span>
+									</Table.Cell>
+								 <Table.Cell>
+										<span className="hover:cursor-pointer" onClick={()=> viewHistory(row.claimId)}>View History</span>
+									</Table.Cell>
+								</>
+							)
+						}
+					/>
+				</div>
+			</div>
 
+			{showClaimDetail && <ClaimDetails {...{claimId, requestClaims}} />}		
 
-function formatValues(headerKey, value){
-	let money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+			{showHistory && <ClaimHistory {...{claimId}} />}	
 
-	switch(headerKey){
-		case "filingDate":
-			return Moment(value).format('YYYY-MM-DD');
-			break;		
-		case "lastAdjudicatedDate":
-			return value ? Moment(value).format('YYYY-MM-DD hh:mm a') : '-';
-			break;
-		case "lastAmount":
-			return money.format(value);
-			break;
-		case "totalAmount":
-			return money.format(value);
-			break;
-		default:
-			return value ? value : '-';
-	}	
+		</>
+	);
 }

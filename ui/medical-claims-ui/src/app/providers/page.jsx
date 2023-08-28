@@ -9,8 +9,9 @@ const tableHeaders = [
 	{ key: 'name', name: 'Name' },
 	{ key: 'email', name: 'Email' },
 	{ key: 'phoneNumber', name: 'PhoneNumber' },
-	{ key: 'city', name: 'City' },
-	{ key: 'state', name: 'State' }
+	{ key: 'country', name: 'Country' },
+	// { key: 'city', name: 'City' },
+	// { key: 'state', name: 'State' }
 ];
 
 export default function Providers() {	
@@ -18,7 +19,7 @@ export default function Providers() {
 	const { data, isLoading } = TransactionsStatement.GetProviders(page, 10);
 
 	return (
-		<div className="card">
+		<div className="card shadow-md">
 			<div className="card-header">
 				<h4 className="card-title">Providers</h4>
 			</div>
@@ -29,6 +30,7 @@ export default function Providers() {
 						isLoading={isLoading}
 						headers={tableHeaders}
 						data={data}
+						pagination={true}
 						page={page}
 						onPageChange={(newPage) => setPage(newPage)}
 					/>

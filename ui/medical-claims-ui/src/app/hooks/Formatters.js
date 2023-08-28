@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-const FormatDate = (dateString) => {
+export const FormatDate = (dateString) => {
   const formats = [
     "YYYY-MM-DDTHH:mm:ssZ", // First format to try
     "MM/DD/YYYY h:mm:ss A" // Second format to try
@@ -16,8 +16,12 @@ const FormatDate = (dateString) => {
   return 'Invalid date'; // Return default value if parsing fails for all formats
 };
 
-const Formatters = {
-  FormatDate
+const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+export const FormatMoney = (value) => {
+  return money.format(value);
 }
 
-export default Formatters;
+export default {
+  FormatDate,
+  FormatMoney
+};
