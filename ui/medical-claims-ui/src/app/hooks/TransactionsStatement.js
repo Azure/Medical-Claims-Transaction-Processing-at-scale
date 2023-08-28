@@ -99,6 +99,9 @@ export const UpdateClaim = (claimId) =>
 export const AcknowledgeClaim = (claimId) =>
   useSWRMutation(`${API_URL}/claim/${claimId}/acknowledge`, post);
 
+export const GetBusinessRules = () =>
+  useSWR(`${API_URL}/business-rules`, fetcher);
+
 const TransactionsStatement = {
   GetMembersList,
   GetMember,
@@ -112,6 +115,7 @@ const TransactionsStatement = {
   GetClaimHistory,
   GetClaimRecommendation,
   UpdateClaim,
+  GetBusinessRules
 };
 
 export default TransactionsStatement;

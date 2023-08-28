@@ -4,14 +4,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Moment from 'moment';
 import TransactionsStatement from '../../hooks/TransactionsStatement';
+import { FormatMoney } from '../../hooks/Formatters';
 
 import { Table, Spinner, Pagination, Modal, Textarea, Button } from 'flowbite-react';
 import { SparklesIcon } from '@heroicons/react/24/outline';
 import { AcknowledgeButton, DenyClaimButton, ProposeClaimButton, ApproveClaimButton } from './ClaimActions';
 import DataTable from '../../components/DataTable';
 
-
-let money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 
 export default function ClaimDetails({ claimId, requestClaims, isManager, setChangeDetail }) {
 	const { data, isLoading, mutate } = TransactionsStatement.GetClaimDetails(claimId);
@@ -22,7 +21,7 @@ export default function ClaimDetails({ claimId, requestClaims, isManager, setCha
 
 	const [ lineItems, setLineItems ] = useState([]);
 
-	useEffect(()=>{
+	useEffect(() => {
 		setLineItems(data ? data.lineItems : []);
 	}, [data]);
 
@@ -57,7 +56,7 @@ export default function ClaimDetails({ claimId, requestClaims, isManager, setCha
 							<div className='px-4 font-bold gap-2'>Payer Name:</div>
 							<div>{data.PayerName ? data.payerName : '-'}</div>
 							<div className='px-4 font-bold gap-2'>Total Amount:</div>
-							<div>{money.format(data.totalAmount)}</div>
+							<div>{FormatMoney(data.totalAmount)}</div>
 							<div className='px-4 font-bold gap-2'>Provider Name:</div>
 							<div>{data.providerName}</div>
 							<div className='px-4 font-bold gap-2'>Comment:</div>
@@ -81,8 +80,8 @@ export default function ClaimDetails({ claimId, requestClaims, isManager, setCha
 const FormModal = ({ children, header, setOpenModal, openModal }) => {
 	return (
 		<Modal show={openModal} size="xxl" popup onClose={() => setOpenModal(false)} 
-			className='justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none'>
-			<Modal.Header className="items-center">{header}</Modal.Header>
+			className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+			<Modal.Header className="items-center py-2">{header}</Modal.Header>
 			<Modal.Body>{children}</Modal.Body>
 		</Modal>
 	);
@@ -122,20 +121,18 @@ const RecommendActionForm = ({ claimId, setOpenModal, openModal }) => {
 	};
  
 	return (
-		<div className="space-y-6">
-		<div className="mb-4">
-			<div className="mb-2 block">
-			<Textarea id="results" name="results" value={recommendation} readOnly className="h-30 p-5" />
+		<div className="space-y-6 mt-6">
+			<div className="mb-4">
+				<div className="mb-2 block">
+					<Textarea id="results" name="results" value={recommendation} readOnly className="h-40 p-5" />
+				</div>
 			</div>
-		</div>
-		<div className="w-full flex justify-between pt-4">
-			<Button color="light" onClick={onClickCancel}>
-			Cancel
-			</Button>
-			<Button color="dark" onClick={()=>{ onSubmit() }}>
-			{isLoading ? <Spinner color="white" size="md" /> : 'Submit'}
-			</Button>
-		</div>
+			<div className="w-full flex justify-between pt-4">
+				<Button color="light" onClick={onClickCancel}>Cancel</Button>
+				<Button color="dark" onClick={()=>{ onSubmit() }}>
+					{isLoading ? <Spinner color="white" size="md" /> : 'Ask for Recommendation'}
+				</Button>
+			</div>
 		</div>
 	);
 };
@@ -176,7 +173,7 @@ function formatValues(header, value, row) {
 			break;
 		case 'amount':
 		case 'discount':
-			return money.format(value);
+			return FormatMoney(value);
 			break;
 		default:
 			return value ? value : '-';
@@ -246,7 +243,7 @@ const ApplyDiscount = ({row, data, setLineItems}) => {
 
 	return (
 		<>
-			<Link href='#' onClick={()=> setOpenModal(true)}>Apply Discount</Link>
+			<span className="hover:cursor-pointer" onClick={()=> setOpenModal(true)}>Apply Discount</span>
 			<Modal show={openModal} size="xl" popup onClose={() => setOpenModal(false)} 
 				className='justify-center items-center flex overflow-x-hidden overflow-y-auto 
 				fixed inset-0 z-50 outline-none focus:outline-none'
