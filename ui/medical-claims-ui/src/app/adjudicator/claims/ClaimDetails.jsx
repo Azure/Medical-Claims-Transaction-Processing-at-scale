@@ -80,8 +80,8 @@ export default function ClaimDetails({ claimId, requestClaims, isManager, setCha
 const FormModal = ({ children, header, setOpenModal, openModal }) => {
 	return (
 		<Modal show={openModal} size="xxl" popup onClose={() => setOpenModal(false)} 
-			className='justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none'>
-			<Modal.Header className="items-center">{header}</Modal.Header>
+			className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+			<Modal.Header className="items-center py-2">{header}</Modal.Header>
 			<Modal.Body>{children}</Modal.Body>
 		</Modal>
 	);
@@ -121,20 +121,18 @@ const RecommendActionForm = ({ claimId, setOpenModal, openModal }) => {
 	};
  
 	return (
-		<div className="space-y-6">
-		<div className="mb-4">
-			<div className="mb-2 block">
-			<Textarea id="results" name="results" value={recommendation} readOnly className="h-30 p-5" />
+		<div className="space-y-6 mt-6">
+			<div className="mb-4">
+				<div className="mb-2 block">
+					<Textarea id="results" name="results" value={recommendation} readOnly className="h-40 p-5" />
+				</div>
 			</div>
-		</div>
-		<div className="w-full flex justify-between pt-4">
-			<Button color="light" onClick={onClickCancel}>
-			Cancel
-			</Button>
-			<Button color="dark" onClick={()=>{ onSubmit() }}>
-			{isLoading ? <Spinner color="white" size="md" /> : 'Submit'}
-			</Button>
-		</div>
+			<div className="w-full flex justify-between pt-4">
+				<Button color="light" onClick={onClickCancel}>Cancel</Button>
+				<Button color="dark" onClick={()=>{ onSubmit() }}>
+					{isLoading ? <Spinner color="white" size="md" /> : 'Ask for Recommendation'}
+				</Button>
+			</div>
 		</div>
 	);
 };
