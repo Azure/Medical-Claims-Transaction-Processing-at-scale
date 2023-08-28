@@ -1,6 +1,7 @@
 ﻿using CoreClaims.Infrastructure.Domain;
 using CoreClaims.Infrastructure.Domain.Entities;
 using CoreClaims.Infrastructure.Helpers;
+using CoreClaims.Infrastructure.Models;
 using Microsoft.Azure.Cosmos;
 using Newtonsoft.Json.Linq;
 
@@ -31,7 +32,7 @@ namespace CoreClaims.Infrastructure.Repository
             return ReadItem<ClaimHeader>(claimId, $"claim:{claimId}");
         }
 
-        public async Task<(IEnumerable<ClaimDetail>, int)> GetClaimDetails(string claimId, int offset = 0, int limit = Constants.DefaultPageSize)
+        public async Task<IPageResult<ClaimDetail>> GetClaimDetails(string claimId, int offset = 0, int limit = Constants.DefaultPageSize)
         {
             const string countSql = @"
                             SELECT VALUE COUNT(1) FROM c
@@ -50,7 +51,7 @@ namespace CoreClaims.Infrastructure.Repository
 
             var result = (await Query<ClaimDetail>(queryDetails, new PartitionKey(claimId))).OrderBy(c => c.ModifiedOn).ToList();
 
-            return (result, count);
+            return new PageResult<ClaimDetail>(count, offset, limit, result);
         }
 
         public async Task<ClaimHeader> CreateClaim(ClaimDetail detail)

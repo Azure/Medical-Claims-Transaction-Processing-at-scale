@@ -1,4 +1,5 @@
 ﻿using CoreClaims.Infrastructure.Domain.Entities;
+using CoreClaims.Infrastructure.Models;
 using Microsoft.Azure.Cosmos;
 using System.Security.Claims;
 
@@ -11,7 +12,7 @@ namespace CoreClaims.Infrastructure.Repository
         {
         }
 
-        public async Task<(IEnumerable<ClaimHeader>, int)> ListMemberClaims(
+        public async Task<IPageResult<ClaimHeader>> ListMemberClaims(
             string memberId,
             int offset = 0,
             int limit = Constants.DefaultPageSize,
@@ -76,7 +77,7 @@ namespace CoreClaims.Infrastructure.Repository
             }
 
             var result = await Query<ClaimHeader>(query);
-            return (result, count);
+            return new PageResult<ClaimHeader>(count, offset, limit, result);
         }
 
         public async Task<IEnumerable<Coverage>> GetMemberCoverage(string memberId)
@@ -87,7 +88,7 @@ namespace CoreClaims.Infrastructure.Repository
             return await Query<Coverage>(query);
         }
 
-        public async Task<(IEnumerable<Member>, int)> ListMembers(int offset = 0, int limit = Constants.DefaultPageSize)
+        public async Task<IPageResult<Member>> ListMembers(int offset = 0, int limit = Constants.DefaultPageSize)
         {
             const string countSql = @"
                 SELECT VALUE COUNT(1) FROM m WHERE m.type = 'Member'";
@@ -102,7 +103,7 @@ namespace CoreClaims.Infrastructure.Repository
                 .WithParameter("@limit", limit);
 
             var result = await Query<Member>(query);
-            return (result, count);
+            return new PageResult<Member>(count, offset, limit, result);
         }
 
         public async Task<Member> IncrementMemberTotals(string memberId, int count, decimal amount)
