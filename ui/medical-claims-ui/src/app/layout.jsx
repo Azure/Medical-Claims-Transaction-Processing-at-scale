@@ -1,6 +1,6 @@
 
-import './globals.css';
 import './assets/css/tailwind.css';
+import './globals.scss';
 import Navbar from './components/Navbar';
 
 

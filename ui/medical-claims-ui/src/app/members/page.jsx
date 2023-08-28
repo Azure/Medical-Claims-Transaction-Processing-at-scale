@@ -58,9 +58,9 @@ export default function Members() {
 	const [ coverageByMemberId, setCoverageByMemberId ] = useState(null);
 	const [ showMembersTable, setShowMembersTable ] = useState(true);
 
-	return(
+	return (
 		<>
-			<div className="card">
+			<div className="card shadow-md">
 				<div className="card-header">
 					<h4 className="card-title">Members</h4>
 				</div>
@@ -70,6 +70,7 @@ export default function Members() {
 							isLoading={isLoading}
 							headers={tableHeaders}
 							data={data}
+							pagination={true}
 							page={page}
 							onPageChange={(newPage) => setPage(newPage)}
 							rowFormatter={formatValues}
@@ -100,12 +101,12 @@ export default function Members() {
 				</div>
 			</div>
 
-			{	showClaimsList ? (<ClaimList memberId={memberId}/>) : null }
+			{	showMemberDetail && (<MemberDetail memberId={memberId} />) }
 
-			{	showMemberDetail ? (<MemberDetail memberId={memberId}/>) : null }
-
-			{ showCoverageModal ? <MemberCoverageModal memberId={memberId} {...{showCoverageModal, setShowCoverageModal}} /> : null}
+			{ showCoverageModal && <MemberCoverageModal memberId={memberId} {...{showCoverageModal, setShowCoverageModal}} /> }
 			
+			{	showClaimsList && (<ClaimList memberId={memberId} />) }
+
 		</>
 	);
 }

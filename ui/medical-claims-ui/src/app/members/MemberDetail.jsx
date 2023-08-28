@@ -1,14 +1,14 @@
 import TransactionsStatement from '../hooks/TransactionsStatement'
 import { Spinner } from 'flowbite-react';
 
-export default function MemberDetail({memberId}){
+export default function MemberDetail({memberId}) {
 	const { data, error, isLoading } = TransactionsStatement.GetMember(memberId);
 
 	return(
 		!isLoading ? (
-			<div className="card">
+			<div className="card mt-10 shadow-md">
 				<div className="card-header">
-					<h4 className="card-title">Member Detail</h4>
+					<h4 className="card-title">Member Details for {data.firstName} {data.lastName}</h4>
 				</div>
 				<div className="card-body">
 					<div className="relative overflow-x-auto sm:rounded">
