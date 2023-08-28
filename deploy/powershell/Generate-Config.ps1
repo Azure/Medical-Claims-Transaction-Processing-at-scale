@@ -32,8 +32,10 @@ $tokens=@{}
 $dataLakeEndpoint=$(az storage account list -g $resourceGroup -o json | ConvertFrom-Json)[0].primaryEndpoints.dfs
 $dataLakeAccountName=$(az storage account list -g $resourceGroup -o json | ConvertFrom-Json)[0].name
 
-## Getting Function App info
-$functionAppHostname=$(az functionapp list -g $resourceGroup -o json | ConvertFrom-Json).hostNames
+# Ingress endpoint
+$aksName = $(az aks list -g $resourceGroup -o json | ConvertFrom-Json).name
+$webappHostname=$(az aks show -n $aksName -g $resourceGroup -o json --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName | ConvertFrom-Json)
+$apiUrl = "https://${webappHostname}/api"
 
 ## Getting CosmosDb info
 $docdb=$(az cosmosdb list -g $resourceGroup --query "[?kind=='GlobalDocumentDB'].{name: name, kind:kind, documentEndpoint:documentEndpoint}" -o json | ConvertFrom-Json)
@@ -84,6 +86,7 @@ $tokens.apiClientId=$apiIdentityClientId
 $tokens.workerClientId=$workerIdentityClientId
 $tokens.tenantId=$tenantId
 $tokens.aiConnectionString=$appinsightsConnectionString
+$tokens.apiUrl=$apiUrl
 
 # Standard fixed tokens
 $tokens.ingressclass=$ingressClass
