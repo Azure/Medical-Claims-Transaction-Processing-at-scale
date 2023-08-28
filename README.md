@@ -30,6 +30,8 @@ The solution architecture is represented by this diagram:
   - Visual Studio 2022 17.6 or later (required for passthrough Visual Studio authentication for the Docker container)
   - .NET 7 SDK
   - Docker Desktop (with WSL for Windows machines)
+  - Azure CLI ([v2.49.0 or greater](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli))
+  - [Helm 3.11.1 or greater](https://helm.sh/docs/intro/install/)
 - Frontend (React web app)
   - Visual Studio Code
   - Ensure you have the latest version of NPM and node.js:
