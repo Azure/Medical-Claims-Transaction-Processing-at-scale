@@ -8,10 +8,8 @@ import './style.css';
 export default function Adjudicator() {
 	return(
 		<>
-			<h3 className="text-3xl">
-				Claims to Assigned to Adjudicator
-			</h3>
-			<Tabs.Group id="claimsAdjudicatorTabs" aria-label="Default tabs" style="default" className="mt-5">
+			<h1 className="mb-4">Claims to Assigned to Adjudicator</h1>
+			<Tabs.Group id="claimsAdjudicatorTabs" aria-label="Default tabs" style="default">
 				<Tabs.Item active title="Non-Manager">
 					<ClaimsByAdjudicator adjudicatorId="df166300-5a78-3502-a46a-832842197811" isManager={false}/>
 				</Tabs.Item>

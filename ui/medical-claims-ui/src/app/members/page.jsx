@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 
 import TransactionsStatement from '../hooks/TransactionsStatement';
+import { FormatMoney } from '../hooks/Formatters';
 import { Table } from 'flowbite-react';
 import MemberDetail from './MemberDetail';
 import MemberCoverageModal from './MemberCoverageModal';
@@ -37,11 +38,9 @@ const onClickViewClaims = (memberId, setShowClaimsList, setMemberId, setShowMemb
 }
 
 function formatValues(header, value, row) {
-	let money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
-
 	switch (header.key) {
 		case 'approvedTotal':
-			return money.format(value);
+			return FormatMoney(value);
 			break;
 		default:
 			return value ? value : '-';
@@ -85,13 +84,13 @@ export default function Members() {
 								(row) => (
 									<>
 										<Table.Cell className="!p-4">
-											<Link href='#' onClick={()=> onClickMemberDetail(row.memberId, setShowMemberDetail, setMemberId)}>Details</Link>
+											<span className="hover:cursor-pointer" onClick={()=> onClickMemberDetail(row.memberId, setShowMemberDetail, setMemberId)}>Details</span>
 										</Table.Cell>
 										<Table.Cell className="!p-4">
-											<Link href='#' onClick={()=> onClickMemberCoverage(row.memberId, setShowCoverageModal, setMemberId)}>View Coverage</Link>
+											<span className="hover:cursor-pointer" onClick={()=> onClickMemberCoverage(row.memberId, setShowCoverageModal, setMemberId)}>View Coverage</span>
 										</Table.Cell>
 										<Table.Cell className="!p-4">
-											<Link href='#claimsList' onClick={()=> onClickViewClaims(row.memberId, setShowClaimsList, setMemberId, setShowMembersTable)}>View Claims</Link>
+											<span className="hover:cursor-pointer" onClick={()=> onClickViewClaims(row.memberId, setShowClaimsList, setMemberId, setShowMembersTable)}>View Claims</span>
 										</Table.Cell>
 									</>
 								)
