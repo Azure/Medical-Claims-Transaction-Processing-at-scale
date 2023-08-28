@@ -22,7 +22,7 @@ export default function ClaimDetails({ claimId, requestClaims, isManager, setCha
 
 	const [ lineItems, setLineItems ] = useState([]);
 
-	useEffect(()=>{
+	useEffect(() => {
 		setLineItems(data ? data.lineItems : []);
 	}, [data]);
 
@@ -246,7 +246,7 @@ const ApplyDiscount = ({row, data, setLineItems}) => {
 
 	return (
 		<>
-			<Link href='#' onClick={()=> setOpenModal(true)}>Apply Discount</Link>
+			<span className="hover:cursor-pointer" onClick={()=> setOpenModal(true)}>Apply Discount</span>
 			<Modal show={openModal} size="xl" popup onClose={() => setOpenModal(false)} 
 				className='justify-center items-center flex overflow-x-hidden overflow-y-auto 
 				fixed inset-0 z-50 outline-none focus:outline-none'

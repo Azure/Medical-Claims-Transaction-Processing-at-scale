@@ -62,7 +62,7 @@ export default function NavBar({ children }) {
 						<Link href={ href } key={ title } className={ `navbar__item ${pathname === href ? 'active' : '' }`}>
 							<button className="navbar__button" onClick={ () => setTitle(title) }>
 								{ React.createElement(icon, { className: 'navbar__icon' }) }
-								<span class="navbar__text">{title}</span>
+								<span className="navbar__text">{title}</span>
 							</button>
 						</Link>
 					))}
