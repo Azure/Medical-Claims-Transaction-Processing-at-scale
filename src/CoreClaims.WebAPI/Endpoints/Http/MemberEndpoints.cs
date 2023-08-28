@@ -38,8 +38,10 @@ namespace CoreClaims.WebAPI.Endpoints.Http
             {
                 var (offset, limit) = req.GetPagingQuery();
                 var (startDate, endDate) = req.GetDateRangeQuery();
+                var (sortColumn, sortDirection) = req.GetSortQuery();
 
-                var result = await _repository.ListMemberClaims(memberId, offset, limit, startDate, endDate);
+                var result = await _repository.ListMemberClaims(memberId, offset, limit, startDate, endDate, includeDenied: true,
+                    sortColumn: sortColumn, sortDirection: sortDirection);
                 return Results.Ok(result);
             }
         }
@@ -59,8 +61,9 @@ namespace CoreClaims.WebAPI.Endpoints.Http
             using (Logger.BeginScope("ListMembers"))
             {
                 var (offset, limit) = req.GetPagingQuery();
+                var (sortColumn, sortDirection) = req.GetSortQuery();
 
-                var result = await _repository.ListMembers(offset, limit);
+                var result = await _repository.ListMembers(offset, limit, sortColumn, sortDirection);
                 return Results.Ok(result);
             }
         }

@@ -1,6 +1,7 @@
 ﻿using CoreClaims.Infrastructure.Domain.Entities;
 using CoreClaims.Infrastructure.Models;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos.Serialization.HybridRow.Schemas;
 
 namespace CoreClaims.Infrastructure.Repository
 {
@@ -11,7 +12,11 @@ namespace CoreClaims.Infrastructure.Repository
         {
         }
 
-        public async Task<IPageResult<ClaimHeader>> GetAssignedClaims(string adjudicatorId, int offset = 0, int limit = Constants.DefaultPageSize)
+        public async Task<IPageResult<ClaimHeader>> GetAssignedClaims(string adjudicatorId,
+            int offset = 0,
+            int limit = Constants.DefaultPageSize,
+            string sortColumn = "_ts",
+            string sortDirection = "asc")
         {
             const string countSql = @"
                             SELECT VALUE COUNT(1) FROM c
@@ -24,9 +29,10 @@ namespace CoreClaims.Infrastructure.Repository
             var count = countResult.Resource.FirstOrDefault();
 
             // Update the original query to include the count query parameters and return the results as a tuple
-            const string sql = @"
+            string sql = @$"
                             SELECT * FROM c
                             WHERE c.adjudicatorId = @adjudicatorId AND c.type = 'ClaimHeader'
+                            ORDER BY c.{sortColumn} {sortDirection}
                             OFFSET @offset LIMIT @limit";
 
             var query = new QueryDefinition(sql)

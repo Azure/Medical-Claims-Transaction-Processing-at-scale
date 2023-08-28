@@ -5,7 +5,11 @@ namespace CoreClaims.Infrastructure.Repository
 {
     public interface IAdjudicatorRepository
     {
-        Task<IPageResult<ClaimHeader>> GetAssignedClaims(string adjudicatorId, int offset = 0, int limit = Constants.DefaultPageSize);
+        Task<IPageResult<ClaimHeader>> GetAssignedClaims(string adjudicatorId,
+            int offset = 0,
+            int limit = Constants.DefaultPageSize,
+            string sortColumn = "_ts",
+            string sortDirection = "asc");
 
         Task<Adjudicator> GetRandomAdjudicator(string role = "Adjudicator", int offset = 0, int limit = Constants.DefaultPageSize);
 

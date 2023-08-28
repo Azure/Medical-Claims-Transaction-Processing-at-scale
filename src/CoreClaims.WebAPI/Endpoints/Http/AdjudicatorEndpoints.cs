@@ -37,8 +37,9 @@ namespace CoreClaims.WebAPI.Endpoints.Http
             using (Logger.BeginScope("ListAssignedClaims"))
             {
                 var (offset, limit) = req.GetPagingQuery();
+                var (sortColumn, sortDirection) = req.GetSortQuery();
 
-                var result = await _repository.GetAssignedClaims(adjudicatorId, offset, limit);
+                var result = await _repository.GetAssignedClaims(adjudicatorId, offset, limit, sortColumn, sortDirection);
                 return Results.Ok(result);
             }
         }

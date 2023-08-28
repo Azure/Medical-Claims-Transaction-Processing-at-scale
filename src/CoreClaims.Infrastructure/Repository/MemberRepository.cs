@@ -18,7 +18,9 @@ namespace CoreClaims.Infrastructure.Repository
             int limit = Constants.DefaultPageSize,
             DateTime? startDate = null,
             DateTime? endDate = null,
-            bool includeDenied = false)
+            bool includeDenied = false,
+            string sortColumn = "_ts",
+            string sortDirection = "asc")
         {
             string sql;
             int count = 0;
@@ -44,6 +46,7 @@ namespace CoreClaims.Infrastructure.Repository
                     SELECT * FROM m
                     WHERE m.memberId = @memberId AND m.type = 'ClaimHeader'{filterClause} AND
                           m.filingDate >= @startDate AND m.filingDate <= @endDate
+                    ORDER BY m.{sortColumn} {sortDirection}
                     OFFSET @offset LIMIT @limit";
 
                 query = new QueryDefinition(sql)
@@ -68,6 +71,7 @@ namespace CoreClaims.Infrastructure.Repository
                 sql = @$"
                     SELECT * FROM m
                     WHERE m.memberId = @memberId AND m.type = 'ClaimHeader'{filterClause}
+                    ORDER BY m.{sortColumn} {sortDirection}
                     OFFSET @offset LIMIT @limit";
 
                 query = new QueryDefinition(sql)
@@ -88,7 +92,9 @@ namespace CoreClaims.Infrastructure.Repository
             return await Query<Coverage>(query);
         }
 
-        public async Task<IPageResult<Member>> ListMembers(int offset = 0, int limit = Constants.DefaultPageSize)
+        public async Task<IPageResult<Member>> ListMembers(int offset = 0, int limit = Constants.DefaultPageSize,
+            string sortColumn = "_ts",
+            string sortDirection = "asc")
         {
             const string countSql = @"
                 SELECT VALUE COUNT(1) FROM m WHERE m.type = 'Member'";
@@ -98,7 +104,7 @@ namespace CoreClaims.Infrastructure.Repository
             var countResult = await Container.GetItemQueryIterator<int>(countQuery).ReadNextAsync();
             var count = countResult.Resource.FirstOrDefault();
 
-            QueryDefinition query = new QueryDefinition("SELECT * FROM m WHERE m.type = 'Member' OFFSET @offset LIMIT @limit")
+            QueryDefinition query = new QueryDefinition($"SELECT * FROM m WHERE m.type = 'Member' ORDER BY m.{sortColumn} {sortDirection} OFFSET @offset LIMIT @limit")
                 .WithParameter("@offset", offset)
                 .WithParameter("@limit", limit);
 
