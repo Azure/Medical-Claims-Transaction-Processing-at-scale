@@ -90,12 +90,12 @@ $tokens.apiUrl=$apiUrl
 
 # Standard fixed tokens
 $tokens.ingressclass=$ingressClass
-$tokens.ingressrewritepath="(/|$)(.*)"
-$tokens.ingressrewritetarget="`$2"
+$tokens.ingressrewritepath="(.*)"
+$tokens.ingressrewritetarget="`$1"
 
 if($ingressClass -eq "nginx") {
-    $tokens.ingressrewritepath="(/|$)(.*)" 
-    $tokens.ingressrewritetarget="`$2"
+    $tokens.ingressrewritepath="(.*)" 
+    $tokens.ingressrewritetarget="`$1"
 }
 
 Write-Host ($tokens | ConvertTo-Json) -ForegroundColor Yellow
