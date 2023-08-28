@@ -62,7 +62,7 @@ export function DenyClaimButton ({claimId, requestClaims, lineItems, setChangeDe
 				<br/>
 				{claimId}
 		
-				<label for="comments" className='block text-gray-700 text-sm font-bold mb-2 mt-5'>Comments:</label>
+				<label htmlFor="comments" className='block text-gray-700 text-sm font-bold mb-2 mt-5'>Comments:</label>
 				<textarea type="text" id="comments" name="comments" value={comment} onChange={(e)=> {setComment(event.target.value)} }
 					className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' />
 			</Modal>
@@ -98,7 +98,7 @@ export function ProposeClaimButton ({claimId, requestClaims, lineItems, setChang
 				<br/>
 				{claimId}
 		
-				<label for="comments" className='block text-gray-700 text-sm font-bold mb-2 mt-5'>Comments:</label>
+				<label htmlFor="comments" className='block text-gray-700 text-sm font-bold mb-2 mt-5'>Comments:</label>
 				<textarea type="text" id="comments" name="comments" value={comment} onChange={(e)=> {setComment(event.target.value)} }
 					className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' />
 				
@@ -135,7 +135,7 @@ export function ApproveClaimButton ({claimId, requestClaims, lineItems, setChang
 				<br/>
 				{claimId}
 		
-				<label for="comments" className='block text-gray-700 text-sm font-bold mb-2 mt-5'>Comments:</label>
+				<label htmlFor="comments" className='block text-gray-700 text-sm font-bold mb-2 mt-5'>Comments:</label>
 				<textarea type="text" id="comments" name="comments" value={comment} onChange={(e)=> {setComment(event.target.value)} }
 					className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' />
 				

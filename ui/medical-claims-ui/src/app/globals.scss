@@ -17,8 +17,27 @@
   }
 }*/
 
+
+$gray: rgb(235, 235, 235);
+$dark-gray: rgb(68, 68, 68);
+
 body {
   font-family: "Montserrat";
+  color: $dark-gray;
+  transition: all 0.1s ease-in-out;
+}
+
+h1 {
+  // font-size: 22px;
+  font-size: 1.375rem;
+  color: $dark-gray;
+}
+
+p {
+  // font-size: 14px;
+  font-size: 0.875rem;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .h-14 {
