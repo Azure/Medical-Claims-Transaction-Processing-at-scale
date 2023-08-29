@@ -30,7 +30,8 @@ namespace CoreClaims.FunctionApp.HttpTriggers
             using (logger.BeginScope("HttpTrigger: ListProviders"))
             {
                 var (offset, limit) = req.GetPagingQuery();
-                var result = await _repository.ListProviders(offset, limit);
+                var (sortColumn, sortDirection) = req.GetSortQuery();
+                var result = await _repository.ListProviders(offset, limit, sortColumn, sortDirection);
                 var response = req.CreateResponse(HttpStatusCode.OK);
                 await response.WriteAsJsonAsync(result);
 

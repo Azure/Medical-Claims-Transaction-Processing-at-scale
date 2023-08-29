@@ -21,6 +21,20 @@ namespace CoreClaims.WebAPI
             return (startDate, endDate);
         }
 
+        public static (string?, string?) GetSortQuery(this HttpRequest req)
+        {
+            var sortColumn = req.Query.ContainsKey("sortColumn") ? req.Query["sortColumn"].ToString() : null;
+            var sortDirection = req.Query.ContainsKey("sortDirection") ? req.Query["sortDirection"].ToString() : null;
+
+            // Valid values for sortDirection are "asc" and "desc"
+            if (sortDirection != null && sortDirection != "asc" && sortDirection != "desc")
+            {
+                sortDirection = "asc";
+            }
+
+            return (sortColumn, sortDirection);
+        }
+
         public static async Task<TRequest> GetRequest<TRequest>(this HttpRequest req) where TRequest : class
         {
             var body = await new StreamReader(req.Body).ReadToEndAsync();

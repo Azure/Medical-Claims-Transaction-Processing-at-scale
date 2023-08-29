@@ -1,4 +1,5 @@
 ﻿using CoreClaims.Infrastructure.Domain.Entities;
+using CoreClaims.Infrastructure.Models;
 using Microsoft.Azure.Cosmos;
 
 namespace CoreClaims.Infrastructure.Repository
@@ -10,13 +11,26 @@ namespace CoreClaims.Infrastructure.Repository
         {
         }
 
-        public Task<IEnumerable<Payer>> ListPayers(int offset = 0, int limit = Constants.DefaultPageSize)
+        public async Task<IPageResult<Payer>> ListPayers(int offset = 0, int limit = Constants.DefaultPageSize,
+            string sortColumn = Constants.DefaultSortColumn,
+            string sortDirection = "asc")
         {
-            var query = new QueryDefinition("SELECT * FROM c OFFSET @offset LIMIT @limit")
+            sortColumn ??= Constants.DefaultSortColumn;
+            const string countSql = @"
+                            SELECT VALUE COUNT(1) FROM c";
+
+            var countQuery = new QueryDefinition(countSql);
+
+            var countResult = await Container.GetItemQueryIterator<int>(countQuery).ReadNextAsync();
+            var count = countResult.Resource.FirstOrDefault();
+
+            var query = new QueryDefinition($"SELECT * FROM c ORDER BY c.{sortColumn} {sortDirection} OFFSET @offset LIMIT @limit")
                 .WithParameter("@limit", limit)
                 .WithParameter("@offset", offset);
 
-            return Query<Payer>(query);
+            var result = await Query<Payer>(query);
+
+            return new PageResult<Payer>(count, offset, limit, result);
         }
 
         public Task<Payer> GetPayer(string payerId)

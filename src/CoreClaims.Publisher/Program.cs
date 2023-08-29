@@ -53,19 +53,22 @@ namespace CoreClaims.Publisher
                 .Build();
 
             Console.WriteLine("Loading Members...");
-            var memberIds = (await new MemberRepository(client).ListMembers(0, 10000)).Select(m => m.MemberId).ToList();
+            var members = await new MemberRepository(client).ListMembers(0, 10000);
+            var memberIds = members.Items.Select(m => m.MemberId).ToList();
 
             Console.WriteLine("Loading Payers...");
-            var payerIds = (await new PayerRepository(client).ListPayers()).Select(p => p.PayerId).ToList();
+            var payers = await new PayerRepository(client).ListPayers();
+            var payerIds = payers.Items.Select(p => p.PayerId).ToList();
             
             Console.WriteLine("Loading Providers...");
-            var providerIds = (await new ProviderRepository(client).ListProviders()).Select(p => p.ProviderId).ToList();
+            var providers = await new ProviderRepository(client).ListProviders();
+            var providerIds = providers.Items.Select(p => p.ProviderId).ToList();
 
             Console.WriteLine("Loading Procedures...");
-            var claimProcedures = (await new ClaimProcedureRepository(client).ListClaimProcedures()).ToList();
+            var claimProcedures = await new ClaimProcedureRepository(client).ListClaimProcedures();
 
             var eventHub = new EventHubService(config[Constants.Connections.EventHubNamespace]);
-            var generator = new DataGenerator(memberIds, payerIds, providerIds, claimProcedures);
+            var generator = new DataGenerator(memberIds, payerIds, providerIds, claimProcedures.Items.ToList());
 
             if (options.RunMode == GeneratorOptions.RunModeOption.Continuous)
             {
