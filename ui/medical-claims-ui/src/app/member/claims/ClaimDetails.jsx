@@ -34,7 +34,6 @@ function formatValues(header, value, row) {
 
 export default function ClaimDetails({ claimId }) {
 	const { data, isLoading } = TransactionsStatement.GetClaimDetails(claimId);
-	const [page, setPage] = useState(1);
 
 	return((!isLoading && data) ? (
 		<>
@@ -63,9 +62,7 @@ export default function ClaimDetails({ claimId }) {
 							<h4 className="card-title mt-10 mb-10">Line Items</h4>
 							<DataTable
 								headers={tableHeaders}
-								data={data.lineItems ?? []}
-								page={page}
-								onPageChange={(newPage) => setPage(newPage)}
+								data={data.lineItems}
 								rowFormatter={formatValues}
 							/>
 						</div>
