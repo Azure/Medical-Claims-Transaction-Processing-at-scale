@@ -29,9 +29,10 @@ export default function Providers() {
 					<DataTable
 						isLoading={isLoading}
 						headers={tableHeaders}
-						data={data}
+						data={data?.items}
 						pagination={true}
 						page={page}
+						totalPages={data?.totalPages}
 						onPageChange={(newPage) => setPage(newPage)}
 					/>
 				</div>
