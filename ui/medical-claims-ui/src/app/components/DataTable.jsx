@@ -17,6 +17,7 @@ export default function DataTable(props) {
 		data = [],
 		pagination = false,
 		page = 1,
+		totalPages = 100,
 		onPageChange = () => {},
 		extraHeaders,
 		extraRowItems,
@@ -80,7 +81,7 @@ export default function DataTable(props) {
 				className="p-6 flex justify-center"
 				currentPage={page}
 				onPageChange={(newPage) => onPageChange(newPage)}
-				totalPages={100}
+				totalPages={totalPages}
 			/>}
 		</>
 	);
