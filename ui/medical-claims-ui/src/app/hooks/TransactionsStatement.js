@@ -57,44 +57,28 @@ const GetCoverageByMember = (memberId) => {
   return useSWR(`${API_URL}/member/${memberId}/coverage`, fetcher);
 };
 
-const GetClaimsByMemberId = (memberId, currentPage = 1, pageSize = 10) => {
-  const offset = calculateOffset(currentPage, pageSize);
-  return useSWR(
-    `${API_URL}/member/${memberId}/claims?offset=${
-      offset
-    }&limit=${pageSize}`,
-    fetcher
-  );
+const GetClaimsByMemberId = (memberId, { page, sort }) => {
+  const queryString = buildQueryString({ page, sort });  
+  return useSWR(`${API_URL}/member/${memberId}/claims?${queryString}`, fetcher);
 };
 
-const GetClaimsByAdjudicatorId = (adjudicatorId, currentPage = 1, pageSize = 10) => {
-  const offset = calculateOffset(currentPage, pageSize);
-  return useSWR(
-    `${API_URL}/adjudicator/${adjudicatorId}/claims?offset=${
-      offset
-    }&limit=${pageSize}`,
-    fetcher
-  );
+const GetClaimsByAdjudicatorId = (adjudicatorId, { page, sort }) => {
+  const queryString = buildQueryString({ page, sort });  
+  return useSWR(`${API_URL}/adjudicator/${adjudicatorId}/claims?${queryString}`, fetcher);
 };
 
 const GetClaimDetails = (claimId) => {
   return useSWR(`${API_URL}/claim/${claimId}`, fetcher);
 };
 
-const GetProviders = (currentPage = 1, pageSize = 10) => {
-  const offset = calculateOffset(currentPage, pageSize);
-  return useSWR(
-    `${API_URL}/providers?offset=${offset}&limit=${pageSize}`,
-    fetcher
-  );
+const GetProviders = ({ page = 1, sort }) => {
+  const queryString = buildQueryString({ page, sort });
+  return useSWR(`${API_URL}/providers?${queryString}`, fetcher);
 };
 
-const GetPayers = (currentPage = 1, pageSize = 10) => {
-  const offset = calculateOffset(currentPage, pageSize);
-  return useSWR(
-    `${API_URL}/payers?offset=${offset}&limit=${pageSize}`,
-    fetcher
-  );
+const GetPayers = ({ page = 1, sort }) => {
+  const queryString = buildQueryString({ page, sort });
+  return useSWR(`${API_URL}/payers?${queryString}`, fetcher);
 };
 
 const GetClaimHistory = (claimId) => {

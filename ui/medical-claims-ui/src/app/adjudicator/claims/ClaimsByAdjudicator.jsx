@@ -40,16 +40,16 @@ function formatValues(header, value, row) {
 	}	
 }
 
-export default function ClaimsByAdjudicator({adjudicatorId, isManager}) {
-	const [page, setPage] = useState(1);
+export default function ClaimsByAdjudicator({ adjudicatorId, isManager }) {
+	const [ page, setPage ] = useState(1);
+	const [ sort, setSort ] = useState({ column: null, direction: null });
+	const requestClaims = TransactionsStatement.GetClaimsByAdjudicatorId(adjudicatorId, { page, sort });
 
-	const requestClaims = TransactionsStatement.GetClaimsByAdjudicatorId(adjudicatorId, page, 5);
+	const [ claimId, setClaimId ] = useState(null);
+	const [ showClaimDetail, setShowClaimDetail ] = useState(false);
+	const [ showHistory, setShowHistory ] = useState(false);
 
-	const [claimId, setClaimId] = useState(null);
-	const [showClaimDetail, setShowClaimDetail] = useState(false);
-	const [showHistory, setShowHistory] = useState(false);
-
-	const [changeDetail, setChangeDetail] = useState(false);
+	const [ changeDetail, setChangeDetail ] = useState(false);
 
 	const viewDetails = (claimId) => {
 		setClaimId(claimId);
@@ -87,6 +87,9 @@ export default function ClaimsByAdjudicator({adjudicatorId, isManager}) {
 							page={page}
 							totalPages={requestClaims.data?.totalPages}
 							onPageChange={(newPage) => setPage(newPage)}
+							sortEnabled={true}
+							onSortChange={(sort) => setSort(sort)}
+							rowFormatter={formatValues}
 							rowFormatter={formatValues}
 							extraHeaders={
 								<>
