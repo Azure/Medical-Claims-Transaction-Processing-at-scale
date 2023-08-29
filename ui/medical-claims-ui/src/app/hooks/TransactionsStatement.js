@@ -20,70 +20,64 @@ const post = async (url, { arg }) =>
     headers: { "x-functions-key": X_FUNCTION_KEY },
   });
 
+
 // Function to calculate the offset
 const calculateOffset = (currentPage, pageSize) => {
   return (currentPage - 1) * pageSize;
 };
 
-const GetMembersList = (currentPage = 1, pageSize = 10) => {
-  const offset = calculateOffset(currentPage, pageSize);
-  var temp = useSWR(
-    `${API_URL}/members?offset=${offset}&limit=${pageSize}`,
-    fetcher
-  );
-  return temp;
+const buildQueryString = ({ page, pageSize = 10, sort }) => {
+  const offset = calculateOffset(page, pageSize);
+
+  const params = {};
+  params.offset = offset;
+  params.limit = pageSize;
+  sort?.column && sort?.direction && (params.sortColumn = sort.column);
+  sort?.direction && sort?.column && (params.sortDirection = sort.direction);
+
+  return new URLSearchParams(params).toString();
+}
+
+
+const GetMembersList = ({ page = 1, sort }) => {
+  const queryString = buildQueryString({ page, sort });
+  return useSWR(`${API_URL}/members?${queryString}`, fetcher);
 };
 
 const GetMember = (memberId) => {
   return useSWR(`${API_URL}/member/${memberId}`, fetcher);
 };
 
-const GetAdjudicator = (adjudicatorId) => {
-  return useSWR(`${API_URL}/adjudicator/${adjudicatorId}`, fetcher);
-};
-
 const GetCoverageByMember = (memberId) => {
   return useSWR(`${API_URL}/member/${memberId}/coverage`, fetcher);
 };
 
-const GetClaimsByMemberId = (memberId, currentPage = 1, pageSize = 10) => {
-  const offset = calculateOffset(currentPage, pageSize);
-  return useSWR(
-    `${API_URL}/member/${memberId}/claims?offset=${
-      offset
-    }&limit=${pageSize}`,
-    fetcher
-  );
+const GetClaimsByMemberId = (memberId, { page, sort }) => {
+  const queryString = buildQueryString({ page, sort });  
+  return useSWR(`${API_URL}/member/${memberId}/claims?${queryString}`, fetcher);
 };
 
-const GetClaimsByAdjudicatorId = (adjudicatorId, currentPage = 1, pageSize = 10) => {
-  const offset = calculateOffset(currentPage, pageSize);
-  return useSWR(
-    `${API_URL}/adjudicator/${adjudicatorId}/claims?offset=${
-      offset
-    }&limit=${pageSize}`,
-    fetcher
-  );
+const GetAdjudicator = (adjudicatorId) => {
+  return useSWR(`${API_URL}/adjudicator/${adjudicatorId}`, fetcher);
+};
+
+const GetClaimsByAdjudicatorId = (adjudicatorId, { page, sort }) => {
+  const queryString = buildQueryString({ page, sort });  
+  return useSWR(`${API_URL}/adjudicator/${adjudicatorId}/claims?${queryString}`, fetcher);
+};
+
+const GetProviders = ({ page = 1, sort }) => {
+  const queryString = buildQueryString({ page, sort });
+  return useSWR(`${API_URL}/providers?${queryString}`, fetcher);
+};
+
+const GetPayers = ({ page = 1, sort }) => {
+  const queryString = buildQueryString({ page, sort });
+  return useSWR(`${API_URL}/payers?${queryString}`, fetcher);
 };
 
 const GetClaimDetails = (claimId) => {
   return useSWR(`${API_URL}/claim/${claimId}`, fetcher);
-};
-
-const GetProviders = (currentPage = 1, pageSize = 10) => {
-  const offset = calculateOffset(currentPage, pageSize);
-  return useSWR(
-    `${API_URL}/payers?offset=${offset}&limit=${pageSize}`,
-    fetcher
-  );
-};
-
-const GetPayers = (currentPage = 1, pageSize = 10) => {
-  const offset = calculateOffset(currentPage, pageSize);
-  return useSWR(
-    `${API_URL}/providers?offset=${offset}&limit=${pageSize}`,
-    fetcher
-  );
 };
 
 const GetClaimHistory = (claimId) => {
