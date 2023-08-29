@@ -39,18 +39,13 @@ const buildQueryString = ({ page, pageSize = 10, sort }) => {
 }
 
 
-function GetMembersList({ page = 1, sort }) {
+const GetMembersList = ({ page = 1, sort }) => {
   const queryString = buildQueryString({ page, sort });
-
   return useSWR(`${API_URL}/members?${queryString}`, fetcher);
 };
 
 const GetMember = (memberId) => {
   return useSWR(`${API_URL}/member/${memberId}`, fetcher);
-};
-
-const GetAdjudicator = (adjudicatorId) => {
-  return useSWR(`${API_URL}/adjudicator/${adjudicatorId}`, fetcher);
 };
 
 const GetCoverageByMember = (memberId) => {
@@ -62,13 +57,13 @@ const GetClaimsByMemberId = (memberId, { page, sort }) => {
   return useSWR(`${API_URL}/member/${memberId}/claims?${queryString}`, fetcher);
 };
 
+const GetAdjudicator = (adjudicatorId) => {
+  return useSWR(`${API_URL}/adjudicator/${adjudicatorId}`, fetcher);
+};
+
 const GetClaimsByAdjudicatorId = (adjudicatorId, { page, sort }) => {
   const queryString = buildQueryString({ page, sort });  
   return useSWR(`${API_URL}/adjudicator/${adjudicatorId}/claims?${queryString}`, fetcher);
-};
-
-const GetClaimDetails = (claimId) => {
-  return useSWR(`${API_URL}/claim/${claimId}`, fetcher);
 };
 
 const GetProviders = ({ page = 1, sort }) => {
@@ -79,6 +74,10 @@ const GetProviders = ({ page = 1, sort }) => {
 const GetPayers = ({ page = 1, sort }) => {
   const queryString = buildQueryString({ page, sort });
   return useSWR(`${API_URL}/payers?${queryString}`, fetcher);
+};
+
+const GetClaimDetails = (claimId) => {
+  return useSWR(`${API_URL}/claim/${claimId}`, fetcher);
 };
 
 const GetClaimHistory = (claimId) => {
