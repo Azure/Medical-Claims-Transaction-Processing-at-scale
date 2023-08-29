@@ -13,8 +13,9 @@ const tableHeaders = [
 ];
 
 export default function Payers() {	
-	const [page, setPage] = useState(1);
-	const { data, isLoading } = TransactionsStatement.GetPayers(page, 10);
+	const [ page, setPage ] = useState(1);
+	const [ sort, setSort ] = useState({ column: null, direction: null });
+	const { data, isLoading } = TransactionsStatement.GetPayers({ page, sort });
 
 	return(
 		<>
@@ -26,10 +27,13 @@ export default function Payers() {
 					<DataTable
 						isLoading={isLoading}
 						headers={tableHeaders}
-						data={data}
+						data={data?.items}
 						pagination={true}
 						page={page}
+						totalPages={data?.totalPages}
 						onPageChange={(newPage) => setPage(newPage)}
+						sortEnabled={true}
+						onSortChange={(sort) => setSort(sort)}
 					/>
 				</div>
 			</div>
