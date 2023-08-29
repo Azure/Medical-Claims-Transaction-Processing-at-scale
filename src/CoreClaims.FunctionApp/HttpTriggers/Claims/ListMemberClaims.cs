@@ -29,8 +29,10 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
             {
                 var (offset, limit) = req.GetPagingQuery();
                 var (startDate, endDate) = req.GetDateRangeQuery();
+                var (sortColumn, sortDirection) = req.GetSortQuery();
 
-                var result = await _repository.ListMemberClaims(memberId, offset, limit, startDate, endDate);
+                var result = await _repository.ListMemberClaims(memberId, offset, limit, startDate, endDate,
+                    includeDenied: true, sortColumn: sortColumn, sortDirection: sortDirection);
                 var response = req.CreateResponse(HttpStatusCode.OK);
                 await response.WriteAsJsonAsync(result);
                 return response;

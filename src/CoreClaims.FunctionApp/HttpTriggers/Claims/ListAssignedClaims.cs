@@ -28,8 +28,9 @@ namespace CoreClaims.FunctionApp.HttpTriggers.Claims
             using (logger.BeginScope("HttpTrigger: ListAssignedClaims"))
             {
                 var (offset, limit) = req.GetPagingQuery();
+                var (sortColumn, sortDirection) = req.GetSortQuery();
 
-                var result = await repository.GetAssignedClaims(adjudicatorId, offset, limit);
+                var result = await repository.GetAssignedClaims(adjudicatorId, offset, limit, sortColumn, sortDirection);
                 var response = req.CreateResponse(HttpStatusCode.OK);
                 await response.WriteAsJsonAsync(result);
                 return response;

@@ -1,5 +1,7 @@
 ﻿using CoreClaims.Infrastructure.Domain.Entities;
+using CoreClaims.Infrastructure.Models;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos.Serialization.HybridRow.Schemas;
 
 namespace CoreClaims.Infrastructure.Repository
 {
@@ -10,19 +12,38 @@ namespace CoreClaims.Infrastructure.Repository
         {
         }
 
-        public Task<IEnumerable<ClaimHeader>> GetAssignedClaims(string adjudicatorId, int offset = 0, int limit = Constants.DefaultPageSize)
+        public async Task<IPageResult<ClaimHeader>> GetAssignedClaims(string adjudicatorId,
+            int offset = 0,
+            int limit = Constants.DefaultPageSize,
+            string sortColumn = Constants.DefaultSortColumn,
+            string sortDirection = "asc")
         {
-            const string sql = @"
-                SELECT * FROM c
-                WHERE c.adjudicatorId = @adjudicatorId AND c.type = 'ClaimHeader'
-                OFFSET @offset LIMIT @limit";
+            sortColumn ??= Constants.DefaultSortColumn;
+            const string countSql = @"
+                            SELECT VALUE COUNT(1) FROM c
+                            WHERE c.adjudicatorId = @adjudicatorId AND c.type = 'ClaimHeader'";
+
+            var countQuery = new QueryDefinition(countSql)
+                .WithParameter("@adjudicatorId", adjudicatorId);
+
+            var countResult = await Container.GetItemQueryIterator<int>(countQuery).ReadNextAsync();
+            var count = countResult.Resource.FirstOrDefault();
+
+            // Update the original query to include the count query parameters and return the results as a tuple
+            string sql = @$"
+                            SELECT * FROM c
+                            WHERE c.adjudicatorId = @adjudicatorId AND c.type = 'ClaimHeader'
+                            ORDER BY c.{sortColumn} {sortDirection}
+                            OFFSET @offset LIMIT @limit";
 
             var query = new QueryDefinition(sql)
                 .WithParameter("@offset", offset)
                 .WithParameter("@limit", limit)
                 .WithParameter("@adjudicatorId", adjudicatorId);
 
-            return Query<ClaimHeader>(query);
+            var result = await Query<ClaimHeader>(query);
+
+            return new PageResult<ClaimHeader>(count, offset, limit, result);
         }
 
 
