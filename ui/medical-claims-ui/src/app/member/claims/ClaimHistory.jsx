@@ -55,7 +55,7 @@ export default function ClaimHistory({ claimId }) {
 									<div className='px-4 font-bold gap-2'>Member Id:</div>
 									<div className='float-left'>{claimRequest.data.memberId}</div>
 									<div className='px-4 font-bold gap-2'>Payer Name:</div>
-									<div>{claimRequest.data.payerName ? data.header.payerName : '-'}</div>
+									<div>{claimRequest.data.payerName ?? '-'}</div>
 									<div className='px-4 font-bold gap-2'>Total Amount:</div>
 									<div>{money.format(claimRequest.data.totalAmount)}</div>
 									<div className='px-4 font-bold gap-2'>Provider Name:</div>
