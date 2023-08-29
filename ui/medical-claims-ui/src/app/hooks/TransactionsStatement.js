@@ -73,7 +73,7 @@ const GetClaimDetails = (claimId) => {
 const GetProviders = (currentPage = 1, pageSize = 10) => {
   const offset = calculateOffset(currentPage, pageSize);
   return useSWR(
-    `${API_URL}/payers?offset=${offset}&limit=${pageSize}`,
+    `${API_URL}/providers?offset=${offset}&limit=${pageSize}`,
     fetcher
   );
 };
@@ -81,7 +81,7 @@ const GetProviders = (currentPage = 1, pageSize = 10) => {
 const GetPayers = (currentPage = 1, pageSize = 10) => {
   const offset = calculateOffset(currentPage, pageSize);
   return useSWR(
-    `${API_URL}/providers?offset=${offset}&limit=${pageSize}`,
+    `${API_URL}/payers?offset=${offset}&limit=${pageSize}`,
     fetcher
   );
 };
