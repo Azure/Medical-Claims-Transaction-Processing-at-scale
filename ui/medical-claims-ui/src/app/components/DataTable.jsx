@@ -23,6 +23,15 @@ export default function DataTable(props) {
 		rowFormatter
 	} = props;
 
+
+	if (!Array.isArray(data)) {
+		console.error('Data passed to DataTable is not an array.');
+	}
+
+	if (!Array.isArray(headers)) {
+		console.error('Headers passed to DataTable is not an array.');
+	}
+
 	const formatRowItem = (header, value, row) => {
 		return rowFormatter ? rowFormatter(header, value, row) : (value ? value : '-');
 	}
@@ -46,9 +55,9 @@ export default function DataTable(props) {
 
 					{/* Table body */}
 					<Table.Body className="divide-y">
-						{data && data.map((row, rowIndex) => (
+						{Array.isArray(data) && data.map((row, rowIndex) => (
 							<Table.Row key={rowIndex} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-								{headers && Object.values(headers).map((header, cellIndex) => (
+								{Array.isArray(headers) && headers.map((header, cellIndex) => (
 									<Table.Cell key={`${rowIndex}-${cellIndex}`} style={header.itemStyle}>
 										{formatRowItem(header, row[header.key], row)}
 									</Table.Cell>
