@@ -152,11 +152,11 @@ cd deploy/powershell
  
 > 
 > Resources created:
-> - Resource group
+> - Resource Group
 > - Azure Blob Storage (ADLS Gen2)
 > - Azure Cosmos DB account (1 database with 1000 RUs autoscale shared with 4 collections, and 3 containers with dedicated RUs) with Analytical Store enabled
 > - Azure Event Hub standard
-> - Azure Functions Consumption Plan
+> - Azure Kubernetes Service (AKS)
 > - Azure Application Insights
 > - Azure OpenAI
 > - Synapse Workspace (public access enabled)
@@ -168,17 +168,17 @@ cd deploy/powershell
 >   - Azure Blob Storage
 >   - Azure Cosmos DB
 > - Source/Sink datasets for the ingestion process
-> - Pipeline for ingesting Synthea output into Cosmos Db Containers
+> - Pipeline for ingesting sample data into Cosmos DB Containers
 
 ## Ingest Sample Data
 
-This will require logging into the azure portal, and accessing the Synapse workspace.
+This will require logging into the Azure portal and accessing the Synapse workspace.
 
 1. Log into the Synapse workspace in Synapse Studio
 2. Locate the **Initial-Ingestion** pipeline in the **Integrate** section in the side menu
-3. Click the **Add trigger -> Trigger now** button to run the pipeline
+3. Select **Add trigger -> Trigger now** to run the pipeline
 
-> The pipeline execution should take about 5 minutes to complete.  You can monitor the progress of the pipeline by clicking on the **Monitor** section in the side menu and selecting the **Pipeline runs** tab.
+> The pipeline execution should take about 5 minutes to complete. You can monitor the progress of the pipeline by selecting the **Monitor** section in the side menu and selecting the **Pipeline runs** tab.
 
 ## Running the sample
 
