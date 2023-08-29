@@ -40,14 +40,15 @@ function formatValues(header, value, row) {
 }
 
 export default function ClaimList({ memberId }) {
-	const [page, setPage] = useState(1);
+	const [ page, setPage ] = useState(1);
+	const [ sort, setSort ] = useState({ column: null, direction: null });
 
 	const requestMember = TransactionsStatement.GetMember(memberId);
-	const requestClaims = TransactionsStatement.GetClaimsByMemberId(memberId, page, 5);
+	const requestClaims = TransactionsStatement.GetClaimsByMemberId(memberId, { page, sort });
 
-	const [claimId, setClaimId] = useState(null);
-	const [showClaimDetail, setShowClaimDetail] = useState(false);
-	const [showHistory, setShowHistory] = useState(false);
+	const [ claimId, setClaimId ] = useState(null);
+	const [ showClaimDetail, setShowClaimDetail ] = useState(false);
+	const [ showHistory, setShowHistory ] = useState(false);
 
 	const viewDetails = (newClaimId)=> {
 		setClaimId(newClaimId);
@@ -78,6 +79,8 @@ export default function ClaimList({ memberId }) {
 						page={page}
 						totalPages={requestClaims.data?.totalPages}
 						onPageChange={(newPage) => setPage(newPage)}
+						sortEnabled={true}
+						onSortChange={(sort) => setSort(sort)}
 						rowFormatter={formatValues}
 						extraHeaders={
 							<>

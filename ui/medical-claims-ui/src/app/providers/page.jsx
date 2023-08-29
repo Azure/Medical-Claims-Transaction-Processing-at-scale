@@ -15,8 +15,9 @@ const tableHeaders = [
 ];
 
 export default function Providers() {	
-	const [page, setPage] = useState(1);
-	const { data, isLoading } = TransactionsStatement.GetProviders(page, 10);
+	const [ page, setPage ] = useState(1);
+	const [ sort, setSort ] = useState({ column: null, direction: null });
+	const { data, isLoading } = TransactionsStatement.GetProviders({ page, sort });
 
 	return (
 		<div className="card shadow-md">
@@ -34,6 +35,8 @@ export default function Providers() {
 						page={page}
 						totalPages={data?.totalPages}
 						onPageChange={(newPage) => setPage(newPage)}
+						sortEnabled={true}
+						onSortChange={(sort) => setSort(sort)}
 					/>
 				</div>
 			</div>
