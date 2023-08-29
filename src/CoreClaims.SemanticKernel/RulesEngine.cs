@@ -22,7 +22,7 @@ namespace CoreClaims.SemanticKernel
 
             var builder = new KernelBuilder();
 
-            builder.WithAzureTextCompletionService(
+            builder.WithAzureChatCompletionService(
                      _settings.OpenAICompletionsDeployment,
                      _settings.OpenAIEndpoint,
                      _settings.OpenAIKey);

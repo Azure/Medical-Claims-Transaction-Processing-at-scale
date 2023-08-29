@@ -16,6 +16,11 @@ builder.Services.AddSingleton(s =>
     var endpoint = builder.Configuration[Constants.Connections.CosmosDbEndpoint];
     var clientId = builder.Configuration[Constants.Identity.ClientId];
 
+#if DEBUG
+    return new CosmosClientBuilder(endpoint, new Azure.Identity.DefaultAzureCredential())
+        .Build();
+#endif
+
     var credential = new ChainedTokenCredential(
         new ManagedIdentityCredential(clientId),
         new AzureCliCredential()
