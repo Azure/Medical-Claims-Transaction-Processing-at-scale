@@ -73,9 +73,10 @@ export default function ClaimList({ memberId }) {
 					<DataTable
 						isLoading={requestClaims.isLoading}
 						headers={tableHeaders}
-						data={requestClaims.data}
+						data={requestClaims.data?.items}
 						pagination={true}
 						page={page}
+						totalPages={requestClaims.data?.totalPages}
 						onPageChange={(newPage) => setPage(newPage)}
 						rowFormatter={formatValues}
 						extraHeaders={

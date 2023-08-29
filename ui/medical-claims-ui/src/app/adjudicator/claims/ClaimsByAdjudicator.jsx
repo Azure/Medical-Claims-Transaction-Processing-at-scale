@@ -82,9 +82,10 @@ export default function ClaimsByAdjudicator({adjudicatorId, isManager}) {
 							isLoading={requestClaims.isLoading}
 							headers={tableHeaders}
 							// ! This becomes null/undefined on claim proposal
-							data={requestClaims.data}
+							data={requestClaims.data?.items}
 							pagination={true}
 							page={page}
+							totalPages={requestClaims.data?.totalPages}
 							onPageChange={(newPage) => setPage(newPage)}
 							rowFormatter={formatValues}
 							extraHeaders={
