@@ -121,7 +121,7 @@ export default function DataTable(props) {
 			}
 
 			{/* Pagination */}
-			{pagination && <Pagination
+			{pagination && totalPages > 1 && <Pagination
 				theme={paginationTheme}
 				className="p-6 flex justify-center"
 				currentPage={page}
