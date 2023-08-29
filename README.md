@@ -54,6 +54,18 @@ To start the React web app:
 
 ### Standard Deployments
 
+#### Clone the Repo
+
+You will need the files locally when performing standard deployments. To start, clone the repo.
+
+> **Important:** Do not forget the `--recurse-submodules` parameter. This loads the `AKS-Construction` submodule that contains AKS-specific Bicep templates.
+
+```bash
+git clone --recurse-submodules https://github.com/AzureCosmosDB/ClaimsProcessing.git
+```
+
+#### Execute PowerShell Script
+
 From the `deploy/powershell` folder, run the following command. This should provision all of the necessary infrastructure, deploy builds to the function apps, deploy the frontend, and deploy necessary artifacts to the Synapse workspace.
 
 ```pwsh
@@ -62,7 +74,7 @@ From the `deploy/powershell` folder, run the following command. This should prov
                      -subscription <subscription-id>
 ```
 
-### Cloud Shell Based Deployments
+### Cloud Shell-Based Deployments
 
 Create a cloud shell environment in a tenant that contains the target subscription.  Clone the repository and then execute the `CloudShell-Deploy.ps1` script as illustrated in the following snippet.  This will provision all of the required infrastructure and deploy the API and web app services into AKS.
 
