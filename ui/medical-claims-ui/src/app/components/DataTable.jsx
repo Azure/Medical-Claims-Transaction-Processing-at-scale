@@ -19,11 +19,12 @@ export default function DataTable(props) {
 		page = 1,
 		totalPages = 100,
 		onPageChange = () => {},
+		sortEnabled = false,
+		onSortChange = () => {},
 		extraHeaders,
 		extraRowItems,
 		rowFormatter
 	} = props;
-
 
 	if (!Array.isArray(data)) {
 		console.error('Data passed to DataTable is not an array.');
@@ -37,6 +38,43 @@ export default function DataTable(props) {
 		return rowFormatter ? rowFormatter(header, value, row) : (value ? value : '-');
 	}
 
+	const [ sortColumn, setSortColumn ] = useState(null);
+	const [ sortDirection, setSortDirection ] = useState(null);
+	const [ sortIcon, setSortIcon ] = useState('');
+
+	/*
+		header clicked:
+			sort column ASC
+			sort column DESC
+			do not sort column
+	*/
+	const onHeaderClicked = (header) => {		
+		if (!sortEnabled) return;
+
+		let newSortDirection = '';
+		let newSortIcon = '';
+
+		switch (sortDirection) {
+			case null:
+				newSortDirection = 'asc';
+				newSortIcon = '▲';
+				break;
+			case 'asc':
+				newSortDirection = 'desc';
+				newSortIcon = '▼';
+				break;
+			case 'desc':
+				newSortDirection = null;
+				newSortIcon = '';
+			 break;
+		}
+
+		setSortColumn(header.key);
+		setSortDirection(newSortDirection);
+		setSortIcon(newSortIcon);
+		onSortChange({ column: header.key, direction: newSortDirection });
+	}
+
 	return (
 		<>
 			{!isLoading ? (
@@ -46,8 +84,8 @@ export default function DataTable(props) {
 					{/* Table headers */}
 					<Table.Head>
 						{headers.map((header) => (
-							<Table.HeadCell key={header.key}>
-								{header.name}
+							<Table.HeadCell key={header.key} onClick={() => onHeaderClicked(header)}>
+								{header.name} {sortColumn === header.key ? sortIcon : null}
 							</Table.HeadCell>
 						))}
 
