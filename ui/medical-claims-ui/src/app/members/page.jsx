@@ -49,7 +49,9 @@ function formatValues(header, value, row) {
 
 export default function Members() {	
 	const [ page, setPage ] = useState(1);
-	const { data, isLoading } = TransactionsStatement.GetMembersList(page, 10);
+	const [ sort, setSort ] = useState({ column: null, direction: null });
+	const { data, isLoading } = TransactionsStatement.GetMembersList({ page, sort });
+
 	const [ showClaimsList, setShowClaimsList ] = useState(false);
 	const [ showMemberDetail, setShowMemberDetail ] = useState(false);
 	const [ showCoverageModal, setShowCoverageModal ] = useState(false);
@@ -73,6 +75,8 @@ export default function Members() {
 							page={page}
 							totalPages={data?.totalPages}
 							onPageChange={(newPage) => setPage(newPage)}
+							sortEnabled={true}
+							onSortChange={(sort) => setSort(sort)}
 							rowFormatter={formatValues}
 							extraHeaders={
 								<>
