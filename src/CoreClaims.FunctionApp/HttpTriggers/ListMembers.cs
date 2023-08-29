@@ -28,8 +28,9 @@ namespace CoreClaims.FunctionApp.HttpTriggers
             using (logger.BeginScope("HttpTrigger: ListMembers"))
             {
                 var (offset, limit) = req.GetPagingQuery();
+                var (sortColumn, sortDirection) = req.GetSortQuery();
 
-                var result = await _repository.ListMembers(offset, limit);
+                var result = await _repository.ListMembers(offset, limit, sortColumn, sortDirection);
                 var response = req.CreateResponse(HttpStatusCode.OK);
                 await response.WriteAsJsonAsync(result);
 
