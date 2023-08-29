@@ -51,10 +51,17 @@ export default function DataTable(props) {
 	const onHeaderClicked = (header) => {		
 		if (!sortEnabled) return;
 
+		let oldSortDirection = sortDirection;
+
+		// Reset sort direction when column changes
+		if (header.key !== sortColumn) {
+			oldSortDirection = null;
+		}
+
 		let newSortDirection = '';
 		let newSortIcon = '';
 
-		switch (sortDirection) {
+		switch (oldSortDirection) {
 			case null:
 				newSortDirection = 'asc';
 				newSortIcon = '▲';
