@@ -20,18 +20,29 @@ const post = async (url, { arg }) =>
     headers: { "x-functions-key": X_FUNCTION_KEY },
   });
 
+
 // Function to calculate the offset
 const calculateOffset = (currentPage, pageSize) => {
   return (currentPage - 1) * pageSize;
 };
 
-const GetMembersList = (currentPage = 1, pageSize = 10) => {
-  const offset = calculateOffset(currentPage, pageSize);
-  var temp = useSWR(
-    `${API_URL}/members?offset=${offset}&limit=${pageSize}`,
-    fetcher
-  );
-  return temp;
+const buildQueryString = ({ page, pageSize = 10, sort }) => {
+  const offset = calculateOffset(page, pageSize);
+
+  const params = {};
+  params.offset = offset;
+  params.limit = pageSize;
+  sort?.column && sort?.direction && (params.sortColumn = sort.column);
+  sort?.direction && sort?.column && (params.sortDirection = sort.direction);
+
+  return new URLSearchParams(params).toString();
+}
+
+
+function GetMembersList({ page = 1, sort }) {
+  const queryString = buildQueryString({ page, sort });
+
+  return useSWR(`${API_URL}/members?${queryString}`, fetcher);
 };
 
 const GetMember = (memberId) => {
