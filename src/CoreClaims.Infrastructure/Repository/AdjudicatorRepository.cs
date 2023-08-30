@@ -69,6 +69,16 @@ namespace CoreClaims.Infrastructure.Repository
             return ReadItem<Adjudicator>(adjudicatorId, adjudicatorId);
         }
 
+        public Task<ClaimHeader> GetAdjudicatorClaim(string adjudicatorId, string id)
+        {
+            return ReadItem<ClaimHeader>(adjudicatorId, id);
+        }
+
+        public async Task DeleteAdjudicatorClaim(string adjudicatorId, string id)
+        {
+            await Container.DeleteItemAsync<ClaimHeader>(id, new Microsoft.Azure.Cosmos.PartitionKey(adjudicatorId));
+        }
+
         public async Task UpsertClaim(ClaimHeader claim)
         {
             await Container.UpsertItemAsync(claim);

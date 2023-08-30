@@ -44,7 +44,8 @@ builder.Services.AddSingleton<ICoreBusinessRule, CoreBusinessRule>();
 builder.Services.AddSingleton<ICosmosDbChangeFeedService, CosmosDbChangeFeedService>();
 
 builder.Services.AddHostedService<ChangeFeedWorker>();
-builder.Services.AddHostedService<EventHubWorker>();
+builder.Services.AddHostedService<EventHubWorkerIncomingClaims>();
+builder.Services.AddHostedService<EventHubWorkerAdjudicatorChanged>();
 
 var host =builder.Build();
 
