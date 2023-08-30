@@ -135,19 +135,20 @@ The following flags can be used to enable/disable specific deployment steps in t
 | stepDeployImages | Enables or disables deploying the Docker images from the `CoreClaims.WebAPI` and `CoreClaims.WorkerService` projects to AKS. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/Deploy-Images-Aks.ps1` script.
 | stepPublishSite | Enables or disables the build and deployment of the static HTML site to the hosting storage account in the target resource group. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/Publish-Site.ps1` script.
 | stepSetupSynapse | Enables or disables the deployment of a Synapse artifacts to the target synapse workspace. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/Setup-Synapse.ps1` script.
-| stepLoginAzure | Enables or disables interactive Azure login. If disabled, the deployment assumes that the current Azure CLI session is valid. Valid values are 0 (Disabled). 
+| stepLoginAzure | Enables or disables interactive Azure login. If disabled, the deployment assumes that the current Azure CLI session is valid. Valid values are 0 (Disabled).
 
 Example command:
 ```pwsh
 cd deploy/powershell
 ./Unified-Deploy.ps1 -resourceGroup myRg `
                      -subscription 0000... `
-                     -openAiName myOpenAi `
-                     -openAiRg myOpenAiRg `
-                     -openAiDeployment completions `
                      -stepLoginAzure 0 `
                      -stepDeployBicep 0 `
-                     -stepPublishFunctionApp 1 `
+                     -stepDeployCertManager 0 `
+                     -stepDeployTls 0 `
+                     -stepBuildPush 1 `
+                     -stepDeployImages 1 `
+                     -stepSetupSynapse 0 `
                      -stepPublishSite 1
 ```
 
