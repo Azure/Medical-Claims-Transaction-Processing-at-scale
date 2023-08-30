@@ -10,7 +10,7 @@ param apiPrincipalId string
 @description('Worker managed identity service principal Id')
 param workerPrincipalId string
 
-var eventHubs = ['IncomingClaim', 'RejectedClaim', 'ClaimApproved', 'ClaimDenied']
+var eventHubs = ['IncomingClaim', 'RejectedClaim', 'ClaimApproved', 'ClaimDenied', 'AdjudicatorChanged']
 
 resource namespace 'Microsoft.EventHub/namespaces@2022-10-01-preview' = {
   name: eventHubNamespace

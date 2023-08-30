@@ -204,13 +204,13 @@ Synthia/Faker will be used to generate thousands of rows of Member and Claim dat
 
 In order to simulate continuous claims being filed, a Publisher app will be created. This will be a simple Console/Function app that will be responsible for using Faker to  generate new claims, and push them to the `IncomingClaim` EventHub topic.
 
-## Function Application
+## Web API
 
-Function application will be main entry point for users, exposing a number of endpoints for use in testing, and a hypothetical future UI. For the scope of this project, no UI will be built, the API's will called from Postman (or similar tool), and JMeter for purposes of load/performance testing.
+The Web API application will be main entry point for users, exposing a number of endpoints for use in testing, and a hypothetical future UI.
 
 ### Application Flow
 
-For the purposes of this demo we're going to limit the scope of the process to highlight a few specific details. We'll be tracking the state of a claim through it's life-cycle, from creation, through to completion.
+For the purposes of this demo we're going to limit the scope of the process to highlight a few specific details. We'll be tracking the state of a claim through its life-cycle, from creation, through to completion.
 
 #### 1. Creation
 
@@ -228,11 +228,13 @@ For the purposes of this demo we're going to limit the scope of the process to h
 > 
 > Some simple validation should be done to ensure the claim is not a duplicate of an existing claim. Validation is checking for existing claim with claimId (when eventType is create), duplicate should return an Error, and publish an Event to `RejectedClaims` topic in EventHub.
 
-A claim is first created via the `CreateClaim` endpoint. This could be via an event from the EventHub, or via an HTTP Post action. This should create a Claim. A Claim consists of 2 document in a container.
+A claim is first created via the `CreateClaim` endpoint. This could be via an event from the EventHub, or via an HTTP Post action. This should create a Claim. A Claim consists of 2 documents in a container.
+
 - ClaimHeader
 - ClaimDetail
 
-The Claim Detail contains the bulk of the information about the claim, including Member and Payer, as well as the line items on the claim. The ClaimDetail should almost never be updated, instead it will be replaced with newer version. The ClaimHeader is a simplified view of the claim, containing 
+The Claim Detail contains the bulk of the information about the claim, including Member and Payer, as well as the line items on the claim. The ClaimDetail should almost never be updated, instead it will be replaced with newer version. The ClaimHeader is a simplified view of the claim, containing:
+
 - a reference to the latest version of the ClaimDetail
 - a subset of the properties on the detail
 - an aggregate of the total line items
@@ -389,7 +391,8 @@ A bicep definition of the required infrastructure will be created containing the
 | EventHub/Topic     | `IncomingClaim`           | Streaming input of claims, provided by Publisher app                                                    |
 | EventHub/Topic     | `RejectedClaim`           | Topic where duplicate claims, or invalid claims get published after failing validation on CreateClaim   |
 | EventHub/Topic     | `ClaimApproved`           | Topic where claims that have been approved are published for hypothetical downstream systems to process |
-| EventHub/Topic     | `ClaimDenied`             | topic where claims that have been denied are published for hypothetical downstream systems to process   |
+| EventHub/Topic     | `ClaimDenied`             | Topic where claims that have been denied are published for hypothetical downstream systems to process   |
+| EventHub/Topic     | `AdjudicatorChanged`            | Topic where the adjudicator for a claim was changed, such as when a manager is assigned because they need to approve a proposal. Downstream, the EventHub processor uses the claim header data to delete the previous adjudicator's claim header record. This way, there are no duplicated records between two adjudicators.  |
 | Storage Account    | `adl-coreclaims-demo`     | Storage account for Azure Data Lake storage of initial seed data for synapse processing                 |
 | Synapse workspace  | `synapse-coreclaims-demo` | Synapse notebook for running initial seed scripts                                                       |
 | Apache Spark Pool  | `SeedData`                | Spark pool used by synapse                                                                              |
