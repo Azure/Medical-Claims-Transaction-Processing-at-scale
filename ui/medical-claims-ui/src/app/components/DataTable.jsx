@@ -120,7 +120,7 @@ export default function DataTable(props) {
 				</div>
 			}
 
-			{data == false && <span className="flex justify-center my-5">No data.</span>}
+			{!isLoading && (data == false) && <span className="flex justify-center my-5">No data.</span>}
 
 			{/* Pagination */}
 			{pagination && totalPages > 1 && <Pagination
