@@ -12,6 +12,7 @@
             public const string Incoming = "IncomingClaim";
             public const string Denied = "ClaimDenied";
             public const string Approved = "ClaimApproved";
+            public const string AdjudicatorChanged = "AdjudicatorChanged";
         }
 
         public static class Connections
