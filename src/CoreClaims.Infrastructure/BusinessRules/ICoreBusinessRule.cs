@@ -6,6 +6,6 @@ namespace CoreClaims.Infrastructure.BusinessRules
     {
         Task<ClaimDetail> AssignClaim(ClaimDetail claim);
 
-        Task<ClaimDetail> AdjudicateClaim(ClaimDetail claim);
+        Task<(ClaimDetail, bool)> AdjudicateClaim(ClaimDetail claim);
     }
 }

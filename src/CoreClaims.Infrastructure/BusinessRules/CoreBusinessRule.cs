@@ -98,15 +98,16 @@ namespace CoreClaims.Infrastructure.BusinessRules
             return claim;
         }
 
-        public async Task<ClaimDetail> AdjudicateClaim(ClaimDetail claim)
+        public async Task<(ClaimDetail, bool)> AdjudicateClaim(ClaimDetail claim)
         {
             var adjudicator = await _adjudicatorRepository.GetAdjudicator(claim.AdjudicatorId);
+            var adjudicatorChanged = false;
 
             if (adjudicator?.Role == AdjudicatorRole.Manager)
             {
                 claim.ClaimStatus = ClaimStatus.Approved;
                 claim.Comment = "[Automatic] Approved: Manager Proposed adjustment";
-                return claim;
+                return (claim, adjudicatorChanged);
             }
 
             if (claim.LastAmount.HasValue)
@@ -116,7 +117,7 @@ namespace CoreClaims.Infrastructure.BusinessRules
                 {
                     claim.ClaimStatus = ClaimStatus.Approved;
                     claim.Comment = $"[Automatic] Approved: Proposed adjustment below approval threshold {_options.Value.RequireManagerApproval}";
-                    return claim;
+                    return (claim, adjudicatorChanged);
                 }
             }
 
@@ -138,7 +139,9 @@ namespace CoreClaims.Infrastructure.BusinessRules
             claim.ClaimStatus = ClaimStatus.ApprovalRequired;
             claim.Comment = "[Automatic] Reassigned: Adjustment requires manager approval";
 
-            return claim;
+            adjudicatorChanged = claim.PreviousAdjudicatorId != claim.AdjudicatorId;
+
+            return (claim, adjudicatorChanged);
         }
     }
 }
