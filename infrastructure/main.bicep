@@ -73,6 +73,7 @@ module synapse 'synapse.bicep' = {
 
 module openAi 'openai.bicep' = {
   name: 'openAiDeploy'
+  scope: resourceGroup() // Deployments with existing OpenAi (different resource group) will have to be properly adjust this
   params: {
     openAiName: serviceNames.openAi
     location: location
