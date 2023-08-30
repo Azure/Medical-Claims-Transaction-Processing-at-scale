@@ -90,7 +90,6 @@ export default function ClaimsByAdjudicator({ adjudicatorId, isManager }) {
 							sortEnabled={true}
 							onSortChange={(sort) => setSort(sort)}
 							rowFormatter={formatValues}
-							rowFormatter={formatValues}
 							extraHeaders={
 								<>
 									<Table.HeadCell></Table.HeadCell>
