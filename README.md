@@ -248,6 +248,8 @@ Browse to the URL copied in the previous step to access the web app.
   - Selecting **Deny Claim** will finalize the claim as `Denied` and publish the final status of the claim to a `ClaimDenied` topic on the event hub
   - Selecting **Propose Claim** without applying discounts on the Line Items, or changing them such that the difference between the total before and after is less than $500.00 (configurable) will trigger an automatic approval
   - Selecting **Propose Claim** while applying discounts on the Line Items so the total before and after differs by more than $500.00 will trigger manager approval, updating the status to `ApprovalRequired` and assigning a new adjudicator manager to the claim. Since we are hard-coding the Non-Manager and Manager Adjudicators, you should be able to select the Manager tab and see the claim assigned to the Manager Adjudicator.
+    - A change from the original adjudicator to the adjudicator manager will publish the claim header to an `AdjudicatorChanged` event to the event hub.
+    - The `CoreClaims.WorkerService` will pick up the `AdjudicatorChanged` event and delete the claim header record from the Non-Manager Adjudicator's queue. This way, we do not have to worry about the Non-Manager Adjudicator processing the claim after it has been assigned to the Manager Adjudicator. We also avoid the claim showing up in the Non-Manager Adjudicator's queue.
 
   > **Note**: If you propose a claim as an adjudicator manager, the claim will always be approved, regardless of the total discount amount.
 
