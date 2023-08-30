@@ -19,7 +19,7 @@ if (-not $deployment) {
     $deployment='completions'
     $openAiDeployment=$(az cognitiveservices account deployment show -g $resourceGroup -n $name --deployment-name $deployment)
     if (-not $openAiDeployment) {
-        $openAiDeployment=$(az cognitiveservices account deployment create -g $resourceGroup -n $name --deployment-name completions --model-name 'gpt-35-turbo' --model-version '1' --model-format OpenAI)
+        $openAiDeployment=$(az cognitiveservices account deployment create -g $resourceGroup -n $name --deployment-name completions --model-name 'gpt-35-turbo' --model-version '0301' --model-format OpenAI  --scale-settings-scale-type 'Standard')
     }
 }
 
