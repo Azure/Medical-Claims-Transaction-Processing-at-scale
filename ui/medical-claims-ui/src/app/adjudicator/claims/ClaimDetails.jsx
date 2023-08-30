@@ -30,7 +30,7 @@ export default function ClaimDetails({ claimId, requestClaims, isManager, setCha
 		<>
 			<div className="card shadow-md">
 				<div className="card-header grid grid-cols-2">
-					<h4 className="card-title">Claim Details</h4>
+					<h4 className="card-title mb-2">Claim Details</h4>
 					<div className='text-right'><label>Filing Date: </label>{ Moment(data.filingDate).format('MMMM DD, YYYY') }</div>
 					<div className="justify-end">
 						<Button color="dark" className="p-0" onClick={onClickRecommend}>
@@ -48,9 +48,7 @@ export default function ClaimDetails({ claimId, requestClaims, isManager, setCha
 							<div className='float-left'>{data.memberId}</div>
 							<div className='px-4 font-bold gap-2'>Claim Status:</div>
 							<div>
-								<div>
-									<span className="bg-yellow-100">{data.claimStatus}</span>
-								</div>
+								<span className="bg-yellow-100">{data.claimStatus}</span>
 								<ClaimsActions claimStatus={data.claimStatus} claimId={data.claimId} {...{data, requestClaims, lineItems, mutate, setChangeDetail}}/>
 							</div>
 							<div className='px-4 font-bold gap-2'>Payer Name:</div>
