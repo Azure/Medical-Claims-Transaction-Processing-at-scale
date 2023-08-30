@@ -15,6 +15,10 @@ namespace CoreClaims.Infrastructure.Repository
 
         Task<Adjudicator> GetAdjudicator(string adjudicatorId);
 
+        Task<ClaimHeader> GetAdjudicatorClaim(string adjudicatorId, string id);
+
+        Task DeleteAdjudicatorClaim(string adjudicatorId, string id);
+
         Task UpsertClaim(ClaimHeader claim);
     }
 }
