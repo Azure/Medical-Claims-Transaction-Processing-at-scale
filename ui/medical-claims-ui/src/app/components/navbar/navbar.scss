@@ -57,11 +57,12 @@ $dark-gray: rgb(68, 68, 68);
 	color: $dark-gray;
 	width: 240px;
 	transition: width 0.15s ease-in-out;
+	overflow: hidden;
 }
 
 .navbar__item {
 	display: flex;
-	justify-content: start;
+	justify-content: flex-start;
 	align-items: center;
 	margin-top: 30px;
 	width: 100%;
@@ -81,7 +82,7 @@ $dark-gray: rgb(68, 68, 68);
 	margin-left: 14px;
 	border-radius: 9px;
 	display: flex;
-	justify-content: start;
+	justify-content: flex-start;
 	align-items: center;
 	flex-shrink: 0;
 }
