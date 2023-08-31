@@ -14,7 +14,7 @@ import DataTable from '../../components/DataTable';
 const tableHeaders = [
 	{ key: 'filingDate', name: 'Filing Date' },
 	{ key: 'claimId', name: 'Claim ID' },
-	{ key: 'claimStatus', name: 'Claim Status' },
+	{ key: 'claimStatus', name: 'Claim Status', cellStyle: { backgroundColor: 'rgb(253, 248, 170)' } },
 	{ key: 'providerName', name: 'Provider' },
 	{ key: 'lastAdjudicatedDate', name: 'Last Adjudicated Date' },
 	{ key: 'lastAmount', name: 'Last Amount' },
@@ -81,7 +81,6 @@ export default function ClaimsByAdjudicator({ adjudicatorId, isManager }) {
 						<DataTable
 							isLoading={requestClaims.isLoading}
 							headers={tableHeaders}
-							// ! This becomes null/undefined on claim proposal
 							data={requestClaims.data?.items}
 							pagination={true}
 							page={page}
