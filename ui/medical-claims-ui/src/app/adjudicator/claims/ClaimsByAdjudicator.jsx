@@ -74,7 +74,7 @@ export default function ClaimsByAdjudicator({ adjudicatorId, isManager }) {
 		<>
 			<div className="card mb-10 shadow-md">
 				<div className="card-header">
-					<h4 className="card-title">Claims</h4>
+					<h4 className="card-title">Claims Assigned to { isManager ? 'Manager' : 'Adjudicator' }</h4>
 				</div>
 				<div className="card-body">
 					<div className="relative overflow-x-auto sm:rounded">
