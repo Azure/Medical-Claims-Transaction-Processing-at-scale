@@ -18,7 +18,7 @@ const paginationTheme = {
       base: "rounded-md mx-1 w-9 bg-gray-100 py-2 leading-tight hover:bg-gray-200",
       active: "hover:bg-gray-600",
       disabled: "opacity-50 cursor-normal",
-      active: 'text-white bg-[rgb(68, 68, 68)] hover:bg-[rgb(68, 68, 68)]',
+      active: 'text-white bg-[#444444] hover:bg-[#444444]',
     }
   }
 };
