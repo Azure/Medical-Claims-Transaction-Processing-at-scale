@@ -63,6 +63,12 @@ export default function ClaimsByAdjudicator({ adjudicatorId, isManager }) {
 		setShowClaimDetail(false);
 	}
 
+	const onPageChange = (newPage) => {
+		setShowClaimDetail(false);
+		setShowHistory(false);
+		setPage(newPage);
+	}
+
 	useEffect(() => {
 		if (changeDetail) {
 			requestClaims.mutate();
@@ -85,7 +91,7 @@ export default function ClaimsByAdjudicator({ adjudicatorId, isManager }) {
 							pagination={true}
 							page={page}
 							totalPages={requestClaims.data?.totalPages}
-							onPageChange={(newPage) => setPage(newPage)}
+							onPageChange={(newPage) => onPageChange(newPage)}
 							sortEnabled={true}
 							onSortChange={(sort) => setSort(sort)}
 							rowFormatter={formatValues}
