@@ -179,7 +179,8 @@ function formatValues(header, value, row) {
 }
 
 const ableApplyDiscount = (claimStatus) => {
-	if (claimStatus.toLowerCase() == 'denied' || claimStatus.toLowerCase() == 'approved') {
+	const status = claimStatus.toLowerCase();
+	if (status == 'denied' || status == 'approved' || status == 'assigned') {
 		return false;
 	} else {
 		return true;
