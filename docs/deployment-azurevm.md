@@ -68,6 +68,7 @@ The following flags can be used to enable/disable specific deployment steps in t
 | stepLoginAzure | Enables or disables interactive Azure login. If disabled, the deployment assumes that the current Azure CLI session is valid. Valid values are 0 (Disabled).
 
 Example command:
+
 ```pwsh
 cd deploy/powershell
 ./Unified-Deploy.ps1 -resourceGroup myRg `
@@ -80,3 +81,4 @@ cd deploy/powershell
                      -stepDeployImages 1 `
                      -stepSetupSynapse 0 `
                      -stepPublishSite 1
+```
