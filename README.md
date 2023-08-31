@@ -22,134 +22,20 @@ The solution architecture is represented by this diagram:
     <img src="img/architecture.png" width="100%">
 </p>
 
-## Prerequisites
 
-- Azure Subscription
-- Subscription access to Azure OpenAI service. Start here to [Request Access to Azure OpenAI Service](https://customervoice.microsoft.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbR7en2Ais5pxKtso_Pz4b1_xUOFA5Qk1UWDRBMjg0WFhPMkIzTzhKQ1dWNyQlQCN0PWcu)
+### Deployment
 
-### Prerequisites for running/debugging locally
+Check the [Deployment](./docs/deployment.md) page for instructions on how to deploy the solution to your Azure subscription.
 
-- Backend (Function App, Console Apps, etc.)
-  - Visual Studio 2022 17.6 or later (required for passthrough Visual Studio authentication for the Docker container)
-  - .NET 7 SDK
-  - Docker Desktop (with WSL for Windows machines)
-  - Azure CLI ([v2.49.0 or greater](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli))
-  - [Helm 3.11.1 or greater](https://helm.sh/docs/intro/install/)
-- Frontend (React web app)
-  - Visual Studio Code
-  - Ensure you have the latest version of NPM and node.js:
-    - Install NVM from https://github.com/coreybutler/nvm-windows
-    - Run nvm install latest
-    - Run nvm list (to see the versions of NPM/node.js available)
-    - Run nvm use latest (to use the latest available version)
+Once your deployment is complete, you can proceed to the [Quickstart](#quickstart) section.
 
-To start the React web app:
+#### Publish the React web app after making changes
 
-1. Navigate to the `ui/medical-claims-ui` folder
-2. Run npm install to restore the packages
-3. Run npm run dev
-4. Open localhost:3000 in a web browser
-
-## Deployment
-
-### Standard Deployments
-
-#### Clone the Repo
-
-You will need the files locally when performing standard deployments. To start, clone the repo.
-
-> **Important:** Do not forget the `--recurse-submodules` parameter. This loads the `AKS-Construction` submodule that contains AKS-specific Bicep templates.
-
-```bash
-git clone --recurse-submodules https://github.com/AzureCosmosDB/ClaimsProcessing.git
-```
-
-#### Execute PowerShell Script
-
-From the `deploy/powershell` folder, run the following command. This should provision all of the necessary infrastructure, deploy builds to the function apps, deploy the frontend, and deploy necessary artifacts to the Synapse workspace.
+If you make changes to the React web app and want to redeploy it, run the following:
 
 ```pwsh
-.\Unified-Deploy.ps1 -resourceGroup <resource-group-name> `
-                     -location EastUS `
-                     -subscription <subscription-id>
-```
-
-### Cloud Shell-Based Deployments
-
-Create a cloud shell environment in a tenant that contains the target subscription.  Clone the repository and then execute the `CloudShell-Deploy.ps1` script as illustrated in the following snippet.  This will provision all of the required infrastructure and deploy the API and web app services into AKS.
-
-```pwsh
-git clone --recurse-submodules https://github.com/AzureCosmosDB/ClaimsProcessing.git
-cd ClaimsProcessing
-chmod +x ./deploy/powershell/*
-./deploy/powershell/CloudShell-Deploy.ps1 -resourceGroup <rg-name> `
-                                          -location EastUS `
-                                          -subscription <target-subscription>
-```
-
-### Azure VM Based Deployments
-
-Run the following script to provision a development VM with Visual Studio 2022 Community and required dependencies preinstalled.
-
-```pwsh
-.\deploy\powershell\Deploy-Vm.ps1 -resourceGroup <rg-name> -location EastUS
-```
-
-When the script completes, the console output should display the name of the provisioned VM similar to the following:
-
-```
-The resource prefix used in deployment is libxarwttxjde
-The deployed VM name used in deployment is libxarwttxjdevm
-```
-
-Use RDP to remote into the freshly provisioned VM with the username `BYDtoChatGPTUser` and password `Test123456789!`.  Open up a powershell terminal and run the following script to provision the infrastructure and deploy the API and frontend. This will provision all of the required infrastructure, deploy the API and web app services into AKS, and import data into Cosmos.
-
-```pwsh
-git clone --recurse-submodules https://github.com/hatboyzero/ClaimsProcessing.git
-cd ClaimsProcessing
-./deploy/powershell/Unified-Deploy.ps1 -resourceGroup <rg-name> `
-                                       -location EastUS `
-                                       -subscription <target-subscription>
-```
-
-### Publish the React web app after making changes
-
-If you make changes to the React web app and want to redeploy it, run the following from the `deploy/powershell` folder:
-
-
-```pwsh
-./Publish-Site.ps1 -resourceGroup <resource-group-name> `
+.\deploy\powershell\Publish-Site.ps1 -resourceGroup <resource-group-name> `
                      -storageAccount <storage-account-name (webcoreclaimsxxxx)>
-```
-
-### Enabling/Disabling Deployment Steps
-
-The following flags can be used to enable/disable specific deployment steps in the `Unified-Deploy.ps1` script.
-
-| Parameter Name | Description |
-|----------------|-------------|
-| stepDeployBicep | Enables or disables the provisioning of resources in Azure via Bicep templates (located in `./infrastructure`). Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/powershell/Deploy-Bicep.ps1` script.
-| stepBuildPush | Enables or disables the build and push of Docker images into the Azure Container Registry (ACR). Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/BuildPush.ps1` script.
-| stepDeployCertManager | Enables or disables adding the official cert-manager repository to your local and updates the repo cache. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/DeployCertManager.ps1` script.
-| stepDeployTls | Enables or disables SSL/TLS support on the AKS cluster in the resource group. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/DeployTlsSupport.ps1` script.
-| stepDeployImages | Enables or disables deploying the Docker images from the `CoreClaims.WebAPI` and `CoreClaims.WorkerService` projects to AKS. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/Deploy-Images-Aks.ps1` script.
-| stepPublishSite | Enables or disables the build and deployment of the static HTML site to the hosting storage account in the target resource group. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/Publish-Site.ps1` script.
-| stepSetupSynapse | Enables or disables the deployment of a Synapse artifacts to the target synapse workspace. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/Setup-Synapse.ps1` script.
-| stepLoginAzure | Enables or disables interactive Azure login. If disabled, the deployment assumes that the current Azure CLI session is valid. Valid values are 0 (Disabled).
-
-Example command:
-```pwsh
-cd deploy/powershell
-./Unified-Deploy.ps1 -resourceGroup myRg `
-                     -subscription 0000... `
-                     -stepLoginAzure 0 `
-                     -stepDeployBicep 0 `
-                     -stepDeployCertManager 0 `
-                     -stepDeployTls 0 `
-                     -stepBuildPush 1 `
-                     -stepDeployImages 1 `
-                     -stepSetupSynapse 0 `
-                     -stepPublishSite 1
 ```
 
 ### Quickstart
