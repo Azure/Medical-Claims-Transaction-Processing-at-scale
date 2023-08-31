@@ -15,7 +15,7 @@ Follow the steps below to deploy the solution to your Azure subscription.
     .\deploy\powershell\Deploy-Vm.ps1 -resourceGroup <rg_name> -location <location> -password <password>
     ```
 
-    `<password`> is the password for the `ClaimsUser` account that will be created on the VM. It must be at least 12 characters long and meet the complexity requirements of Azure VMs.
+    `<password`> is the password for the `BYDtoChatGPTUser` account that will be created on the VM. It must be at least 12 characters long and meet the complexity requirements of Azure VMs.
 
     When the script completes, the console output should display the name of the provisioned VM similar to the following:
 
@@ -24,9 +24,9 @@ Follow the steps below to deploy the solution to your Azure subscription.
     The deployed VM name used in deployment is libxarwttxjdevm
     ```
 
-1. Use RDP to remote into the freshly provisioned VM with the username `ClaimsUser` and the password you provided earlier on.  
+1. Use RDP to remote into the freshly provisioned VM with the username `BYDtoChatGPTUser` and the password you provided earlier on.  
 
-1. Add the `ClaimsUser` account to the `docker-users` local group on the VM. Sign out and sign back in to the VM to apply the changes.
+1. Add the `BYDtoChatGPTUser` account to the `docker-users` local group on the VM. Sign out and sign back in to the VM to apply the changes.
 
 1. Install WSL2 by running the following command in a command prompt:
 
@@ -36,7 +36,7 @@ Follow the steps below to deploy the solution to your Azure subscription.
 
 1. Restart the VM to complete the setup.
 
-1. Log back in with the `ClaimsUser` account and start `Docker Desktop`. Ensure the Docker engine is up and running. Keep `Docker Desktop` running in the background.
+1. Log back in with the `BYDtoChatGPTUser` account and start `Docker Desktop`. Ensure the Docker engine is up and running. Keep `Docker Desktop` running in the background.
 
 1. Clone the repository:
 

@@ -6,11 +6,11 @@ This repository provides a code sample in .NET on how you might use a combinatio
 
 ## Scenario
 
-The scenario centers around a medical claims management solution. Members having coverage and making claims, providers who deliver services to the member and payers who provide the insurance coverage that pays providers for services to the members. 
+The scenario centers around a medical claims management solution. Members having coverage and making claims, providers who deliver services to the member and payers who provide the insurance coverage that pays providers for services to the members.
 
 Claims submitted are submitted in a stream and loaded into the backing database for review and approval.
 
-Business rules govern the automated or human approval of claims. 
+Business rules govern the automated or human approval of claims.
 
 An AI powered co-pilot empowers agents with recommendations on how to process the claim.
 
@@ -22,14 +22,17 @@ The solution architecture is represented by this diagram:
     <img src="img/architecture.png" width="100%">
 </p>
 
+## Technical Details
 
-### Deployment
+Read the [Technical Details](./docs/technical-details.md) page for more information on the data models, application flow, deployed components, and other technical details of the solution.
+
+## Deployment
 
 Check the [Deployment](./docs/deployment.md) page for instructions on how to deploy the solution to your Azure subscription.
 
 Once your deployment is complete, you can proceed to the [Quickstart](#quickstart) section.
 
-#### Publish the React web app after making changes
+### Publish the React web app after making changes
 
 If you make changes to the React web app and want to redeploy it, run the following:
 
@@ -38,7 +41,7 @@ If you make changes to the React web app and want to redeploy it, run the follow
                      -storageAccount <storage-account-name (webcoreclaimsxxxx)>
 ```
 
-### Quickstart
+## Quickstart
 
 1. After deployment is complete, go to the resource group for your deployment and open the Azure Storage Account prefixed with `web`.  This is the storage account hosting the static web app.
 1. Select the `Static website` blade in the left-hand navigation pane and copy the site URL from the `Primary endpoint` field in the detail view.
@@ -73,9 +76,9 @@ If you make changes to the React web app and want to redeploy it, run the follow
 
 This will require logging into the Azure portal and accessing the Synapse workspace.
 
-1. Log into the Synapse workspace in Synapse Studio
-2. Locate the **Initial-Ingestion** pipeline in the **Integrate** section in the side menu
-3. Select **Add trigger -> Trigger now** to run the pipeline
+1. Log into the Azure Synapse workspace in Synapse Studio.
+2. Locate the **Initial-Ingestion** pipeline in the **Integrate** section in the side menu.
+3. Select **Add trigger -> Trigger now** to run the pipeline.
 
 > The pipeline execution should take about 5 minutes to complete. You can monitor the progress of the pipeline by selecting the **Monitor** section in the side menu and selecting the **Pipeline runs** tab.
 
@@ -88,7 +91,9 @@ You can also work directly with the REST API by calling the Function App APIs fr
 
 ### Run the Claim Publisher
 
-> This console app will generate random claims and publish them to the EventHub topic the FunctionApp subscribes to which then will be injested into Cosmos `Claim` container where we will store all Claim and Claim line item events data. **Take note of one of the ClaimId uuids output from this tool which has value over $500**.
+**This step is optional** since you ingest sample data from the Azure Synapse workspace pipeline.
+
+> This console app will generate random claims and publish them to the EventHub topic the Worker Service subscribes to which then will be injested into Cosmos `Claim` container where we will store all Claim and Claim line item events data. **Take note of one of the ClaimId uuids output from this tool which has value over $500**.
 >
 > Console app has 2 **"RunMode"** options configurable in *settings.json* under `./src/CoreClaims.Publisher` : "OneTime" (default) and "Continous" 
 > as well as **"BatchSize"** (default - 10), **"Verbose"** (default - True) and **"SleepTime"** (default - 1000 ms).
