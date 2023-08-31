@@ -246,7 +246,7 @@ const ApplyDiscount = ({row, data, setLineItems}) => {
 				className='justify-center items-center flex overflow-x-hidden overflow-y-auto 
 				fixed inset-0 z-50 outline-none focus:outline-none'
 			>
-				<Modal.Header className="items-center">Apply Discount</Modal.Header>
+				<Modal.Header className="items-center p-4">Apply Discount</Modal.Header>
 				<Modal.Body className='mt-10'>
 					<input type="number" ref={dicountRef} onChange={(e)=>onChange(e)}
 						className='shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' />
