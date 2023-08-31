@@ -1,33 +1,15 @@
----
-title: Requirements
-status: Draft
-created: 2023-03-08T10:27:24-08:00
-updated: 2023-03-20T14:45:47-07:00
----
-
-# Core Claims Requirements
+# Core Claims Technical Details
 
 ## Data Model
 
-CosmosDB with Multiple Containers for logically separate data
-
-### Mutable Entity Fields
-
-Mutable entities will contain a set of audit trail fields. These should automatically be set whenever a value is created/modified
-
-| Field      | Type     | Notes                                   |
-| ---------- | -------- | --------------------------------------- |
-| createdOn  | DateTime |                                         |
-| createdBy  | string   | Set once on create                      |
-| modifiedOn | DateTime |                                         |
-| modifiedBy | string   | Set whenever changed (including create) |
+Cosmos DB with Multiple Containers for logically separated data.
 
 ### Container: Member
+
 **Entities**: Member, Coverage, ClaimHeader  
 **Partition Key**: `memberId`  
 
 #### Entity: Member
-**Extends**: MutableEntity  
 
 | Field          | Type           | Notes                                             |
 | -------------- | -------------- | ------------------------------------------------- |
@@ -48,7 +30,6 @@ Mutable entities will contain a set of audit trail fields. These should automati
 | approved.total | decimal        | 0, increment by claimTotal when claim is approved |
 
 #### Entity: Coverage
-**Extends**: MutableEntity  
 
 | Field     | Type     | Notes                                                  |
 | --------- | -------- | ------------------------------------------------------ |
@@ -60,13 +41,13 @@ Mutable entities will contain a set of audit trail fields. These should automati
 | payerId   | string   | foreign key of payer (ie: Insurer)                     | 
 
 ### Container: Claim
+
 **Entities**: ClaimHeader, ClaimDetail  
 **Partition Key**: `claimId`  
 
 A single `ClaimHeader` will exist per claim, `ClaimDetail`s will be replaced, rather than updated, creating an audit trail.
 
 #### Entity: Claim Header
-**Extends**: MutableEntity
 
 | Field               | Type     | Notes                                                                                                  |
 | ------------------- | -------- | ------------------------------------------------------------------------------------------------------ |
@@ -79,16 +60,14 @@ A single `ClaimHeader` will exist per claim, `ClaimDetail`s will be replaced, ra
 | adjudicatorId       | string   | foreign key, Adjudicator                                                                               |
 | providerId          | string   | foreign key, Provider                                                                                  |
 | providerName        | string   | redundant from Provider to improve querying                                                            |
-| claimStatus         | enum     | `Initial`, `Assigned`, `Acknowledged`, `Proposed`, `Denied`, `ApprovalRequired`, `Complete`, `Pending` | 
+| claimStatus         | enum     | `Initial`, `Assigned`, `Acknowledged`, `Proposed`, `Denied`, `ApprovalRequired`, `Complete`, `Pending` |
 | amount              | decimal  | Aggregate of lineItems `lineItems.sum(i => i.amount - i.discount)`                                     |
 | filingDate          | DateTime | set on create                                                                                          |
 | lastAdjudicatedDate | DateTime | set when adjudicator API called                                                                        |
 | lastAmount          | decimal  | Set when adjudicator API called                                                                        |
 | adjustmentId        | number   | id of the latest adjustment                                                                            |
 
-
 #### Entity: Claim Detail
-**Extends**: MutableEntity  
 
 | Field         | Type       | Notes                                                                                    |
 | ------------- | ---------- | ---------------------------------------------------------------------------------------- |
@@ -101,7 +80,7 @@ A single `ClaimHeader` will exist per claim, `ClaimDetail`s will be replaced, ra
 | adjudicatorId | string     | Assigned Adjudicator                                                                     |
 | totalAmount   | decimal    | Aggregate of lineItems `lineItems.sum(i => i.amount - i.discount)`                       |
 | lineItems     | LineItem[] | Array of line claim line items                                                           |
- 
+
 | LineItem: Field | Type     | Notes                          |
 | --------------- | -------- | ------------------------------ |
 | lineItem        | number   | index of line item             |
@@ -124,9 +103,9 @@ A single `ClaimHeader` will exist per claim, `ClaimDetail`s will be replaced, ra
 | description | string | display name/description |
 
 ### Container: Payer
+
 **Entities**: Payer  
 **Partition Key**: `payerId`  
-**Extends**: MutableEntity  
 
 | Field       | Type           | Notes                 |
 | ----------- | -------------- | --------------------- |
@@ -141,9 +120,9 @@ A single `ClaimHeader` will exist per claim, `ClaimDetail`s will be replaced, ra
 | phoneNumber | string         |                       |
 
 ### Container: Adjudicator
+
 **Entities**: Adjudicator, ClaimHeader  
-**Partition Key**: `adjudicatorId`   
-**Extends**: MutableEntity  
+**Partition Key**: `adjudicatorId`
 
 | Field         | Type           | Notes                             |
 | ------------- | -------------- | --------------------------------- |
@@ -155,9 +134,9 @@ A single `ClaimHeader` will exist per claim, `ClaimDetail`s will be replaced, ra
 | role          | string         | `Manager` or `Adjudicator`        | 
 
 ### Container: Provider
-**Entities**: Provider   
-**Partition Key**: `providerId`   
-**Extends**: MutableEntity  
+
+**Entities**: Provider
+**Partition Key**: `providerId`
 
 | Field       | Type           | Notes                     |
 | ----------- | -------------- | ------------------------- |
@@ -168,45 +147,28 @@ A single `ClaimHeader` will exist per claim, `ClaimDetail`s will be replaced, ra
 | address     | string         | 123 Main Street           |
 | city        | string         | Redmond                   |
 | state       | string         | Washington                |
-| country     | string         | United States             | 
+| country     | string         | United States             |
 | phoneNumber | string         |                           |
 
 ## Data Ingestion
 
 ### Seeding
 
-In order to demonstrate CosmosDB's ability to handle extremely large data-sets we'll be pre-loading the system with a large volume of records.
+In order to demonstrate Cosmos DB's ability to handle extremely large data-sets we'll be pre-loading the system with a large volume of records.
 
-A Synapse script will be used to bulk insert the initial seed data into the CosmosDB containers. The source of this initial data will vary based on the entity type
-
-| Container      | Approximate Entity Count | Source                                                                            |
-| -------------- | ------------------------ | --------------------------------------------------------------------------------- |
-| Claims         | 1000000+ tbc             | Synthia/Faker generated, Approximately 1% will be flagged for manual adjudication |
-| Member         | 100000+ tbc              | Faker generated, Member + Coverage                                                |
-| Adjudicator    | 10+                      | Manually created                                                                  |
-| Payer          | 10+                      | Manually created                                                                  |
-| Provider       | 100+                     | Manually created                                                                  |
-| ClaimProcedure | 100+                     | Manually created                                                                  |
-
-#### Generating data
-
-- 1% of Members should have ~1000 claims
-- 0.01% of members should have ~10000 claims
-- Need a way to artificially inflate document size
-  - proposed extra nested json object with [1-100] random properties that contain random strings ~10k characters long
-- Line items should generally [8-10000], average ~184 line items
-  - About 99.9% should have 8-100 line items, some will have **many** more, up to ~10000
-- Filing Date should be evenly spread between Today and 90 Days ago
-
-Synthia/Faker will be used to generate thousands of rows of Member and Claim data, and exported into multiple CSV files. These CSV files will be placed in an Azure Data Lake, and Synapse will be used to transform, and insert this sample data into CosmosDB directly. 
+A Synapse script will be used to bulk insert the initial seed data into the CosmosDB containers. The source of this initial data will vary based on the entity type.
 
 ### Streaming data
 
-In order to simulate continuous claims being filed, a Publisher app will be created. This will be a simple Console/Function app that will be responsible for using Faker to  generate new claims, and push them to the `IncomingClaim` EventHub topic.
+In order to simulate continuous claims being filed, a Publisher app will be created. This will be a simple Console/Function app that will be responsible for using Faker to generate new claims, and push them to the `IncomingClaim` EventHub topic.
 
 ## Web API
 
-The Web API application will be main entry point for users, exposing a number of endpoints for use in testing, and a hypothetical future UI.
+The Web API application will be main entry point for users, exposing a number of endpoints for use in testing and the UI.
+
+## Worker Service
+
+This background service hosts the Azure Cosmos DB change feed processor and EventHub processor.
 
 ### Application Flow
 
@@ -258,7 +220,6 @@ Rules for Auto-adjudication
 - If the Member the does not have active coverage for the date of the claim: Set to `Denied`
 - Calculate total $ of claim, if < $200 set `Approved`, otherwise `Assigned` and assign adjudicator to the Claim
   - threshold should be configurable, set initial value based on producers example claims, targeting ~0.001% or less to be flagged manual
-- *More to come* 
 
 Rules when `Resubmitted`:
 - This should esentially restart the workflow **regardless of where it currently is**
@@ -378,15 +339,15 @@ A bicep definition of the required infrastructure will be created containing the
 | ------------------ | ------------------------- | ------------------------------------------------------------------------------------------------------- |
 | Resource Group     | `rg-coreclaims-demo`      |                                                                                                         |
 | Managed Identity   | `id-coreclaims-demo`      | Auth/Auth between azure services                                                                        |
-| CosmosDB           | `db-coreclaims-demo`      |                                                                                                         |
-| CosmosDB/Container | `Claim`                   | Claim Container, PK: `claimId`                                                                          |
-| CosmosDB/Container | `Member`                  | Member Container, PK: `memberId`                                                                        |
-| CosmosDB/Container | `Adjudicator`             | Adjudicator Container, PK: `adjudicatorId`                                                              |
-| CosmosDB/Container | `ClaimProcedure`          | Claim Procedure container, PK: `code`                                                                   |
-| CosmosDB/Container | `Provider`                | Provider container, PK: `providerId`                                                                    |
-| CosmosDB/Container | `Payer`                   | Payer container, PK: `payerId`                                                                                                        |
-| App Service Plan   | `asp-coreclaims-demo`     | App Service Plan for hosting the function app                                                           |
-| Function App       | `fa-coreclaims-demo`      |                                                                                                         |
+| Cosmos DB           | `db-coreclaims-demo`      |                                                                                                         |
+| Cosmos DB/Container | `Claim`                   | Claim Container, PK: `claimId`                                                                          |
+| Cosmos DB/Container | `Member`                  | Member Container, PK: `memberId`                                                                        |
+| Cosmos DB/Container | `Adjudicator`             | Adjudicator Container, PK: `adjudicatorId`                                                              |
+| Cosmos DB/Container | `ClaimProcedure`          | Claim Procedure container, PK: `code`                                                                   |
+| Cosmos DB/Container | `Provider`                | Provider container, PK: `providerId`                                                                    |
+| Cosmos DB/Container | `Payer`                   | Payer container, PK: `payerId`                                                                                                        |
+| Azure Kubernetes Service (AKS)   | `aks-akscoreclaims`     | AKS cluster for hosting the Web API and Worker Service for background processing                                                           |
+| Storage Account       |  `webcoreclaims`      | Uses the Static Web App feature to host the React front-end site |
 | EventHub           | `eh-coreclaims-demo`      |                                                                                                         |
 | EventHub/Topic     | `IncomingClaim`           | Streaming input of claims, provided by Publisher app                                                    |
 | EventHub/Topic     | `RejectedClaim`           | Topic where duplicate claims, or invalid claims get published after failing validation on CreateClaim   |
@@ -396,4 +357,4 @@ A bicep definition of the required infrastructure will be created containing the
 | Storage Account    | `adl-coreclaims-demo`     | Storage account for Azure Data Lake storage of initial seed data for synapse processing                 |
 | Synapse workspace  | `synapse-coreclaims-demo` | Synapse notebook for running initial seed scripts                                                       |
 | Apache Spark Pool  | `SeedData`                | Spark pool used by synapse                                                                              |
-
+| Azure Container Registry | `acr-coreclaims-demo` | Container registry for storing docker images for AKS deployment                                        |
