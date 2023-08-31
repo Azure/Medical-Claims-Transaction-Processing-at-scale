@@ -21,7 +21,9 @@ export const FormatMoney = (value) => {
   return money.format(value);
 }
 
-export default {
+const Formatters = {
   FormatDate,
   FormatMoney
-};
+}
+
+export default Formatters;
