@@ -41,6 +41,22 @@ If you make changes to the React web app and want to redeploy it, run the follow
                      -storageAccount <storage-account-name (webcoreclaimsxxxx)>
 ```
 
+### Setting RBAC permissions when running locally
+
+When you run the solution locally, you will need to set role-based access control (RBAC) permissions on the Azure Cosmos DB account as well as the Event Hubs namespace.  You can do this by running the following commands in the Azure Cloud Shell or Azure CLI:
+
+Assign yourself to the "Cosmos DB Built-in Data Contributor" role:
+
+```bash
+az cosmosdb sql role assignment create --account-name YOUR_COSMOS_DB_ACCOUNT_NAME --resource-group YOUR_RESOURCE_GROUP_NAME --scope "/" --principal-id YOUR_AZURE_AD_PRINCIPAL_ID --role-definition-id 00000000-0000-0000-0000-000000000002
+```
+
+The Web API triggers Event Hubs events, and the Worker Service consumes them. You will need to assign yourself to the "Azure Event Hubs Data Owner" role:
+
+```bash
+az role assignment create --assignee "YOUR_EMAIL_ADDRESS" --role "Azure Event Hubs Data Owner" --scope "/subscriptions/YOUR_AZURE_SUBSCRIPTION_ID/resourceGroups/YOUR_RESOURCE_GROUP_NAME/providers/Microsoft.EventHub/namespaces/YOUR_EVENT_HUBS_NAMESPACE"
+```
+
 ## Quickstart
 
 1. After deployment is complete, go to the resource group for your deployment and open the Azure Storage Account prefixed with `web`.  This is the storage account hosting the static web app.
@@ -170,12 +186,12 @@ Browse to the URL copied in the previous step to access the web app.
     - `approvedCount` - the number of claims that have been approved for this member
     - `approvedTotal` - the total amount of all claims that have been approved for this member
 
-# Clean Up
+## Clean Up
 
 1. `CTRL + C` to stop Publisher app (if running in Continuous mode)
 2. Delete the Resource Group to destroy all resources
 
-# How to Contribute
+## How to Contribute
 
 If you find any errors or have suggestions for changes, please be part of this project!
 
