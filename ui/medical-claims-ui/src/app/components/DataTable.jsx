@@ -3,12 +3,26 @@ import { useState } from 'react';
 import { Table, Pagination, Spinner } from 'flowbite-react';
 
 const paginationTheme = {
-	pages: {
-		selector: {
-			active: 'bg-slate-200',
-		}
-	}
+  pages: {
+    base: "xs:mt-0 mt-2 inline-flex items-center -space-x-px",
+    showIcon: "inline-flex",
+    previous: {
+      base: "ml-0 rounded-md bg-white py-2 px-3 leading-tight text-gray-500 enabled:hover:bg-gray-200 enabled:hover:text-gray-700",
+      icon: "h-5 w-5"
+    },
+    next: {
+      base: "rounded-md bg-white py-2 px-3 leading-tight text-gray-500 enabled:hover:bg-gray-200 enabled:hover:text-gray-700",
+      icon: "h-5 w-5"
+    },
+    selector: {
+      base: "rounded-md mx-1 w-9 bg-gray-100 py-2 leading-tight hover:bg-gray-200",
+      active: "hover:bg-gray-600",
+      disabled: "opacity-50 cursor-normal",
+      active: 'text-white bg-[#444444] hover:bg-[#444444]',
+    }
+  }
 };
+
 
 export default function DataTable(props) {
 	let {
@@ -91,7 +105,7 @@ export default function DataTable(props) {
 					{/* Table headers */}
 					<Table.Head>
 						{headers.map((header) => (
-							<Table.HeadCell key={header.key} onClick={() => onHeaderClicked(header)} style={{ cursor: 'pointer' }}>
+							<Table.HeadCell key={header.key} onClick={() => onHeaderClicked(header)} className="cursor-pointer font-bold normal-case text-sm">
 								{header.name} {sortColumn === header.key ? sortIcon : null}
 							</Table.HeadCell>
 						))}
@@ -104,8 +118,8 @@ export default function DataTable(props) {
 						{Array.isArray(data) && data.map((row, rowIndex) => (
 							<Table.Row key={rowIndex} className="bg-white dark:border-gray-700 dark:bg-gray-800">
 								{Array.isArray(headers) && headers.map((header, cellIndex) => (
-									<Table.Cell key={`${rowIndex}-${cellIndex}`} style={header.itemStyle}>
-										{formatRowItem(header, row[header.key], row)}
+									<Table.Cell key={`${rowIndex}-${cellIndex}`} style={header.cellStyle}>
+										<span style={header.textStyle}>{formatRowItem(header, row[header.key], row)}</span>
 									</Table.Cell>
 								))}
 

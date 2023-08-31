@@ -21,6 +21,10 @@
 $gray: rgb(235, 235, 235);
 $dark-gray: rgb(68, 68, 68);
 
+* {
+  transition: all 0.1s ease;
+}
+
 body {
   font-family: "Montserrat";
   color: $dark-gray;
