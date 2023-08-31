@@ -346,6 +346,7 @@ A bicep definition of the required infrastructure will be created containing the
 | Cosmos DB/Container | `ClaimProcedure`          | Claim Procedure container, PK: `code`                                                                   |
 | Cosmos DB/Container | `Provider`                | Provider container, PK: `providerId`                                                                    |
 | Cosmos DB/Container | `Payer`                   | Payer container, PK: `payerId`                                                                                                        |
+| Azure OpenAI | `openai-coreclaims` | Azure OpenAI service for making recommendations for claims adjudication                                                               |
 | Azure Kubernetes Service (AKS)   | `aks-akscoreclaims`     | AKS cluster for hosting the Web API and Worker Service for background processing                                                           |
 | Storage Account       |  `webcoreclaims`      | Uses the Static Web App feature to host the React front-end site |
 | EventHub           | `eh-coreclaims-demo`      |                                                                                                         |
