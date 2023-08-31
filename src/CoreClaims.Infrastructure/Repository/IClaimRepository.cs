@@ -1,4 +1,5 @@
 ﻿using CoreClaims.Infrastructure.Domain.Entities;
+using CoreClaims.Infrastructure.Models;
 
 namespace CoreClaims.Infrastructure.Repository
 {
@@ -8,7 +9,7 @@ namespace CoreClaims.Infrastructure.Repository
 
         Task<ClaimHeader> GetClaimHeader(string claimId);
 
-        Task<IEnumerable<ClaimDetail>> GetClaimDetails(string claimId, int offset = 0, int limit = Constants.DefaultPageSize);
+        Task<IPageResult<ClaimDetail>> GetClaimDetails(string claimId, int offset = 0, int limit = Constants.DefaultPageSize);
 
         Task<ClaimHeader> CreateClaim(ClaimDetail detail);
 

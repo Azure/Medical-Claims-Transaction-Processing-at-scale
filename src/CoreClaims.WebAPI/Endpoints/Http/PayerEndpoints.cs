@@ -28,8 +28,9 @@ namespace CoreClaims.WebAPI.Endpoints.Http
             using (Logger.BeginScope("ListPayers"))
             {
                 var (offset, limit) = req.GetPagingQuery();
+                var (sortColumn, sortDirection) = req.GetSortQuery();
 
-                var result = await _repository.ListPayers(offset, limit);
+                var result = await _repository.ListPayers(offset, limit, sortColumn, sortDirection);
                 return Results.Ok(result);
             }
         }

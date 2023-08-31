@@ -15,7 +15,7 @@ const tableHeaders = [
 	{ key: 'filingDate', name: 'Filing Date' },
 	{ key: 'claimId', name: 'Claim ID' },
 	{ key: 'claimStatus', name: 'Claim Status' },
-	{ key: 'payerName', name: 'Payer' },
+	{ key: 'providerName', name: 'Provider' },
 	{ key: 'lastAdjudicatedDate', name: 'Last Adjudicated Date' },
 	{ key: 'lastAmount', name: 'Last Amount' },
 	{ key: 'totalAmount', name: 'Total Amount' }

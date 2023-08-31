@@ -123,12 +123,20 @@ $publisherSettingsPath=$(./Join-Path-Recursively -pathParts $publisherSettings.S
 & ./Token-Replace.ps1 -inputFile $publisherSettingsTemplatePath -outputFile $publisherSettingsPath -tokens $tokens
 Pop-Location
 
-$functionappSettingsTemplate="..,..,src,CoreClaims.FunctionApp,local.settings.template.json"
-$functionappSettings="..,..,src,CoreClaims.FunctionApp,local.settings.json"
+$webapiSettingsTemplate="..,..,src,CoreClaims.WebAPI,appsettings.Development.template.json"
+$webapiSettings="..,..,src,CoreClaims.WebAPI,appsettings.Development.json"
 Push-Location $($MyInvocation.InvocationName | Split-Path)
-$functionappSettingsTemplatePath=$(./Join-Path-Recursively -pathParts $functionappSettingsTemplate.Split(","))
-$functionappSettingsPath=$(./Join-Path-Recursively -pathParts $functionappSettings.Split(","))
-& ./Token-Replace.ps1 -inputFile $functionappSettingsTemplatePath -outputFile $functionappSettingsPath -tokens $tokens
+$webapiSettingsTemplatePath=$(./Join-Path-Recursively -pathParts $webapiSettingsTemplate.Split(","))
+$webapiSettingsPath=$(./Join-Path-Recursively -pathParts $webapiSettings.Split(","))
+& ./Token-Replace.ps1 -inputFile $webapiSettingsTemplatePath -outputFile $webapiSettingsPath -tokens $tokens
+Pop-Location
+
+$workerserviceSettingsTemplate="..,..,src,CoreClaims.WorkerService,appsettings.Development.template.json"
+$workerserviceSettings="..,..,src,CoreClaims.WorkerService,appsettings.Development.json"
+Push-Location $($MyInvocation.InvocationName | Split-Path)
+$workerserviceSettingsTemplatePath=$(./Join-Path-Recursively -pathParts $workerserviceSettingsTemplate.Split(","))
+$workerserviceSettingsPath=$(./Join-Path-Recursively -pathParts $workerserviceSettings.Split(","))
+& ./Token-Replace.ps1 -inputFile $workerserviceSettingsTemplatePath -outputFile $workerserviceSettingsPath -tokens $tokens
 Pop-Location
 
 $coreClaimsDatalakeTemplate="..,..,synapse,linkedService,CoreClaimsDataLake.template.json"
