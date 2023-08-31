@@ -44,7 +44,7 @@ export default function ClaimDetails({ claimId }) {
 				</div>
 				<div className="card-body">
 					<div className="relative overflow-x-auto sm:rounded">
-						<div className='grid grid-cols-2 w-9/12'>
+						<div className='grid grid-cols-2 grid-cols-[auto_1fr] gap-x-8'>
 							<div className='px-4 font-bold gap-2'>Claim Id:</div>
 							<div>{data.claimId}</div>
 							<div className='px-4 font-bold gap-2'>Claim Status:</div>
