@@ -118,8 +118,8 @@ export default function DataTable(props) {
 						{Array.isArray(data) && data.map((row, rowIndex) => (
 							<Table.Row key={rowIndex} className="bg-white dark:border-gray-700 dark:bg-gray-800">
 								{Array.isArray(headers) && headers.map((header, cellIndex) => (
-									<Table.Cell key={`${rowIndex}-${cellIndex}`} style={header.itemStyle}>
-										{formatRowItem(header, row[header.key], row)}
+									<Table.Cell key={`${rowIndex}-${cellIndex}`} style={header.cellStyle}>
+										<span style={header.textStyle}>{formatRowItem(header, row[header.key], row)}</span>
 									</Table.Cell>
 								))}
 
