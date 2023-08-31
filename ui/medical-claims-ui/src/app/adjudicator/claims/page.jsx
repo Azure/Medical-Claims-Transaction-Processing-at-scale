@@ -25,7 +25,6 @@ const tabTheme = {
 export default function Adjudicator() {
 	return(
 		<>
-			{<h1 className="mb-4">Claims Assigned to Adjudicator</h1>}
 			<Tabs.Group theme={tabTheme} aria-label="Default tabs" style="default">
 				<Tabs.Item active title="Non-Manager">
 					<ClaimsByAdjudicator adjudicatorId="df166300-5a78-3502-a46a-832842197811" isManager={false}/>
