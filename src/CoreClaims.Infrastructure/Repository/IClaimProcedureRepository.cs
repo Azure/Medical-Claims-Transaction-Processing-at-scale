@@ -1,9 +1,10 @@
 ﻿using CoreClaims.Infrastructure.Domain.Entities;
+using CoreClaims.Infrastructure.Models;
 
 namespace CoreClaims.Infrastructure.Repository
 {
     public interface IClaimProcedureRepository
     {
-        Task<IEnumerable<ClaimProcedure>> ListClaimProcedures(int offset = 0, int limit = Constants.DefaultPageSize);
+        Task<IPageResult<ClaimProcedure>> ListClaimProcedures(int offset = 0, int limit = Constants.DefaultPageSize);
     }
 }

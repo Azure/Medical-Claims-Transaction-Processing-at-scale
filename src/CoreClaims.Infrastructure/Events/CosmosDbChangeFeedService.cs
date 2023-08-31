@@ -12,6 +12,7 @@ using CoreClaims.Infrastructure.Domain.Entities;
 using CoreClaims.Infrastructure.Domain.Enums;
 using CoreClaims.Infrastructure.BusinessRules;
 using CoreClaims.Infrastructure.Repository;
+using CoreClaims.Infrastructure.Helpers;
 
 namespace CoreClaims.Infrastructure.Events
 {
@@ -147,7 +148,14 @@ namespace CoreClaims.Infrastructure.Events
                     case ClaimStatus.Proposed:
                     {
                         // Adjudicate claim.
-                        claim = await _coreBusinessRule.AdjudicateClaim(claim);
+                        //Create a copy of the claim and name it as "Proposed" claim.
+                        var proposedClaim = new ClaimHeader(claim);
+                        (claim, var adjudicatorChanged) = await _coreBusinessRule.AdjudicateClaim(claim);
+                        if (adjudicatorChanged)
+                        {
+                            // Raise event to notify adjudicator change.
+                            await _eventHub.TriggerEventAsync(proposedClaim, Constants.EventHubTopics.AdjudicatorChanged);
+                        }
                         break;
                     }
                 }

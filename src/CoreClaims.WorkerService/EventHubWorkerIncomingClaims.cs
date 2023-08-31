@@ -8,15 +8,15 @@ using CoreClaims.Infrastructure.Repository;
 
 namespace CoreClaims.WorkerService
 {
-    public class EventHubWorker : BackgroundService
+    public class EventHubWorkerIncomingClaims : BackgroundService
     {
-        private readonly ILogger<EventHubWorker> _logger;
+        private readonly ILogger<EventHubWorkerIncomingClaims> _logger;
         private readonly IEventHubService _eventHub;
         private readonly IClaimRepository _claimRepository;
         private readonly IProviderRepository _providerRepository;
         private readonly IPayerRepository _payerRepository;
 
-        public EventHubWorker(ILogger<EventHubWorker> logger,
+        public EventHubWorkerIncomingClaims(ILogger<EventHubWorkerIncomingClaims> logger,
             IEventHubService eventHub,
             IClaimRepository claimRepository,
             IProviderRepository providerRepository,
@@ -31,15 +31,15 @@ namespace CoreClaims.WorkerService
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("{time}: Starting the EventHubWorker", DateTimeOffset.Now);
+            _logger.LogInformation("{time}: Starting the EventHubWorkerIncomingClaims", DateTimeOffset.Now);
             await foreach (var partitionEvent in _eventHub.ReadEvents(Constants.EventHubTopics.Incoming, stoppingToken))
             {
                 var messageBody = Encoding.UTF8.GetString(partitionEvent.Data.EventBody.ToArray());
-                await ProcessEvent(messageBody);
+                await ProcessIncomingClaim(messageBody);
             }
         }
 
-        protected async Task ProcessEvent(string messageBody)
+        protected async Task ProcessIncomingClaim(string messageBody)
         {
             using var logScope = _logger.BeginScope("EventHubTrigger: CreateClaim");
 

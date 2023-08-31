@@ -91,7 +91,7 @@ export default function DataTable(props) {
 					{/* Table headers */}
 					<Table.Head>
 						{headers.map((header) => (
-							<Table.HeadCell key={header.key} onClick={() => onHeaderClicked(header)}>
+							<Table.HeadCell key={header.key} onClick={() => onHeaderClicked(header)} style={{ cursor: 'pointer' }}>
 								{header.name} {sortColumn === header.key ? sortIcon : null}
 							</Table.HeadCell>
 						))}

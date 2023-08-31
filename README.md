@@ -135,19 +135,20 @@ The following flags can be used to enable/disable specific deployment steps in t
 | stepDeployImages | Enables or disables deploying the Docker images from the `CoreClaims.WebAPI` and `CoreClaims.WorkerService` projects to AKS. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/Deploy-Images-Aks.ps1` script.
 | stepPublishSite | Enables or disables the build and deployment of the static HTML site to the hosting storage account in the target resource group. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/Publish-Site.ps1` script.
 | stepSetupSynapse | Enables or disables the deployment of a Synapse artifacts to the target synapse workspace. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/Setup-Synapse.ps1` script.
-| stepLoginAzure | Enables or disables interactive Azure login. If disabled, the deployment assumes that the current Azure CLI session is valid. Valid values are 0 (Disabled). 
+| stepLoginAzure | Enables or disables interactive Azure login. If disabled, the deployment assumes that the current Azure CLI session is valid. Valid values are 0 (Disabled).
 
 Example command:
 ```pwsh
 cd deploy/powershell
 ./Unified-Deploy.ps1 -resourceGroup myRg `
                      -subscription 0000... `
-                     -openAiName myOpenAi `
-                     -openAiRg myOpenAiRg `
-                     -openAiDeployment completions `
                      -stepLoginAzure 0 `
                      -stepDeployBicep 0 `
-                     -stepPublishFunctionApp 1 `
+                     -stepDeployCertManager 0 `
+                     -stepDeployTls 0 `
+                     -stepBuildPush 1 `
+                     -stepDeployImages 1 `
+                     -stepSetupSynapse 0 `
                      -stepPublishSite 1
 ```
 
@@ -247,6 +248,13 @@ Browse to the URL copied in the previous step to access the web app.
   - Selecting **Deny Claim** will finalize the claim as `Denied` and publish the final status of the claim to a `ClaimDenied` topic on the event hub
   - Selecting **Propose Claim** without applying discounts on the Line Items, or changing them such that the difference between the total before and after is less than $500.00 (configurable) will trigger an automatic approval
   - Selecting **Propose Claim** while applying discounts on the Line Items so the total before and after differs by more than $500.00 will trigger manager approval, updating the status to `ApprovalRequired` and assigning a new adjudicator manager to the claim. Since we are hard-coding the Non-Manager and Manager Adjudicators, you should be able to select the Manager tab and see the claim assigned to the Manager Adjudicator.
+    - A change from the original adjudicator to the adjudicator manager will publish the claim header to an `AdjudicatorChanged` event to the event hub.
+    - The `CoreClaims.WorkerService` will pick up the `AdjudicatorChanged` event and delete the claim header record from the Non-Manager Adjudicator's queue. This way, we do not have to worry about the Non-Manager Adjudicator processing the claim after it has been assigned to the Manager Adjudicator. We also avoid the claim showing up in the Non-Manager Adjudicator's queue.
+  
+  <details>
+      <summary>Technical Details</summary>
+      Some technical background on this process: When adding new claims, they are currently assigned to an Adjudicator. When this happens, a `ClaimHeader` document is stored in the `Adjudicator` container. That container has the `adjudicatorId` as its partition key. As we know, it is not possible to change the partition key value of a document once it's been saved to the container. Because of this, if the claim gets reassigned to a manager, according to the core business rules, the claim details record is updated, triggering a downstream update of the `ClaimHeader` document stored in the `Adjudicator` container, this time **with a new `adjudicatorId`** value (the value of the assigned manager). In some cases, this value might not change, like if the claim was originally assigned to a manager. But in most cases, it does. When the adjudicator is reassigned, we get a **new** `ClaimHeader` record stored in the `Adjudicator` container from the `AdjudicatorRepository.UpsertClaim` method that gets called by the `ClaimUpdated` Change Feed trigger. Ideally, we would create a new batch transaction to delete the previous adjudicator's document and upsert the new adjudicator's document. This cannot be done since they live in different logical partitions. To get around this, we implement a Transactional Outbox pattern. This is why we publish the previous adjudicator's `ClaimHeader` document to the `AdjudicatorChanged` event topic before upserting the new adjudicator's `ClaimHeader` document. The downstream EventHub processor executes an idempotent method to delete the previous adjudicator's `ClaimHeader` document from the `Adjudicator` container if it exists.
+  </details>
 
   > **Note**: If you propose a claim as an adjudicator manager, the claim will always be approved, regardless of the total discount amount.
 
