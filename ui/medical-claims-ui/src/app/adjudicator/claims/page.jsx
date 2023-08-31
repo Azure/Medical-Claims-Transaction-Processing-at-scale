@@ -2,14 +2,31 @@
 
 import { Tabs } from 'flowbite-react';
 import ClaimsByAdjudicator from './ClaimsByAdjudicator';
-import './style.css';
 
+const tabTheme = {
+  base: 'flex flex-col',
+  tablist: {
+    tabitem: {
+      base: 'flex items-center justify-center p-4 rounded-t-lg text-sm font-medium first:ml-0 disabled:cursor-not-allowed disabled:text-gray-400 focus:outline-none',
+      styles: {
+        default: {
+          base: 'rounded-t-lg',
+          active: {
+            on: 'bg-gray-100',
+            off: 'text-gray-500 hover:bg-gray-50 hover:text-gray-600'
+          }
+        }
+      }
+    }
+  },
+  tabpanel: ''
+}
 
 export default function Adjudicator() {
 	return(
 		<>
-			<h1 className="mb-4">Claims to Assigned to Adjudicator</h1>
-			<Tabs.Group id="claimsAdjudicatorTabs" aria-label="Default tabs" style="default">
+			{<h1 className="mb-4">Claims Assigned to Adjudicator</h1>}
+			<Tabs.Group theme={tabTheme} aria-label="Default tabs" style="default">
 				<Tabs.Item active title="Non-Manager">
 					<ClaimsByAdjudicator adjudicatorId="df166300-5a78-3502-a46a-832842197811" isManager={false}/>
 				</Tabs.Item>
