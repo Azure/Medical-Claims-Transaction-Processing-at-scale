@@ -21,22 +21,6 @@ const tableHeaders = [
 	{ key: 'approvedTotal', name: 'Approved Total' }
 ];
 
-const onClickMemberDetail = (memberId, setShowMemberDetail, setMemberId) => {
-	setShowMemberDetail(true);
-	setMemberId(memberId);
-}
-
-const onClickMemberCoverage = (memberId, setShowCoverageModal, setMemberId) => {
-	setShowCoverageModal(true);
-	setMemberId(memberId);
-}
-
-const onClickViewClaims = (memberId, setShowClaimsList, setMemberId, setShowMembersTable) => {
-	setShowClaimsList(true);
-	setShowMembersTable(false);
-	setMemberId(memberId);
-}
-
 function formatValues(header, value, row) {
 	switch (header.key) {
 		case 'approvedTotal':
@@ -57,7 +41,27 @@ export default function Members() {
 	const [ showCoverageModal, setShowCoverageModal ] = useState(false);
 	const [ memberId, setMemberId ] = useState(null);
 	const [ coverageByMemberId, setCoverageByMemberId ] = useState(null);
-	const [ showMembersTable, setShowMembersTable ] = useState(true);
+
+	const onClickMemberDetail = (memberId) => {
+		setShowMemberDetail(true);
+		setMemberId(memberId);
+	}
+
+	const onClickMemberCoverage = (memberId) => {
+		setShowCoverageModal(true);
+		setMemberId(memberId);
+	}
+
+	const onClickViewClaims = (memberId) => {
+		setShowClaimsList(true);
+		setMemberId(memberId);
+	}
+
+	const onPageChange = (newPage) => {
+		setShowMemberDetail(false);
+		setShowClaimsList(false);
+		setPage(newPage);
+	}
 
 	return (
 		<>
@@ -74,7 +78,7 @@ export default function Members() {
 							pagination={true}
 							page={page}
 							totalPages={data?.totalPages}
-							onPageChange={(newPage) => setPage(newPage)}
+							onPageChange={(newPage) => onPageChange(newPage)}
 							sortEnabled={true}
 							onSortChange={(sort) => setSort(sort)}
 							rowFormatter={formatValues}
@@ -89,13 +93,13 @@ export default function Members() {
 								(row) => (
 									<>
 										<Table.Cell className="!p-4">
-											<span className="hover:cursor-pointer" onClick={()=> onClickMemberDetail(row.memberId, setShowMemberDetail, setMemberId)}>Details</span>
+											<span className="hover:cursor-pointer" onClick={()=> onClickMemberDetail(row.memberId)}>Details</span>
 										</Table.Cell>
 										<Table.Cell className="!p-4">
-											<span className="hover:cursor-pointer" onClick={()=> onClickMemberCoverage(row.memberId, setShowCoverageModal, setMemberId)}>View Coverage</span>
+											<span className="hover:cursor-pointer" onClick={()=> onClickMemberCoverage(row.memberId)}>View Coverage</span>
 										</Table.Cell>
 										<Table.Cell className="!p-4">
-											<span className="hover:cursor-pointer" onClick={()=> onClickViewClaims(row.memberId, setShowClaimsList, setMemberId, setShowMembersTable)}>View Claims</span>
+											<span className="hover:cursor-pointer" onClick={()=> onClickViewClaims(row.memberId)}>View Claims</span>
 										</Table.Cell>
 									</>
 								)
