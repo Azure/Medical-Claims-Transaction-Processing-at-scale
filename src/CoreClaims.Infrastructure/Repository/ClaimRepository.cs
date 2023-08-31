@@ -1,6 +1,7 @@
 ﻿using CoreClaims.Infrastructure.Domain;
 using CoreClaims.Infrastructure.Domain.Entities;
 using CoreClaims.Infrastructure.Helpers;
+using CoreClaims.Infrastructure.Models;
 using Microsoft.Azure.Cosmos;
 using Newtonsoft.Json.Linq;
 
@@ -31,14 +32,26 @@ namespace CoreClaims.Infrastructure.Repository
             return ReadItem<ClaimHeader>(claimId, $"claim:{claimId}");
         }
 
-        public async Task<IEnumerable<ClaimDetail>> GetClaimDetails(string claimId, int offset = 0, int limit = Constants.DefaultPageSize)
+        public async Task<IPageResult<ClaimDetail>> GetClaimDetails(string claimId, int offset = 0, int limit = Constants.DefaultPageSize)
         {
+            const string countSql = @"
+                            SELECT VALUE COUNT(1) FROM c
+                            WHERE c.claimId = @claimId AND c.type = 'ClaimDetail'";
+
+            var countQuery = new QueryDefinition(countSql)
+                .WithParameter("@claimId", claimId);
+
+            var countResult = await Container.GetItemQueryIterator<int>(countQuery).ReadNextAsync();
+            var count = countResult.Resource.FirstOrDefault();
+
             var queryDetails = new QueryDefinition("SELECT * FROM c WHERE c.claimId = @claimId AND c.type = 'ClaimDetail' OFFSET @offset LIMIT @limit")
                 .WithParameter("@claimId", claimId)
                 .WithParameter("@offset", offset)
                 .WithParameter("@limit", limit);
 
-            return (await Query<ClaimDetail>(queryDetails, new PartitionKey(claimId))).OrderBy(c => c.ModifiedOn).ToList();
+            var result = (await Query<ClaimDetail>(queryDetails, new PartitionKey(claimId))).OrderBy(c => c.ModifiedOn).ToList();
+
+            return new PageResult<ClaimDetail>(count, offset, limit, result);
         }
 
         public async Task<ClaimHeader> CreateClaim(ClaimDetail detail)
