@@ -43,7 +43,7 @@ If you make changes to the React web app and want to redeploy it, run the follow
 
 ### Setting RBAC permissions when running locally
 
-When you run the solution locally, you will need to set role-based access control (RBAC) permissions on the Azure Cosmos DB account as well as the Event Hubs namespace.  You can do this by running the following commands in the Azure Cloud Shell or Azure CLI:
+When you run the solution locally, you will need to set role-based access control (RBAC) permissions on the Azure Cosmos DB account as well as the Event Hubs namespace. You can do this by running the following commands in the Azure Cloud Shell or Azure CLI:
 
 Assign yourself to the "Cosmos DB Built-in Data Contributor" role:
 
@@ -56,6 +56,8 @@ The Web API triggers Event Hubs events, and the Worker Service consumes them. Yo
 ```bash
 az role assignment create --assignee "YOUR_EMAIL_ADDRESS" --role "Azure Event Hubs Data Owner" --scope "/subscriptions/YOUR_AZURE_SUBSCRIPTION_ID/resourceGroups/YOUR_RESOURCE_GROUP_NAME/providers/Microsoft.EventHub/namespaces/YOUR_EVENT_HUBS_NAMESPACE"
 ```
+
+> Make sure you're signed in to Azure from Visual Studio before running the backend applications locally.
 
 ## Quickstart
 
