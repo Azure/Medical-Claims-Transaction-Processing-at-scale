@@ -1,10 +1,10 @@
 
-import Moment from 'moment';
+import moment from 'moment';
 import TransactionsStatement from '../hooks/TransactionsStatement';
 import Modal from '../components/Modal';
 
 
-export default function MemberCoverageModal({memberId, showCoverageModal, setShowCoverageModal}) {
+export default function MemberCoverageModal({ memberId, showCoverageModal, setShowCoverageModal }) {
 	const memberRequest = TransactionsStatement.GetMember(memberId);
 	const coverageRequest = TransactionsStatement.GetCoverageByMember(memberId);
 
@@ -18,9 +18,9 @@ export default function MemberCoverageModal({memberId, showCoverageModal, setSho
 					{!coverageRequest.isLoading ? (
 						<div className='grid grid-cols-2'>
 							<div>Start Date:</div>
-							<div>{ Moment(coverageRequest.data.startDate).format('MMM DD, YYYY') }</div>
+							<div>{ moment(coverageRequest.data.startDate).format('MMM DD, YYYY') }</div>
 							<div>End Date:</div>
-							<div>{ Moment(coverageRequest.data.endDate).format('MMM DD, YYYY') }</div>						
+							<div>{ moment(coverageRequest.data.endDate).format('MMM DD, YYYY') }</div>						
 						</div>
 					) : null}
 				</>
