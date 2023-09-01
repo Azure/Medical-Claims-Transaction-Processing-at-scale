@@ -8,6 +8,8 @@ $synapsePath="..,..,synapse"
 Push-Location $($MyInvocation.InvocationName | Split-Path)
 Push-Location $(./Join-Path-Recursively.ps1 -pathParts $synapsePath.Split(","))
 
+Get-Location
+
 $workspaceName=$(az synapse workspace list -g $resourceGroup -o json | ConvertFrom-Json).name
 
 az synapse linked-service create --workspace-name $workspaceName --name CoreClaimsDataLake --file '@"linkedService/CoreClaimsDataLake.json"'
