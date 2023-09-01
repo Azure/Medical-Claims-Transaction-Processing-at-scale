@@ -18,9 +18,10 @@ Follow the steps below to deploy the solution to your Azure subscription.
     git clone --recurse-submodules https://github.com/AzureCosmosDB/ClaimsProcessing.git
     ```
 
-1. Set the proper folder permissions on the `scripts` folder:
+1. Set the proper folder permissions on the `deploy` folder:
 
     ```cmd
+    cd ./ClaimsProcessing/
     chmod +x ./deploy/*
     ```
 
