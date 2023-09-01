@@ -20,7 +20,8 @@ $datasets = Get-ChildItem ./dataset
 foreach ($dataset in $datasets) {
     $name = $dataset.BaseName
     Write-Host "Creating dataset: $dataset" -ForegroundColor Blue
-    az synapse dataset create --workspace-name $workspaceName --name "${name}" --file '@./dataset/$($dataset)'
+    $fileName = "@./dataset/$($dataset)"
+    az synapse dataset create --workspace-name $workspaceName --name "${name}" --file $fileName
 }
 
 az synapse pipeline create --workspace-name $workspaceName --file '@./pipeline/Initial-Ingestion.json' --name Initial-Ingestion
