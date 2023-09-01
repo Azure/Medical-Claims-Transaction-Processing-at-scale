@@ -2,7 +2,7 @@ services:
   api:
     image: ${REGISTRY:-ms-openai-cosmosdb}/claims-api:${TAG:-latest}
     build:
-      context: ./src
+      context: ../../src
       dockerfile: ./CoreClaims.WebAPI/Dockerfile
     ports:
     - "80:80"
@@ -31,7 +31,7 @@ services:
   web:
     image: ${REGISTRY:-ms-openai-cosmosdb}/claims-worker-service:${TAG:-latest}
     build:
-      context: ./src
+      context: ../../src
       dockerfile: ./CoreClaims.WorkerService/Dockerfile
     ports:
     - "8080:80"
