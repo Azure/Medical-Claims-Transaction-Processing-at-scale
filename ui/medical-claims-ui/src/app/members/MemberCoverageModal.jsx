@@ -1,7 +1,7 @@
 
 import moment from 'moment';
 import TransactionsStatement from '../hooks/TransactionsStatement';
-import Modal from '../components/Modal';
+import Modal from '../components/modal';
 
 
 export default function MemberCoverageModal({ memberId, showCoverageModal, setShowCoverageModal }) {
