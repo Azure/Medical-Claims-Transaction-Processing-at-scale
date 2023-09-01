@@ -27,7 +27,7 @@ Follow the steps below to deploy the solution to your Azure subscription.
 1. Execute the `CloudShell-Deploy.ps1` script. This will provision all of the required infrastructure, deploy the API and web app services into AKS, and provision and load artifacts into a Synapse Analytics workspace.
 
     ```pwsh
-    ./scripts/CloudShell-Deploy.ps1 -resourceGroup <rg_name> -location <location> -subscription <target_subscription_id>
+    ./deploy/powershell/CloudShell-Deploy.ps1 -resourceGroup <rg_name> -location <location> -subscription <target_subscription_id>
     ```
 
     This is an example of the command above:
