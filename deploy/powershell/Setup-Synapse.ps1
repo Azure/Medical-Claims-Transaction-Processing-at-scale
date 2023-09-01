@@ -12,9 +12,9 @@ Get-Location
 
 $workspaceName=$(az synapse workspace list -g $resourceGroup -o json | ConvertFrom-Json).name
 
-az synapse linked-service create --workspace-name $workspaceName --name CoreClaimsDataLake --file '@"linkedService/CoreClaimsDataLake.json"'
-az synapse linked-service create --workspace-name $workspaceName --name CoreClaimsCosmosDb --file '@"linkedService/CoreClaimsCosmosDb.json"'
-az synapse linked-service create --workspace-name $workspaceName --name solliancepublicdata --file '@"linkedService/solliancepublicdata.json"'
+az synapse linked-service create --workspace-name $workspaceName --name CoreClaimsDataLake --file '@./linkedService/CoreClaimsDataLake.json'
+az synapse linked-service create --workspace-name $workspaceName --name CoreClaimsCosmosDb --file '@./linkedService/CoreClaimsCosmosDb.json'
+az synapse linked-service create --workspace-name $workspaceName --name solliancepublicdata --file '@./linkedService/solliancepublicdata.json'
 
 $datasets = Get-ChildItem ./dataset
 foreach ($dataset in $datasets) {
