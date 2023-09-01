@@ -1,7 +1,7 @@
 
 import './assets/css/tailwind.css';
 import './globals.scss';
-import Navbar from './components/Navbar';
+import Navbar from './components/navbar';
 
 
 export const metadata = {
