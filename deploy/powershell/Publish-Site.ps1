@@ -11,7 +11,10 @@ Push-Location $(./Join-Path-Recursively.ps1 -pathParts "..,..,ui,medical-claims-
 Write-Host "===========================================================" -ForegroundColor Yellow
 Write-Host " Building the website" -ForegroundColor Yellow
 Write-Host "===========================================================" -ForegroundColor Yellow
-Remove-Item -Path ./out -Recurse -Force
+if (Test-Path ./out)
+{
+   Remove-Item -Path ./out -Recurse -Force
+}
 npm ci
 npm run build
 
