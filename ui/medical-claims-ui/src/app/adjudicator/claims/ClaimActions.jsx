@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import react, { useState, useEffect } from 'react';
 import TransactionsStatement, { UpdateClaim, AcknowledgeClaim } from '../../hooks/TransactionsStatement';
 import Modal from '../../components/Modal';
 
