@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreClaims.FunctionApp", "CoreClaims.FunctionApp\CoreClaims.FunctionApp.csproj", "{B6312ACB-F100-417C-ACC6-71E88452E73D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreClaims.Infrastructure", "CoreClaims.Infrastructure\CoreClaims.Infrastructure.csproj", "{E112DF03-995D-455F-8923-445D3FA33E72}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreClaims.Publisher", "CoreClaims.Publisher\CoreClaims.Publisher.csproj", "{77337DB2-39F1-4A9C-BA01-DC191EB0F944}"
@@ -28,10 +26,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B6312ACB-F100-417C-ACC6-71E88452E73D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B6312ACB-F100-417C-ACC6-71E88452E73D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B6312ACB-F100-417C-ACC6-71E88452E73D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B6312ACB-F100-417C-ACC6-71E88452E73D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E112DF03-995D-455F-8923-445D3FA33E72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E112DF03-995D-455F-8923-445D3FA33E72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E112DF03-995D-455F-8923-445D3FA33E72}.Release|Any CPU.ActiveCfg = Release|Any CPU
