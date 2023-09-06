@@ -364,4 +364,3 @@ synapse/linkedService/CoreClaimsDataLake.json
 /src/CoreClaims.WorkerService/appsettings.Development.json
 
 __values
-docker-compose.yml
