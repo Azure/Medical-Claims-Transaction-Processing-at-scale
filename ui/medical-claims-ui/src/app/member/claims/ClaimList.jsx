@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import link from 'next/link';
 import moment from 'moment';
 
@@ -61,6 +61,10 @@ export default function ClaimList({ memberId }) {
 		setShowHistory(true);
 		setShowClaimDetail(false);
 	}
+
+	useEffect(() => {
+		setShowHistory(false);
+	}, [memberId]);
 
 	return (
 		<>
