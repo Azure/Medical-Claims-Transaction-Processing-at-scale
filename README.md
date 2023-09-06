@@ -43,7 +43,7 @@ If you make changes to the React web app and want to redeploy it, run the follow
 
 ### Setting RBAC permissions when running locally
 
-When you run the solution locally, you will need to set role-based access control (RBAC) permissions on the Azure Cosmos DB account as well as the Event Hubs namespace. You can do this by running the following commands in the Azure Cloud Shell or Azure CLI:
+When you run the solution locally, you will need to set role-based access control (RBAC) permissions on the Azure Cosmos DB account as well as the Azure Event Hubs namespace. You can do this by running the following commands in the Azure Cloud Shell or Azure CLI:
 
 Assign yourself to the "Cosmos DB Built-in Data Contributor" role:
 
@@ -104,7 +104,7 @@ This will require logging into the Azure portal and accessing the Azure Synapse 
 
 You can run the sample application through the static website that was deployed as part of the setup process.
 
-You can also work directly with the REST API by calling the Function App APIs from Azure Portal or your favorite tool.
+You can also work directly with the REST API by calling the Azure Function App APIs from Azure Portal or your favorite tool.
 > Postman Exports are included in the `/postman` folder
 
 ### Run the Claim Publisher
