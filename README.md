@@ -1,8 +1,8 @@
-# Cosmos DB NoSQL API - Medical Claims Handling
+# Azure Cosmos DB NoSQL API - Medical Claims Handling
 
 ## Introduction
 
-This repository provides a code sample in .NET on how you might use a combination of Azure Functions, Cosmos DB, and EventHub to implement an event-driven medical insurance claims process. With minimal changes this could be modified to work for other insurance processes.
+This repository provides a code sample in .NET on how you might use a combination of Azure Functions, Azure Cosmos DB, and Azure Event Hubs to implement an event-driven medical insurance claims process. With minimal changes this could be modified to work for other insurance processes.
 
 ## Scenario
 
@@ -75,24 +75,24 @@ az role assignment create --assignee "YOUR_EMAIL_ADDRESS" --role "Azure Event Hu
 > - Resource Group
 > - Azure Blob Storage (ADLS Gen2)
 > - Azure Cosmos DB account (1 database with 1000 RUs autoscale shared with 4 collections, and 3 containers with dedicated RUs) with Analytical Store enabled
-> - Azure Event Hub standard
+> - Azure Event Hubs standard
 > - Azure Kubernetes Service (AKS)
 > - Azure Application Insights
-> - Azure OpenAI
-> - Synapse Workspace (public access enabled)
+> - Azure OpenAI Service
+> - Azure Synapse Workspace (public access enabled)
 >
-> This setup will provision the Ingestion pipeline and supporting components in the Synapse workspace created in the previous step.
+> This setup will provision the Ingestion pipeline and supporting components in the Azure Synapse workspace created in the previous step.
 >
 > Resources Created:
 > - Linked Services for:
 >   - Azure Blob Storage
 >   - Azure Cosmos DB
 > - Source/Sink datasets for the ingestion process
-> - Pipeline for ingesting sample data into Cosmos DB Containers
+> - Pipeline for ingesting sample data into Azure Cosmos DB Containers
 
 ## Ingest Sample Data
 
-This will require logging into the Azure portal and accessing the Synapse workspace.
+This will require logging into the Azure portal and accessing the Azure Synapse workspace.
 
 1. Log into the Azure Synapse workspace in Synapse Studio.
 2. Locate the **Initial-Ingestion** pipeline in the **Integrate** section in the side menu.
@@ -111,7 +111,7 @@ You can also work directly with the REST API by calling the Function App APIs fr
 
 **This step is optional** since you ingest sample data from the Azure Synapse workspace pipeline.
 
-> This console app will generate random claims and publish them to the EventHub topic the Worker Service subscribes to which then will be injested into Cosmos `Claim` container where we will store all Claim and Claim line item events data. **Take note of one of the ClaimId uuids output from this tool which has value over $500**.
+> This console app will generate random claims and publish them to the Azure Event Hubs topic the Worker Service subscribes to which then will be injested into Azure Cosmos DB `Claim` container where we will store all Claim and Claim line item events data. **Take note of one of the ClaimId uuids output from this tool which has value over $500**.
 >
 > Console app has 2 **"RunMode"** options configurable in *settings.json* under `./src/CoreClaims.Publisher` : "OneTime" (default) and "Continous" 
 > as well as **"BatchSize"** (default - 10), **"Verbose"** (default - True) and **"SleepTime"** (default - 1000 ms).
