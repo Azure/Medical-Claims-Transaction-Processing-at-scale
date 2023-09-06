@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import react, { useState } from 'react';
 import TransactionsStatement from '../hooks/TransactionsStatement';
 import DataTable from '../components/DataTable';
 
