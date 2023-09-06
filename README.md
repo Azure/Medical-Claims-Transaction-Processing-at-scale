@@ -1,8 +1,8 @@
-# Azure Cosmos DB NoSQL API - Medical Claims Handling
+# Azure Cosmos DB & Azure OpenAI Service - Medical Claims Handling
 
 ## Introduction
 
-This repository provides a code sample in .NET on how you might use a combination of Azure Functions, Azure Cosmos DB, and Azure Event Hubs to implement an event-driven medical insurance claims process. With minimal changes this could be modified to work for other insurance processes.
+This repository provides a code sample in .NET on how you might use a combination of Azure Functions, Azure Cosmos DB, Azure OpenAI Service and Azure Event Hubs to implement an event-driven medical insurance claims process. With minimal changes this could be modified to work for other insurance processes.
 
 ## Scenario
 
