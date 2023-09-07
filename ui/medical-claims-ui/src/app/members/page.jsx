@@ -4,6 +4,7 @@ import { useState } from 'react';
 import link from 'next/link';
 
 import TransactionsStatement from '../hooks/TransactionsStatement';
+import scrollToElement from '../hooks/scrollToElement';
 import { FormatMoney } from '../hooks/Formatters';
 import { Table } from 'flowbite-react';
 import MemberDetail from './MemberDetail';
@@ -45,6 +46,7 @@ export default function Members() {
 	const onClickMemberDetail = (memberId) => {
 		setShowMemberDetail(true);
 		setMemberId(memberId);
+		scrollToElement('member-details');
 	}
 
 	const onClickMemberCoverage = (memberId) => {
@@ -55,6 +57,7 @@ export default function Members() {
 	const onClickViewClaims = (memberId) => {
 		setShowClaimsList(true);
 		setMemberId(memberId);
+		scrollToElement('member-claims');
 	}
 
 	const onPageChange = (newPage) => {

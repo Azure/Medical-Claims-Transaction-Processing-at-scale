@@ -35,7 +35,7 @@ export default function ClaimHistory({ claimId }) {
 	const historyRequest = TransactionsStatement.GetClaimHistory(claimId);
 
 	return ((!claimRequest.isLoading && claimRequest.data) ? (
-		<div className="shadow-md">
+		<div scroll-id={(!claimRequest.isLoading && !historyRequest.isLoading) ? 'claim-history' : ''} className="shadow-md">
 			<div className="card mt-10">
 				<div className="card-header grid grid-cols-2">
 					<h4 className="card-title">Claim History</h4>
