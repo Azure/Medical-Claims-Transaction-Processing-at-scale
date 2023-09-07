@@ -36,7 +36,7 @@ export default function ClaimDetails({ claimId }) {
 	const { data, isLoading } = TransactionsStatement.GetClaimDetails(claimId);
 
 	return((!isLoading && data) ? (
-		<>
+		<div scroll-id="claim-details">
 			<div className="card mt-10 shadow-md">
 				<div className="card-header grid grid-cols-2">
 					<h4 className="card-title">Claim Details</h4>
@@ -69,6 +69,6 @@ export default function ClaimDetails({ claimId }) {
 					</div>
 				</div>
 			</div>
-		</>
+		</div>
 	) : <Spinner aria-label="Loading..." />);
 }
