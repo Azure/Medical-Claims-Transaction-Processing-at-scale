@@ -21,7 +21,9 @@ function waitForElement(selector) {
 
 export default function scrollToElement(scrollId) {
 	setTimeout(
-		() => waitForElement(`[scroll-id=${scrollId}]`).then((element) => {
+		async () => {
+			const element = await waitForElement(`[scroll-id=${scrollId}]`);
 			element.scrollIntoView({ behavior: 'smooth' });
-	}), 0);
+		},
+	0);
 }
