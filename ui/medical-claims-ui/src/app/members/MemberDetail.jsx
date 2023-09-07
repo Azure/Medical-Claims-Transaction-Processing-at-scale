@@ -32,7 +32,7 @@ export default function MemberDetail({ memberId }) {
 									<div className='px-4 font-bold gap-2'>Approved Total:</div><div>{data.approvedTotal}</div>
 								</div>
 							</div>
-						</div>  
+						</div>
 					</div>
 				</div>
 			</div>
