@@ -5,6 +5,7 @@ import moment from 'moment';
 
 import { Table } from 'flowbite-react';
 import TransactionsStatement from '../../hooks/TransactionsStatement';
+import scrollToElement from '../../hooks/scrollToElement';
 import { FormatMoney } from '../../hooks/Formatters';
 import ClaimDetails from './ClaimDetails';
 import ClaimHistory from './ClaimHistory';
@@ -54,12 +55,14 @@ export default function ClaimList({ memberId }) {
 		setClaimId(newClaimId);
 		setShowClaimDetail(true);
 		setShowHistory(false);
+		scrollToElement('claim-details');
 	}
 
 	const viewHistory = (newClaimId) => {
 		setClaimId(newClaimId);
 		setShowHistory(true);
 		setShowClaimDetail(false);
+		scrollToElement('claim-history');
 	}
 
 	useEffect(() => {
@@ -67,7 +70,7 @@ export default function ClaimList({ memberId }) {
 	}, [memberId]);
 
 	return (
-		<>
+		<div scroll-id={(!requestClaims.isLoading && !requestMember.isLoading) ? 'member-claims' : ''}>
 			<div className="card mt-10 shadow-md">
 				<div className="card-header">
 					{(!requestMember.isLoading && requestMember.data) && (
@@ -112,6 +115,6 @@ export default function ClaimList({ memberId }) {
 
 			{showHistory && <ClaimHistory {...{claimId}} />}	
 
-		</>
+		</div>
 	);
 }
