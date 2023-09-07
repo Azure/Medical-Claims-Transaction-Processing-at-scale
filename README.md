@@ -19,7 +19,7 @@ An AI powered co-pilot empowers agents with recommendations on how to process th
 The solution architecture is represented by this diagram:
 
 <p align="center">
-    <img src="img/architecture.png" width="100%">
+    <img src="img/architecture.png" width="100%" alt="Solution diagram shows components deployed in Azure.">
 </p>
 
 ## Technical Details
