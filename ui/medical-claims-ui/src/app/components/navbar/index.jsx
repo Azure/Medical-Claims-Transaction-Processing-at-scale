@@ -37,8 +37,8 @@ const menuItems = [
 ];
 
 export default function NavBar({ children }) {
-	const [collapsed, setCollapsed] = useState(true);
-	const [title, setTitle] = useState('');
+	const [ collapsed, setCollapsed ] = useState(true);
+	const [ title, setTitle ] = useState('');
 	const pathname = usePathname()
 
 	return (
