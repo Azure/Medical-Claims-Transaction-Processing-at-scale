@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import react, { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import './navbar.scss';
@@ -61,7 +61,7 @@ export default function NavBar({ children }) {
 					{menuItems.map(({ href, title, icon }) => (
 						<Link href={ href } key={ title } className={ `navbar__item ${pathname === href ? 'active' : '' }`}>
 							<button className="navbar__button" onClick={ () => setTitle(title) }>
-								{ React.createElement(icon, { className: 'navbar__icon' }) }
+								{ react.createElement(icon, { className: 'navbar__icon' }) }
 								<span className="navbar__text">{title}</span>
 							</button>
 						</Link>

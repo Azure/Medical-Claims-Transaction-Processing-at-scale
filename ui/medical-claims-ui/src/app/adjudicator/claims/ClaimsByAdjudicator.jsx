@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
+import link from 'next/link';
 import { Table, Pagination, Spinner } from 'flowbite-react';
-import Moment from 'moment';
+import moment from 'moment';
 
 import TransactionsStatement from '../../hooks/TransactionsStatement';
 import scrollToElement from '../../hooks/scrollToElement';
@@ -25,10 +25,10 @@ const tableHeaders = [
 function formatValues(header, value, row) {
 	switch(header.key) {
 		case 'filingDate':
-			return Moment(value).format('YYYY-MM-DD');
+			return moment(value).format('YYYY-MM-DD');
 			break;		
 		case 'lastAdjudicatedDate':
-			return value ? Moment(value).format('YYYY-MM-DD hh:mm a') : '-';
+			return value ? moment(value).format('YYYY-MM-DD hh:mm a') : '-';
 			break;
 		case 'lastAmount':
 			return FormatMoney(value);

@@ -124,6 +124,16 @@ namespace CoreClaims.Infrastructure.Repository
                 }
             }
 
+            // Remove duplicate claim history item that matches the current claim header.
+            if (header != null && details.Any())
+            {
+                var duplicate = details.FirstOrDefault(d => d.AdjustmentId == header.AdjustmentId);
+                if (duplicate != null)
+                {
+                    details.Remove(duplicate);
+                }
+            }
+
             return (header, details);
         }
     }
