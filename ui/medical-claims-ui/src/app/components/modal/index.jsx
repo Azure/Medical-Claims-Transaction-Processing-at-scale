@@ -13,7 +13,7 @@ export default function Modal({
 	closeButtonDisplayText = 'Close',
 	showSaveButton = true,
 	extraParams = {}
-}){
+}) {
 	const _onClose = ()=>{
 		if(onClose != undefined)
 			onClose();
@@ -21,9 +21,9 @@ export default function Modal({
 	};
 
 	const _onSave = ()=>{
-		if(onSave != undefined)
+		if (onSave != undefined)
 			onSave(extraParams);
-		//setShowModal(false);
+			//setShowModal(false);
 	};
 
 	return(showModal ? (
