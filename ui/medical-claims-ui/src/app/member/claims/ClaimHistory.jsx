@@ -7,8 +7,6 @@ import Formatters from '../../hooks/Formatters';
 import DataTable from '../../components/DataTable';
 
 
-const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
-
 const tableHeaders = [
 	{ key: 'procedureCode', name: 'Procedure Code' },
 	{ key: 'description', name: 'Description' },
@@ -23,7 +21,7 @@ function formatValues(header, value, row) {
 			break;
 		case 'amount':
 		case 'discount':
-			return money.format(value);
+			return Formatters.FormatMoney(value);
 			break;
 		default:
 			return value ? value : '-';
@@ -57,7 +55,7 @@ export default function ClaimHistory({ claimId }) {
 									<div className="px-4 font-bold gap-2">Payer Name:</div>
 									<div>{claimRequest.data.payerName ?? '-'}</div>
 									<div className="px-4 font-bold gap-2">Total Amount:</div>
-									<div>{money.format(claimRequest.data.totalAmount)}</div>
+									<div>{Formatters.FormatMoney(claimRequest.data.totalAmount)}</div>
 									<div className="px-4 font-bold gap-2">Provider Name:</div>
 									<div>{claimRequest.data.providerName}</div>
 									<div className="px-4 font-bold gap-2">Comment:</div>
@@ -105,7 +103,7 @@ function HistoryItem({ data }) {
 								<div className="px-4 font-bold gap-2">Payer Name:</div>
 								<div>{data.payerName ? data.payerName : '-'}</div>
 								<div className="px-4 font-bold gap-2">Total Amount:</div>
-								<div>{money.format(data.totalAmount)}</div>
+								<div>{Formatters.FormatMoney(data.totalAmount)}</div>
 								<div className="px-4 font-bold gap-2">Provider Name:</div>
 								<div>{data.providerName}</div>
 								<div className="px-4 font-bold gap-2">Comment:</div>
