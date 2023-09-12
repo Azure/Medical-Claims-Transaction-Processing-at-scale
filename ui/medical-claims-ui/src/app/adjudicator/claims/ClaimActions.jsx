@@ -7,12 +7,12 @@ const delayTimeAcknowledge = 4000;
 const delayTime = 2000;
 
 
-export function AcknowledgeButton ({ claimId, requestClaims, lineItems, mutate, setChangeDetail }){
+export function AcknowledgeButton ({ claimId, requestClaims, lineItems, mutate, setChangeDetail }) {
 	const [ showModal, setShowModal ] = useState(false);
 	const [ comment, setComment ] = useState('');
 	const { trigger } = AcknowledgeClaim(claimId);
 
-	const onSave = async ()=>{
+	const onSave = async () => {
 		var resp = await trigger({claimId: claimId});	
 		mutate();
 		await sleep(delayTimeAcknowledge);
@@ -20,7 +20,7 @@ export function AcknowledgeButton ({ claimId, requestClaims, lineItems, mutate, 
 		setShowModal(false);
 	}
 
-	return(
+	return (
 		<>
 			<button className='btn bg-gray-300 hover:bg-gray-100 ml-5' onClick={() => setShowModal(true)}>
 				Acknowledge Claim Assignment
@@ -34,7 +34,7 @@ export function AcknowledgeButton ({ claimId, requestClaims, lineItems, mutate, 
 	);
 }
 
-export function DenyClaimButton ({claimId, requestClaims, lineItems, setChangeDetail}){
+export function DenyClaimButton ({ claimId, requestClaims, lineItems, setChangeDetail }) {
 	const [ showModal, setShowModal ] = useState(false);
 	const [ comment, setComment ] = useState('');
 	const { trigger } = UpdateClaim(claimId);
@@ -45,13 +45,13 @@ export function DenyClaimButton ({claimId, requestClaims, lineItems, setChangeDe
 		setComment('')
 	}
 
-	const onSave = async ()=>{
-		var resp = await trigger({ claimStatus: 'Denied', comment: comment, lineItems: lineItems});
+	const onSave = async () => {
+		var resp = await trigger({ claimStatus: 'Denied', comment: comment, lineItems: lineItems });
 		requestClaims.mutate();
 		setShowModal(false);
 	}
 
-	return(
+	return (
 		<>
 			<button className='btn bg-red-500 hover:bg-red-600 text-white mr-5 ml-5' 
 				onClick={onClickButton}>
@@ -70,24 +70,24 @@ export function DenyClaimButton ({claimId, requestClaims, lineItems, setChangeDe
 	);
 }
 
-export function ProposeClaimButton ({claimId, requestClaims, lineItems, setChangeDetail}){
+export function ProposeClaimButton ({ claimId, requestClaims, lineItems, setChangeDetail }) {
 	const [ showModal, setShowModal ] = useState(false);
 	const [ comment, setComment ] = useState('');
 	const { trigger } = UpdateClaim(claimId);
 
-	const onClickButton = ()=>{
+	const onClickButton = () => {
 		setShowModal(true)
 		setChangeDetail(true)
 		setComment('')
 	}
 
-	const onSave = async ()=>{
+	const onSave = async () => {
 		var resp = await trigger({ claimStatus: 'Proposed', comment: comment, lineItems: lineItems});
 		requestClaims.mutate(null);	
 		setShowModal(false);
 	}
 
-	return(
+	return (
 		<>
 			<button className='btn bg-gray-300 hover:bg-gray-100' 
 				onClick={onClickButton}>
@@ -107,24 +107,24 @@ export function ProposeClaimButton ({claimId, requestClaims, lineItems, setChang
 	);
 }
 
-export function ApproveClaimButton ({claimId, requestClaims, lineItems, setChangeDetail}){
+export function ApproveClaimButton({ claimId, requestClaims, lineItems, setChangeDetail }) {
 	const [ showModal, setShowModal ] = useState(false);
 	const [ comment, setComment ] = useState('');
 	const { trigger } = UpdateClaim(claimId);
 
-	const onClickButton = ()=>{
+	const onClickButton = () => {
 		setShowModal(true)
 		setChangeDetail(true)
 		setComment('')
 	}
 
-	const onSave = async ()=>{
+	const onSave = async () => {
 		var resp = await trigger({ claimStatus: 'Proposed', comment: comment, lineItems: lineItems});
 		requestClaims.mutate(null);	
 		setShowModal(false);
 	}
 
-	return(
+	return (
 		<>
 			<button className='btn bg-green-500 hover:bg-green-600 text-white' 
 				onClick={onClickButton}>
