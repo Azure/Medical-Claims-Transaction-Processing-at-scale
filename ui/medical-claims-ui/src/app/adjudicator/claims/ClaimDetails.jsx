@@ -136,7 +136,7 @@ const RecommendActionForm = ({ claimId, setOpenModal, openModal }) => {
 };
 
 
-function ClaimsActions({claimStatus, claimId, requestClaims, lineItems, mutate, setChangeDetail }) {
+function ClaimsActions({ claimStatus, claimId, requestClaims, lineItems, mutate, setChangeDetail }) {
 	switch(claimStatus){
 		case 'Assigned':
 			return (<AcknowledgeButton claimId={claimId} {...{requestClaims, lineItems, mutate, setChangeDetail}} />);
