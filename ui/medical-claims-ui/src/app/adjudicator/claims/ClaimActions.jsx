@@ -22,10 +22,10 @@ export function AcknowledgeButton ({ claimId, requestClaims, lineItems, mutate, 
 
 	return (
 		<>
-			<button className='btn bg-gray-300 hover:bg-gray-100 ml-5' onClick={() => setShowModal(true)}>
+			<button className="btn bg-gray-300 hover:bg-gray-100 ml-5" onClick={() => setShowModal(true)}>
 				Acknowledge Claim Assignment
 			</button>
-			<Modal title='Claim Action Confirmation' {...{showModal, setShowModal, onSave}}>
+			<Modal title="Claim Action Confirmation" {...{showModal, setShowModal, onSave}}>
 				Are you sure to acknowledge this claim assignment?
 				<br/>
 				{claimId}
@@ -53,18 +53,18 @@ export function DenyClaimButton ({ claimId, requestClaims, lineItems, setChangeD
 
 	return (
 		<>
-			<button className='btn bg-red-500 hover:bg-red-600 text-white mr-5 ml-5' 
+			<button className="btn bg-red-500 hover:bg-red-600 text-white mr-5 ml-5" 
 				onClick={onClickButton}>
 				Deny Claim
 			</button>
-			<Modal title='Claim Action Confirmation' {...{showModal, setShowModal, onSave}}>
+			<Modal title="Claim Action Confirmation" {...{showModal, setShowModal, onSave}}>
 				Are you sure to deny this claim?
 				<br/>
 				{claimId}
 		
-				<label htmlFor="comments" className='block text-gray-700 text-sm font-bold mb-2 mt-5'>Comments:</label>
+				<label htmlFor="comments" className="block text-gray-700 text-sm font-bold mb-2 mt-5">Comments:</label>
 				<textarea type="text" id="comments" name="comments" value={comment} onChange={(e)=> {setComment(event.target.value)} }
-					className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' />
+					className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
 			</Modal>
 		</>
 	);
@@ -89,18 +89,18 @@ export function ProposeClaimButton ({ claimId, requestClaims, lineItems, setChan
 
 	return (
 		<>
-			<button className='btn bg-gray-300 hover:bg-gray-100' 
+			<button className="btn bg-gray-300 hover:bg-gray-100" 
 				onClick={onClickButton}>
 				Propose Claim
 			</button>
-			<Modal title='Claim Action Confirmation' {...{showModal, setShowModal, onSave}}>
+			<Modal title="Claim Action Confirmation" {...{showModal, setShowModal, onSave}}>
 				Are you sure to propose this claim?
 				<br/>
 				{claimId}
 		
-				<label htmlFor="comments" className='block text-gray-700 text-sm font-bold mb-2 mt-5'>Comments:</label>
+				<label htmlFor="comments" className="block text-gray-700 text-sm font-bold mb-2 mt-5">Comments:</label>
 				<textarea type="text" id="comments" name="comments" value={comment} onChange={(e)=> {setComment(event.target.value)} }
-					className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' />
+					className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
 				
 			</Modal>
 		</>
@@ -126,18 +126,18 @@ export function ApproveClaimButton({ claimId, requestClaims, lineItems, setChang
 
 	return (
 		<>
-			<button className='btn bg-green-500 hover:bg-green-600 text-white' 
+			<button className="btn bg-green-500 hover:bg-green-600 text-white" 
 				onClick={onClickButton}>
 				Approve Claim
 			</button>
-			<Modal title='Claim Action Confirmation' {...{showModal, setShowModal, onSave}}>
+			<Modal title="Claim Action Confirmation" {...{showModal, setShowModal, onSave}}>
 				Are you sure to approve this claim?
 				<br/>
 				{claimId}
 		
-				<label htmlFor="comments" className='block text-gray-700 text-sm font-bold mb-2 mt-5'>Comments:</label>
+				<label htmlFor="comments" className="block text-gray-700 text-sm font-bold mb-2 mt-5">Comments:</label>
 				<textarea type="text" id="comments" name="comments" value={comment} onChange={(e)=> {setComment(event.target.value)} }
-					className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' />
+					className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
 				
 			</Modal>
 		</>
