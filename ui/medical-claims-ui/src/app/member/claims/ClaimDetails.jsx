@@ -40,22 +40,22 @@ export default function ClaimDetails({ claimId }) {
 			<div className="card mt-10 shadow-md">
 				<div className="card-header grid grid-cols-2">
 					<h4 className="card-title">Claim Details</h4>
-					<div className='text-right'><label>Filing Date: </label>{ moment(data.filingDate).format('MMMM DD, YYYY') }</div>
+					<div className="text-right"><label>Filing Date: </label>{ moment(data.filingDate).format('MMMM DD, YYYY') }</div>
 				</div>
 				<div className="card-body">
 					<div className="relative overflow-x-auto sm:rounded">
-						<div className='grid grid-cols-2 grid-cols-[auto_1fr] gap-x-8'>
-							<div className='px-4 font-bold gap-2'>Claim Id:</div>
+						<div className="grid grid-cols-2 grid-cols-[auto_1fr] gap-x-8">
+							<div className="px-4 font-bold gap-2">Claim Id:</div>
 							<div>{data.claimId}</div>
-							<div className='px-4 font-bold gap-2'>Claim Status:</div>
+							<div className="px-4 font-bold gap-2">Claim Status:</div>
 							<div>{data.claimStatus}</div>
-							<div className='px-4 font-bold gap-2'>Payer Name:</div>
+							<div className="px-4 font-bold gap-2">Payer Name:</div>
 							<div>{data.payerName ? data.payerName : '-'}</div>
-							<div className='px-4 font-bold gap-2'>Total Amount:</div>
+							<div className="px-4 font-bold gap-2">Total Amount:</div>
 							<div>{FormatMoney(data.totalAmount)}</div>
-							<div className='px-4 font-bold gap-2'>Provider Name:</div>
+							<div className="px-4 font-bold gap-2">Provider Name:</div>
 							<div>{data.providerName}</div>
-							<div className='px-4 font-bold gap-2'>Comment:</div>
+							<div className="px-4 font-bold gap-2">Comment:</div>
 							<div>{data.comment}</div>
 						</div>
 						<div>

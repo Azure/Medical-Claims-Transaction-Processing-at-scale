@@ -15,7 +15,7 @@ import DataTable from '../../components/DataTable';
 export default function ClaimDetails({ claimId, requestClaims, isManager, setChangeDetail }) {
 	const { data, isLoading, mutate } = TransactionsStatement.GetClaimDetails(claimId);
 
-	const [isRecModalOpen, setIsRecModalOpen] = useState('');
+	const [ isRecModalOpen, setIsRecModalOpen ] = useState('');
 	const onClickRecommend = () => setIsRecModalOpen(true);
 	const recModalHeader = <div className="text-xl p-4">Recommendation</div>;
 
@@ -27,11 +27,11 @@ export default function ClaimDetails({ claimId, requestClaims, isManager, setCha
 
 
 	return ((!isLoading && data) ? (
-		<div scroll-id='claim-details'>
+		<div scroll-id="claim-details">
 			<div className="card shadow-md">
 				<div className="card-header grid grid-cols-2">
 					<h4 className="card-title mb-2">Claim Details</h4>
-					<div className='text-right'><label>Filing Date: </label>{ Moment(data.filingDate).format('MMMM DD, YYYY') }</div>
+					<div className="text-right"><label>Filing Date: </label>{ Moment(data.filingDate).format('MMMM DD, YYYY') }</div>
 					<div className="justify-end">
 						<Button color="dark" className="p-0" onClick={onClickRecommend}>
 							<SparklesIcon className="h-6 w-6 text-gray-500 mr-3 text-white" />
@@ -41,23 +41,23 @@ export default function ClaimDetails({ claimId, requestClaims, isManager, setCha
 				</div>
 				<div className="card-body">
 					<div className="relative overflow-x-auto sm:rounded">
-						<div className='grid grid-cols-[auto_1fr] gap-x-8'>
-							<div className='px-4 font-bold gap-2'>Claim Id:</div>
-							<div className='float-left'>{data.claimId}</div>
-							<div className='px-4 font-bold gap-2'>Member Id:</div>
-							<div className='float-left'>{data.memberId}</div>
-							<div className='px-4 font-bold gap-2'>Claim Status:</div>
+						<div className="grid grid-cols-[auto_1fr] gap-x-8">
+							<div className="px-4 font-bold gap-2">Claim Id:</div>
+							<div className="float-left">{data.claimId}</div>
+							<div className="px-4 font-bold gap-2">Member Id:</div>
+							<div className="float-left">{data.memberId}</div>
+							<div className="px-4 font-bold gap-2">Claim Status:</div>
 							<div>
 								<span className="bg-yellow-100">{data.claimStatus}</span>
 								<ClaimsActions claimStatus={data.claimStatus} claimId={data.claimId} {...{data, requestClaims, lineItems, mutate, setChangeDetail}}/>
 							</div>
-							<div className='px-4 font-bold gap-2'>Payer Name:</div>
+							<div className="px-4 font-bold gap-2">Payer Name:</div>
 							<div>{data.PayerName ? data.payerName : '-'}</div>
-							<div className='px-4 font-bold gap-2'>Total Amount:</div>
+							<div className="px-4 font-bold gap-2">Total Amount:</div>
 							<div>{FormatMoney(data.totalAmount)}</div>
-							<div className='px-4 font-bold gap-2'>Provider Name:</div>
+							<div className="px-4 font-bold gap-2">Provider Name:</div>
 							<div>{data.providerName}</div>
-							<div className='px-4 font-bold gap-2'>Comment:</div>
+							<div className="px-4 font-bold gap-2">Comment:</div>
 							<div>{data.comment}</div>
 						</div>
 						<div>
@@ -94,7 +94,7 @@ const RecommendActionForm = ({ claimId, setOpenModal, openModal }) => {
 		claimId
 	});
 
-	useEffect(()=>{
+	useEffect(() => {
 		setRecommendation('');
 	}, [openModal]);
 	
@@ -136,12 +136,12 @@ const RecommendActionForm = ({ claimId, setOpenModal, openModal }) => {
 };
 
 
-function ClaimsActions({claimStatus, claimId, requestClaims, lineItems, mutate, setChangeDetail }){
+function ClaimsActions({claimStatus, claimId, requestClaims, lineItems, mutate, setChangeDetail }) {
 	switch(claimStatus){
-		case "Assigned":
+		case 'Assigned':
 			return (<AcknowledgeButton claimId={claimId} {...{requestClaims, lineItems, mutate, setChangeDetail}} />);
 			break;
-		case "Acknowledged":
+		case 'Acknowledged':
 			return (
 				<>
 					<DenyClaimButton claimId={claimId} {...{requestClaims, lineItems, setChangeDetail}}/>
@@ -149,7 +149,7 @@ function ClaimsActions({claimStatus, claimId, requestClaims, lineItems, mutate, 
 				</>
 			);
 			break;
-		case "ApprovalRequired":
+		case 'ApprovalRequired':
 			return (
 				<>
 					<DenyClaimButton claimId={claimId} {...{requestClaims, lineItems, setChangeDetail}}/>
@@ -244,13 +244,13 @@ const ApplyDiscount = ({ row, data, setLineItems }) => {
 		<>
 			<span className="hover:cursor-pointer" onClick={()=> setOpenModal(true)}>Apply Discount</span>
 			<Modal show={openModal} size="xl" popup onClose={() => setOpenModal(false)} 
-				className='justify-center items-center flex overflow-x-hidden overflow-y-auto 
-				fixed inset-0 z-50 outline-none focus:outline-none'
+				className="justify-center items-center flex overflow-x-hidden overflow-y-auto 
+				fixed inset-0 z-50 outline-none focus:outline-none"
 			>
 				<Modal.Header className="items-center p-4">Apply Discount</Modal.Header>
-				<Modal.Body className='mt-10'>
+				<Modal.Body className="mt-10">
 					<input type="number" min="0" ref={dicountRef} onChange={(e)=>onChange(e)}
-						className='shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' />
+						className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
 				</Modal.Body>
 				<Modal.Footer>
 					<button
