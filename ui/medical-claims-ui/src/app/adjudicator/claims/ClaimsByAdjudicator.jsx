@@ -6,6 +6,7 @@ import { Table, Pagination, Spinner } from 'flowbite-react';
 import Moment from 'moment';
 
 import TransactionsStatement from '../../hooks/TransactionsStatement';
+import scrollToElement from '../../hooks/scrollToElement';
 import { FormatMoney } from '../../hooks/Formatters';
 import ClaimDetails from './ClaimDetails';
 import ClaimHistory from '../../member/claims/ClaimHistory';
@@ -55,12 +56,14 @@ export default function ClaimsByAdjudicator({ adjudicatorId, isManager }) {
 		setClaimId(claimId);
 		setShowClaimDetail(true);
 		setShowHistory(false);
+		scrollToElement('claim-details');
 	}
 
 	const viewHistory = (claimId) => {
 		setClaimId(claimId);
 		setShowHistory(true);
 		setShowClaimDetail(false);
+		scrollToElement('claim-history');
 	}
 
 	const onPageChange = (newPage) => {
