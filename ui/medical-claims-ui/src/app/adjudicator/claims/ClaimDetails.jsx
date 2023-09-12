@@ -27,7 +27,7 @@ export default function ClaimDetails({ claimId, requestClaims, isManager, setCha
 
 
 	return ((!isLoading && data) ? (
-		<>
+		<div scroll-id='claim-details'>
 			<div className="card shadow-md">
 				<div className="card-header grid grid-cols-2">
 					<h4 className="card-title mb-2">Claim Details</h4>
@@ -70,7 +70,7 @@ export default function ClaimDetails({ claimId, requestClaims, isManager, setCha
 			<FormModal header={recModalHeader} openModal={isRecModalOpen} setOpenModal={setIsRecModalOpen} >
 				<RecommendActionForm claimId={claimId} setOpenModal={setIsRecModalOpen} openModal={isRecModalOpen} />
 			</FormModal>
-		</>
+		</div>
 	) : <Spinner aria-label="Loading..." />);
 }
 
