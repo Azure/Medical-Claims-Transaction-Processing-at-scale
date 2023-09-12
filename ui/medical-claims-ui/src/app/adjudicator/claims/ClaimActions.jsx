@@ -1,7 +1,7 @@
 
-import React, { useState, useEffect } from 'react';
+import react, { useState, useEffect } from 'react';
 import TransactionsStatement, { UpdateClaim, AcknowledgeClaim } from '../../hooks/TransactionsStatement';
-import Modal from '../../components/Modal';
+import Modal from '../../components/modal';
 
 const delayTimeAcknowledge = 4000;
 const delayTime = 2000;

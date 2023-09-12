@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
+import link from 'next/link';
 
 import TransactionsStatement from '../hooks/TransactionsStatement';
 import scrollToElement from '../hooks/scrollToElement';
