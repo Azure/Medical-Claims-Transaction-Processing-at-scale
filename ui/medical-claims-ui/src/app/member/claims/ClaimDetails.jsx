@@ -48,7 +48,9 @@ export default function ClaimDetails({ claimId }) {
 							<div className="px-4 font-bold gap-2">Claim Id:</div>
 							<div>{data.claimId}</div>
 							<div className="px-4 font-bold gap-2">Claim Status:</div>
-							<div>{data.claimStatus}</div>
+							<div>
+								<span className="bg-yellow-100">{data.claimStatus}</span>
+							</div>
 							<div className="px-4 font-bold gap-2">Payer Name:</div>
 							<div>{data.payerName ? data.payerName : '-'}</div>
 							<div className="px-4 font-bold gap-2">Total Amount:</div>
