@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
+import link from 'next/link';
 import moment from 'moment';
 
 import { Table } from 'flowbite-react';
