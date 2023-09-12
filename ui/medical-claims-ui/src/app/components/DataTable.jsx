@@ -129,7 +129,7 @@ export default function DataTable(props) {
 					</Table.Body>
 				</Table>
 			) :
-				<div className='text-center mt-10 mb-10'>
+				<div className="text-center mt-10 mb-10">
 					<Spinner aria-label="Loading..." />
 				</div>
 			}

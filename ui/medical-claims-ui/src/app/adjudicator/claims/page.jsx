@@ -3,6 +3,7 @@
 import { Tabs } from 'flowbite-react';
 import ClaimsByAdjudicator from './ClaimsByAdjudicator';
 
+
 const tabTheme = {
   base: 'flex flex-col',
   tablist: {
@@ -23,7 +24,7 @@ const tabTheme = {
 }
 
 export default function Adjudicator() {
-	return(
+	return (
 		<>
 			<Tabs.Group theme={tabTheme} aria-label="Default tabs" style="default">
 				<Tabs.Item active title="Non-Manager">

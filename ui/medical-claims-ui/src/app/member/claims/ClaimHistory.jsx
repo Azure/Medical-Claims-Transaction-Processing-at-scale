@@ -7,8 +7,6 @@ import Formatters from '../../hooks/Formatters';
 import DataTable from '../../components/DataTable';
 
 
-const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
-
 const tableHeaders = [
 	{ key: 'procedureCode', name: 'Procedure Code' },
 	{ key: 'description', name: 'Description' },
@@ -23,7 +21,7 @@ function formatValues(header, value, row) {
 			break;
 		case 'amount':
 		case 'discount':
-			return money.format(value);
+			return Formatters.FormatMoney(value);
 			break;
 		default:
 			return value ? value : '-';
@@ -43,28 +41,28 @@ export default function ClaimHistory({ claimId }) {
 				</div>
 				<div className="card-body">
 					<div className="relative overflow-x-auto sm:rounded">
-						<div className='grid grid-cols-2'>
+						<div className="grid grid-cols-2">
 							<div>
-								<div className='grid grid-cols-2 w-9/12'>
-									<div className='px-4 font-bold gap-2'>Claim Id:</div>
-									<div className='float-left'>{claimRequest.data.claimId}</div>
-									<div className='px-4 font-bold gap-2'>Claim Status:</div>
+								<div className="grid grid-cols-2 w-9/12">
+									<div className="px-4 font-bold gap-2">Claim Id:</div>
+									<div className="float-left">{claimRequest.data.claimId}</div>
+									<div className="px-4 font-bold gap-2">Claim Status:</div>
 									<div>
 										<span className="bg-yellow-100">{claimRequest.data.claimStatus}</span>
 									</div>
-									<div className='px-4 font-bold gap-2'>Member Id:</div>
-									<div className='float-left'>{claimRequest.data.memberId}</div>
-									<div className='px-4 font-bold gap-2'>Payer Name:</div>
+									<div className="px-4 font-bold gap-2">Member Id:</div>
+									<div className="float-left">{claimRequest.data.memberId}</div>
+									<div className="px-4 font-bold gap-2">Payer Name:</div>
 									<div>{claimRequest.data.payerName ?? '-'}</div>
-									<div className='px-4 font-bold gap-2'>Total Amount:</div>
-									<div>{money.format(claimRequest.data.totalAmount)}</div>
-									<div className='px-4 font-bold gap-2'>Provider Name:</div>
+									<div className="px-4 font-bold gap-2">Total Amount:</div>
+									<div>{Formatters.FormatMoney(claimRequest.data.totalAmount)}</div>
+									<div className="px-4 font-bold gap-2">Provider Name:</div>
 									<div>{claimRequest.data.providerName}</div>
-									<div className='px-4 font-bold gap-2'>Comment:</div>
+									<div className="px-4 font-bold gap-2">Comment:</div>
 									<div>{claimRequest.data.comment}</div>
 								</div>
 							</div>
-							<div className='align-text-top text-right'>
+							<div className="align-text-top text-right">
 								<div>Modified By: {claimRequest.data.modifiedBy}</div>
 								<div>Modified On: {Formatters.FormatDate(claimRequest.data.modifiedOn)}</div>
 							</div>
@@ -95,24 +93,24 @@ function HistoryItem({ data }) {
 		<div className="card bg-gray-200 mt-1">
 			<div className="card-body">
 				<div className="relative overflow-x-auto sm:rounded">
-					<div className='grid grid-cols-2'>
+					<div className="grid grid-cols-2">
 						<div>
-							<div className='grid grid-cols-2 w-9/12'>
-								<div className='px-4 font-bold gap-2'>Claim Id:</div>
-								<div className='float-left'>{data.claimId}</div>
-								<div className='px-4 font-bold gap-2'>Claim Status:</div>
+							<div className="grid grid-cols-2 w-9/12">
+								<div className="px-4 font-bold gap-2">Claim Id:</div>
+								<div className="float-left">{data.claimId}</div>
+								<div className="px-4 font-bold gap-2">Claim Status:</div>
 								<div>{data.claimStatus}</div>
-								<div className='px-4 font-bold gap-2'>Payer Name:</div>
+								<div className="px-4 font-bold gap-2">Payer Name:</div>
 								<div>{data.payerName ? data.payerName : '-'}</div>
-								<div className='px-4 font-bold gap-2'>Total Amount:</div>
-								<div>{money.format(data.totalAmount)}</div>
-								<div className='px-4 font-bold gap-2'>Provider Name:</div>
+								<div className="px-4 font-bold gap-2">Total Amount:</div>
+								<div>{Formatters.FormatMoney(data.totalAmount)}</div>
+								<div className="px-4 font-bold gap-2">Provider Name:</div>
 								<div>{data.providerName}</div>
-								<div className='px-4 font-bold gap-2'>Comment:</div>
+								<div className="px-4 font-bold gap-2">Comment:</div>
 								<div>{data.comment}</div>
 							</div>							
 						</div>
-						<div className='align-text-top text-right'>
+						<div className="align-text-top text-right">
 							<div>Modified By: {data.modifiedBy}</div>
 							<div>Modified On: {Formatters.FormatDate(data.modifiedOn)}</div>
 						</div>
