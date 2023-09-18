@@ -43,10 +43,10 @@ Follow the steps below to deploy the solution to your Azure subscription.
 1. Clone the repository:
 
     ```cmd
-    git clone --recurse-submodules https://github.com/AzureCosmosDB/ClaimsProcessing.git
+    git clone --recurse-submodules https://github.com/Azure/Medical-Claims-Transaction-Processing-at-scale.git
     ```
 
-1. Open PowerShell, navigate to the `ClaimsProcessing` folder, and run the following script to provision the infrastructure and deploy the API and frontend. This will provision all of the required infrastructure, deploy the API and web app services into AKS, and provision and load artifacts into a Synapse Analytics workspace.
+1. Open PowerShell, navigate to the `Medical-Claims-Transaction-Processing-at-scale` folder, and run the following script to provision the infrastructure and deploy the API and frontend. This will provision all of the required infrastructure, deploy the API and web app services into AKS, and provision and load artifacts into a Synapse Analytics workspace.
 
     ```pwsh
     ./deploy/powershell/Unified-Deploy.ps1 -resourceGroup <rg_name> -location <location> -subscription <target_subscription_id>

@@ -15,13 +15,13 @@ Follow the steps below to deploy the solution to your Azure subscription.
 1. Clone the repository:
 
     ```cmd
-    git clone --recurse-submodules https://github.com/AzureCosmosDB/ClaimsProcessing.git
+    git clone --recurse-submodules https://github.com/Azure/Medical-Claims-Transaction-Processing-at-scale.git
     ```
 
 1. Set the proper folder permissions on the `deploy` folder:
 
     ```cmd
-    cd ./ClaimsProcessing/
+    cd ./Medical-Claims-Transaction-Processing-at-scale/
     chmod +x ./deploy/*
     ```
 
