@@ -48,7 +48,7 @@ var containerAppConfigs = [
     name: 'api'
     identity: {
       type: 'UserAssigned'
-      userAssignedIdentities: [ apiMiId ]
+      userAssignedIdentities: { '${apiMiId}': {} }
     }
     ingress: {
       allowInsecure: false
@@ -130,7 +130,7 @@ var containerAppConfigs = [
     name: 'worker'
     identity: {
       type: 'UserAssigned'
-      userAssignedIdentities: [ workerMiId ]
+      userAssignedIdentities: { '${workerMiId}': {} }
     }
     ingress: null
     env: [
