@@ -5,6 +5,9 @@ param suffix string = uniqueString(resourceGroup().id)
 @description('Location for resource deployment')
 param location string = resourceGroup().location
 
+@description('OpenAi Name')
+param openAiName string = 'openai-coreclaims-${suffix}'
+
 @description('OpenAi Deployment')
 param openAiDeployment string = 'completions'
 
@@ -71,93 +74,67 @@ module synapse 'synapse.bicep' = {
   dependsOn: [storage, cosmosDb]
 }
 
-module openAi 'openai.bicep' = {
-  name: 'openAiDeploy'
-  scope: resourceGroup() // Deployments with existing OpenAi (different resource group) will have to be properly adjust this
+// module openAi 'openai.bicep' = {
+//   name: 'openAiDeploy'
+//   scope: resourceGroup() // Deployments with existing OpenAi (different resource group) will have to be properly adjust this
+//   params: {
+//     openAiName: serviceNames.openAi
+//     location: location
+//     deployments: [
+//       {
+//         name: openAiDeployment
+//         model: 'gpt-35-turbo'
+//         version: '0301'
+//         sku: {
+//           name: 'Standard'
+//           capacity: 60
+//         }
+//       }
+//     ]
+//   }
+// }
+
+module logAnalytics 'loganalytics.bicep' = {
+  name: 'logAnalyticsDeploy'
   params: {
-    openAiName: serviceNames.openAi
+    name: appName
     location: location
-    deployments: [
-      {
-        name: openAiDeployment
-        model: 'gpt-35-turbo'
-        version: '0301'
-        sku: {
-          name: 'Standard'
-          capacity: 60
-        }
-      }
-    ]
   }
 }
 
-module aks 'AKS-Construction/bicep/main.bicep' = {
-  name: 'aksconstruction'
+resource openAi 'Microsoft.CognitiveServices/accounts@2023-05-01' existing = {
+  name: openAiName
+}
+
+module containerApps 'containerapp.bicep' = {
+  name: 'conatinerApps'
   params: {
-    location : location
-    resourceName: serviceNames.aks
-    enable_aad: true
-    enableAzureRBAC : true
-    registries_sku: 'Basic'
-    omsagent: true
-    retentionInDays: 30
-    agentCount: 1
-    
-    //Managed workload identity 
-    workloadIdentity: true
-
-    //Workload Identity requires OidcIssuer to be configured on AKS
-    oidcIssuer: true
-    
-    //We'll also enable the CSI driver for Key Vault
-    keyVaultAksCSI : true
-
-    JustUseSystemPool: true
-  }
-  dependsOn: [cosmosDb, storage, openAi]
-}
-
-resource ai 'Microsoft.Insights/components@2020-02-02' = {
-  name: serviceNames.ai
-  location: location
-  kind: 'web'
-  properties: {
-    Application_Type: 'web'
-    Flow_Type: 'Bluefield'
-    IngestionMode: 'LogAnalytics'
-    publicNetworkAccessForIngestion: 'Enabled'
-    publicNetworkAccessForQuery: 'Enabled'
-    RetentionInDays: 30
-    WorkspaceResourceId: aks.outputs.LogAnalyticsId
+    aiConnectionString: logAnalytics.outputs.aiConnectionString
+    cosmosEndpoint: cosmosDb.outputs.cosmosAccountEndpoint
+    dataLakeAccountName: serviceNames.storage
+    laCustomerId: logAnalytics.outputs.laCustomerId
+    laSharedKey: logAnalytics.outputs.laSharedKey
+    location: location
+    name: appName
+    openAiCompletionsDeployment: openAiDeployment
+    openAiEndpoint: openAi.name
+    openAiKey: openAi.listKeys().key1
+    suffix: suffix
+    workerClientId: workerIdentity.properties.clientId
+    apiClientId: apiIdentity.properties.clientId
+    apiMiId: apiIdentity.id
+    workerMiId: workerIdentity.id
   }
 }
 
 resource apiIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' = {
   name: serviceNames.apimi
   location: location
-
-  resource fedCreds 'federatedIdentityCredentials' = {
-    name: '${serviceNames.apimi}-fed'
-    properties: {
-      audiences: aks.outputs.aksOidcFedIdentityProperties.audiences
-      issuer: aks.outputs.aksOidcFedIdentityProperties.issuer
-      subject: 'system:serviceaccount:default:claims-api-sa'
-    }
-  }
 }
 
 resource workerIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' = {
   name: serviceNames.workermi
   location: location
-
-  resource fedCreds 'federatedIdentityCredentials' = {
-    name: '${serviceNames.workermi}-fed'
-    properties: {
-      audiences: aks.outputs.aksOidcFedIdentityProperties.audiences
-      issuer: aks.outputs.aksOidcFedIdentityProperties.issuer
-      subject: 'system:serviceaccount:default:claims-worker-sa'
-    }
-  }
 }
 
 module staticwebsite 'staticwebsite.bicep' = {
