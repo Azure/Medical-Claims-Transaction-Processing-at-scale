@@ -150,4 +150,5 @@ resource workerRoleAssignmentCosmos 'Microsoft.DocumentDB/databaseAccounts/sqlRo
 }
 
 output cosmosAccountName string = account.name
+output cosmosAccountEndpoint string = account.properties.documentEndpoint
 output cosmosDatabaseName string = database.name
