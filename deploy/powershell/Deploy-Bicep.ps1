@@ -3,13 +3,20 @@
 Param(
     [parameter(Mandatory=$true)][string]$resourceGroup,
     [parameter(Mandatory=$true)][string]$location,
-    [parameter(Mandatory=$true)][string]$suffix
+    [parameter(Mandatory=$true)][string]$suffix,
+    [parameter(Mandatory=$true)][string]$openAiName,
+    [parameter(Mandatory=$true)][string]$openAiCompletionsDeployment,
+    [parameter(Mandatory=$true)][bool]$deployAks
 )
 
 Push-Location $($MyInvocation.InvocationName | Split-Path)
 $sourceFolder=$(Join-Path -Path ../.. -ChildPath infrastructure)
 
-$script="main.bicep"
+if ($deployAks) {
+    $script="aksmain.bicep"
+} else {
+    $script="acamain.bicep"
+}
 
 Write-Host "--------------------------------------------------------" -ForegroundColor Yellow
 Write-Host "Deploying Bicep script $script" -ForegroundColor Yellow
@@ -23,6 +30,6 @@ if (-not $rg) {
 
 Write-Host "Beginning the Bicep deployment..." -ForegroundColor Yellow
 Push-Location $sourceFolder
-$deploymentState = $(az deployment group create -g $resourceGroup --template-file $script --parameters suffix=$suffix --query "properties.provisioningState" -o tsv)
+$deploymentState = $(az deployment group create -g $resourceGroup --template-file $script --parameters suffix=$suffix --parameters openAiName=$openAiName --parameters openAiDeployment=$openAiCompletionsDeployment --query "properties.provisioningState" -o tsv) 
 Pop-Location
 Pop-Location
