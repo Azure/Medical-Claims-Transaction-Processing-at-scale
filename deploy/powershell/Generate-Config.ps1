@@ -4,7 +4,8 @@ Param(
     [parameter(Mandatory=$false)][string[]]$outputFile=$null,
     [parameter(Mandatory=$false)][string[]]$gvaluesTemplate="..,..,gvalues.template.yml",
     [parameter(Mandatory=$false)][string]$ingressClass="addon-http-application-routing",
-    [parameter(Mandatory=$false)][string]$domain
+    [parameter(Mandatory=$false)][string]$domain,
+    [parameter(Mandatory=$true)][bool]$deployAks
 )
 
 function EnsureAndReturnFirstItem($arr, $restype) {
@@ -32,8 +33,13 @@ $dataLakeEndpoint=$(az storage account list -g $resourceGroup -o json | ConvertF
 $dataLakeAccountName=$(az storage account list -g $resourceGroup -o json | ConvertFrom-Json)[0].name
 
 # Ingress endpoint
-$aksName = $(az aks list -g $resourceGroup -o json | ConvertFrom-Json).name
-$webappHostname=$(az aks show -n $aksName -g $resourceGroup -o json --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName | ConvertFrom-Json)
+if ($deployAks)
+{
+    $aksName = $(az aks list -g $resourceGroup -o json | ConvertFrom-Json).name
+    $webappHostname=$(az aks show -n $aksName -g $resourceGroup -o json --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName | ConvertFrom-Json)
+} else {
+    $webappHostname=$(az containerapp show -n aca-api-coreclaims-$suffix -g $resourceGroup -o json --query properties.configuration.ingress.fqdn | ConvertFrom-Json)
+}
 $apiUrl = "https://${webappHostname}/api"
 
 ## Getting CosmosDb info
