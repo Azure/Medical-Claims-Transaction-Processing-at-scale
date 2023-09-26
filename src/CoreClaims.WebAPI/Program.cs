@@ -52,11 +52,6 @@ namespace CoreClaims.WebAPI
             {
                 var endpoint = builder.Configuration[Constants.Connections.CosmosDbEndpoint];
                 var clientId = builder.Configuration[Constants.Identity.ClientId];
-
-#if DEBUG
-                return new CosmosClientBuilder(endpoint, new Azure.Identity.DefaultAzureCredential())
-                    .Build();
-#endif
                 
                 var credential = new ChainedTokenCredential(
                     new ManagedIdentityCredential(clientId),
@@ -67,7 +62,7 @@ namespace CoreClaims.WebAPI
                     .Build();
             });
             builder.Services.AddSingleton<IEventHubService, EventHubService>(s => new EventHubService(
-                builder.Configuration[Constants.Connections.EventHubNamespace]));
+                builder.Configuration[Constants.Connections.EventHubNamespace], builder.Configuration[Constants.Identity.ClientId]));
 
             builder.Services.AddSingleton<IClaimRepository, ClaimRepository>();
             builder.Services.AddSingleton<IAdjudicatorRepository, AdjudicatorRepository>();
