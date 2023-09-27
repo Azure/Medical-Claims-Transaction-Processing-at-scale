@@ -76,6 +76,7 @@ cd deploy/powershell
 ./Unified-Deploy.ps1 -resourceGroup myRg `
                      -subscription 0000... `
                      -stepLoginAzure 0 `
+                     -stepDeployOpenAi 0 `
                      -stepDeployBicep 0 `
                      -stepDeployCertManager 0 `
                      -stepDeployTls 0 `
