@@ -9,7 +9,7 @@
   - Visual Studio 2022 17.6 or later (required for passthrough Visual Studio authentication for the Docker container)
   - .NET 7 SDK
   - Docker Desktop (with WSL for Windows machines)
-  - Azure CLI ([v2.49.0 or greater](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli))
+  - Azure CLI ([v2.51.0 or greater](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli))
   - [Helm 3.11.1 or greater](https://helm.sh/docs/intro/install/)
 - Frontend (React web app)
   - Visual Studio Code
@@ -54,6 +54,11 @@ The following flags can be used to enable/disable specific deployment steps in t
 
 | Parameter Name | Description |
 |----------------|-------------|
+| stepDeployOpenAi | Enables or disables the deployment of an OpenAi instance in Azure prior to the Bicep template deployment. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/powershell/Deploy-OpenAi.ps1` script.
+| openAiName | Name of a pre-existing OpenAI instance to use instead of creating a new one. Default value is `$null`. See the `deploy/powershell/Unified-Deploy.ps1` script. 
+| openAiRg | Name of the resource group a pre-existing OpenAI instance to use resides in. Default value is `$null`. See the `deploy/powershell/Unified-Deploy.ps1` script.
+| deployAks | Enables 
+| openAiCompletionsDeployment | Name of the completions deployment to use in a pre-existing OpenAI instance. Default value is `$null`. See the `deploy/powershell/Unified-Deploy.ps1` script.
 | stepDeployBicep | Enables or disables the provisioning of resources in Azure via Bicep templates (located in `./infrastructure`). Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/powershell/Deploy-Bicep.ps1` script.
 | stepBuildPush | Enables or disables the build and push of Docker images into the Azure Container Registry (ACR). Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/BuildPush.ps1` script.
 | stepDeployCertManager | Enables or disables adding the official cert-manager repository to your local and updates the repo cache. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/DeployCertManager.ps1` script.
@@ -70,6 +75,7 @@ cd deploy/powershell
 ./Unified-Deploy.ps1 -resourceGroup myRg `
                      -subscription 0000... `
                      -stepLoginAzure 0 `
+                     -stepOpenAi 0 `
                      -stepDeployBicep 0 `
                      -stepDeployCertManager 0 `
                      -stepDeployTls 0 `
