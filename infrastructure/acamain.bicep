@@ -117,7 +117,7 @@ module containerApps 'containerapp.bicep' = {
     location: location
     name: appName
     openAiCompletionsDeployment: openAiDeployment
-    openAiEndpoint: openAi.name
+    openAiEndpoint: openAi.properties.endpoint
     openAiKey: openAi.listKeys().key1
     suffix: suffix
     workerClientId: workerIdentity.properties.clientId
