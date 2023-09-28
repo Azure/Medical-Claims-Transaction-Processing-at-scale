@@ -58,14 +58,6 @@ if (-not $rg) {
     $rg=$(az group create -g $resourceGroup -l $location --subscription $subscription)
 }
 
-if (-not $resourcePrefix) {
-    $crypt = New-Object -TypeName System.Security.Cryptography.SHA256Managed
-    $utf8 = New-Object -TypeName System.Text.UTF8Encoding
-    $hash = [System.BitConverter]::ToString($crypt.ComputeHash($utf8.GetBytes($resourceGroup)))
-    $hash = $hash.replace('-','').toLower()
-    $resourcePrefix = $hash.Substring(0,5)
-}
-
 if ($stepDeployOpenAi) {
     if (-not $openAiRg) {
         $openAiRg=$resourceGroup
@@ -93,7 +85,7 @@ if ($openAiName) {
 $openAiKey=$(az cognitiveservices account keys list -g $openAiRg -n $openAi.name -o json --query key1 | ConvertFrom-Json)
 
 if ($stepDeployBicep) {
-    & ./Deploy-Bicep.ps1 -resourceGroup $resourceGroup -location $location -suffix $suffix -openAiName $openAiName -openAiCompletionsDeployment $openAiCompletionsDeployment -deployAks $deployAks
+    & ./Deploy-Bicep.ps1 -resourceGroup $resourceGroup -location $location -suffix $suffix -openAiName $openAiName -openAiCompletionsDeployment $openAiCompletionsDeployment -openAiRg $openAiRg -deployAks $deployAks
 }
 
 if ($deployAks)
