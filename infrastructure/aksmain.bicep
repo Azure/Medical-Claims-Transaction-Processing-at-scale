@@ -11,6 +11,9 @@ param openAiName string = 'openai-coreclaims-${suffix}'
 @description('OpenAi Deployment')
 param openAiDeployment string = 'completions'
 
+@description('OpenAi Resource Group')
+param openAiRg string = resourceGroup().name
+
 var appName = 'coreclaims-${suffix}'
 var serviceNames = {
   aks: replace('aks-${appName}', '-', '')
