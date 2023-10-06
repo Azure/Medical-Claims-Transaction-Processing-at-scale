@@ -11,6 +11,9 @@ param openAiName string = 'openai-coreclaims-${suffix}'
 @description('OpenAi Deployment')
 param openAiDeployment string = 'completions'
 
+@description('OpenAI resource group')
+param openAiRg string = resourceGroup().name
+
 var appName = 'coreclaims-${suffix}'
 var serviceNames = {
   aks: replace('aks-${appName}', '-', '')
@@ -104,6 +107,7 @@ module logAnalytics 'loganalytics.bicep' = {
 
 resource openAi 'Microsoft.CognitiveServices/accounts@2023-05-01' existing = {
   name: openAiName
+  scope: resourceGroup(openAiRg)
 }
 
 module containerApps 'containerapp.bicep' = {
