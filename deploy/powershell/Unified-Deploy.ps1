@@ -64,7 +64,7 @@ if ($stepDeployOpenAi) {
     }
 
     if (-not $openAiName) {
-        $openAiName = "$($resourcePrefix)-openai"
+        $openAiName = "openai-$($suffix)"
     }
 
     if (-not $openAiCompletionsDeployment) {
