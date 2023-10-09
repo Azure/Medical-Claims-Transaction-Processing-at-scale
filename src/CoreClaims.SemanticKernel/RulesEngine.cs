@@ -115,7 +115,7 @@ namespace CoreClaims.SemanticKernel
             {{$claim}}
             [END INPUT]
 
-            Provide your response as completions to the following bullets replacing the values in square brackets:
+            Provide your response as completions to the following bullets replacing the values in square brackets, and do not include the claim context data in the response:
             - Summary:
                 [Your Summary of the claim]
             - Review Result:
