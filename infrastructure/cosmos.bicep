@@ -9,11 +9,6 @@ param accountName string
 @minValue(1000)
 param autoscaleMax int = 1000
 
-@description('Analytics TTL')
-@minValue(-1)
-@maxValue(2147483647)
-param analyticsTTL int = -1
-
 @description('API managed identity service principal Id')
 param apiPrincipalId string
 

@@ -5,15 +5,6 @@ param suffix string = uniqueString(resourceGroup().id)
 @description('Location for resource deployment')
 param location string = resourceGroup().location
 
-@description('OpenAi Name')
-param openAiName string = 'openai-coreclaims-${suffix}'
-
-@description('OpenAi Deployment')
-param openAiDeployment string = 'completions'
-
-@description('OpenAi Resource Group')
-param openAiRg string = resourceGroup().name
-
 var appName = 'coreclaims-${suffix}'
 var serviceNames = {
   aks: replace('aks-${appName}', '-', '')
@@ -77,26 +68,6 @@ module synapse 'synapse.bicep' = {
   dependsOn: [storage, cosmosDb]
 }
 
-// module openAi 'openai.bicep' = {
-//   name: 'openAiDeploy'
-//   scope: resourceGroup() // Deployments with existing OpenAi (different resource group) will have to be properly adjust this
-//   params: {
-//     openAiName: serviceNames.openAi
-//     location: location
-//     deployments: [
-//       {
-//         name: openAiDeployment
-//         model: 'gpt-35-turbo'
-//         version: '0301'
-//         sku: {
-//           name: 'Standard'
-//           capacity: 60
-//         }
-//       }
-//     ]
-//   }
-// }
-
 module aks 'AKS-Construction/bicep/main.bicep' = {
   name: 'aksconstruction'
   params: {
@@ -119,8 +90,9 @@ module aks 'AKS-Construction/bicep/main.bicep' = {
     keyVaultAksCSI : true
 
     JustUseSystemPool: true
+
+    httpApplicationRouting: true
   }
-  dependsOn: [cosmosDb, storage]
 }
 
 resource apiIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' = {
