@@ -43,10 +43,29 @@ Follow the steps below to deploy the solution to your Azure subscription.
 1. Run the following script to provision the infrastructure and deploy the API and frontend. This will provision all of the required infrastructure, deploy the API and web app services into AKS, and provision and load artifacts into a Synapse Analytics workspace.
 
     ```pwsh
+    cd .\Medical-Claims-Transaction-Processing-at-scale
     ./deploy/powershell/Unified-Deploy.ps1 -resourceGroup <rg_name> -location <location> -subscription <target_subscription_id>
     ```
 
 >**NOTE**: Make sure to set the `<location>` value to a region that supports Azure OpenAI services.  See [Azure OpenAI service regions](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=cognitive-services&regions=all) for more information.
+
+### Deployment samples
+
+1. Default deployment using Azure Container Apps. 
+    ```pwsh
+    cd .\Medical-Claims-Transaction-Processing-at-scale
+    ./deploy/powershell/Unified-Deploy.ps1 -resourceGroup <rg_name> -location <location> -subscription <target_subscription_id>
+    ```
+1. Deployment using Azure Kubernetes Service. 
+    ```pwsh
+    cd .\Medical-Claims-Transaction-Processing-at-scale
+    ./deploy/powershell/Unified-Deploy.ps1 -resourceGroup <rg_name> -location <location> -subscription <target_subscription_id> -deployAks $true
+    ```
+1. Deployment using an existing Azure Open AI Service. 
+    ```pwsh
+    cd .\Medical-Claims-Transaction-Processing-at-scale
+    ./deploy/powershell/Unified-Deploy.ps1 -resourceGroup <rg_name> -location <location> -subscription <target_subscription_id> -openAiRg <openai_rg_name> -openAiName <openai_service_name> -openAiCompletionsDeployment <openai_deployment>
+    ```
 
 ### Enabling/Disabling Deployment Steps
 

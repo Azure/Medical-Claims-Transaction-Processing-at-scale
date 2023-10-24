@@ -95,15 +95,13 @@ if ($deployAks)
     $aksName = $(az aks list -g $resourceGroup -o json | ConvertFrom-Json).name
     Write-Host "The name of your AKS: $aksName" -ForegroundColor Yellow
 
-    az aks enable-addons -g $resourceGroup -n $aksName --addons http_application_routing
-
     # Write-Host "Retrieving credentials" -ForegroundColor Yellow
     az aks get-credentials -n $aksName -g $resourceGroup --overwrite-existing --admin
 }
 # Generate Config
 New-Item -ItemType Directory -Force -Path $(./Join-Path-Recursively.ps1 -pathParts ..,..,__values)
 $gValuesLocation=$(./Join-Path-Recursively.ps1 -pathParts ..,..,__values,$gValuesFile)
-& ./Generate-Config.ps1 -resourceGroup $resourceGroup -suffix $suffix -outputFile $gValuesLocation -deployAks $deployAks
+& ./Generate-Config.ps1 -resourceGroup $resourceGroup -suffix $suffix -outputFile $gValuesLocation -openAiName $openAiName -openAiCompletionsDeployment $openAiCompletionsDeployment -openAiRg $openAiRg -deployAks $deployAks
 
 # Create Secrets
 if ([string]::IsNullOrEmpty($acrName))
@@ -130,7 +128,7 @@ if ($stepBuildPush) {
 
 if ($stepDeployImages) {
     # Deploy images in AKS
-    $gValuesLocation=$(./Join-Path-Recursively.ps1 -pathParts ..,__values,$gValuesFile)
+    $gValuesLocation=$(./Join-Path-Recursively.ps1 -pathParts ..,..,__values,$gValuesFile)
     $chartsToDeploy = "*"
 
     if ($deployAks) {
