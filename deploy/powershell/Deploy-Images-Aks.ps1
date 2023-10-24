@@ -132,7 +132,7 @@ if ($charts.Contains("api") -or  $charts.Contains("*")) {
 
 if ($charts.Contains("web") -or  $charts.Contains("*")) {
     Write-Host "Webapp chart - web" -ForegroundColor Yellow
-    $command = "helm upgrade --install $name-worker ./claims-worker -f $valuesFile --set ingress.hosts='{$aksHost}' --set image.repository=$acrLogin/claims-worker-service --set image.tag=$tag  --set hpa.activated=$autoscale"
+    $command = "helm upgrade --install $name-worker ./claims-worker -f $valuesFile --set ingress.hosts='{$aksHost}' --set image.repository=$acrLogin/claims-worker --set image.tag=$tag  --set hpa.activated=$autoscale"
     $command = createHelmCommand $command
     Invoke-Expression "$command"
 }
