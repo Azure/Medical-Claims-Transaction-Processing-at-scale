@@ -5,7 +5,7 @@
         "annotations": [],
         "type": "AzureBlobStorage",
         "typeProperties": {
-            "sasUri": "https://solliancepublicdata.blob.core.windows.net/medical-claims?sv=2021-10-04&st=2023-06-28T19%3A45%3A50Z&se=2033-06-29T19%3A45%3A00Z&sr=c&sp=rl&sig=zPr%2FNW5%2BK7BYlgpSGZlXMtDit7ZafEqvyyrUCjdPFtg%3D"
+            "sasUri": "https://solliancepublicdata.blob.core.windows.net/medical-claims?sv=2023-01-03&st=2024-08-14T12%3A46%3A55Z&se=2034-08-15T12%3A46%3A00Z&sr=c&sp=rl&sig=vrLXoF2tqpJVLFKt9TiFHSD0ejqINfSGI0brNsZ%2Ba74%3D"
         },
         "connectVia": {
             "referenceName": "AutoResolveIntegrationRuntime",
