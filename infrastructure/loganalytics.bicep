@@ -1,10 +1,11 @@
 @description('Common name of resources')
+@minLength(2)
 param name string
 
 @description('Location of resource')
 param location string
 
-resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
+resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2025-07-01' = {
   name: 'la-${name}'
   location: location
   properties: {
@@ -41,4 +42,4 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
 
 output aiConnectionString string = appInsights.properties.ConnectionString
 output laCustomerId string = logAnalytics.properties.customerId
-output laSharedKey string = logAnalytics.listKeys().primarySharedKey
+output laWorkspaceId string = logAnalytics.id

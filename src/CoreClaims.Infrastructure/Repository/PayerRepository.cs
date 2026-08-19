@@ -37,5 +37,10 @@ namespace CoreClaims.Infrastructure.Repository
         {
             return ReadItem<Payer>(payerId, payerId);
         }
+
+        public async Task UpsertPayer(Payer payer)
+        {
+            await Container.UpsertItemAsync(payer, new PartitionKey(payer.PayerId));
+        }
     }
 }

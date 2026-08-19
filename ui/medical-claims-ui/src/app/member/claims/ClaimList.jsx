@@ -1,11 +1,10 @@
 
 import { useState, useEffect } from 'react';
-import link from 'next/link';
 import moment from 'moment';
 
-import { Table } from 'flowbite-react';
+import { Table, TableHeadCell, TableCell } from 'flowbite-react';
 import TransactionsStatement from '../../hooks/TransactionsStatement';
-import scrollToElement from '../../hooks/scrollToElement';
+import scrollToElement from '../../hooks/ScrollToElement';
 import { FormatMoney } from '../../hooks/Formatters';
 import ClaimDetails from './ClaimDetails';
 import ClaimHistory from './ClaimHistory';
@@ -91,19 +90,19 @@ export default function ClaimList({ memberId }) {
 						rowFormatter={formatValues}
 						extraHeaders={
 							<>
-								<Table.HeadCell></Table.HeadCell>
-								<Table.HeadCell></Table.HeadCell>
+								<TableHeadCell></TableHeadCell>
+								<TableHeadCell></TableHeadCell>
 							</>
 						}
 						extraRowItems={
 							(row) => (
 								<>
-									<Table.Cell>
+									<TableCell>
 										<span className="hover:cursor-pointer" onClick={()=> viewDetails(row.claimId)}>Details</span>
-									</Table.Cell>
-								 <Table.Cell>
+									</TableCell>
+								 <TableCell>
 										<span className="hover:cursor-pointer" onClick={()=> viewHistory(row.claimId)}>View History</span>
-									</Table.Cell>
+									</TableCell>
 								</>
 							)
 						}

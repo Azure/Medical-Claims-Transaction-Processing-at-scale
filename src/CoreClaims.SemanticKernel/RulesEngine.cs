@@ -1,6 +1,8 @@
-﻿using CoreClaims.Infrastructure.Domain.Entities;
+﻿using Azure.Identity;
+using CoreClaims.Infrastructure.Domain.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel.Connectors.AzureOpenAI;
 using System.Text.Json;
 using System.Transactions;
 
@@ -18,14 +20,12 @@ namespace CoreClaims.SemanticKernel
 
         public async Task<string> ReviewClaim(ClaimDetail claim)
         {
-            await Task.CompletedTask;
+            var builder = Kernel.CreateBuilder();
 
-            var builder = new KernelBuilder();
-
-            builder.WithAzureChatCompletionService(
+            builder.AddAzureOpenAIChatCompletion(
                      _settings.OpenAICompletionsDeployment,
                      _settings.OpenAIEndpoint,
-                     _settings.OpenAIKey);
+                     new DefaultAzureCredential());
 
             var kernel = builder.Build();
 
@@ -124,8 +124,6 @@ namespace CoreClaims.SemanticKernel
                 [Your Review Result Reasoning]
             ";
 
-            var reviewer = kernel.CreateSemanticFunction(skPrompt, "review", "ReviewSkill", description: "Review the claim and make approval or denial recommendation.", maxTokens: 2000, temperature: 0.0);
-
             JsonSerializerOptions ser_options = new()
             {
                 WriteIndented = true,
@@ -137,22 +135,23 @@ namespace CoreClaims.SemanticKernel
 
             string claimData = JsonSerializer.Serialize(claim, ser_options);
 
-            var context = kernel.CreateNewContext();
-            context["claim"] = claimData;
-
-            var response = await reviewer.InvokeAsync(context);
-
-            string result;
-            if (response.ErrorOccurred)
+            var executionSettings = new AzureOpenAIPromptExecutionSettings
             {
-                result = response.LastException.ToString();
-            }
-            else
-            {
-                result = response.Result;
-            }
+                MaxTokens = 2000,
+                Temperature = 0.0
+            };
 
-            return result;
+            var promptTemplate = skPrompt.Replace("{{$claim}}", claimData);
+
+            try
+            {
+                var response = await kernel.InvokePromptAsync(promptTemplate, new(executionSettings));
+                return response.ToString();
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
         }
     }
 }

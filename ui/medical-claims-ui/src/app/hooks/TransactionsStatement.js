@@ -4,8 +4,8 @@ import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import axios from "axios";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL, //'https://fa-coreclaims-ios38n2l.azurewebsites.net/api',
-  X_FUNCTION_KEY = process.env.NEXT_PUBLIC_X_FUNCTION_KEY; //'-3VTIyOmv6Fj3cMi_kaVcwPHEr2nN8qM7ks4zNzdfzZ0AzFu8YepTw=='
+const API_URL = process.env.NEXT_PUBLIC_API_URL; //'https://fa-coreclaims-ios38n2l.azurewebsites.net/api'
+const X_FUNCTION_KEY = process.env.NEXT_PUBLIC_X_FUNCTION_KEY; //'-3VTIyOmv6Fj3cMi_kaVcwPHEr2nN8qM7ks4zNzdfzZ0AzFu8YepTw=='
 
 const fetcher = (url) =>
   axios

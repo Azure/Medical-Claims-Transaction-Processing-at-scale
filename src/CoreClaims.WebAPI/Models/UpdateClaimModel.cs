@@ -7,8 +7,8 @@ namespace CoreClaims.WebAPI.Models
     {
         public ClaimStatus ClaimStatus { get; set; }
 
-        public IList<LineItem> LineItems { get; set; }
+        public required IList<LineItem> LineItems { get; set; }
 
-        public string Comment { get; set; }
+        public required string Comment { get; set; }
     }
 }

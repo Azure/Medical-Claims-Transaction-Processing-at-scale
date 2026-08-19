@@ -6,7 +6,7 @@ import moment from 'moment';
 import TransactionsStatement from '../../hooks/TransactionsStatement';
 import { FormatMoney } from '../../hooks/Formatters';
 
-import { Table, Spinner, Pagination, Modal, Textarea, Button } from 'flowbite-react';
+import { Table, TableHeadCell, TableCell, Spinner, Pagination, Modal, Textarea, Button } from 'flowbite-react';
 import { SparklesIcon } from '@heroicons/react/24/outline';
 import { AcknowledgeButton, DenyClaimButton, ProposeClaimButton, ApproveClaimButton } from './ClaimActions';
 import DataTable from '../../components/DataTable';
@@ -205,15 +205,15 @@ function LineItemsTable({ data, setLineItems, isManager, claimStatus }) {
 				rowFormatter={formatValues}
 				extraHeaders={
 					<>
-						<Table.HeadCell></Table.HeadCell>
+						<TableHeadCell></TableHeadCell>
 					</>
 				}
 				extraRowItems={
 					(row) => (
 						<>
-							<Table.Cell>
+							<TableCell>
 								{ableApplyDiscount(claimStatus) && <ApplyDiscount {...{row, data, setLineItems, isManager}} />}
-							</Table.Cell>
+							</TableCell>
 						</>
 					)
 				}

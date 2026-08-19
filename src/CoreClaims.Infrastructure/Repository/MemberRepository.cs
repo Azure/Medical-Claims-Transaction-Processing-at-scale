@@ -139,6 +139,16 @@ namespace CoreClaims.Infrastructure.Repository
             var response = await ReadItem<Member>(memberId, memberId);
             return response;
         }
+
+        public async Task UpsertMember(Member member)
+        {
+            await Container.UpsertItemAsync(member, new PartitionKey(member.MemberId));
+        }
+
+        public async Task UpsertCoverage(Coverage coverage)
+        {
+            await Container.UpsertItemAsync(coverage, new PartitionKey(coverage.MemberId));
+        }
         
     }
 }

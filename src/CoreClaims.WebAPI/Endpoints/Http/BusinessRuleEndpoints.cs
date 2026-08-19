@@ -22,7 +22,8 @@ namespace CoreClaims.WebAPI.Endpoints.Http
         public override void AddRoutes(WebApplication app)
         {
             app.MapGet($"/{UrlFragment}", () => Get())
-                .WithName("GetBusinessRules");
+                .WithName("GetBusinessRules")
+                .RequireCors("AllowAllOrigins");
         }
 
         protected virtual IResult Get()

@@ -4,8 +4,8 @@ namespace CoreClaims.WebAPI.Models.Response
 {
     public class ClaimHistoryResponse
     {
-        public ClaimHeader Header { get; set; }
+        public required ClaimHeader Header { get; set; }
 
-        public IEnumerable<ClaimDetail> History { get; set; }
+        public required IEnumerable<ClaimDetail> History { get; set; }
     }
 }

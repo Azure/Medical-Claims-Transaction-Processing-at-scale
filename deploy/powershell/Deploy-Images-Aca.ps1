@@ -45,16 +45,28 @@ validate
 
 Push-Location $($MyInvocation.InvocationName | Split-Path)
 
-Write-Host "Deploying images..." -ForegroundColor Yellow
+Write-Host "Deploying Container Apps..." -ForegroundColor White
 
-Write-Host "API deployment - api" -ForegroundColor Yellow
-$command = "az containerapp update --name aca-api-coreclaims-${suffix} --resource-group $resourceGroup --image $acrLogin/claims-api:$tag"
-Invoke-Expression "$command"
+Write-Host "  Updating API..." -ForegroundColor Gray
+$apiResult = az containerapp update --name aca-api-coreclaims-${suffix} --resource-group $resourceGroup --image $acrLogin/claims-api:$tag --only-show-errors 2>&1
+if ($LASTEXITCODE -eq 0) { 
+    Write-Host "  ✓ API updated" -ForegroundColor Green 
+} else { 
+    Write-Host "  ✗ API update failed" -ForegroundColor Red
+    Write-Host "Error: $apiResult" -ForegroundColor Red
+    exit 1 
+}
 
-Write-Host "Webapp deployment - worker" -ForegroundColor Yellow
-$command = "az containerapp update --name aca-worker-coreclaims-${suffix} --resource-group $resourceGroup --image $acrLogin/claims-worker:$tag"
-Invoke-Expression "$command"
+Write-Host "  Updating Worker..." -ForegroundColor Gray
+$workerResult = az containerapp update --name aca-worker-coreclaims-${suffix} --resource-group $resourceGroup --image $acrLogin/claims-worker:$tag --only-show-errors 2>&1
+if ($LASTEXITCODE -eq 0) { 
+    Write-Host "  ✓ Worker updated" -ForegroundColor Green 
+} else { 
+    Write-Host "  ✗ Worker update failed" -ForegroundColor Red
+    Write-Host "Error: $workerResult" -ForegroundColor Red
+    exit 1 
+}
 
 Pop-Location
 
-Write-Host "Microservices deployed to ACA" -ForegroundColor Yellow
+Write-Host "✓ Container Apps deployment completed" -ForegroundColor Green

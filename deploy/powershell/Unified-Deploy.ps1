@@ -8,30 +8,36 @@ Param(
     [parameter(Mandatory=$false)][string]$suffix,
     [parameter(Mandatory=$false)][string]$openAiName=$null,
     [parameter(Mandatory=$false)][string]$openAiRg=$null,
-    [parameter(Mandatory=$false)][string]$openAiCompletionsDeployment=$null,
+    [parameter(Mandatory=$false)][string]$openAiCompletionsDeployment="completions",
     [parameter(Mandatory=$false)][bool]$deployAks=$false,
-    [parameter(Mandatory=$false)][bool]$stepDeployOpenAi=$true,
     [parameter(Mandatory=$false)][bool]$stepDeployBicep=$true,
     [parameter(Mandatory=$false)][bool]$stepBuildPush=$true,
     [parameter(Mandatory=$false)][bool]$stepDeployCertManager=$true,
     [parameter(Mandatory=$false)][bool]$stepDeployTls=$true,
     [parameter(Mandatory=$false)][bool]$stepDeployImages=$true,
-    [parameter(Mandatory=$false)][bool]$stepSetupSynapse=$true,
     [parameter(Mandatory=$false)][bool]$stepPublishSite=$true,
     [parameter(Mandatory=$false)][bool]$stepLoginAzure=$true
 )
 
-az extension add --name  application-insights
-az extension update --name  application-insights
+# Install Azure CLI extensions (skip update check for speed)
+Write-Host "`n=== INITIALIZING DEPLOYMENT ===" -ForegroundColor Cyan
+Write-Host "Checking Azure CLI extensions..." -ForegroundColor Gray
+$extensions = @('application-insights', 'storage-preview', 'containerapp')
+$installedExtensions = (az extension list --query "[].name" -o tsv 2>$null)
+$toInstall = $extensions | Where-Object { $installedExtensions -notcontains $_ }
+if ($toInstall.Count -gt 0) {
+    Write-Host "  Installing: $($toInstall -join ', ')" -ForegroundColor Yellow
+    foreach ($ext in $toInstall) {
+        az extension add --name $ext --only-show-errors 2>$null | Out-Null
+    }
+}
 
-az extension add --name storage-preview
-az extension update --name storage-preview
-
-winget install --id=Kubernetes.kubectl  -e --accept-package-agreements --accept-source-agreements --silent
-winget install --id=Microsoft.Azure.Kubelogin  -e --accept-package-agreements --accept-source-agreements --silent
-
-az extension add --name containerapp
-az extension update --name containerapp
+# Install kubectl and kubelogin only if deploying to AKS
+if ($deployAks) {
+    Write-Host "Checking Kubernetes tools..." -ForegroundColor Gray
+    winget install --id=Kubernetes.kubectl -e --accept-package-agreements --accept-source-agreements --silent --disable-interactivity 2>$null | Out-Null
+    winget install --id=Microsoft.Azure.Kubelogin -e --accept-package-agreements --accept-source-agreements --silent --disable-interactivity 2>$null | Out-Null
+}
 
 $gValuesFile="configFile.yaml"
 
@@ -45,89 +51,110 @@ if (-not $suffix) {
     $suffix = $hash.Substring(0,5)
 }
 
-Write-Host "Resource suffix is $suffix" -ForegroundColor Yellow
+Write-Host "`n=== DEPLOYMENT CONFIGURATION ===" -ForegroundColor Cyan
+Write-Host "Resource Group: $resourceGroup" -ForegroundColor White
+Write-Host "Location: $location" -ForegroundColor White
+Write-Host "Suffix: $suffix" -ForegroundColor White
 
 if ($stepLoginAzure) {
-    az login
+    Write-Host "`nAuthenticating..." -ForegroundColor Gray
+    az login --only-show-errors | Out-Null
 }
 
-az account set --subscription $subscription
+az account set --subscription $subscription 2>$null
 
-$rg = $(az group show -g $resourceGroup -o json | ConvertFrom-Json)
+$rg = $(az group show -g $resourceGroup -o json 2>$null | ConvertFrom-Json)
 if (-not $rg) {
-    $rg=$(az group create -g $resourceGroup -l $location --subscription $subscription)
+    Write-Host "Creating resource group..." -ForegroundColor Yellow
+    $rg=$(az group create -g $resourceGroup -l $location --subscription $subscription --only-show-errors | ConvertFrom-Json)
 }
 
-if ($stepDeployOpenAi) {
-    if (-not $openAiRg) {
-        $openAiRg=$resourceGroup
-    }
-
-    if (-not $openAiName) {
-        $openAiName = "openai-$($suffix)"
-    }
-
-    if (-not $openAiCompletionsDeployment) {
-        $openAiCompletionsDeployment = "completions"
-    }
-
-    & ./Deploy-OpenAi.ps1 -name $openAiName -resourceGroup $openAiRg -location $location -completionsDeployment $openAiCompletionsDeployment
-}
-
-## Getting OpenAI info
 if ($openAiName) {
-    $openAi=$(az cognitiveservices account show -n $openAiName -g $openAiRg -o json | ConvertFrom-Json)
+    $openAiDisplay = if ($openAiRg -and $openAiRg -ne $resourceGroup) { "$openAiName ($openAiRg)" } else { "$openAiName" }
+    Write-Host "OpenAI: $openAiDisplay - Deployment: $openAiCompletionsDeployment" -ForegroundColor White
 } else {
-    $openAi=$(az cognitiveservices account list -g $resourceGroup -o json | ConvertFrom-Json)
-    $openAiRg=$resourceGroup
+    Write-Host "OpenAI: will be created..." -ForegroundColor White
 }
 
-$openAiKey=$(az cognitiveservices account keys list -g $openAiRg -n $openAi.name -o json --query key1 | ConvertFrom-Json)
+# Calculate total steps based on deployment mode
+$totalSteps = if ($deployAks) { 7 } else { 5 }
+$currentStep = 0
 
 if ($stepDeployBicep) {
-    & ./Deploy-Bicep.ps1 -resourceGroup $resourceGroup -location $location -suffix $suffix -openAiName $openAiName -openAiCompletionsDeployment $openAiCompletionsDeployment -openAiRg $openAiRg -deployAks $deployAks
+    $currentStep++
+    Write-Host "`n=== [$currentStep/$totalSteps] DEPLOYING INFRASTRUCTURE ===" -ForegroundColor Cyan
+    $deployParams = @{
+        resourceGroup = $resourceGroup
+        location = $location
+        suffix = $suffix
+        openAiName = $openAiName
+        openAiRg = $openAiRg
+        openAiCompletionsDeployment = $openAiCompletionsDeployment
+        deployAks = $deployAks
+    }
+    
+    & ./Deploy-Bicep.ps1 @deployParams
+    if ($LASTEXITCODE -ne 0) { Write-Host "❌ Infrastructure deployment failed" -ForegroundColor Red; exit 1 }
+    Write-Host "✓ Infrastructure deployed" -ForegroundColor Green
 }
 
 if ($deployAks)
 {
-    # Connecting kubectl to AKS
-    Write-Host "Retrieving Aks Name" -ForegroundColor Yellow
-    $aksName = $(az aks list -g $resourceGroup -o json | ConvertFrom-Json).name
-    Write-Host "The name of your AKS: $aksName" -ForegroundColor Yellow
-
-    # Write-Host "Retrieving credentials" -ForegroundColor Yellow
-    az aks get-credentials -n $aksName -g $resourceGroup --overwrite-existing --admin
+    Write-Host "`nConnecting to AKS..." -ForegroundColor Gray
+    $aksName = $(az aks list -g $resourceGroup -o json 2>$null | ConvertFrom-Json).name
+    az aks get-credentials -n $aksName -g $resourceGroup --overwrite-existing --admin --only-show-errors 2>$null | Out-Null
+    Write-Host "✓ Connected to AKS: $aksName" -ForegroundColor Green
 }
-# Generate Config
-New-Item -ItemType Directory -Force -Path $(./Join-Path-Recursively.ps1 -pathParts ..,..,__values)
-$gValuesLocation=$(./Join-Path-Recursively.ps1 -pathParts ..,..,__values,$gValuesFile)
-& ./Generate-Config.ps1 -resourceGroup $resourceGroup -suffix $suffix -outputFile $gValuesLocation -openAiName $openAiName -openAiCompletionsDeployment $openAiCompletionsDeployment -openAiRg $openAiRg -deployAks $deployAks
 
-# Create Secrets
+$currentStep++
+Write-Host "`n=== [$currentStep/$totalSteps] GENERATING CONFIGURATION ===" -ForegroundColor Cyan
+New-Item -ItemType Directory -Force -Path $(./Join-Path-Recursively.ps1 -pathParts ..,..,__values) | Out-Null
+$gValuesLocation=$(./Join-Path-Recursively.ps1 -pathParts ..,..,__values,$gValuesFile)
+$configParams = @{
+    resourceGroup = $resourceGroup
+    suffix = $suffix
+    outputFile = $gValuesLocation
+    deployAks = $deployAks
+}
+
+& ./Generate-Config.ps1 @configParams
+if ($LASTEXITCODE -ne 0) { Write-Host "❌ Configuration generation failed" -ForegroundColor Red; exit 1 }
+Write-Host "✓ Configuration generated" -ForegroundColor Green
+
+# Get ACR name
 if ([string]::IsNullOrEmpty($acrName))
 {
-    $acrName = $(az acr list --resource-group $resourceGroup -o json | ConvertFrom-Json).name
+    $acrName = $(az acr list --resource-group $resourceGroup -o json 2>$null | ConvertFrom-Json).name
 }
 
-Write-Host "The Name of your ACR: $acrName" -ForegroundColor Yellow
-
 if ($deployAks -And $stepDeployCertManager) {
-    # Deploy Cert Manager
+    $currentStep++
+    Write-Host "`n=== [$currentStep/$totalSteps] DEPLOYING CERT MANAGER ===" -ForegroundColor Cyan
     & ./DeployCertManager.ps1
+    if ($LASTEXITCODE -ne 0) { Write-Host "❌ Cert Manager deployment failed" -ForegroundColor Red; exit 1 }
+    Write-Host "✓ Cert Manager deployed" -ForegroundColor Green
 }
 
 if ($deployAks -And $stepDeployTls) {
-    # Deploy TLS
+    $currentStep++
+    Write-Host "`n=== [$currentStep/$totalSteps] DEPLOYING TLS SUPPORT ===" -ForegroundColor Cyan
     & ./DeployTlsSupport.ps1 -sslSupport prod -resourceGroup $resourceGroup -aksName $aksName
+    if ($LASTEXITCODE -ne 0) { Write-Host "❌ TLS deployment failed" -ForegroundColor Red; exit 1 }
+    Write-Host "✓ TLS support deployed" -ForegroundColor Green
 }
 
 if ($stepBuildPush) {
-    # Build an Push
+    $currentStep++
+    Write-Host "`n=== [$currentStep/$totalSteps] BUILDING AND PUSHING IMAGES ===" -ForegroundColor Cyan
+    Write-Host "ACR: $acrName" -ForegroundColor White
     & ./BuildPush.ps1 -resourceGroup $resourceGroup -acrName $acrName
+    if ($LASTEXITCODE -ne 0) { Write-Host "❌ Build/Push failed" -ForegroundColor Red; exit 1 }
+    Write-Host "✓ Images built and pushed" -ForegroundColor Green
 }
 
 if ($stepDeployImages) {
-    # Deploy images in AKS
+    $currentStep++
+    Write-Host "`n=== [$currentStep/$totalSteps] DEPLOYING APPLICATION ===" -ForegroundColor Cyan
     $gValuesLocation=$(./Join-Path-Recursively.ps1 -pathParts ..,..,__values,$gValuesFile)
     $chartsToDeploy = "*"
 
@@ -138,14 +165,18 @@ if ($stepDeployImages) {
     {
         & ./Deploy-Images-Aca.ps1 -resourceGroup $resourceGroup -acrName $acrName -suffix $suffix
     }
-}
-
-if ($stepSetupSynapse) {
-    & ./Setup-Synapse.ps1 -resourceGroup $resourceGroup
+    if ($LASTEXITCODE -ne 0) { Write-Host "❌ Application deployment failed" -ForegroundColor Red; exit 1 }
+    Write-Host "✓ Application deployed" -ForegroundColor Green
 }
 
 if ($stepPublishSite) {
+    $currentStep++
+    Write-Host "`n=== [$currentStep/$totalSteps] PUBLISHING STATIC WEBSITE ===" -ForegroundColor Cyan
     & ./Publish-Site.ps1 -resourceGroup $resourceGroup -storageAccount "webcoreclaims$suffix"
+    if ($LASTEXITCODE -ne 0) { Write-Host "❌ Site publish failed" -ForegroundColor Red; exit 1 }
+    Write-Host "✓ Website published" -ForegroundColor Green
 }
+
+Write-Host "`n=== DEPLOYMENT COMPLETED SUCCESSFULLY ===" -ForegroundColor Green
 
 Pop-Location

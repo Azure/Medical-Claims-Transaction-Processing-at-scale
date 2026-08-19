@@ -1,0 +1,10 @@
+{"id":"a735bf55-83e9-331a-899d-a82a60b9f60c","payerId":"a735bf55-83e9-331a-899d-a82a60b9f60c","name":"Medicare","email":"medicare@contoso.com","phoneNumber":"(526)-555-0420","country":"US"}
+{"id":"df166300-5a78-3502-a46a-832842197811","payerId":"df166300-5a78-3502-a46a-832842197811","name":"Medicaid","email":"medicaid@contoso.com","phoneNumber":"(105)-555-3027","country":"US"}
+{"id":"d18ef2e6-ef40-324c-be54-34a5ee865625","payerId":"d18ef2e6-ef40-324c-be54-34a5ee865625","name":"Dual Eligible","email":"dualeligible@contoso.com","phoneNumber":"(014)-555-4285","country":"US"}
+{"id":"26aab0cd-6aba-3e1b-ac5b-05c8867e762c","payerId":"26aab0cd-6aba-3e1b-ac5b-05c8867e762c","name":"Humana","email":"humana@contoso.com","phoneNumber":"(333)-555-1956","country":"US"}
+{"id":"b046940f-1664-3047-bca7-dfa76be352a4","payerId":"b046940f-1664-3047-bca7-dfa76be352a4","name":"Blue Cross Blue Shield","email":"bluecrossblueshield@contoso.com","phoneNumber":"(112)-555-4479","country":"US"}
+{"id":"d31fccc3-1767-390d-966a-22a5156f4219","payerId":"d31fccc3-1767-390d-966a-22a5156f4219","name":"UnitedHealthcare","email":"unitedhealthcare@contoso.com","phoneNumber":"(102)-555-7798","country":"US"}
+{"id":"0133f751-9229-3cfd-815f-b6d4979bdd6a","payerId":"0133f751-9229-3cfd-815f-b6d4979bdd6a","name":"Aetna","email":"aetna@contoso.com","phoneNumber":"(848)-555-5377","country":"US"}
+{"id":"8fa6c185-e44e-3e34-8bd8-39be8694f4ce","payerId":"8fa6c185-e44e-3e34-8bd8-39be8694f4ce","name":"Cigna Health","email":"cignahealth@contoso.com","phoneNumber":"(856)-555-1360","country":"US"}
+{"id":"734afbd6-4794-363b-9bc0-6a3981533ed5","payerId":"734afbd6-4794-363b-9bc0-6a3981533ed5","name":"Anthem","email":"anthem@contoso.com","phoneNumber":"(131)-555-0753","country":"US"}
+{"id":"e03e23c9-4df1-3eb6-a62d-f70f02301496","payerId":"e03e23c9-4df1-3eb6-a62d-f70f02301496","name":"NO_INSURANCE","email":"no_insurance@contoso.com","phoneNumber":"(881)-555-4881","country":"US"}

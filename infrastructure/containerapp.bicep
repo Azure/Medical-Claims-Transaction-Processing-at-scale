@@ -7,17 +7,11 @@ param location string
 @description('Resource suffix')
 param suffix string
 
-@description('Datalake Account Name')
-param dataLakeAccountName string
-
 @description('CosmosDB endpoint')
 param cosmosEndpoint string
 
 @description('OpenAI Endpoint')
 param openAiEndpoint string
-
-@description('OpenAI Key')
-param openAiKey string
 
 @description('OpenAI Completions deployment')
 param openAiCompletionsDeployment string
@@ -25,30 +19,14 @@ param openAiCompletionsDeployment string
 @description('App Insights connection string')
 param aiConnectionString string
 
-@description('Log Analytics Customer ID')
-param laCustomerId string
-
-@description('Log Analytics shared key')
-param laSharedKey string
-
-@description('API MI Client ID')
-param apiClientId string
-
-@description('API MI Resource ID')
-param apiMiId string
-
-@description('Worker MI Client ID')
-param workerClientId string
-
-@description('Worker MK Resource ID')
-param workerMiId string
+@description('Log Analytics Workspace Resource ID')
+param laWorkspaceId string
 
 var containerAppConfigs = [
   {
     name: 'api'
     identity: {
-      type: 'UserAssigned'
-      userAssignedIdentities: { '${apiMiId}': {} }
+      type: 'SystemAssigned'
     }
     ingress: {
       allowInsecure: false
@@ -58,7 +36,7 @@ var containerAppConfigs = [
       stickySessions: {
         affinity: 'sticky'
       }
-      targetPort: 80
+      targetPort: 8080
       traffic: [
         {
           latestRevision: true
@@ -68,10 +46,6 @@ var containerAppConfigs = [
       transport: 'Auto'
     }
     env: [
-      {
-        name: 'AzureWebJobsStorage__accountName'
-        value: dataLakeAccountName
-      }
       {
         name: 'CoreClaimsCosmosDB__accountEndpoint'
         value: cosmosEndpoint
@@ -105,10 +79,6 @@ var containerAppConfigs = [
         value: openAiEndpoint
       }
       {
-        name: 'RulesEngine__OpenAIKey'
-        value: openAiKey
-      }
-      {
         name: 'RulesEngine__OpenAICompletionsDeployment'
         value: openAiCompletionsDeployment
       }
@@ -120,24 +90,15 @@ var containerAppConfigs = [
         name: 'ASPNETCORE_ENVIRONMENT'
         value: 'Production'
       }
-      {
-        name: 'ClientId'
-        value: apiClientId
-      }
     ]
   }
   {
     name: 'worker'
     identity: {
-      type: 'UserAssigned'
-      userAssignedIdentities: { '${workerMiId}': {} }
+      type: 'SystemAssigned'
     }
     ingress: null
     env: [
-      {
-        name: 'AzureWebJobsStorage__accountName'
-        value: dataLakeAccountName
-      }
       {
         name: 'CoreClaimsCosmosDB__accountEndpoint'
         value: cosmosEndpoint
@@ -167,10 +128,6 @@ var containerAppConfigs = [
         value: 'a735bf55-83e9-331a-899d-a82a60b9f60c'
       }
       {
-        name: 'ClientId'
-        value: workerClientId
-      }
-      {
         name: 'ApplicationInsights__ConnectionString'
         value: aiConnectionString
       }
@@ -182,7 +139,7 @@ var containerAppConfigs = [
   }
 ]
 
-resource vnet 'Microsoft.Network/virtualNetworks@2022-09-01' = {
+resource vnet 'Microsoft.Network/virtualNetworks@2025-01-01' = {
   name: 'vnet-${name}'
   location: location
   properties: {
@@ -213,7 +170,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2022-09-01' = {
   }
 }
 
-resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-01-01-preview' = {
+resource containerRegistry 'Microsoft.ContainerRegistry/registries@2025-11-01' = {
   location: location
 #disable-next-line BCP334
   name: '${replace(name, '-', '')}cr'
@@ -225,15 +182,15 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-01-01-pr
   }
 }
 
-resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' = {
+resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2025-07-01' = {
   name: 'acaenv-${name}'
   location: location
   properties: {
     appLogsConfiguration: {
       destination: 'log-analytics'
       logAnalyticsConfiguration: {
-        customerId: laCustomerId
-        sharedKey: laSharedKey
+        customerId: reference(laWorkspaceId, '2025-07-01').customerId
+        sharedKey: listKeys(laWorkspaceId, '2025-07-01').primarySharedKey
       }
     }
     infrastructureResourceGroup: 'ME_${resourceGroup().name}'
@@ -257,7 +214,7 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' 
   }
 }
 
-resource containerApps 'Microsoft.App/containerApps@2023-05-01' = [for (config, i) in containerAppConfigs: {
+resource containerApps 'Microsoft.App/containerApps@2025-07-01' = [for (config, i) in containerAppConfigs: {
   name: 'aca-${config.name}-${name}'
   location: location
   identity: config.identity
@@ -290,3 +247,13 @@ resource containerApps 'Microsoft.App/containerApps@2023-05-01' = [for (config, 
     workloadProfileName: 'Warm'
   }
 }]
+
+// Export principal IDs for permission assignment
+output apiPrincipalId string = containerApps[0].identity.principalId
+output workerPrincipalId string = containerApps[1].identity.principalId
+
+// Export FQDN for configuration
+output apiFqdn string = containerApps[0].properties.configuration.ingress.fqdn
+
+// NOTE: INTENTIONALLY NO OUTPUT FOR CREDENTIALS
+output mainUrl string = 'https://${containerApps[0].properties.configuration.ingress.fqdn}'

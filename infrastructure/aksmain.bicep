@@ -5,6 +5,18 @@ param suffix string = uniqueString(resourceGroup().id)
 @description('Location for resource deployment')
 param location string = resourceGroup().location
 
+@description('The principal ID of the deployer for storage permissions')
+param deployerPrincipalId string = ''
+
+@description('OpenAI service name')
+param openAiName string = ''
+
+@description('OpenAI deployment name')
+param openAiDeployment string = 'completions'
+
+@description('OpenAI resource group (defaults to current resource group)')
+param openAiRg string = resourceGroup().name
+
 var appName = 'coreclaims-${suffix}'
 var serviceNames = {
   aks: replace('aks-${appName}', '-', '')
@@ -12,8 +24,6 @@ var serviceNames = {
   functionApp: replace('fa-${appName}', '-', '')
   servicePlan: 'asp-${appName}'
   eventHub: replace('eh-${appName}', '-', '')
-  storage: replace('adl-${appName}', '-', '')
-  synapse: 'synapse-${appName}'
   identity: 'id-${appName}'
   webStorage: replace('web-${appName}', '-', '')
   openAi: 'openai-${appName}'
@@ -22,25 +32,12 @@ var serviceNames = {
   ai: 'ai-${appName}'
 }
 
-module storage 'storage.bicep' = {
-  scope: resourceGroup()
-  name: 'storageDeploy'
-  params: {
-    storageAccountName: serviceNames.storage
-    location: location
-    apiPrincipalId: apiIdentity.properties.principalId
-    workerPrincipalId: workerIdentity.properties.principalId
-  }
-}
-
 module cosmosDb 'cosmos.bicep' = {
   scope: resourceGroup()
   name: 'cosmosDeploy'
   params: {
     accountName: serviceNames.cosmosDb
     location: location
-    apiPrincipalId: apiIdentity.properties.principalId
-    workerPrincipalId: workerIdentity.properties.principalId
   }
 }
 
@@ -50,22 +47,7 @@ module eventHub 'eventhub.bicep' = {
   params: {
     eventHubNamespace: serviceNames.eventHub
     location: location
-    apiPrincipalId: apiIdentity.properties.principalId
-    workerPrincipalId: workerIdentity.properties.principalId
   }
-}
-
-#disable-next-line BCP179
-module synapse 'synapse.bicep' = {
-  scope: resourceGroup()
-  name: 'synapseDeploy'
-  params: {
-    cosmosAccountName: serviceNames.cosmosDb
-    storageAccountName: serviceNames.storage
-    synapseServiceName: serviceNames.synapse
-    location: location
-  }
-  dependsOn: [storage, cosmosDb]
 }
 
 module aks 'AKS-Construction/bicep/main.bicep' = {
@@ -128,7 +110,18 @@ module staticwebsite 'staticwebsite.bicep' = {
   params: {
     storageAccountName: serviceNames.webStorage
     location: location
+    deployerPrincipalId: deployerPrincipalId
   }
+}
+
+// Outputs for Generate-Config (eliminates most az cli calls)
+output config object = {
+  suffix: suffix
+  cosmosEndpoint: cosmosDb.outputs.cosmosAccountEndpoint
+  eventHubNamespace: '${serviceNames.eventHub}.servicebus.windows.net'
+  openAiName: !empty(openAiName) ? openAiName : serviceNames.openAi
+  openAiRg: openAiRg
+  openAiCompletionsDeployment: openAiDeployment
 }
 
 output staticWebsiteUrl string = staticwebsite.outputs.staticWebsiteUrl

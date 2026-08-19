@@ -23,13 +23,17 @@ namespace CoreClaims.WebAPI.Endpoints.Http
         public override void AddRoutes(WebApplication app)
         {
             app.MapGet($"/{UrlFragment}/{{memberId}}/claims", async (string memberId, HttpRequest request) => await ListMemberClaims(memberId, request))
-                .WithName("ListMemberClaims");
+                .WithName("ListMemberClaims")
+                .RequireCors("AllowAllOrigins");
             app.MapGet($"/{UrlFragment}/{{memberId}}", async (string memberId) => await GetMember(memberId))
-                .WithName("GetMember");
+                .WithName("GetMember")
+                .RequireCors("AllowAllOrigins");
             app.MapGet($"/{UrlFragment}s", async (HttpRequest request) => await ListMembers(request))
-                .WithName("ListMembers");
+                .WithName("ListMembers")
+                .RequireCors("AllowAllOrigins");
             app.MapGet($"/{UrlFragment}/{{memberId}}/coverage", async (string memberId) => await GetMemberCoverage(memberId))
-                .WithName("GetMemberCoverage");
+                .WithName("GetMemberCoverage")
+                .RequireCors("AllowAllOrigins");
         }
 
         protected virtual async Task<IResult> ListMemberClaims(string memberId, HttpRequest req)

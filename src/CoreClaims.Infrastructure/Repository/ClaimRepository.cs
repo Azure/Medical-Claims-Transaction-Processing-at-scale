@@ -69,7 +69,10 @@ namespace CoreClaims.Infrastructure.Repository
             {
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new Exception(response.ErrorMessage); // TODO: Better than this
+                    throw new InvalidOperationException(
+                        $"Failed to create claim. ClaimId: {detail.ClaimId}, " +
+                        $"Status: {response.StatusCode}, " +
+                        $"Error: {response.ErrorMessage ?? "No error message provided"}");
                 }
 
                 return response.GetOperationResultAtIndex<ClaimHeader>(0).Resource;
@@ -92,7 +95,11 @@ namespace CoreClaims.Infrastructure.Repository
             {
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new Exception(response.ErrorMessage); // TODO: Better than this
+                    throw new InvalidOperationException(
+                        $"Failed to update claim. ClaimId: {detail.ClaimId}, " +
+                        $"AdjustmentId: {detail.AdjustmentId}, " +
+                        $"Status: {response.StatusCode}, " +
+                        $"Error: {response.ErrorMessage ?? "No error message provided"}");
                 }
 
                 return response.GetOperationResultAtIndex<ClaimHeader>(0).Resource;

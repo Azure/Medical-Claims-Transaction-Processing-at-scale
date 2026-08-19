@@ -4,161 +4,87 @@ Param(
     [parameter(Mandatory=$false)][string[]]$outputFile=$null,
     [parameter(Mandatory=$false)][string[]]$gvaluesTemplate="..,..,gvalues.template.yml",
     [parameter(Mandatory=$false)][string]$ingressClass="addon-http-application-routing",
-    [parameter(Mandatory=$false)][string]$domain,
-    [parameter(Mandatory=$true)][string]$openAiName=$null,
-    [parameter(Mandatory=$true)][string]$openAiRg=$null,
-    [parameter(Mandatory=$true)][string]$openAiCompletionsDeployment="completions",
     [parameter(Mandatory=$true)][bool]$deployAks
 )
 
-function EnsureAndReturnFirstItem($arr, $restype) {
-    if (-not $arr -or $arr.Length -ne 1) {
-        Write-Host "Fatal: No $restype found (or found more than one)" -ForegroundColor Red
-        exit 1
-    }
+# Get deployment name from target
+$deploymentName = if ($deployAks) { "aksmain" } else { "acamain" }
 
-    return $arr[0]
-}
+Write-Host "Retrieving deployment outputs..." -ForegroundColor Gray
 
-# Check the rg
-$rg=$(az group show -n $resourceGroup -o json | ConvertFrom-Json)
+# Get all config from Bicep outputs (eliminates individual az cli calls)
+$bicepConfig = $(az deployment group show -g $resourceGroup -n $deploymentName --query "properties.outputs.config.value" -o json 2>$null | ConvertFrom-Json)
 
-if (-not $rg) {
-    Write-Host "Fatal: Resource group not found" -ForegroundColor Red
+if (-not $bicepConfig) {
+    Write-Host "Fatal: Could not retrieve Bicep deployment outputs from $deploymentName" -ForegroundColor Red
+    Write-Host "Ensure the deployment completed successfully" -ForegroundColor Yellow
     exit 1
 }
 
-### Getting Resources
-$tokens=@{}
+Write-Host "Retrieving additional resources..." -ForegroundColor Gray
 
-## Getting Datalake info
-$dataLakeEndpoint=$(az storage account list -g $resourceGroup -o json | ConvertFrom-Json)[0].primaryEndpoints.dfs
-$dataLakeAccountName=$(az storage account list -g $resourceGroup -o json | ConvertFrom-Json)[0].name
+# Get OpenAI info from Bicep outputs (may be in external RG)
+$openAiName = $bicepConfig.openAiName
+$openAiRg = $bicepConfig.openAiRg
+$openAi = $(az cognitiveservices account show -g $openAiRg -n $openAiName -o json 2>$null | ConvertFrom-Json)
+if (-not $openAi) {
+    Write-Host "Warning: OpenAI account '$openAiName' not found in resource group '$openAiRg'" -ForegroundColor Yellow
+}
 
-# Ingress endpoint
-if ($deployAks)
-{
-    $aksName = $(az aks list -g $resourceGroup -o json | ConvertFrom-Json).name
-    $webappHostname=$(az aks show -n $aksName -g $resourceGroup -o json --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName | ConvertFrom-Json)
+# Get App Insights connection string (if needed for AKS)
+$appInsightsName = $(az resource list -g $resourceGroup --resource-type Microsoft.Insights/components --query "[0].name" -o tsv 2>$null)
+$aiConnectionString = ""
+if ($appInsightsName) {
+    $aiConnectionString = $(az monitor app-insights component show --app $appInsightsName -g $resourceGroup --query "connectionString" -o tsv 2>$null)
+}
+
+# Get webapp hostname (deployment-specific)
+if ($deployAks) {
+    $aksName = $(az aks list -g $resourceGroup -o json 2>$null | ConvertFrom-Json).name
+    $webappHostname = $(az aks show -n $aksName -g $resourceGroup --query "addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName" -o tsv 2>$null)
 } else {
-    $webappHostname=$(az containerapp show -n aca-api-coreclaims-$suffix -g $resourceGroup -o json --query properties.configuration.ingress.fqdn | ConvertFrom-Json)
+    $webappHostname = $(az containerapp show -n "aca-api-coreclaims-$suffix" -g $resourceGroup --query "properties.configuration.ingress.fqdn" -o tsv 2>$null)
 }
 $apiUrl = "https://${webappHostname}/api"
 
-## Getting CosmosDb info
-$docdb=$(az cosmosdb list -g $resourceGroup --query "[?kind=='GlobalDocumentDB'].{name: name, kind:kind, documentEndpoint:documentEndpoint}" -o json | ConvertFrom-Json)
-$docdb=EnsureAndReturnFirstItem $docdb "CosmosDB (Document Db)"
-Write-Host "Document Db Account: $($docdb.name)" -ForegroundColor Yellow
-
-## Getting EventHub info
-$eventHubName=$(az eventhubs namespace list -g $resourceGroup -o json | ConvertFrom-Json).name
-$eventHubKey=$(az eventhubs namespace authorization-rule keys list -g $resourceGroup --namespace-name $eventHubName --name RootManageSharedAccessKey -o json --query primaryKey | ConvertFrom-Json)
-
-## Getting App Insights instrumentation key, if required
-$appinsightsId=@()
-$appInsightsName=$(az resource list -g $resourceGroup --resource-type Microsoft.Insights/components --query [].name | ConvertFrom-Json)
-if ($appInsightsName -and $appInsightsName.Length -eq 1) {
-    $appinsightsConfig=$(az monitor app-insights component show --app $appInsightsName -g $resourceGroup -o json | ConvertFrom-Json)
-
-    if ($appinsightsConfig) {
-        $appinsightsId = $appinsightsConfig.instrumentationKey           
-        $appinsightsConnectionString = $appinsightsConfig.connectionString 
-    }
-}
-Write-Host "App Insights Instrumentation Key: $appinsightsId" -ForegroundColor Yellow
-
-## Getting OpenAI info
-$openAi=$(az cognitiveservices account list -g $openAiRg --query "[?kind=='OpenAI' && name=='$openAiName'].{name: name, kind:kind, endpoint: properties.endpoint}" -o json | ConvertFrom-Json)
-$openAiKey=$(az cognitiveservices account keys list -g $openAiRg -n $openAi.name -o json --query key1 | ConvertFrom-Json)
-$openAiDeployment = $openAiCompletionsDeployment
-
-$apiIdentityClientId=$(az identity show -g $resourceGroup -n mi-api-coreclaims-$suffix -o json | ConvertFrom-Json).clientId
-$workerIdentityClientId=$(az identity show -g $resourceGroup -n mi-worker-coreclaims-$suffix -o json | ConvertFrom-Json).clientId
-$tenantId=$(az account show --query homeTenantId --output tsv)
-## Showing Values that will be used
-
-Write-Host "===========================================================" -ForegroundColor Yellow
-Write-Host "settings.json files will be generated with values:"
-
-$tokens.suffix=$suffix
-$tokens.cosmosEndpoint=$docdb.documentEndpoint
-$tokens.dataLakeEndpoint=$dataLakeEndpoint
-$tokens.dataLakeAccountName=$dataLakeAccountName
-$tokens.eventHubKey=$eventHubKey
-$tokens.openAiEndpoint=$openAi.endpoint
-$tokens.openAiKey=$openAiKey
-$tokens.openAiCompletionsDeployment=$openAiDeployment
-$tokens.apiClientId=$apiIdentityClientId
-$tokens.workerClientId=$workerIdentityClientId
-$tokens.tenantId=$tenantId
-$tokens.aiConnectionString=$appinsightsConnectionString
-$tokens.apiUrl=$apiUrl
+## Build tokens from Bicep outputs + additional resources
+$tokens = @{}
+$tokens.suffix = $bicepConfig.suffix
+$tokens.cosmosEndpoint = $bicepConfig.cosmosEndpoint
+$tokens.eventHubNamespace = $bicepConfig.eventHubNamespace
+$tokens.openAiEndpoint = $openAi.properties.endpoint
+$tokens.openAiCompletionsDeployment = $bicepConfig.openAiCompletionsDeployment
+$tokens.aiConnectionString = if ($bicepConfig.aiConnectionString) { $bicepConfig.aiConnectionString } else { $aiConnectionString }
+$tokens.apiUrl = $apiUrl
 
 # Standard fixed tokens
-$tokens.ingressclass=$ingressClass
-$tokens.ingressrewritepath="(.*)"
-$tokens.ingressrewritetarget="`$1"
+$tokens.ingressclass = $ingressClass
+$tokens.ingressrewritepath = if ($ingressClass -eq "nginx") { "(.*)" } else { "(.*)" }
+$tokens.ingressrewritetarget = "`$1"
 
-if($ingressClass -eq "nginx") {
-    $tokens.ingressrewritepath="(.*)" 
-    $tokens.ingressrewritetarget="`$1"
-}
-
+Write-Host "===========================================================" -ForegroundColor Yellow
+Write-Host "Configuration values:" -ForegroundColor Yellow
 Write-Host ($tokens | ConvertTo-Json) -ForegroundColor Yellow
 Write-Host "===========================================================" -ForegroundColor Yellow
 
 Push-Location $($MyInvocation.InvocationName | Split-Path)
-$gvaluesTemplatePath=$(./Join-Path-Recursively -pathParts $gvaluesTemplate.Split(","))
-Write-Host $gvaluesTemplatePath
-$outputFilePath=$(./Join-Path-Recursively -pathParts $outputFile.Split(","))
-Write-Host $outputFilePath
-& ./Token-Replace.ps1 -inputFile $gvaluesTemplatePath -outputFile $outputFilePath -tokens $tokens
+
+# Generate all configuration files
+$configFiles = @(
+    @{ template = $gvaluesTemplate; output = $outputFile; name = "gvalues" }
+    @{ template = "..,..,src,CoreClaims.Publisher,settings.template.json"; output = "..,..,src,CoreClaims.Publisher,settings.json"; name = "Publisher settings" }
+    @{ template = "..,..,src,CoreClaims.WebAPI,appsettings.Development.template.json"; output = "..,..,src,CoreClaims.WebAPI,appsettings.Development.json"; name = "WebAPI settings" }
+    @{ template = "..,..,src,CoreClaims.WorkerService,appsettings.Development.template.json"; output = "..,..,src,CoreClaims.WorkerService,appsettings.Development.json"; name = "WorkerService settings" }
+    @{ template = "..,..,ui,medical-claims-ui,env.template"; output = "..,..,ui,medical-claims-ui,.env.local"; name = "UI env" }
+)
+
+foreach ($config in $configFiles) {
+    Write-Host "Generating $($config.name)..." -ForegroundColor Gray
+    $templatePath = $(./Join-Path-Recursively -pathParts $config.template.Split(","))
+    $outputPath = $(./Join-Path-Recursively -pathParts $config.output.Split(","))
+    & ./Token-Replace.ps1 -inputFile $templatePath -outputFile $outputPath -tokens $tokens
+}
+
 Pop-Location
 
-$publisherSettingsTemplate="..,..,src,CoreClaims.Publisher,settings.template.json"
-$publisherSettings="..,..,src,CoreClaims.Publisher,settings.json"
-Push-Location $($MyInvocation.InvocationName | Split-Path)
-$publisherSettingsTemplatePath=$(./Join-Path-Recursively -pathParts $publisherSettingsTemplate.Split(","))
-$publisherSettingsPath=$(./Join-Path-Recursively -pathParts $publisherSettings.Split(","))
-& ./Token-Replace.ps1 -inputFile $publisherSettingsTemplatePath -outputFile $publisherSettingsPath -tokens $tokens
-Pop-Location
-
-$webapiSettingsTemplate="..,..,src,CoreClaims.WebAPI,appsettings.Development.template.json"
-$webapiSettings="..,..,src,CoreClaims.WebAPI,appsettings.Development.json"
-Push-Location $($MyInvocation.InvocationName | Split-Path)
-$webapiSettingsTemplatePath=$(./Join-Path-Recursively -pathParts $webapiSettingsTemplate.Split(","))
-$webapiSettingsPath=$(./Join-Path-Recursively -pathParts $webapiSettings.Split(","))
-& ./Token-Replace.ps1 -inputFile $webapiSettingsTemplatePath -outputFile $webapiSettingsPath -tokens $tokens
-Pop-Location
-
-$workerserviceSettingsTemplate="..,..,src,CoreClaims.WorkerService,appsettings.Development.template.json"
-$workerserviceSettings="..,..,src,CoreClaims.WorkerService,appsettings.Development.json"
-Push-Location $($MyInvocation.InvocationName | Split-Path)
-$workerserviceSettingsTemplatePath=$(./Join-Path-Recursively -pathParts $workerserviceSettingsTemplate.Split(","))
-$workerserviceSettingsPath=$(./Join-Path-Recursively -pathParts $workerserviceSettings.Split(","))
-& ./Token-Replace.ps1 -inputFile $workerserviceSettingsTemplatePath -outputFile $workerserviceSettingsPath -tokens $tokens
-Pop-Location
-
-$coreClaimsDatalakeTemplate="..,..,synapse,linkedService,CoreClaimsDataLake.template.json"
-$coreClaimsDatalake="..,..,synapse,linkedService,CoreClaimsDataLake.json"
-Push-Location $($MyInvocation.InvocationName | Split-Path)
-$coreClaimsDatalakeTemplatePath=$(./Join-Path-Recursively -pathParts $coreClaimsDatalakeTemplate.Split(","))
-$coreClaimsDatalakePath=$(./Join-Path-Recursively -pathParts $coreClaimsDatalake.Split(","))
-& ./Token-Replace.ps1 -inputFile $coreClaimsDatalakeTemplatePath -outputFile $coreClaimsDatalakePath -tokens $tokens
-Pop-Location
-
-$coreClaimsCosmosDbTemplate="..,..,synapse,linkedService,CoreClaimsCosmosDb.template.json"
-$coreClaimsCosmosDb="..,..,synapse,linkedService,CoreClaimsCosmosDb.json"
-Push-Location $($MyInvocation.InvocationName | Split-Path)
-$coreClaimsCosmosDbTemplatePath=$(./Join-Path-Recursively -pathParts $coreClaimsCosmosDbTemplate.Split(","))
-$coreClaimsCosmosDbPath=$(./Join-Path-Recursively -pathParts $coreClaimsCosmosDb.Split(","))
-& ./Token-Replace.ps1 -inputFile $coreClaimsCosmosDbTemplatePath -outputFile $coreClaimsCosmosDbPath -tokens $tokens
-Pop-Location
-
-$siteSettingsTemplate="..,..,ui,medical-claims-ui,env.template"
-$siteSettings="..,..,ui,medical-claims-ui,.env.local"
-Push-Location $($MyInvocation.InvocationName | Split-Path)
-$siteSettingsTemplatePath=$(./Join-Path-Recursively -pathParts $siteSettingsTemplate.Split(","))
-$siteSettingsPath=$(./Join-Path-Recursively -pathParts $siteSettings.Split(","))
-& ./Token-Replace.ps1 -inputFile $siteSettingsTemplatePath -outputFile $siteSettingsPath -tokens $tokens
-Pop-Location
+Write-Host "✓ Configuration files generated successfully" -ForegroundColor Green

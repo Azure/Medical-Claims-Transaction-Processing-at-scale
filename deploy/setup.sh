@@ -57,8 +57,8 @@ echo "Directory changed: '$(pwd)'"
 cp ./CoreClaims.FunctionApp/local.settings{.template,}.json 
 cp ./CoreClaims.Publisher/settings{.template,}.json 
 
-COSMOSKEY=$(az cosmosdb keys list -g $RESOURCE_GROUP --name dbcoreclaims$SUFFIX --type keys --query primaryMasterKey -o tsv)
-EVENTHUBKEY=$(az eventhubs namespace authorization-rule keys list -g $RESOURCE_GROUP --namespace-name ehcoreclaims$SUFFIX --name RootManageSharedAccessKey --query primaryKey -o tsv)
+# Legacy script - NOTE: This deployment approach is deprecated
+# Please use deploy/powershell/Unified-Deploy.ps1 which uses Managed Identity
 
 # File to modify
 FILES_TO_REPLACE="CoreClaims.Publisher/settings.json CoreClaims.FunctionApp/local.settings.json"
@@ -88,9 +88,9 @@ echo ""
 echo "***************************************************"
 echo "*************  Deploy completed!  *****************"
 echo "Next steps:"
-echo "1. Deploy Synapse workspace"
-echo "2. Run Synthea to generate sample data"
-echo "3. Run Synapse ingestion job to prepopulate data"
-echo "4. Run Publisher to generate claims"
-echo "5. Call APIs"
+echo "1. Run Publisher in SeedData mode to prepopulate data:"
+echo "   cd src/CoreClaims.Publisher"
+echo "   dotnet run -- -m SeedData"
+echo "2. Run Publisher to generate claims (optional)"
+echo "3. Access the web UI and call APIs"
 echo "***************************************************"

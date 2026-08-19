@@ -29,5 +29,10 @@ namespace CoreClaims.Infrastructure.Repository
             var result = await Query<ClaimProcedure>(query);
             return new PageResult<ClaimProcedure>(count, offset, limit, result);
         }
+
+        public async Task UpsertClaimProcedure(ClaimProcedure claimProcedure)
+        {
+            await Container.UpsertItemAsync(claimProcedure, new PartitionKey(claimProcedure.Code));
+        }
     }
 }

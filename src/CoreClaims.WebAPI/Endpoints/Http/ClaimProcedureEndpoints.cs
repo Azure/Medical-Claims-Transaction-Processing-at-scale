@@ -29,7 +29,8 @@ namespace CoreClaims.WebAPI.Endpoints.Http
         public override void AddRoutes(WebApplication app)
         {
             app.MapGet($"/{UrlFragment}", async (HttpRequest req) => await Get(req))
-                .WithName("ListClaimProcedures");
+                .WithName("ListClaimProcedures")
+                .RequireCors("AllowAllOrigins");
         }
 
         protected virtual async Task<IResult> Get(HttpRequest req)
