@@ -13,15 +13,13 @@ namespace CoreClaims.Infrastructure.Events
         Dictionary<string, EventHubConsumerClient> _consumerClients = new Dictionary<string, EventHubConsumerClient>();
 
         readonly string _namespace;
-        readonly string _clientId;
 
-        public EventHubService(string qualifiedNamespace, string clientId)
+        public EventHubService(string qualifiedNamespace)
         {
             if (string.IsNullOrWhiteSpace(qualifiedNamespace)) 
                 throw new ArgumentNullException(nameof(qualifiedNamespace));
 
             _namespace = qualifiedNamespace;
-            _clientId = clientId;
         }
 
         public async Task TriggerEventAsync<T>(T eventPayload, string eventHubName)
@@ -47,10 +45,7 @@ namespace CoreClaims.Infrastructure.Events
             if (_producerClients.ContainsKey(eventHubName))
                 return _producerClients[eventHubName];
 
-            var credential = new ChainedTokenCredential(
-                new ManagedIdentityCredential(_clientId),
-                new AzureCliCredential()
-            );
+            var credential = new DefaultAzureCredential();
 
             var newClient = new EventHubProducerClient(_namespace, eventHubName, credential);
             _producerClients.Add(eventHubName, newClient);
@@ -62,10 +57,7 @@ namespace CoreClaims.Infrastructure.Events
             if (_consumerClients.ContainsKey(eventHubName))
                 return _consumerClients[eventHubName];
 
-            var credential = new ChainedTokenCredential(
-                new ManagedIdentityCredential(_clientId),
-                new AzureCliCredential()
-            );
+            var credential = new DefaultAzureCredential();
 
             var newClient = new EventHubConsumerClient(EventHubConsumerClient.DefaultConsumerGroupName, _namespace, eventHubName, credential);
             _consumerClients.Add(eventHubName, newClient);

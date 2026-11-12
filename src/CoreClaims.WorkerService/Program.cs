@@ -14,22 +14,13 @@ builder.Services.Configure<BusinessRuleOptions>(builder.Configuration.GetSection
 builder.Services.AddSingleton(s =>
 {
     var endpoint = builder.Configuration[Constants.Connections.CosmosDbEndpoint];
-    var clientId = builder.Configuration[Constants.Identity.ClientId];
-
-#if DEBUG
-    var credential = new Azure.Identity.DefaultAzureCredential();
-#else
-    var credential = new ChainedTokenCredential(
-            new ManagedIdentityCredential(clientId),
-            new AzureCliCredential()
-        );
-#endif
+    var credential = new DefaultAzureCredential();
 
     return new CosmosClientBuilder(endpoint, credential)
         .Build();
 });
 builder.Services.AddSingleton<IEventHubService, EventHubService>(s => new EventHubService(
-    builder.Configuration[Constants.Connections.EventHubNamespace], builder.Configuration[Constants.Identity.ClientId]));
+    builder.Configuration[Constants.Connections.EventHubNamespace]));
 
 builder.Services.AddSingleton<IClaimRepository, ClaimRepository>();
 builder.Services.AddSingleton<IAdjudicatorRepository, AdjudicatorRepository>();

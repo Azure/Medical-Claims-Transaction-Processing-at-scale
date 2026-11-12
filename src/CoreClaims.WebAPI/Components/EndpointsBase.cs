@@ -2,8 +2,8 @@
 {
     public class EndpointsBase
     {
-        public string UrlFragment;
-        protected ILogger Logger;
+        public required string UrlFragment;
+        protected ILogger Logger = null!;
 
         public virtual void AddRoutes(WebApplication app)
         {

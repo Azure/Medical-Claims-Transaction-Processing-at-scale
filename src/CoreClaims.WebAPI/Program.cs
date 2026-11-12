@@ -1,6 +1,5 @@
 
-using System.Text.Json.Serialization;
-using Azure.Core.Serialization;
+using Azure.Identity;
 using CoreClaims.Infrastructure;
 using CoreClaims.Infrastructure.BusinessRules;
 using CoreClaims.Infrastructure.Events;
@@ -8,12 +7,8 @@ using CoreClaims.Infrastructure.Repository;
 using CoreClaims.SemanticKernel;
 using CoreClaims.WebAPI.Components;
 using CoreClaims.WebAPI.Endpoints.Http;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Azure.Cosmos.Fluent;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
-using Azure.Identity;
+using System.Text.Json.Serialization;
 
 namespace CoreClaims.WebAPI
 {
@@ -26,11 +21,20 @@ namespace CoreClaims.WebAPI
 
             builder.Logging.ClearProviders();
             builder.Logging.AddConsole();
-            //builder.Logging.AddApplicationInsights(
-            //    configureTelemetryConfiguration: (config) =>
-            //        config.ConnectionString = builder.Configuration.GetValue<string>("APPLICATIONINSIGHTS_CONNECTION_STRING"),
-            //    configureApplicationInsightsLoggerOptions: (options) => { }
-            //);
+            
+            // Application Insights with Entra ID authentication
+            var aiConnectionString = builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"];
+            if (!string.IsNullOrEmpty(aiConnectionString))
+            {
+                builder.Logging.AddApplicationInsights(
+                    configureTelemetryConfiguration: (config) =>
+                    {
+                        config.ConnectionString = aiConnectionString;
+                        config.SetAzureTokenCredential(new DefaultAzureCredential());
+                    },
+                    configureApplicationInsightsLoggerOptions: (options) => { }
+                );
+            }
 
             // Add services to the container.
             //builder.Services.AddAuthorization();
@@ -51,22 +55,13 @@ namespace CoreClaims.WebAPI
             builder.Services.AddSingleton(s =>
             {
                 var endpoint = builder.Configuration[Constants.Connections.CosmosDbEndpoint];
-                var clientId = builder.Configuration[Constants.Identity.ClientId];
-
-#if DEBUG
-                var credential = new Azure.Identity.DefaultAzureCredential();
-#else
-    var credential = new ChainedTokenCredential(
-            new ManagedIdentityCredential(clientId),
-            new AzureCliCredential()
-        );
-#endif
+                var credential = new DefaultAzureCredential();
 
                 return new CosmosClientBuilder(endpoint, credential)
                     .Build();
             });
             builder.Services.AddSingleton<IEventHubService, EventHubService>(s => new EventHubService(
-                builder.Configuration[Constants.Connections.EventHubNamespace], builder.Configuration[Constants.Identity.ClientId]));
+                builder.Configuration[Constants.Connections.EventHubNamespace]));
 
             builder.Services.AddSingleton<IClaimRepository, ClaimRepository>();
             builder.Services.AddSingleton<IAdjudicatorRepository, AdjudicatorRepository>();
@@ -103,6 +98,9 @@ namespace CoreClaims.WebAPI
             app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
+            
+            // CORS must be called before endpoints are mapped
+            app.UseCors(allowAllCorsOrigins);
 
             // Map the REST endpoints:
             using (var scope = app.Services.CreateScope())
@@ -116,8 +114,6 @@ namespace CoreClaims.WebAPI
                     item.AddRoutes(app);
                 }
             }
-
-            app.UseCors(allowAllCorsOrigins);
 
             //app.UseAuthorization();
 

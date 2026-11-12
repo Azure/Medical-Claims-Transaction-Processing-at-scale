@@ -29,7 +29,7 @@ param openAiDeployment string
 @description('OpenAI Resource Group')
 param openAiResourceGroup string
 
-resource plan 'Microsoft.Web/serverfarms@2020-12-01' = {
+resource plan 'Microsoft.Web/serverfarms@2025-03-01' = {
   name: servicePlanName
   location: location
   kind: 'functionapp'
@@ -38,16 +38,16 @@ resource plan 'Microsoft.Web/serverfarms@2020-12-01' = {
   }
 }
 
-resource blob 'Microsoft.Storage/storageAccounts@2022-09-01' existing = {
+resource blob 'Microsoft.Storage/storageAccounts@2025-06-01' existing = {
   name: storageAccountName
 }
 
-resource openAi 'Microsoft.CognitiveServices/accounts@2023-05-01' existing = {
+resource openAi 'Microsoft.CognitiveServices/accounts@2025-09-01' existing = {
   name: openAiName
   scope: resourceGroup(openAiResourceGroup)
 }
 
-resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
+resource functionApp 'Microsoft.Web/sites@2025-03-01' = {
   name: functionAppName
   location: location
   kind: 'functionapp'
@@ -130,12 +130,12 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
 }
 
 // Grant Permissions to Identity for EventHub
-resource eventHub 'Microsoft.EventHub/namespaces@2022-10-01-preview' existing = {
+resource eventHub 'Microsoft.EventHub/namespaces@2024-01-01' existing = {
   name: eventHubNamespaceName
 }
 
 @description('This is the built-in "Azure Event Hubs Data Owner" role. See https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#azure-event-hubs-data-owner')
-resource eventHubDataOwnerRole 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' existing = {
+resource eventHubDataOwnerRole 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
   scope: subscription()
   name: 'f526a384-b230-433a-b45c-95f59c4a2dec'
 }
@@ -151,17 +151,17 @@ resource eventHubRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04
 }
 
 // Grant Permissions to Identity for CosmosDB
-resource cosmos 'Microsoft.DocumentDB/databaseAccounts@2022-08-15' existing = {
+resource cosmos 'Microsoft.DocumentDB/databaseAccounts@2025-10-15' existing = {
   name: cosmosAccountName
 }
 
 @description('This is the built-in "Cosmos DB Built-in Data Contributor" role. https://learn.microsoft.com/en-us/azure/cosmos-db/how-to-setup-rbac#built-in-role-definitions')
-resource roleDefinition 'Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions@2022-11-15' existing = {
+resource roleDefinition 'Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions@2025-10-15' existing = {
   parent: cosmos
   name: '00000000-0000-0000-0000-000000000002'
 }
 
-resource roleAssignmentCosmos 'Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments@2022-08-15' = {
+resource roleAssignmentCosmos 'Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments@2025-10-15' = {
   name: guid(roleDefinition.id, cosmos.id)
   parent: cosmos
   properties: {
@@ -173,12 +173,12 @@ resource roleAssignmentCosmos 'Microsoft.DocumentDB/databaseAccounts/sqlRoleAssi
 
 // Grant Permissions to Identity for Storage
 @description('This is the built-in "Storage Blob Data Contributor" role. See https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#storage-blob-data-contributor')
-resource contributorRoleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' existing = {
+resource contributorRoleDefinition 'Microsoft.Authorization/roleDefinitions@2022-04-01' existing = {
   scope: subscription()
   name: 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
 }
 
-resource storage 'Microsoft.Storage/storageAccounts@2022-09-01' existing = {
+resource storage 'Microsoft.Storage/storageAccounts@2025-06-01' existing = {
   name: storageAccountName
 }
 

@@ -41,23 +41,11 @@ If you make changes to the React web app and want to redeploy it, run the follow
                      -storageAccount <storage-account-name (webcoreclaimsxxxx)>
 ```
 
-### Setting RBAC permissions when running locally
+### Running locally
 
-When you run the solution locally, you will need to set role-based access control (RBAC) permissions on the Azure Cosmos DB account as well as the Azure Event Hubs namespace. You can do this by running the following commands in the Azure Cloud Shell or Azure CLI:
+When you run the solution locally, RBAC permissions for Azure Cosmos DB and Azure Event Hubs are automatically configured during deployment using your Azure user principal ID. 
 
-Assign yourself to the "Cosmos DB Built-in Data Contributor" role:
-
-```bash
-az cosmosdb sql role assignment create --account-name YOUR_COSMOS_DB_ACCOUNT_NAME --resource-group YOUR_RESOURCE_GROUP_NAME --scope "/" --principal-id YOUR_AZURE_AD_PRINCIPAL_ID --role-definition-id 00000000-0000-0000-0000-000000000002
-```
-
-The Web API triggers Event Hubs events, and the Worker Service consumes them. You will need to assign yourself to the "Azure Event Hubs Data Owner" role:
-
-```bash
-az role assignment create --assignee "YOUR_EMAIL_ADDRESS" --role "Azure Event Hubs Data Owner" --scope "/subscriptions/YOUR_AZURE_SUBSCRIPTION_ID/resourceGroups/YOUR_RESOURCE_GROUP_NAME/providers/Microsoft.EventHub/namespaces/YOUR_EVENT_HUBS_NAMESPACE"
-```
-
-> Make sure you're signed in to Azure from Visual Studio before running the backend applications locally.
+> Make sure you're signed in to Azure from Visual Studio 2026 before running the backend applications locally.
 
 ## Quickstart
 
@@ -73,32 +61,41 @@ az role assignment create --assignee "YOUR_EMAIL_ADDRESS" --role "Azure Event Hu
 > 
 > Resources created:
 > - Resource Group
-> - Azure Blob Storage (ADLS Gen2)
 > - Azure Cosmos DB account (1 database with 1000 RUs autoscale shared with 4 collections, and 3 containers with dedicated RUs) with Analytical Store enabled
 > - Azure Event Hubs standard
-> - Azure Kubernetes Service (AKS)
+> - Azure Kubernetes Service (AKS) or Azure Container Apps (ACA)
 > - Azure Application Insights
 > - Azure OpenAI Service
-> - Azure Synapse Workspace (public access enabled)
->
-> This setup will provision the Ingestion pipeline and supporting components in the Azure Synapse workspace created in the previous step.
->
-> Resources Created:
-> - Linked Services for:
->   - Azure Blob Storage
->   - Azure Cosmos DB
-> - Source/Sink datasets for the ingestion process
-> - Pipeline for ingesting sample data into Azure Cosmos DB Containers
+> - Static Web App (hosted in Azure Storage)
 
 ## Ingest Sample Data
 
-This will require logging into the Azure portal and accessing the Azure Synapse workspace.
+After the infrastructure is deployed, you'll need to load initial seed data into Cosmos DB using the Publisher application in SeedData mode.
 
-1. Log into the Azure Synapse workspace in Synapse Studio.
-2. Locate the **Initial-Ingestion** pipeline in the **Integrate** section in the side menu.
-3. Select **Add trigger -> Trigger now** to run the pipeline.
+### Using the Publisher to Seed Data
 
-> The pipeline execution should take about 5 minutes to complete. You can monitor the progress of the pipeline by selecting the **Monitor** section in the side menu and selecting the **Pipeline runs** tab.
+1. Navigate to the Publisher directory:
+   ```bash
+   cd src/CoreClaims.Publisher
+   ```
+
+2. Run the Publisher in SeedData mode:
+   ```bash
+   dotnet run -- -m SeedData
+   ```
+
+   This will load sample data from the `data/` folder into your Cosmos DB containers:
+   - Adjudicators
+   - Payers
+   - Members
+   - Providers
+   - Claim Procedures
+   - Coverage
+   - Claims
+
+3. The seeding process typically completes in less than 5 minutes and will display progress for each entity type.
+
+> **Note**: The seed data files are located in `src/CoreClaims.Publisher/data/` and can be customized with your own sample data if needed.
 
 ## Running the sample
 
@@ -107,17 +104,21 @@ You can run the sample application through the static website that was deployed 
 You can also work directly with the REST API by calling the Azure Function App APIs from Azure Portal or your favorite tool.
 > Postman Exports are included in the `/postman` folder
 
-### Run the Claim Publisher
+### Run the Claim Publisher (Optional)
 
-**This step is optional** since you ingest sample data from the Azure Synapse workspace pipeline.
+The Publisher console app can generate random claims and publish them to Azure Event Hubs for processing. This is optional since you've already loaded seed data.
 
-> This console app will generate random claims and publish them to the Azure Event Hubs topic the Worker Service subscribes to which then will be injested into Azure Cosmos DB `Claim` container where we will store all Claim and Claim line item events data. **Take note of one of the ClaimId uuids output from this tool which has value over $500**.
+> This console app will generate random claims and publish them to the Azure Event Hubs topic that the Worker Service subscribes to, which then ingests them into the Azure Cosmos DB `Claim` container.
 >
-> Console app has 2 **"RunMode"** options configurable in *settings.json* under `./src/CoreClaims.Publisher` : "OneTime" (default) and "Continous" 
-> as well as **"BatchSize"** (default - 10), **"Verbose"** (default - True) and **"SleepTime"** (default - 1000 ms).
+> Console app has 3 **"RunMode"** options configurable in *settings.json* under `./src/CoreClaims.Publisher`:
+> - **"SeedData"** - Loads initial seed data into Cosmos DB
+> - **"OneTime"** (default) - Generates a single batch of claims
+> - **"Continuous"** - Continuously generates claims
+> 
+> Additional settings: **"BatchSize"** (default - 10), **"Verbose"** (default - True) and **"SleepTime"** (default - 1000 ms).
 >
 >  *settings.json* example:
-```
+```json
 {
   "GeneratorOptions": {
     "RunMode": "OneTime",
@@ -126,16 +127,18 @@ You can also work directly with the REST API by calling the Azure Function App A
     "SleepTime": 1000
   },
   "CoreClaimsCosmosDB": {
-    "accountEndpoint": "AccountEndpoint=https://*COSMOS_ACC_NAME*.documents.azure.com:443/;AccountKey=*COSMOS_ACC_KEY*;"
+    "accountEndpoint": "https://*COSMOS_ACC_NAME*.documents.azure.com:443/"
   },
   "CoreClaimsEventHub": {
-    "fullyQualifiedNamespace": "Endpoint=sb://*YOUR_EH_NAME*.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=*EH_KEY*"
+    "fullyQualifiedNamespace": "*YOUR_EH_NAME*.servicebus.windows.net"
   }
 }
 ```
 
+To generate claims:
+
 ```bash
-cd ../src/CoreClaims.Publisher
+cd src/CoreClaims.Publisher
 dotnet run
 ```
 

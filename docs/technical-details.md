@@ -156,7 +156,7 @@ A single `ClaimHeader` will exist per claim, `ClaimDetail`s will be replaced, ra
 
 In order to demonstrate Cosmos DB's ability to handle extremely large data-sets we'll be pre-loading the system with a large volume of records.
 
-A Synapse script will be used to bulk insert the initial seed data into the CosmosDB containers. The source of this initial data will vary based on the entity type.
+The Publisher application includes a SeedData mode that bulk inserts initial seed data into the Cosmos DB containers. The seed data is stored as JSON files in the Publisher's `data/` folder and includes sample records for all entity types (Adjudicators, Payers, Members, Providers, Claim Procedures, Coverage, and Claims).
 
 ### Streaming data
 
@@ -318,9 +318,7 @@ Once a ClaimHeader gets the `Complete` or `Denied` status assigned, an event wil
 > **Future State**: Additional filters (ie: Total)
 
 > [!view] View: Aggregate Status Counts  
-> In order to provide more complex query functionality in a performant manor, the Claims container will need to be exposed as a Synapse view. The container will need to be created with this in mind to ensure compatibility with Synapse.
->  
-> **Stretch Goal:** For the scope of this release we will deprioritize the Synapse integration. If time allows we should aim to expose this, and provide a few example queries. But prioritizing the other functionality is first priority.
+> Complex query functionality and analytical reporting should be implemented using **Azure Cosmos DB Fabric Mirroring**. This enables near real-time analytical queries and reporting on operational data without impacting transactional workloads, providing a seamless integration between Cosmos DB and Microsoft Fabric for advanced analytics and business intelligence scenarios.
 
 ### Change feed Endpoints
 
@@ -355,7 +353,4 @@ A bicep definition of the required infrastructure will be created containing the
 | EventHub/Topic     | `ClaimApproved`           | Topic where claims that have been approved are published for hypothetical downstream systems to process |
 | EventHub/Topic     | `ClaimDenied`             | Topic where claims that have been denied are published for hypothetical downstream systems to process   |
 | EventHub/Topic     | `AdjudicatorChanged`            | Topic where the adjudicator for a claim was changed, such as when a manager is assigned because they need to approve a proposal. Downstream, the EventHub processor uses the claim header data to delete the previous adjudicator's claim header record. This way, there are no duplicated records between two adjudicators.  |
-| Storage Account    | `adl-coreclaims-demo`     | Storage account for Azure Data Lake storage of initial seed data for synapse processing                 |
-| Synapse workspace  | `synapse-coreclaims-demo` | Synapse notebook for running initial seed scripts                                                       |
-| Apache Spark Pool  | `SeedData`                | Spark pool used by synapse                                                                              |
-| Azure Container Registry | `acr-coreclaims-demo` | Container registry for storing docker images for AKS deployment                                        |
+| Azure Container Registry | `acr-coreclaims-demo` | Container registry for storing container images. Images are built using ACR Tasks (cloud-based build). |

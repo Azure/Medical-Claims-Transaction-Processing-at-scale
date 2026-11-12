@@ -6,11 +6,10 @@
 - Subscription access to Azure OpenAI service. Start here to [Request Access to Azure OpenAI Service](https://aka.ms/oaiapply)
 
 - Backend (Web API, Worker Service, Console Apps, etc.)
-  - Visual Studio 2022 17.6 or later (required for passthrough Visual Studio authentication for the Docker container)
-  - .NET 7 SDK
-  - Docker Desktop (with WSL for Windows machines)
+  - Visual Studio 2026 (18.0) or later
+  - .NET 10 SDK
   - Azure CLI ([v2.51.0 or greater](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli))
-  - [Helm 3.11.1 or greater](https://helm.sh/docs/intro/install/)
+  - [Helm 3.11.1 or greater](https://helm.sh/docs/intro/install/) (only required for AKS deployments)
 - Frontend (React web app)
   - Visual Studio Code
   - Ensure you have the latest version of NPM and node.js:
@@ -30,7 +29,9 @@ To start the React web app:
 
 Follow the steps below to deploy the solution to your Azure subscription.
 
-1. Ensure all the prerequisites are installed.  
+> **Azure Cloud Shell Users**: These steps work identically in Cloud Shell. Simply start from step 2 (cloning the repository).
+
+1. **[Local Only]** Ensure all the prerequisites are installed.  
 
 1. Clone the repository:
 
@@ -40,7 +41,7 @@ Follow the steps below to deploy the solution to your Azure subscription.
     git clone --recurse-submodules https://github.com/Azure/Medical-Claims-Transaction-Processing-at-scale.git
     ```
 
-1. Run the following script to provision the infrastructure and deploy the API and frontend. This will provision all of the required infrastructure, deploy the API and web app services into AKS, and provision and load artifacts into a Synapse Analytics workspace.
+1. Run the following script to provision the infrastructure and deploy the API and frontend. This will provision all of the required infrastructure and deploy the API and web app services into AKS.
 
     ```pwsh
     cd .\Medical-Claims-Transaction-Processing-at-scale
@@ -73,18 +74,16 @@ The following flags can be used to enable/disable specific deployment steps in t
 
 | Parameter Name | Description |
 |----------------|-------------|
-| stepDeployOpenAi | Enables or disables the deployment of an OpenAi instance in Azure prior to the Bicep template deployment. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/powershell/Deploy-OpenAi.ps1` script.
-| openAiName | Name of a pre-existing OpenAI instance to use instead of creating a new one. Default value is `$null`. See the `deploy/powershell/Unified-Deploy.ps1` script. 
-| openAiRg | Name of the resource group a pre-existing OpenAI instance to use resides in. Default value is `$null`. See the `deploy/powershell/Unified-Deploy.ps1` script.
-| deployAks | Enables 
-| openAiCompletionsDeployment | Name of the completions deployment to use in a pre-existing OpenAI instance. Default value is `$null`. See the `deploy/powershell/Unified-Deploy.ps1` script.
+| openAiName | Name of the OpenAI instance to create or use. If not specified, defaults to `openai-{suffix}`. The OpenAI service will be deployed with Entra ID authentication (disableLocalAuth=true).
+| openAiRg | Name of the resource group where the OpenAI instance will be created or already exists. If not specified, defaults to the main resource group. Use this to reference an existing OpenAI instance in a different resource group.
+| openAiCompletionsDeployment | Name of the GPT completions deployment. Default value is `completions`. The deployment uses gpt-4o model (2024-11-20) with 10 TPM capacity.
+| deployAks | Enables deployment to Azure Kubernetes Service (AKS) instead of Azure Container Apps (ACA). Default is `$false` (uses ACA).
 | stepDeployBicep | Enables or disables the provisioning of resources in Azure via Bicep templates (located in `./infrastructure`). Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/powershell/Deploy-Bicep.ps1` script.
-| stepBuildPush | Enables or disables the build and push of Docker images into the Azure Container Registry (ACR). Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/BuildPush.ps1` script.
-| stepDeployCertManager | Enables or disables adding the official cert-manager repository to your local and updates the repo cache. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/DeployCertManager.ps1` script.
-| stepDeployTls | Enables or disables SSL/TLS support on the AKS cluster in the resource group. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/DeployTlsSupport.ps1` script.
-| stepDeployImages | Enables or disables deploying the Docker images from the `CoreClaims.WebAPI` and `CoreClaims.WorkerService` projects to AKS. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/Deploy-Images-Aks.ps1` script.
-| stepPublishSite | Enables or disables the build and deployment of the static HTML site to the hosting storage account in the target resource group. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/Publish-Site.ps1` script.
-| stepSetupSynapse | Enables or disables the deployment of a Synapse artifacts to the target synapse workspace. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/Setup-Synapse.ps1` script.
+| stepBuildPush | Enables or disables the build and push of container images using ACR Tasks (no local Docker required). Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/powershell/BuildPush.ps1` script.
+| stepDeployCertManager | Enables or disables adding the official cert-manager repository to your local and updates the repo cache. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/powershell/DeployCertManager.ps1` script.
+| stepDeployTls | Enables or disables SSL/TLS support on the AKS cluster in the resource group. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/powershell/DeployTlsSupport.ps1` script.
+| stepDeployImages | Enables or disables deploying container images from the `CoreClaims.WebAPI` and `CoreClaims.WorkerService` projects. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/powershell/Deploy-Images-Aks.ps1` or `deploy/powershell/Deploy-Images-Aca.ps1` script.
+| stepPublishSite | Enables or disables the build and deployment of the static HTML site to the hosting storage account in the target resource group. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/powershell/Publish-Site.ps1` script.
 | stepLoginAzure | Enables or disables interactive Azure login. If disabled, the deployment assumes that the current Azure CLI session is valid. Valid values are 0 (Disabled).
 
 Example command:
@@ -94,12 +93,9 @@ cd deploy/powershell
 ./Unified-Deploy.ps1 -resourceGroup myRg `
                      -subscription 0000... `
                      -stepLoginAzure 0 `
-                     -stepOpenAi 0 `
                      -stepDeployBicep 0 `
                      -stepDeployCertManager 0 `
                      -stepDeployTls 0 `
                      -stepBuildPush 1 `
-                     -stepDeployImages 1 `
-                     -stepSetupSynapse 0 `
                      -stepPublishSite 1
 ```

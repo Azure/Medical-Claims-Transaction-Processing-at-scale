@@ -5,14 +5,17 @@ param suffix string = uniqueString(resourceGroup().id)
 @description('Location for resource deployment')
 param location string = resourceGroup().location
 
-@description('OpenAi Name')
-param openAiName string = 'openai-coreclaims-${suffix}'
+@description('OpenAI service name')
+param openAiName string = ''
 
-@description('OpenAi Deployment')
+@description('OpenAI deployment name')
 param openAiDeployment string = 'completions'
 
-@description('OpenAI resource group')
+@description('OpenAI resource group (defaults to current resource group)')
 param openAiRg string = resourceGroup().name
+
+@description('The principal ID of the deployer for storage permissions')
+param deployerPrincipalId string = ''
 
 var appName = 'coreclaims-${suffix}'
 var serviceNames = {
@@ -21,25 +24,10 @@ var serviceNames = {
   functionApp: replace('fa-${appName}', '-', '')
   servicePlan: 'asp-${appName}'
   eventHub: replace('eh-${appName}', '-', '')
-  storage: replace('adl-${appName}', '-', '')
-  synapse: 'synapse-${appName}'
   identity: 'id-${appName}'
   webStorage: replace('web-${appName}', '-', '')
   openAi: 'openai-${appName}'
-  apimi: 'mi-api-${appName}'
-  workermi: 'mi-worker-${appName}'
   ai: 'ai-${appName}'
-}
-
-module storage 'storage.bicep' = {
-  scope: resourceGroup()
-  name: 'storageDeploy'
-  params: {
-    storageAccountName: serviceNames.storage
-    location: location
-    apiPrincipalId: apiIdentity.properties.principalId
-    workerPrincipalId: workerIdentity.properties.principalId
-  }
 }
 
 module cosmosDb 'cosmos.bicep' = {
@@ -48,8 +36,6 @@ module cosmosDb 'cosmos.bicep' = {
   params: {
     accountName: serviceNames.cosmosDb
     location: location
-    apiPrincipalId: apiIdentity.properties.principalId
-    workerPrincipalId: workerIdentity.properties.principalId
   }
 }
 
@@ -59,43 +45,8 @@ module eventHub 'eventhub.bicep' = {
   params: {
     eventHubNamespace: serviceNames.eventHub
     location: location
-    apiPrincipalId: apiIdentity.properties.principalId
-    workerPrincipalId: workerIdentity.properties.principalId
   }
 }
-
-#disable-next-line BCP179
-module synapse 'synapse.bicep' = {
-  scope: resourceGroup()
-  name: 'synapseDeploy'
-  params: {
-    cosmosAccountName: serviceNames.cosmosDb
-    storageAccountName: serviceNames.storage
-    synapseServiceName: serviceNames.synapse
-    location: location
-  }
-  dependsOn: [storage, cosmosDb]
-}
-
-// module openAi 'openai.bicep' = {
-//   name: 'openAiDeploy'
-//   scope: resourceGroup() // Deployments with existing OpenAi (different resource group) will have to be properly adjust this
-//   params: {
-//     openAiName: serviceNames.openAi
-//     location: location
-//     deployments: [
-//       {
-//         name: openAiDeployment
-//         model: 'gpt-35-turbo'
-//         version: '0301'
-//         sku: {
-//           name: 'Standard'
-//           capacity: 60
-//         }
-//       }
-//     ]
-//   }
-// }
 
 module logAnalytics 'loganalytics.bicep' = {
   name: 'logAnalyticsDeploy'
@@ -105,9 +56,41 @@ module logAnalytics 'loganalytics.bicep' = {
   }
 }
 
-resource openAi 'Microsoft.CognitiveServices/accounts@2023-05-01' existing = {
-  name: openAiName
+// Determine OpenAI configuration (idempotent - always creates if not exists)
+var finalOpenAiName = !empty(openAiName) ? openAiName : serviceNames.openAi
+var isExternalRg = openAiRg != resourceGroup().name
+
+// Deploy OpenAI in same resource group (idempotent)
+module openAi 'openai.bicep' = if (!isExternalRg) {
+  name: 'openAiDeploy'
+  params: {
+    openAiName: finalOpenAiName
+    location: location
+    deployments: [
+      {
+        name: openAiDeployment
+        model: 'gpt-4o'
+        version: '2024-11-20'
+      }
+    ]
+  }
+}
+
+// Deploy OpenAI in external resource group (idempotent)
+module openAiExternal 'openai.bicep' = if (isExternalRg) {
+  name: 'openAiExternalDeploy'
   scope: resourceGroup(openAiRg)
+  params: {
+    openAiName: finalOpenAiName
+    location: location
+    deployments: [
+      {
+        name: openAiDeployment
+        model: 'gpt-4o'
+        version: '2024-11-20'
+      }
+    ]
+  }
 }
 
 module containerApps 'containerapp.bicep' = {
@@ -115,30 +98,27 @@ module containerApps 'containerapp.bicep' = {
   params: {
     aiConnectionString: logAnalytics.outputs.aiConnectionString
     cosmosEndpoint: cosmosDb.outputs.cosmosAccountEndpoint
-    dataLakeAccountName: serviceNames.storage
-    laCustomerId: logAnalytics.outputs.laCustomerId
-    laSharedKey: logAnalytics.outputs.laSharedKey
+    laWorkspaceId: logAnalytics.outputs.laWorkspaceId
     location: location
     name: appName
     openAiCompletionsDeployment: openAiDeployment
-    openAiEndpoint: openAi.properties.endpoint
-    openAiKey: openAi.listKeys().key1
+    openAiEndpoint: isExternalRg ? openAiExternal!.outputs.endpoint : openAi!.outputs.endpoint
     suffix: suffix
-    workerClientId: workerIdentity.properties.clientId
-    apiClientId: apiIdentity.properties.clientId
-    apiMiId: apiIdentity.id
-    workerMiId: workerIdentity.id
   }
 }
 
-resource apiIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' = {
-  name: serviceNames.apimi
-  location: location
-}
-
-resource workerIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' = {
-  name: serviceNames.workermi
-  location: location
+// Assign permissions after Container Apps are created with System-Assigned Identity
+module permissions 'permissions.bicep' = {
+  name: 'permissionsDeploy'
+  params: {
+    cosmosAccountName: serviceNames.cosmosDb
+    eventHubNamespaceName: serviceNames.eventHub
+    openAiName: finalOpenAiName
+    openAiResourceGroup: openAiRg
+    apiPrincipalId: containerApps.outputs.apiPrincipalId
+    workerPrincipalId: containerApps.outputs.workerPrincipalId
+    deployerPrincipalId: deployerPrincipalId
+  }
 }
 
 module staticwebsite 'staticwebsite.bicep' = {
@@ -146,7 +126,22 @@ module staticwebsite 'staticwebsite.bicep' = {
   params: {
     storageAccountName: serviceNames.webStorage
     location: location
+    deployerPrincipalId: deployerPrincipalId
   }
+}
+
+// Outputs for Generate-Config (eliminates az cli calls)
+output config object = {
+  suffix: suffix
+  cosmosEndpoint: cosmosDb.outputs.cosmosAccountEndpoint
+  eventHubNamespace: '${serviceNames.eventHub}.servicebus.windows.net'
+  openAiEndpoint: isExternalRg ? openAiExternal!.outputs.endpoint : openAi!.outputs.endpoint
+  openAiName: finalOpenAiName
+  openAiRg: openAiRg
+  openAiCompletionsDeployment: openAiDeployment
+  aiConnectionString: logAnalytics.outputs.aiConnectionString
+  apiUrl: 'https://${containerApps.outputs.apiFqdn}/api'
+  webappHostname: containerApps.outputs.apiFqdn
 }
 
 output staticWebsiteUrl string = staticwebsite.outputs.staticWebsiteUrl

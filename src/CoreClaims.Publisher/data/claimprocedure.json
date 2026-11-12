@@ -1,0 +1,769 @@
+{"id":"428211000124100","code":"428211000124100","description":"Assessment of substance use (procedure)","category":"procedures"}
+{"id":"171122006","code":"171122006","description":"Hepatitis B screening (procedure)","category":"procedures"}
+{"id":"434363004","code":"434363004","description":"Human epidermal growth factor receptor 2 gene detection by fluorescence in situ hybridization (procedure)","category":"procedures"}
+{"id":"302351005","code":"302351005","description":"Ligation of salivary duct (procedure)","category":"procedures"}
+{"id":"711446003","code":"711446003","description":"Transplantation of kidney regime (regime/therapy)","category":"procedures"}
+{"id":"443529005","code":"443529005","description":"Detection of chromosomal aneuploidy in prenatal amniotic fluid specimen using fluorescence in situ hybridization screening technique (procedure)","category":"procedures"}
+{"id":"180178009","code":"180178009","description":"Continuous subcutaneous infusion of insulin (procedure)","category":"procedures"}
+{"id":"234262008","code":"234262008","description":"Excision of axillary lymph node (procedure)","category":"procedures"}
+{"id":"43060002","code":"43060002","description":"Intravenous injection (procedure)","category":"procedures"}
+{"id":"311555007","code":"311555007","description":"Speech and language therapy regime (regime/therapy)","category":"procedures"}
+{"id":"415300000","code":"415300000","description":"Review of systems (procedure)","category":"procedures"}
+{"id":"225415001","code":"225415001","description":"Close observation (regime/therapy)","category":"procedures"}
+{"id":"410011004","code":"410011004","description":"Administration of anesthesia AND/OR sedation (procedure)","category":"procedures"}
+{"id":"428830000","code":"428830000","description":"Pretransplant evaluation of kidney recipient (procedure)","category":"procedures"}
+{"id":"426701000119108","code":"426701000119108","description":"Ultrasonography of abdomen  right upper quadrant and epigastrium","category":"procedures"}
+{"id":"233553003","code":"233553003","description":"Vascular cannula removal (procedure)","category":"procedures"}
+{"id":"714812005","code":"714812005","description":"Induced termination of pregnancy","category":"procedures"}
+{"id":"698314001","code":"698314001","description":"Consultation for treatment (procedure)","category":"procedures"}
+{"id":"252482003","code":"252482003","description":"Stair-climbing test (procedure)","category":"procedures"}
+{"id":"698354004","code":"698354004","description":"Magnetic resonance imaging for measurement of brain volume (procedure)","category":"procedures"}
+{"id":"445988008","code":"445988008","description":"Assessment using health assessment questionnaire (procedure)","category":"procedures"}
+{"id":"177157003","code":"177157003","description":"Spontaneous breech delivery","category":"procedures"}
+{"id":"454711000124102","code":"454711000124102","description":"Depression screening using Patient Health Questionnaire Two-Item score (procedure)","category":"procedures"}
+{"id":"26212005","code":"26212005","description":"Replacement of aortic valve (procedure)","category":"procedures"}
+{"id":"23745001","code":"23745001","description":"Documentation procedure (procedure)","category":"procedures"}
+{"id":"103746007","code":"103746007","description":"Heparin therapy (procedure)","category":"procedures"}
+{"id":"177765008","code":"177765008","description":"Opening of chest (procedure)","category":"procedures"}
+{"id":"171231001","code":"171231001","description":"Asthma screening","category":"procedures"}
+{"id":"116861002","code":"116861002","description":"Transfusion of fresh frozen plasma (procedure)","category":"procedures"}
+{"id":"43075005","code":"43075005","description":"Partial resection of colon","category":"procedures"}
+{"id":"31208007","code":"31208007","description":"Medical induction of labor","category":"procedures"}
+{"id":"54550000","code":"54550000","description":"Electroencephalogram (procedure)","category":"procedures"}
+{"id":"74016001","code":"74016001","description":"Knee X-ray","category":"procedures"}
+{"id":"305428000","code":"305428000","description":"Admission to orthopedic department","category":"procedures"}
+{"id":"432231006","code":"432231006","description":"Fine needle aspiration biopsy of lung (procedure)","category":"procedures"}
+{"id":"60151004","code":"60151004","description":"Neonatal Screening","category":"procedures"}
+{"id":"13569004","code":"13569004","description":"Transfusion of plasma (procedure)","category":"procedures"}
+{"id":"28163009","code":"28163009","description":"Skin test for tuberculosis  Tine test (procedure)","category":"procedures"}
+{"id":"417511005","code":"417511005","description":"Referral to home health care service (procedure)","category":"procedures"}
+{"id":"34896006","code":"34896006","description":"Incision (procedure)","category":"procedures"}
+{"id":"310417005","code":"310417005","description":"Certification procedure (procedure)","category":"procedures"}
+{"id":"312384001","code":"312384001","description":"Multidisciplinary assessment (procedure)","category":"procedures"}
+{"id":"7227006","code":"7227006","description":"Excision of submandibular gland (procedure)","category":"procedures"}
+{"id":"418824004","code":"418824004","description":"Off-pump coronary artery bypass (procedure)","category":"procedures"}
+{"id":"301882004","code":"301882004","description":"Placement of aortic cross clamp (procedure)","category":"procedures"}
+{"id":"76164006","code":"76164006","description":"Biopsy of colon","category":"procedures"}
+{"id":"415070008","code":"415070008","description":"Percutaneous coronary intervention (procedure)","category":"procedures"}
+{"id":"35025007","code":"35025007","description":"Manual pelvic examination (procedure)","category":"procedures"}
+{"id":"182836005","code":"182836005","description":"Review of Medication (procedure)","category":"procedures"}
+{"id":"40701008","code":"40701008","description":"Echocardiography (procedure)","category":"procedures"}
+{"id":"385892002","code":"385892002","description":"Mental health screening (procedure)","category":"procedures"}
+{"id":"79733001","code":"79733001","description":"Amputation of right leg","category":"procedures"}
+{"id":"112798008","code":"112798008","description":"Insertion of endotracheal tube (procedure)","category":"procedures"}
+{"id":"306706006","code":"306706006","description":"Discharge to ward (procedure)","category":"procedures"}
+{"id":"763228001","code":"763228001","description":"Assessment using Canadian Study of Health and Aging Clinical Frailty Scale (procedure)","category":"procedures"}
+{"id":"104173009","code":"104173009","description":"Sputum Culture","category":"procedures"}
+{"id":"413107006","code":"413107006","description":"Hepatitis C screening (procedure)","category":"procedures"}
+{"id":"1571000087109","code":"1571000087109","description":"Ultrasonography of bilateral breasts (procedure)","category":"procedures"}
+{"id":"868187001","code":"868187001","description":"Assessment using Car  Relax  Alone  Forget  Friends  Trouble Screening Test (procedure)","category":"procedures"}
+{"id":"76746007","code":"76746007","description":"Cardiovascular stress testing (procedure)","category":"procedures"}
+{"id":"58000006","code":"58000006","description":"Patient discharge (procedure)","category":"procedures"}
+{"id":"91602002","code":"91602002","description":"Thoracentesis (procedure)","category":"procedures"}
+{"id":"171207006","code":"171207006","description":"Depression screening","category":"procedures"}
+{"id":"306185001","code":"306185001","description":"Referral to cardiac surgery service (procedure)","category":"procedures"}
+{"id":"370995009","code":"370995009","description":"Health risks education (procedure)","category":"procedures"}
+{"id":"12719002","code":"12719002","description":"Platelet transfusion (procedure)","category":"procedures"}
+{"id":"116863004","code":"116863004","description":"Transfusion of red blood cells (procedure)","category":"procedures"}
+{"id":"268533009","code":"268533009","description":"Sterilization education (procedure)","category":"procedures"}
+{"id":"19490002","code":"19490002","description":"Ankle X-ray","category":"procedures"}
+{"id":"133899007","code":"133899007","description":"Postoperative care (regime/therapy)","category":"procedures"}
+{"id":"73761001","code":"73761001","description":"Colonoscopy","category":"procedures"}
+{"id":"117015009","code":"117015009","description":"Throat culture (procedure)","category":"procedures"}
+{"id":"433114000","code":"433114000","description":"Human epidermal growth factor receptor 2 gene detection by immunohistochemistry (procedure)","category":"procedures"}
+{"id":"398171003","code":"398171003","description":"Hearing examination (procedure)","category":"procedures"}
+{"id":"31676001","code":"31676001","description":"Human immunodeficiency virus antigen test","category":"procedures"}
+{"id":"180256009","code":"180256009","description":"Subcutaneous immunotherapy","category":"procedures"}
+{"id":"70536003","code":"70536003","description":"Transplant of kidney (procedure)","category":"procedures"}
+{"id":"449214001","code":"449214001","description":"Transfer to stepdown","category":"procedures"}
+{"id":"452331000124102","code":"452331000124102","description":"Review of imaging finding (procedure)","category":"procedures"}
+{"id":"387607004","code":"387607004","description":"Construction of diverting colostomy","category":"procedures"}
+{"id":"91251008","code":"91251008","description":"Physical therapy procedure (regime/therapy)","category":"procedures"}
+{"id":"112790001","code":"112790001","description":"Nasal sinus endoscopy (procedure)","category":"procedures"}
+{"id":"18286008","code":"18286008","description":"Catheter ablation of tissue of heart (procedure)","category":"procedures"}
+{"id":"395142003","code":"395142003","description":"Allergy screening test","category":"procedures"}
+{"id":"117010004","code":"117010004","description":"Urine culture","category":"procedures"}
+{"id":"225338004","code":"225338004","description":"Risk assessment (procedure)","category":"procedures"}
+{"id":"445912000","code":"445912000","description":"Excision of fallopian tube and surgical removal of ectopic pregnancy","category":"procedures"}
+{"id":"711018006","code":"711018006","description":"Assessment of social support (procedure)","category":"procedures"}
+{"id":"305351004","code":"305351004","description":"Admission to intensive care unit (procedure)","category":"procedures"}
+{"id":"384700001","code":"384700001","description":"Injection of tetanus antitoxin","category":"procedures"}
+{"id":"399217008","code":"399217008","description":"Cardioassist by aortic balloon pump (procedure)","category":"procedures"}
+{"id":"65588006","code":"65588006","description":"Premature birth of newborn","category":"procedures"}
+{"id":"45595009","code":"45595009","description":"Laparoscopic Removal of Gall Bladder","category":"procedures"}
+{"id":"713106006","code":"713106006","description":"Screening for drug abuse (procedure)","category":"procedures"}
+{"id":"736169004","code":"736169004","description":"Post anesthesia care management (procedure)","category":"procedures"}
+{"id":"42825003","code":"42825003","description":"Cannulation (procedure)","category":"procedures"}
+{"id":"386394001","code":"386394001","description":"Pregnancy termination care","category":"procedures"}
+{"id":"169673001","code":"169673001","description":"Antenatal RhD antibody screening","category":"procedures"}
+{"id":"104326007","code":"104326007","description":"Measurement of Varicella-zoster virus antibody","category":"procedures"}
+{"id":"265764009","code":"265764009","description":"Renal dialysis (procedure)","category":"procedures"}
+{"id":"236974004","code":"236974004","description":"Instrumental delivery","category":"procedures"}
+{"id":"392021009","code":"392021009","description":"Lumpectomy of breast (procedure)","category":"procedures"}
+{"id":"725351001","code":"725351001","description":"Transcatheter aortic valve replacement (procedure)","category":"procedures"}
+{"id":"113076002","code":"113076002","description":"Oral Glucose Tolerance Test","category":"procedures"}
+{"id":"446987006","code":"446987006","description":"Determination of susceptibility of Human immunodeficiency virus 1 to panel of antiretroviral drugs using genotypic technique (procedure)","category":"procedures"}
+{"id":"105376000","code":"105376000","description":"Transesophageal echocardiography (procedure)","category":"procedures"}
+{"id":"271280005","code":"271280005","description":"Removal of endotracheal tube (procedure)","category":"procedures"}
+{"id":"40617009","code":"40617009","description":"Artificial respiration (procedure)","category":"procedures"}
+{"id":"305342007","code":"305342007","description":"Admission to ward (procedure","category":"procedures"}
+{"id":"112001000119100","code":"112001000119100","description":"positive screening for depression on phq9","category":"procedures"}
+{"id":"359672006","code":"359672006","description":"Median sternotomy (procedure)","category":"procedures"}
+{"id":"15220000","code":"15220000","description":"Laboratory test (procedure)","category":"procedures"}
+{"id":"410006001","code":"410006001","description":"Digital examination of rectum","category":"procedures"}
+{"id":"385186005","code":"385186005","description":"Enema","category":"procedures"}
+{"id":"414088005","code":"414088005","description":"Emergency coronary artery bypass graft (procedure)","category":"procedures"}
+{"id":"185087000","code":"185087000","description":"Notifications (procedure)","category":"procedures"}
+{"id":"305433001","code":"305433001","description":"Admission to trauma surgery department","category":"procedures"}
+{"id":"61594008","code":"61594008","description":"Microbial culture (procedure)","category":"procedures"}
+{"id":"104091002","code":"104091002","description":"Hemogram  automated  with RBC  WBC  Hgb  Hct  Indices  Platelet count  and manual WBC differential","category":"procedures"}
+{"id":"371908008","code":"371908008","description":"Oxygen administration by mask (procedure)","category":"procedures"}
+{"id":"225158009","code":"225158009","description":"Auscultation of the fetal heart","category":"procedures"}
+{"id":"182777000","code":"182777000","description":"Monitoring of patient (regime/therapy)","category":"procedures"}
+{"id":"395123002","code":"395123002","description":"Urine screening test for diabetes","category":"procedures"}
+{"id":"269911007","code":"269911007","description":"Sputum examination (procedure)","category":"procedures"}
+{"id":"22523008","code":"22523008","description":"Vasectomy","category":"procedures"}
+{"id":"243174005","code":"243174005","description":"Weaning from mechanically assisted ventilation (procedure)","category":"procedures"}
+{"id":"241149003","code":"241149003","description":"Videofluoroscopy swallow (procedure)","category":"procedures"}
+{"id":"168594001","code":"168594001","description":"Clavicle X-ray","category":"procedures"}
+{"id":"65200003","code":"65200003","description":"Insertion of intrauterine contraceptive device","category":"procedures"}
+{"id":"709138001","code":"709138001","description":"Notification of treatment plan (procedure)","category":"procedures"}
+{"id":"112001000119100","code":"112001000119100","description":"positive screening for PHQ-9","category":"procedures"}
+{"id":"63332003","code":"63332003","description":"History AND physical examination (procedure)","category":"procedures"}
+{"id":"47758006","code":"47758006","description":"Hepatitis B Surface Antigen Measurement","category":"procedures"}
+{"id":"85548006","code":"85548006","description":"Episiotomy","category":"procedures"}
+{"id":"26763009","code":"26763009","description":"Controlled ventilation procedure and therapy  initiation and management (procedure)","category":"procedures"}
+{"id":"399208008","code":"399208008","description":"Chest X-ray","category":"procedures"}
+{"id":"88039007","code":"88039007","description":"Transplant of lung (procedure)","category":"procedures"}
+{"id":"11466000","code":"11466000","description":"Cesarean section","category":"procedures"}
+{"id":"232967006","code":"232967006","description":"Implantation of left ventricular assist device (procedure)","category":"procedures"}
+{"id":"18946005","code":"18946005","description":"Epidural anesthesia","category":"procedures"}
+{"id":"67879005","code":"67879005","description":"History and physical examination  limited (procedure)","category":"procedures"}
+{"id":"173160006","code":"173160006","description":"Diagnostic fiberoptic bronchoscopy (procedure)","category":"procedures"}
+{"id":"274474001","code":"274474001","description":"Bone immobilization","category":"procedures"}
+{"id":"268400002","code":"268400002","description":"12 lead electrocardiogram (procedure)","category":"procedures"}
+{"id":"404909007","code":"404909007","description":"Injection of botulinum toxin (procedure)","category":"procedures"}
+{"id":"305425002","code":"305425002","description":"Admission to neurosurgical department","category":"procedures"}
+{"id":"171207006","code":"171207006","description":"Depression screening (procedure)","category":"procedures"}
+{"id":"84478008","code":"84478008","description":"Occupational therapy (regime/therapy)","category":"procedures"}
+{"id":"29303009","code":"29303009","description":"Electrocardiographic procedure","category":"procedures"}
+{"id":"399014008","code":"399014008","description":"Administration of diphtheria  pertussis  and tetanus vaccine","category":"procedures"}
+{"id":"38102005","code":"38102005","description":"Open Removal of Gall Bladder","category":"procedures"}
+{"id":"410401003","code":"410401003","description":"Nursing care/supplementary surveillance (regime/therapy)","category":"procedures"}
+{"id":"82808001","code":"82808001","description":"Sleep apnea monitoring with alarm (regime/therapy)","category":"procedures"}
+{"id":"71121004","code":"71121004","description":"Human immunodeficiency virus screening (procedure)","category":"procedures"}
+{"id":"710841007","code":"710841007","description":"Assessment of anxiety (procedure)","category":"procedures"}
+{"id":"408919008","code":"408919008","description":"Psychosocial care (regime/therapy)","category":"procedures"}
+{"id":"52765003","code":"52765003","description":"Intubation","category":"procedures"}
+{"id":"112011000119102","code":"112011000119102","description":"negative screening for depression on phq9","category":"procedures"}
+{"id":"698560000","code":"698560000","description":"Referral to sleep apnea clinic (procedure)","category":"procedures"}
+{"id":"261352009","code":"261352009","description":"Face mask (physical object)","category":"procedures"}
+{"id":"33195004","code":"33195004","description":"External beam radiation therapy procedure (procedure)","category":"procedures"}
+{"id":"8290005","code":"8290005","description":"Induced cardioplegia (procedure)","category":"procedures"}
+{"id":"390791001","code":"390791001","description":"Referral for echocardiography (procedure)","category":"procedures"}
+{"id":"63697000","code":"63697000","description":"Cardiopulmonary bypass operation (procedure)","category":"procedures"}
+{"id":"133900002","code":"133900002","description":"Intraoperative care (regime/therapy)","category":"procedures"}
+{"id":"449381000124108","code":"449381000124108","description":"Discharge from skilled nursing facility (procedure)","category":"procedures"}
+{"id":"236931002","code":"236931002","description":"Methotrexate injection into tubal pregnancy","category":"procedures"}
+{"id":"410538000","code":"410538000","description":"Scheduling (procedure)","category":"procedures"}
+{"id":"58828004","code":"58828004","description":"Application of dressing  sterile (procedure)","category":"procedures"}
+{"id":"385763009","code":"385763009","description":"Hospice care (regime/therapy)","category":"procedures"}
+{"id":"65575008","code":"65575008","description":"Biopsy of prostate","category":"procedures"}
+{"id":"108290001","code":"108290001","description":"Radiation oncology AND/OR radiotherapy (procedure)","category":"procedures"}
+{"id":"301884003","code":"301884003","description":"Removal of aortic cross clamp (procedure)","category":"procedures"}
+{"id":"315639002","code":"315639002","description":"Initial patient assessment (procedure)","category":"procedures"}
+{"id":"104375008","code":"104375008","description":"Hepatitis C antibody  confirmatory test","category":"procedures"}
+{"id":"443497002","code":"443497002","description":"Excision of sentinel lymph node (procedure)","category":"procedures"}
+{"id":"311791003","code":"311791003","description":"Information gathering (procedure)","category":"procedures"}
+{"id":"82078001","code":"82078001","description":"Take blood sample","category":"procedures"}
+{"id":"229095001","code":"229095001","description":"Exercise class","category":"procedures"}
+{"id":"709506004","code":"709506004","description":"Assessment of readiness for disclosure of health status (procedure)","category":"procedures"}
+{"id":"386510005","code":"386510005","description":"Amputation care (regime/therapy)","category":"procedures"}
+{"id":"14768001","code":"14768001","description":"Peripheral blood smear interpretation","category":"procedures"}
+{"id":"433236007","code":"433236007","description":"Transthoracic echocardiography (procedure)","category":"procedures"}
+{"id":"396487001","code":"396487001","description":"Sentinel lymph node biopsy (procedure)","category":"procedures"}
+{"id":"717778001","code":"717778001","description":"Mouth care (regime/therapy)","category":"procedures"}
+{"id":"306316000","code":"306316000","description":"Referral to transplant surgeon (procedure)","category":"procedures"}
+{"id":"71651007","code":"71651007","description":"Mammography (procedure)","category":"procedures"}
+{"id":"71493000","code":"71493000","description":"Transfusion of packed red blood cells (procedure)","category":"procedures"}
+{"id":"367336001","code":"367336001","description":"Chemotherapy (procedure)","category":"procedures"}
+{"id":"225337009","code":"225337009","description":"Suicide risk assessment (procedure)","category":"procedures"}
+{"id":"418891003","code":"418891003","description":"Computed tomography of chest and abdomen","category":"procedures"}
+{"id":"430701006","code":"430701006","description":"Resuscitation using intravenous fluid (procedure)","category":"procedures"}
+{"id":"46706006","code":"46706006","description":"Replacement of contraceptive intrauterine device","category":"procedures"}
+{"id":"183418007","code":"183418007","description":"Social case work (regime/therapy)","category":"procedures"}
+{"id":"410770002","code":"410770002","description":"Administration of anesthesia for procedure (procedure)","category":"procedures"}
+{"id":"127783003","code":"127783003","description":"Spirometry (procedure)","category":"procedures"}
+{"id":"429609002","code":"429609002","description":"Lung volume reduction surgery (procedure)","category":"procedures"}
+{"id":"29303009","code":"29303009","description":"Electrocardiographic procedure (procedure)","category":"procedures"}
+{"id":"449214001","code":"449214001","description":"Transfer to stepdown unit (procedure)","category":"procedures"}
+{"id":"183856001","code":"183856001","description":"Referral to hypertension clinic","category":"procedures"}
+{"id":"703423002","code":"703423002","description":"Combined chemotherapy and radiation therapy (procedure)","category":"procedures"}
+{"id":"433112001","code":"433112001","description":"Percutaneous mechanical thrombectomy of portal vein using fluoroscopic guidance with contrast (procedure)","category":"procedures"}
+{"id":"473231009","code":"473231009","description":"Renal disorder medication review (procedure)","category":"procedures"}
+{"id":"384682003","code":"384682003","description":"Multidisciplinary care conference (procedure)","category":"procedures"}
+{"id":"301807007","code":"301807007","description":"Removal of subcutaneous contraceptive","category":"procedures"}
+{"id":"223487003","code":"223487003","description":"Discussion about options (procedure)","category":"procedures"}
+{"id":"287664005","code":"287664005","description":"Bilateral tubal ligation","category":"procedures"}
+{"id":"430193006","code":"430193006","description":"Medication Reconciliation (procedure)","category":"procedures"}
+{"id":"313613002","code":"313613002","description":"Hepatitis A antibody test (procedure)","category":"procedures"}
+{"id":"313191000","code":"313191000","description":"Injection of epinephrine (procedure)","category":"procedures"}
+{"id":"171126009","code":"171126009","description":"Tuberculosis screening (procedure)","category":"procedures"}
+{"id":"200619008","code":"200619008","description":"Comprehensive interview and evaluation (procedure)","category":"procedures"}
+{"id":"385798007","code":"385798007","description":"Radiation therapy care (regime/therapy)","category":"procedures"}
+{"id":"709010006","code":"709010006","description":"Liaising with referral source (procedure)","category":"procedures"}
+{"id":"715252007","code":"715252007","description":"Depression screening using Patient Health Questionnaire Nine Item score (procedure)","category":"procedures"}
+{"id":"302761001","code":"302761001","description":"Walking exercise test (procedure)","category":"procedures"}
+{"id":"3336700","code":"3336700","description":"Coronary angiography (procedure)","category":"procedures"}
+{"id":"34043003","code":"34043003","description":"Dental consultation and report (procedure)","category":"procedures"}
+{"id":"313077009","code":"313077009","description":"Human immunodeficiency virus counseling (procedure)","category":"procedures"}
+{"id":"122548005","code":"122548005","description":"Biopsy of breast (procedure)","category":"procedures"}
+{"id":"268425006","code":"268425006","description":"Pelvis X-ray","category":"procedures"}
+{"id":"762998009","code":"762998009","description":"Assessment using New York Heart Association Classification (procedure)","category":"procedures"}
+{"id":"409066002","code":"409066002","description":"Education  guidance and counseling (procedure)","category":"procedures"}
+{"id":"180207008","code":"180207008","description":"Intravenous blood transfusion of packed cells (procedure)","category":"procedures"}
+{"id":"76601001","code":"76601001","description":"Intramuscular injection","category":"procedures"}
+{"id":"241055006","code":"241055006","description":"Mammogram - symptomatic (procedure)","category":"procedures"}
+{"id":"444260001","code":"444260001","description":"20 Gene mutation test","category":"procedures"}
+{"id":"229064008","code":"229064008","description":"Movement therapy (regime/therapy)","category":"procedures"}
+{"id":"228557008","code":"228557008","description":"Cognitive and behavioral therapy (regime/therapy)","category":"procedures"}
+{"id":"3457005","code":"3457005","description":"Patient referral (procedure)","category":"procedures"}
+{"id":"24623002","code":"24623002","description":"Screening mammography (procedure)","category":"procedures"}
+{"id":"10383002","code":"10383002","description":"Counseling for termination of pregnancy","category":"procedures"}
+{"id":"392091000","code":"392091000","description":"Care regimes assessment (procedure)","category":"procedures"}
+{"id":"733863009","code":"733863009","description":"Assessment of readiness for self-management (procedure)","category":"procedures"}
+{"id":"90226004","code":"90226004","description":"Cytopathology procedure  preparation of smear  genital source (procedure)","category":"procedures"}
+{"id":"288086009","code":"288086009","description":"Suture open wound","category":"procedures"}
+{"id":"65546002","code":"65546002","description":"Extraction of wisdom tooth","category":"procedures"}
+{"id":"225386006","code":"225386006","description":"Pre-discharge assessment (procedure)","category":"procedures"}
+{"id":"312681000","code":"312681000","description":"Bone density scan (procedure)","category":"procedures"}
+{"id":"710839006","code":"710839006","description":"Assessment of cardiac status using monitoring device (procedure)","category":"procedures"}
+{"id":"104308009","code":"104308009","description":"Serologic test for Toxoplasma gondii (procedure)","category":"procedures"}
+{"id":"315124004","code":"315124004","description":"Human immunodeficiency virus viral load (procedure)","category":"procedures"}
+{"id":"69031006","code":"69031006","description":"Excision of breast tissue (procedure)","category":"procedures"}
+{"id":"25656009","code":"25656009","description":"Physical examination  complete (procedure)","category":"procedures"}
+{"id":"306206005","code":"306206005","description":"Referral to service (procedure)","category":"procedures"}
+{"id":"373786007","code":"373786007","description":"Reasons for treatment delay (finding)","category":"procedures"}
+{"id":"52734007","code":"52734007","description":"Total replacement of hip","category":"procedures"}
+{"id":"305340004","code":"305340004","description":"Admission to long stay hospital","category":"procedures"}
+{"id":"167271000","code":"167271000","description":"Urine protein test","category":"procedures"}
+{"id":"392247006","code":"392247006","description":"Insertion of catheter into artery (procedure)","category":"procedures"}
+{"id":"23426006","code":"23426006","description":"Measurement of respiratory function (procedure)","category":"procedures"}
+{"id":"169230002","code":"169230002","description":"Ultrasound scan for fetal viability","category":"procedures"}
+{"id":"233174007","code":"233174007","description":"Cardiac pacemaker procedure (procedure)","category":"procedures"}
+{"id":"274031008","code":"274031008","description":"Rectal polypectomy","category":"procedures"}
+{"id":"165829005","code":"165829005","description":"Gonorrhea infection titer test (procedure)","category":"procedures"}
+{"id":"165197003","code":"165197003","description":"Diagnostic assessment (procedure)","category":"procedures"}
+{"id":"370789001","code":"370789001","description":"Development of individualized plan of care (procedure)","category":"procedures"}
+{"id":"237001001","code":"237001001","description":"Augmentation of labor","category":"procedures"}
+{"id":"241615005","code":"241615005","description":"Magnetic resonance imaging of breast (procedure)","category":"procedures"}
+{"id":"229069003","code":"229069003","description":"Posture training (procedure)","category":"procedures"}
+{"id":"412809002","code":"412809002","description":"Viral hepatitis screening test (procedure)","category":"procedures"}
+{"id":"268556000","code":"268556000","description":"Urine screening for glucose","category":"procedures"}
+{"id":"16335031000119103","code":"16335031000119103","description":"High resolution computed tomography of chest without contrast (procedure)","category":"procedures"}
+{"id":"79733001","code":"79733001","description":"Amputation of left leg","category":"procedures"}
+{"id":"1225002","code":"1225002","description":"Upper arm X-ray","category":"procedures"}
+{"id":"51116004","code":"51116004","description":"Passive immunization (procedure)","category":"procedures"}
+{"id":"711069006","code":"711069006","description":"Coordination of care plan (procedure)","category":"procedures"}
+{"id":"387685009","code":"387685009","description":"Surgical manipulation of shoulder joint","category":"procedures"}
+{"id":"699253003","code":"699253003","description":"Surgical manipulation of joint of knee","category":"procedures"}
+{"id":"183976008","code":"183976008","description":"Operative procedure planned (situation)","category":"procedures"}
+{"id":"180030006","code":"180030006","description":"Amputation of right foot","category":"procedures"}
+{"id":"763302001","code":"763302001","description":"Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure)","category":"procedures"}
+{"id":"9564003","code":"9564003","description":"Complete blood count with white cell differential  automated (procedure)","category":"procedures"}
+{"id":"5880005","code":"5880005","description":"Physical examination procedure (procedure)","category":"procedures"}
+{"id":"103750000","code":"103750000","description":"Sleep apnea assessment (procedure)","category":"procedures"}
+{"id":"80146002","code":"80146002","description":"Appendectomy","category":"procedures"}
+{"id":"122460008","code":"122460008","description":"Reexploration procedure (procedure)","category":"procedures"}
+{"id":"446573003","code":"446573003","description":"Continuous positive airway pressure titration (procedure)","category":"procedures"}
+{"id":"313660005","code":"313660005","description":"Absolute CD4 count procedure (procedure)","category":"procedures"}
+{"id":"90226004","code":"90226004","description":"Cytopathology procedure  preparation of smear  genital source","category":"procedures"}
+{"id":"118001005","code":"118001005","description":"Streptococcus pneumoniae group B antigen assay","category":"procedures"}
+{"id":"409023009","code":"409023009","description":"Professional / ancillary services care (regime/therapy)","category":"procedures"}
+{"id":"37729005","code":"37729005","description":"Patient transfer  in-hospital (procedure)","category":"procedures"}
+{"id":"183519002","code":"183519002","description":"Referral to cardiology service (procedure)","category":"procedures"}
+{"id":"66348005","code":"66348005","description":"Childbirth","category":"procedures"}
+{"id":"104435004","code":"104435004","description":"Screening for occult blood in feces (procedure)","category":"procedures"}
+{"id":"90470006","code":"90470006","description":"Prostatectomy","category":"procedures"}
+{"id":"303653007","code":"303653007","description":"Computed tomography of head (procedure)","category":"procedures"}
+{"id":"44608003","code":"44608003","description":"Blood group typing (procedure)","category":"procedures"}
+{"id":"269828009","code":"269828009","description":"Syphilis infectious titer test (procedure)","category":"procedures"}
+{"id":"271442007","code":"271442007","description":"Fetal anatomy study","category":"procedures"}
+{"id":"68254000","code":"68254000","description":"Removal of intrauterine device","category":"procedures"}
+{"id":"183450002","code":"183450002","description":"Admission to burn unit","category":"procedures"}
+{"id":"308283009","code":"308283009","description":"Discharge from hospital (procedure)","category":"procedures"}
+{"id":"252160004","code":"252160004","description":"Standard pregnancy test","category":"procedures"}
+{"id":"252480006","code":"252480006","description":"Simple walk test (procedure)","category":"procedures"}
+{"id":"162676008","code":"162676008","description":"Brief general examination (procedure)","category":"procedures"}
+{"id":"15081005","code":"15081005","description":"Pulmonary rehabilitation (regime/therapy)","category":"procedures"}
+{"id":"65677008","code":"65677008","description":"Pulmonary catheterization with Swan-Ganz catheter (procedure)","category":"procedures"}
+{"id":"709979004","code":"709979004","description":"Doppler ultrasonography of artery (procedure)","category":"procedures"}
+{"id":"386516004","code":"386516004","description":"Anticipatory guidance (procedure)","category":"procedures"}
+{"id":"169553002","code":"169553002","description":"Insertion of subcutaneous contraceptive","category":"procedures"}
+{"id":"866148006","code":"866148006","description":"Screening for domestic abuse (procedure)","category":"procedures"}
+{"id":"169690007","code":"169690007","description":"Rubella screening","category":"procedures"}
+{"id":"225297008","code":"225297008","description":"Care planning and problem solving actions (procedure)","category":"procedures"}
+{"id":"274804006","code":"274804006","description":"Evaluation of uterine fundal height","category":"procedures"}
+{"id":"33367005","code":"33367005","description":"Angiography of coronary artery (procedure)","category":"procedures"}
+{"id":"312853008","code":"312853008","description":"Medical records review (procedure)","category":"procedures"}
+{"id":"310861008","code":"310861008","description":"Chlamydia antigen test","category":"procedures"}
+{"id":"171128005","code":"171128005","description":"Venereal disease screening (procedure)","category":"procedures"}
+{"id":"431182000","code":"431182000","description":"Placing subject in prone position (procedure)","category":"procedures"}
+{"id":"60027007","code":"60027007","description":"Radiography of wrist (procedure)","category":"procedures"}
+{"id":"710824005","code":"710824005","description":"Assessment of health and social care needs (procedure)","category":"procedures"}
+{"id":"418023006","code":"418023006","description":"Computed tomography of chest  abdomen and pelvis (procedure)","category":"procedures"}
+{"id":"243063003","code":"243063003","description":"Postoperative procedure education (procedure)","category":"procedures"}
+{"id":"180325003","code":"180325003","description":"Direct current cardioversion (procedure)","category":"procedures"}
+{"id":"385781007","code":"385781007","description":"Home health aide service (regime/therapy)","category":"procedures"}
+{"id":"762993000","code":"762993000","description":"Assessment using Morse Fall Scale (procedure)","category":"procedures"}
+{"id":"275833003","code":"275833003","description":"AFP test - antenatal","category":"procedures"}
+{"id":"223495004","code":"223495004","description":"Preparation of patient for procedure (regime/therapy)","category":"procedures"}
+{"id":"399208008","code":"399208008","description":"Plain chest X-ray (procedure)","category":"procedures"}
+{"id":"232965003","code":"232965003","description":"Implantation of ventricular assist device (procedure)","category":"procedures"}
+{"id":"110467000","code":"110467000","description":"Pre-surgery testing (procedure)","category":"procedures"}
+{"id":"423475008","code":"423475008","description":"Heart failure education (procedure)","category":"procedures"}
+{"id":"232717009","code":"232717009","description":"Coronary artery bypass grafting (procedure)","category":"procedures"}
+{"id":"52052004","code":"52052004","description":"Rehabilitation therapy (regime/therapy)","category":"procedures"}
+{"id":"290045001","code":"290045001","description":"Kitchen practice","category":"procedures"}
+{"id":"86964003","code":"86964003","description":"Sweat Test","category":"procedures"}
+{"id":"23426006","code":"23426006","description":"Pulmonary Function Test","category":"procedures"}
+{"id":"736254008","code":"736254008","description":"Psychiatry care plan","category":"careplans"}
+{"id":"737567002","code":"737567002","description":"Major surgery care management (procedure)","category":"careplans"}
+{"id":"736252007","code":"736252007","description":"Cancer care plan","category":"careplans"}
+{"id":"781087000","code":"781087000","description":"Medical care (regime/therapy)","category":"careplans"}
+{"id":"737434004","code":"737434004","description":"Major depressive disorder clinical management plan","category":"careplans"}
+{"id":"386490009","code":"386490009","description":"Urinary retention care (regime/therapy)","category":"careplans"}
+{"id":"53950000","code":"53950000","description":"Respiratory therapy","category":"careplans"}
+{"id":"386522008","code":"386522008","description":"Overactivity/inattention behavior management","category":"careplans"}
+{"id":"386257007","code":"386257007","description":"Dementia management","category":"careplans"}
+{"id":"134435003","code":"134435003","description":"Routine antenatal care","category":"careplans"}
+{"id":"736372004","code":"736372004","description":"Discharge care plan (record artifact)","category":"careplans"}
+{"id":"737471002","code":"737471002","description":"Minor surgery care management (procedure)","category":"careplans"}
+{"id":"735321000","code":"735321000","description":"Surgical inpatient care plan (record artifact)","category":"careplans"}
+{"id":"718347000","code":"718347000","description":"Mental health care plan (record artifact)","category":"careplans"}
+{"id":"736376001","code":"736376001","description":"Infectious disease care plan (record artifact)","category":"careplans"}
+{"id":"384758001","code":"384758001","description":"Self-care interventions (procedure)","category":"careplans"}
+{"id":"385691007","code":"385691007","description":"Fracture care","category":"careplans"}
+{"id":"133901003","code":"133901003","description":"Burn care","category":"careplans"}
+{"id":"735984001","code":"735984001","description":"Heart failure self management plan","category":"careplans"}
+{"id":"75162002","code":"75162002","description":"Spinal cord injury rehabilitation","category":"careplans"}
+{"id":"699728000","code":"699728000","description":"Asthma self management","category":"careplans"}
+{"id":"698360004","code":"698360004","description":"Diabetes self management plan","category":"careplans"}
+{"id":"443402002","code":"443402002","description":"Lifestyle education regarding hypertension","category":"careplans"}
+{"id":"276239002","code":"276239002","description":"Therapy (regime/therapy)","category":"careplans"}
+{"id":"773513001","code":"773513001","description":"Physiotherapy care plan (record artifact)","category":"careplans"}
+{"id":"170836005","code":"170836005","description":"Allergic disorder monitoring","category":"careplans"}
+{"id":"182964004","code":"182964004","description":"Terminal care","category":"careplans"}
+{"id":"395082007","code":"395082007","description":"Cancer care plan","category":"careplans"}
+{"id":"412776001","code":"412776001","description":"Chronic obstructive pulmonary disease clinical management plan","category":"careplans"}
+{"id":"718361005","code":"718361005","description":"Weight management program","category":"careplans"}
+{"id":"711282006","code":"711282006","description":"Skin condition care","category":"careplans"}
+{"id":"734163000","code":"734163000","description":"Care Plan","category":"careplans"}
+{"id":"703040004","code":"703040004","description":"Agreeing on diabetes care plan","category":"careplans"}
+{"id":"736690008","code":"736690008","description":"Dialysis care plan (record artifact)","category":"careplans"}
+{"id":"47387005","code":"47387005","description":"Head injury rehabilitation","category":"careplans"}
+{"id":"736353004","code":"736353004","description":"Inpatient care plan (record artifact)","category":"careplans"}
+{"id":"734163000","code":"734163000","description":"Care plan (record artifact)","category":"careplans"}
+{"id":"736285004","code":"736285004","description":"Hyperlipidemia clinical management plan","category":"careplans"}
+{"id":"183401008","code":"183401008","description":"Anti-suicide psychotherapy","category":"careplans"}
+{"id":"225358003","code":"225358003","description":"Wound care","category":"careplans"}
+{"id":"718347000","code":"718347000","description":"Mental health care plan","category":"careplans"}
+{"id":"408869004","code":"408869004","description":"Musculoskeletal care","category":"careplans"}
+{"id":"773593000","code":"773593000","description":"Urology care plan (record artifact)","category":"careplans"}
+{"id":"389082000","code":"389082000","description":"Constipation Care (regime/therapy)","category":"careplans"}
+{"id":"115","code":"115","description":"Tdap","category":"immunizations"}
+{"id":"52","code":"52","description":"Hep A  adult","category":"immunizations"}
+{"id":"10","code":"10","description":"IPV","category":"immunizations"}
+{"id":"187","code":"187","description":"zoster vaccine recombinant","category":"immunizations"}
+{"id":"114","code":"114","description":"meningococcal MCV4P","category":"immunizations"}
+{"id":"114","code":"114","description":"meningococcal polysaccharide (groups A  C  Y and W-135) diphtheria toxoid conjugate vaccine (MCV4P)","category":"immunizations"}
+{"id":"121","code":"121","description":"zoster vaccine  live","category":"immunizations"}
+{"id":"140","code":"140","description":"Influenza  seasonal  injectable  preservative free","category":"immunizations"}
+{"id":"33","code":"33","description":"pneumococcal polysaccharide vaccine  23 valent","category":"immunizations"}
+{"id":"212","code":"212","description":"SARS-COV-2 (COVID-19) vaccine  vector non-replicating  recombinant spike protein-Ad26  preservative free  0.5 mL","category":"immunizations"}
+{"id":"208","code":"208","description":"SARS-COV-2 (COVID-19) vaccine  mRNA  spike protein  LNP  preservative free  30 mcg/0.3mL dose","category":"immunizations"}
+{"id":"133","code":"133","description":"Pneumococcal conjugate PCV 13","category":"immunizations"}
+{"id":"03","code":"03","description":"MMR","category":"immunizations"}
+{"id":"21","code":"21","description":"varicella","category":"immunizations"}
+{"id":"08","code":"08","description":"Hep B  adolescent or pediatric","category":"immunizations"}
+{"id":"113","code":"113","description":"Td (adult)  5 Lf tetanus toxoid  preservative free  adsorbed","category":"immunizations"}
+{"id":"119","code":"119","description":"rotavirus  monovalent","category":"immunizations"}
+{"id":"133","code":"133","description":"pneumococcal conjugate vaccine  13 valent","category":"immunizations"}
+{"id":"62","code":"62","description":"HPV  quadrivalent","category":"immunizations"}
+{"id":"20","code":"20","description":"DTaP","category":"immunizations"}
+{"id":"207","code":"207","description":"SARS-COV-2 (COVID-19) vaccine  mRNA  spike protein  LNP  preservative free  100 mcg/0.5mL dose","category":"immunizations"}
+{"id":"43","code":"43","description":"Hep B  adult","category":"immunizations"}
+{"id":"49","code":"49","description":"Hib (PRP-OMP)","category":"immunizations"}
+{"id":"115","code":"115","description":"tetanus toxoid  reduced diphtheria toxoid  and acellular pertussis vaccine  adsorbed","category":"immunizations"}
+{"id":"83","code":"83","description":"Hep A  ped/adol  2 dose","category":"immunizations"}
+{"id":"854905","code":"854905","description":"bisoprolol fumarate 5 MG Oral Tablet","category":"medications"}
+{"id":"1114085","code":"1114085","description":"100 ML zoledronic acid 0.04 MG/ML Injection","category":"medications"}
+{"id":"751616","code":"751616","description":"nebivolol 10 MG Oral Tablet [Bystolic]","category":"medications"}
+{"id":"261962","code":"261962","description":"ramipril 10 MG Oral Capsule","category":"medications"}
+{"id":"349200","code":"349200","description":"valsartan 320 MG Oral Tablet","category":"medications"}
+{"id":"1605257","code":"1605257","description":"Liletta 52 MG Intrauterine System","category":"medications"}
+{"id":"856987","code":"856987","description":"Acetaminophen 300 MG / Hydrocodone Bitartrate 5 MG Oral Tablet","category":"medications"}
+{"id":"106892","code":"106892","description":"insulin isophane  human 70 UNT/ML / insulin  regular  human 30 UNT/ML Injectable Suspension [Humulin]","category":"medications"}
+{"id":"1870230","code":"1870230","description":"NDA020800 0.3 ML Epinephrine 1 MG/ML Auto-Injector","category":"medications"}
+{"id":"200285","code":"200285","description":"hydrochlorothiazide 12.5 MG / valsartan 160 MG Oral Tablet","category":"medications"}
+{"id":"1049221","code":"1049221","description":"Acetaminophen 325 MG / Oxycodone Hydrochloride 5 MG Oral Tablet","category":"medications"}
+{"id":"200031","code":"200031","description":"carvedilol 6.25 MG Oral Tablet","category":"medications"}
+{"id":"197380","code":"197380","description":"atenolol 25 MG Oral Tablet","category":"medications"}
+{"id":"898719","code":"898719","description":"benazepril hydrochloride 40 MG Oral Tablet","category":"medications"}
+{"id":"1599803","code":"1599803","description":"24 HR Donepezil hydrochloride 10 MG / Memantine hydrochloride 28 MG Extended Release Oral Capsule","category":"medications"}
+{"id":"314077","code":"314077","description":"lisinopril 20 MG Oral Tablet","category":"medications"}
+{"id":"351875","code":"351875","description":"72 HR Scopolamine 0.0139 MG/HR Transdermal System [Transdermal Scop]","category":"medications"}
+{"id":"483438","code":"483438","description":"pregabalin 100 MG Oral Capsule","category":"medications"}
+{"id":"617320","code":"617320","description":"atorvastatin 40 MG Oral Tablet [Lipitor]","category":"medications"}
+{"id":"259255","code":"259255","description":"atorvastatin 80 MG Oral Tablet","category":"medications"}
+{"id":"309097","code":"309097","description":"Cefuroxime 250 MG Oral Tablet","category":"medications"}
+{"id":"310385","code":"310385","description":"FLUoxetine 20 MG Oral Capsule","category":"medications"}
+{"id":"979485","code":"979485","description":"losartan potassium 25 MG Oral Tablet","category":"medications"}
+{"id":"308136","code":"308136","description":"amLODIPine 2.5 MG Oral Tablet","category":"medications"}
+{"id":"905269","code":"905269","description":"Trihexyphenidyl Hydrochloride 2 MG Oral Tablet","category":"medications"}
+{"id":"866427","code":"866427","description":"24 HR metoprolol succinate 25 MG Extended Release Oral Tablet","category":"medications"}
+{"id":"349201","code":"349201","description":"valsartan 160 MG Oral Tablet","category":"medications"}
+{"id":"1656356","code":"1656356","description":"sacubitril 97 MG / valsartan 103 MG Oral Tablet","category":"medications"}
+{"id":"835603","code":"835603","description":"tramadol hydrochloride 50 MG Oral Tablet","category":"medications"}
+{"id":"1732136","code":"1732136","description":"1 ML Morphine Sulfate 5 MG/ML Injection","category":"medications"}
+{"id":"200064","code":"200064","description":"letrozole 2.5 MG Oral Tablet","category":"medications"}
+{"id":"859749","code":"859749","description":"rosuvastatin calcium 10 MG Oral Tablet [Crestor]","category":"medications"}
+{"id":"897122","code":"897122","description":"3 ML liraglutide 6 MG/ML Pen Injector","category":"medications"}
+{"id":"309362","code":"309362","description":"clopidogrel 75 MG Oral Tablet","category":"medications"}
+{"id":"313185","code":"313185","description":"Tacrine 10 MG Oral Capsule","category":"medications"}
+{"id":"751905","code":"751905","description":"Trinessa 28 Day Pack","category":"medications"}
+{"id":"854235","code":"854235","description":"0.4 ML Enoxaparin sodium 100 MG/ML Prefilled Syringe","category":"medications"}
+{"id":"999999","code":"999999","description":"Aviptadil Infusion","category":"medications"}
+{"id":"197905","code":"197905","description":"lovastatin 40 MG Oral Tablet","category":"medications"}
+{"id":"351109","code":"351109","description":"budesonide 0.25 MG/ML Inhalation Suspension","category":"medications"}
+{"id":"205326","code":"205326","description":"lisinopril 30 MG Oral Tablet","category":"medications"}
+{"id":"744842","code":"744842","description":"raltegravir 400 MG Oral Tablet","category":"medications"}
+{"id":"562251","code":"562251","description":"Amoxicillin 250 MG / Clavulanate 125 MG Oral Tablet","category":"medications"}
+{"id":"197884","code":"197884","description":"lisinopril 40 MG Oral Tablet","category":"medications"}
+{"id":"312615","code":"312615","description":"predniSONE 20 MG Oral Tablet","category":"medications"}
+{"id":"748879","code":"748879","description":"Levora 0.15/30 28 Day Pack","category":"medications"}
+{"id":"1728805","code":"1728805","description":"2 ML morphine sulfate 1 MG/ML Injection","category":"medications"}
+{"id":"866412","code":"866412","description":"24 HR metoprolol succinate 100 MG Extended Release Oral Tablet","category":"medications"}
+{"id":"197381","code":"197381","description":"atenolol 50 MG Oral Tablet","category":"medications"}
+{"id":"1534809","code":"1534809","description":"168 HR Ethinyl Estradiol 0.00146 MG/HR / norelgestromin 0.00625 MG/HR Transdermal System","category":"medications"}
+{"id":"861467","code":"861467","description":"Meperidine Hydrochloride 50 MG Oral Tablet","category":"medications"}
+{"id":"858817","code":"858817","description":"enalapril maleate 10 MG Oral Tablet","category":"medications"}
+{"id":"997501","code":"997501","description":"Fexofenadine hydrochloride 60 MG Oral Tablet","category":"medications"}
+{"id":"238100","code":"238100","description":"Lorazepam 2 MG/ML Injectable Solution","category":"medications"}
+{"id":"198039","code":"198039","description":"nitroglycerin 0.4 MG Sublingual Tablet","category":"medications"}
+{"id":"226719","code":"226719","description":"Etoposide 100 MG Injection","category":"medications"}
+{"id":"198405","code":"198405","description":"Ibuprofen 100 MG Oral Tablet","category":"medications"}
+{"id":"1803932","code":"1803932","description":"Leucovorin 100 MG Injection","category":"medications"}
+{"id":"198240","code":"198240","description":"Tamoxifen 10 MG Oral Tablet","category":"medications"}
+{"id":"856987","code":"856987","description":"Acetaminophen 300 MG / HYDROcodone Bitartrate 5 MG Oral Tablet","category":"medications"}
+{"id":"206905","code":"206905","description":"Ibuprofen 400 MG Oral Tablet [Ibu]","category":"medications"}
+{"id":"242969","code":"242969","description":"4 ML norepinephrine 1 MG/ML Injection","category":"medications"}
+{"id":"1000126","code":"1000126","description":"1 ML medroxyPROGESTERone acetate 150 MG/ML Injection","category":"medications"}
+{"id":"665078","code":"665078","description":"Loratadine 5 MG Chewable Tablet","category":"medications"}
+{"id":"197379","code":"197379","description":"atenolol 100 MG Oral Tablet","category":"medications"}
+{"id":"1737466","code":"1737466","description":"100 ML tirofiban 0.05 MG/ML Injection","category":"medications"}
+{"id":"197886","code":"197886","description":"hydrochlorothiazide 12.5 MG / lisinopril 20 MG Oral Tablet","category":"medications"}
+{"id":"314076","code":"314076","description":"lisinopril 10 MG Oral Tablet","category":"medications"}
+{"id":"313988","code":"313988","description":"Furosemide 40 MG Oral Tablet","category":"medications"}
+{"id":"896019","code":"896019","description":"60 ACTUAT fluticasone propionate 0.05 MG/ACTUAT Dry Powder Inhaler [Flovent]","category":"medications"}
+{"id":"2119714","code":"2119714","description":"5 ML hyaluronidase-oysk 2000 UNT/ML / trastuzumab 120 MG/ML Injection","category":"medications"}
+{"id":"1873983","code":"1873983","description":"ribociclib 200 MG Oral Tablet","category":"medications"}
+{"id":"597730","code":"597730","description":"lopinavir 200 MG / ritonavir 50 MG Oral Tablet","category":"medications"}
+{"id":"904419","code":"904419","description":"Alendronic acid 10 MG Oral Tablet","category":"medications"}
+{"id":"583214","code":"583214","description":"Paclitaxel 100 MG Injection","category":"medications"}
+{"id":"212446","code":"212446","description":"Azithromycin 250mg","category":"medications"}
+{"id":"198014","code":"198014","description":"Naproxen 500 MG Oral Tablet","category":"medications"}
+{"id":"311989","code":"311989","description":"Nitrofurantoin 5 MG/ML Oral Suspension","category":"medications"}
+{"id":"1809104","code":"1809104","description":"5 ML SUFentanil 0.05 MG/ML Injection","category":"medications"}
+{"id":"999999","code":"999999","description":"CM4620 Injectable Emulsion","category":"medications"}
+{"id":"308182","code":"308182","description":"Amoxicillin 250 MG Oral Capsule","category":"medications"}
+{"id":"859753","code":"859753","description":"rosuvastatin calcium 20 MG Oral Tablet [Crestor]","category":"medications"}
+{"id":"686924","code":"686924","description":"carvedilol 3.125 MG Oral Tablet","category":"medications"}
+{"id":"1049504","code":"1049504","description":"Abuse-Deterrent 12 HR Oxycodone Hydrochloride 10 MG Extended Release Oral Tablet [Oxycontin]","category":"medications"}
+{"id":"904458","code":"904458","description":"pravastatin sodium 10 MG Oral Tablet","category":"medications"}
+{"id":"542347","code":"542347","description":"isoflurane 99.9 % Inhalation Solution","category":"medications"}
+{"id":"2123111","code":"2123111","description":"NDA020503 200 ACTUAT Albuterol 0.09 MG/ACTUAT Metered Dose Inhaler","category":"medications"}
+{"id":"617312","code":"617312","description":"atorvastatin 10 MG Oral Tablet","category":"medications"}
+{"id":"979485","code":"979485","description":"Losartan Potassium 25 MG Oral Tablet","category":"medications"}
+{"id":"311372","code":"311372","description":"Loratadine 10 MG Oral Tablet","category":"medications"}
+{"id":"312961","code":"312961","description":"Simvastatin 20 MG Oral Tablet","category":"medications"}
+{"id":"1659131","code":"1659131","description":"piperacillin 2000 MG / tazobactam 250 MG Injection","category":"medications"}
+{"id":"904467","code":"904467","description":"pravastatin sodium 20 MG Oral Tablet","category":"medications"}
+{"id":"308971","code":"308971","description":"carbamazepine 20 MG/ML Oral Suspension [Tegretol]","category":"medications"}
+{"id":"313002","code":"313002","description":"Sodium Chloride 9 MG/ML Injectable Solution","category":"medications"}
+{"id":"866511","code":"866511","description":"metoprolol tartrate 100 MG Oral Tablet","category":"medications"}
+{"id":"1433873","code":"1433873","description":"dolutegravir 50 MG Oral Tablet","category":"medications"}
+{"id":"1740467","code":"1740467","description":"2 ML Ondansetron 2 MG/ML Injection","category":"medications"}
+{"id":"997223","code":"997223","description":"Donepezil hydrochloride 10 MG Oral Tablet","category":"medications"}
+{"id":"141918","code":"141918","description":"Terfenadine 60 MG Oral Tablet","category":"medications"}
+{"id":"898690","code":"898690","description":"benazepril hydrochloride 20 MG Oral Tablet","category":"medications"}
+{"id":"245314","code":"245314","description":"Albuterol 5 MG/ML Inhalation Solution","category":"medications"}
+{"id":"866514","code":"866514","description":"metoprolol tartrate 50 MG Oral Tablet","category":"medications"}
+{"id":"727762","code":"727762","description":"5 ML fulvestrant 50 MG/ML Prefilled Syringe","category":"medications"}
+{"id":"200032","code":"200032","description":"carvedilol 12.5 MG Oral Tablet","category":"medications"}
+{"id":"1998774","code":"1998774","description":"Breath-Actuated 120 ACTUAT beclomethasone dipropionate 0.04 MG/ACTUAT Metered Dose Inhaler [Qvar]","category":"medications"}
+{"id":"1049630","code":"1049630","description":"diphenhydrAMINE Hydrochloride 25 MG Oral Tablet","category":"medications"}
+{"id":"312961","code":"312961","description":"simvastatin 20 MG Oral Tablet","category":"medications"}
+{"id":"1657981","code":"1657981","description":"20 ML tocilizumab 20 MG/ML Injection","category":"medications"}
+{"id":"1856546","code":"1856546","description":"Kyleena 19.5 MG Intrauterine System","category":"medications"}
+{"id":"197378","code":"197378","description":"Astemizole 10 MG Oral Tablet","category":"medications"}
+{"id":"1190766","code":"1190766","description":"atropine sulfate 0.31 MG/ML Ophthalmic Solution (used Sublingual)","category":"medications"}
+{"id":"212033","code":"212033","description":"aspirin 325 MG Oral Tablet","category":"medications"}
+{"id":"596926","code":"596926","description":"duloxetine 20 MG Delayed Release Oral Capsule","category":"medications"}
+{"id":"349477","code":"349477","description":"efavirenz 600 MG Oral Tablet","category":"medications"}
+{"id":"198440","code":"198440","description":"Acetaminophen 500 MG Oral Tablet","category":"medications"}
+{"id":"1736776","code":"1736776","description":"10 ML oxaliplatin 5 MG/ML Injection","category":"medications"}
+{"id":"745752","code":"745752","description":"NDA021457 200 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler [ProAir]","category":"medications"}
+{"id":"200346","code":"200346","description":"Cefdinir","category":"medications"}
+{"id":"1665060","code":"1665060","description":"cefazolin 2000 MG Injection","category":"medications"}
+{"id":"896766","code":"896766","description":"labetalol hydrochloride 300 MG Oral Tablet","category":"medications"}
+{"id":"664741","code":"664741","description":"atazanavir 300 MG Oral Capsule","category":"medications"}
+{"id":"979464","code":"979464","description":"hydrochlorothiazide 12.5 MG / losartan potassium 100 MG Oral Tablet","category":"medications"}
+{"id":"1094107","code":"1094107","description":"Phenazopyridine hydrochloride 100 MG Oral Tablet","category":"medications"}
+{"id":"1649987","code":"1649987","description":"doxycycline hyclate 100 MG","category":"medications"}
+{"id":"856980","code":"856980","description":"Acetaminophen/Hydrocodone","category":"medications"}
+{"id":"833135","code":"833135","description":"Milnacipran hydrochloride 100 MG Oral Tablet","category":"medications"}
+{"id":"252559","code":"252559","description":"budesonide 0.5 MG/ML Inhalation Suspension","category":"medications"}
+{"id":"979480","code":"979480","description":"losartan potassium 100 MG Oral Tablet","category":"medications"}
+{"id":"197904","code":"197904","description":"lovastatin 20 MG Oral Tablet","category":"medications"}
+{"id":"617314","code":"617314","description":"atorvastatin 10 MG Oral Tablet [Lipitor]","category":"medications"}
+{"id":"904475","code":"904475","description":"pravastatin sodium 40 MG Oral Tablet","category":"medications"}
+{"id":"727711","code":"727711","description":"0.67 ML anakinra 149 MG/ML Prefilled Syringe","category":"medications"}
+{"id":"834061","code":"834061","description":"Penicillin V Potassium 250 MG Oral Tablet","category":"medications"}
+{"id":"1601380","code":"1601380","description":"palbociclib 100 MG Oral Capsule","category":"medications"}
+{"id":"349094","code":"349094","description":"budesonide 0.125 MG/ML Inhalation Suspension","category":"medications"}
+{"id":"827075","code":"827075","description":"nebivolol 20 MG Oral Tablet [Bystolic]","category":"medications"}
+{"id":"199885","code":"199885","description":"levofloxacin 500 MG Oral Tablet","category":"medications"}
+{"id":"857005","code":"857005","description":"Acetaminophen 325 MG / HYDROcodone Bitartrate 7.5 MG Oral Tablet","category":"medications"}
+{"id":"311353","code":"311353","description":"lisinopril 2.5 MG Oral Tablet","category":"medications"}
+{"id":"1659149","code":"1659149","description":"Piperacillin 4000 MG / tazobactam 500 MG Injection","category":"medications"}
+{"id":"200345","code":"200345","description":"simvastatin 80 MG Oral Tablet","category":"medications"}
+{"id":"243670","code":"243670","description":"aspirin 81 MG Oral Tablet","category":"medications"}
+{"id":"1014676","code":"1014676","description":"cetirizine hydrochloride 5 MG Oral Tablet","category":"medications"}
+{"id":"204892","code":"204892","description":"clonazePAM 0.25 MG Oral Tablet","category":"medications"}
+{"id":"313212","code":"313212","description":"tenecteplase 50 MG Injection","category":"medications"}
+{"id":"200284","code":"200284","description":"hydrochlorothiazide 12.5 MG / valsartan 80 MG Oral Tablet","category":"medications"}
+{"id":"198188","code":"198188","description":"ramipril 2.5 MG Oral Capsule","category":"medications"}
+{"id":"2563431","code":"2563431","description":"aspirin 81 MG Oral Capsule","category":"medications"}
+{"id":"284215","code":"284215","description":"Clindamycin 300mg","category":"medications"}
+{"id":"1361048","code":"1361048","description":"heparin sodium  porcine 100 UNT/ML Injectable Solution","category":"medications"}
+{"id":"746811","code":"746811","description":"14 ACTUAT mometasone furoate 0.22 MG/ACTUAT Dry Powder Inhaler [Asmanex]","category":"medications"}
+{"id":"198211","code":"198211","description":"simvastatin 40 MG Oral Tablet","category":"medications"}
+{"id":"583214","code":"583214","description":"PACLitaxel 100 MG Injection","category":"medications"}
+{"id":"200243","code":"200243","description":"sevoflurane 1000 MG/ML Inhalation Solution","category":"medications"}
+{"id":"197591","code":"197591","description":"Diazepam 5 MG Oral Tablet","category":"medications"}
+{"id":"597195","code":"597195","description":"Carboplatin 10 MG/ML Injectable Solution","category":"medications"}
+{"id":"245314","code":"245314","description":"albuterol 5 MG/ML Inhalation Solution","category":"medications"}
+{"id":"854252","code":"854252","description":"1 ML Enoxaparin sodium 150 MG/ML Prefilled Syringe","category":"medications"}
+{"id":"351137","code":"351137","description":"albuterol 0.21 MG/ML Inhalation Solution","category":"medications"}
+{"id":"993452","code":"993452","description":"1 ML denosumab 60 MG/ML Prefilled Syringe","category":"medications"}
+{"id":"1043400","code":"1043400","description":"Acetaminophen 21.7 MG/ML / Dextromethorphan Hydrobromide 1 MG/ML / doxylamine succinate 0.417 MG/ML Oral Solution","category":"medications"}
+{"id":"245134","code":"245134","description":"72 HR Fentanyl 0.025 MG/HR Transdermal System","category":"medications"}
+{"id":"861654","code":"861654","description":"pitavastatin calcium 4 MG Oral Tablet [Livalo]","category":"medications"}
+{"id":"1367439","code":"1367439","description":"NuvaRing 0.12/0.015 MG per 24HR 21 Day Vaginal System","category":"medications"}
+{"id":"859419","code":"859419","description":"rosuvastatin calcium 40 MG Oral Tablet","category":"medications"}
+{"id":"898350","code":"898350","description":"amlodipine 2.5 MG / benazepril hydrochloride 10 MG Oral Capsule","category":"medications"}
+{"id":"859751","code":"859751","description":"rosuvastatin calcium 20 MG Oral Tablet","category":"medications"}
+{"id":"1860491","code":"1860491","description":"12 HR Hydrocodone Bitartrate 10 MG Extended Release Oral Capsule","category":"medications"}
+{"id":"1796676","code":"1796676","description":"25 ML protamine sulfate (USP) 10 MG/ML Injection","category":"medications"}
+{"id":"1363309","code":"1363309","description":"Chlorpheniramine Maleate 4 MG Oral Tablet","category":"medications"}
+{"id":"895996","code":"895996","description":"120 ACTUAT fluticasone propionate 0.044 MG/ACTUAT Metered Dose Inhaler [Flovent]","category":"medications"}
+{"id":"205923","code":"205923","description":"1 ML Epoetin Alfa 4000 UNT/ML Injection [Epogen]","category":"medications"}
+{"id":"752899","code":"752899","description":"0.25 ML Leuprolide Acetate 30 MG/ML Prefilled Syringe","category":"medications"}
+{"id":"200095","code":"200095","description":"irbesartan 150 MG Oral Tablet","category":"medications"}
+{"id":"1736854","code":"1736854","description":"Cisplatin 50 MG Injection","category":"medications"}
+{"id":"856535","code":"856535","description":"24 HR propranolol hydrochloride 60 MG Extended Release Oral Capsule","category":"medications"}
+{"id":"198335","code":"198335","description":"sulfamethoxazole 800 MG / trimethoprim 160 MG Oral Tablet","category":"medications"}
+{"id":"1860154","code":"1860154","description":"Abuse-Deterrent 12 HR Oxycodone Hydrochloride 15 MG Extended Release Oral Tablet","category":"medications"}
+{"id":"616830","code":"616830","description":"budesonide 0.125 MG/ML Inhalation Suspension [Pulmicort]","category":"medications"}
+{"id":"896762","code":"896762","description":"labetalol hydrochloride 200 MG Oral Tablet","category":"medications"}
+{"id":"317150","code":"317150","description":"ritonavir 100 MG Oral Capsule","category":"medications"}
+{"id":"311034","code":"311034","description":"insulin  regular  human 100 UNT/ML Injectable Solution","category":"medications"}
+{"id":"200349","code":"200349","description":"100 ML eptifibatide 0.75 MG/ML Injection","category":"medications"}
+{"id":"1014678","code":"1014678","description":"cetirizine hydrochloride 10 MG Oral Tablet","category":"medications"}
+{"id":"1946840","code":"1946840","description":"Verzenio 100 MG Oral Tablet","category":"medications"}
+{"id":"865098","code":"865098","description":"Insulin Lispro 100 UNT/ML Injectable Solution [Humalog]","category":"medications"}
+{"id":"1049221","code":"1049221","description":"Acetaminophen 325 MG / oxyCODONE Hydrochloride 5 MG Oral Tablet","category":"medications"}
+{"id":"1659263","code":"1659263","description":"1 ML heparin sodium  porcine 5000 UNT/ML Injection","category":"medications"}
+{"id":"105585","code":"105585","description":"Methotrexate 2.5 MG Oral Tablet","category":"medications"}
+{"id":"197885","code":"197885","description":"hydrochlorothiazide 12.5 MG / lisinopril 10 MG Oral Tablet","category":"medications"}
+{"id":"979468","code":"979468","description":"hydrochlorothiazide 12.5 MG / losartan potassium 50 MG Oral Tablet","category":"medications"}
+{"id":"746763","code":"746763","description":"NDA020503 200 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler [Proventil]","category":"medications"}
+{"id":"197541","code":"197541","description":"Colchicine 0.6 MG Oral Tablet","category":"medications"}
+{"id":"748856","code":"748856","description":"Yaz 28 Day Pack","category":"medications"}
+{"id":"617311","code":"617311","description":"atorvastatin 40 MG Oral Tablet","category":"medications"}
+{"id":"854908","code":"854908","description":"bisoprolol fumarate 10 MG / hydrochlorothiazide 6.25 MG Oral Tablet","category":"medications"}
+{"id":"310965","code":"310965","description":"Ibuprofen 200 MG Oral Tablet","category":"medications"}
+{"id":"1999667","code":"1999667","description":"bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet","category":"medications"}
+{"id":"351136","code":"351136","description":"albuterol 0.417 MG/ML Inhalation Solution","category":"medications"}
+{"id":"1431987","code":"1431987","description":"24 HR tacrolimus 5 MG Extended Release Oral Capsule","category":"medications"}
+{"id":"141962","code":"141962","description":"Azithromycin 250 MG Oral Capsule","category":"medications"}
+{"id":"199224","code":"199224","description":"anastrozole 1 MG Oral Tablet","category":"medications"}
+{"id":"1734919","code":"1734919","description":"Cyclophosphamide 1000 MG Injection","category":"medications"}
+{"id":"1723208","code":"1723208","description":"10 ML Alfentanil 0.5 MG/ML Injection","category":"medications"}
+{"id":"198031","code":"198031","description":"nicotine 7 MG/Day 24HR Transdermal System","category":"medications"}
+{"id":"996740","code":"996740","description":"Memantine hydrochloride 2 MG/ML Oral Solution","category":"medications"}
+{"id":"311995","code":"311995","description":"NITROFURANTOIN  MACROCRYSTALS 50 MG Oral Capsule","category":"medications"}
+{"id":"999998","code":"999998","description":"Leronlimab 700 MG Injection","category":"medications"}
+{"id":"831533","code":"831533","description":"Errin 28 Day Pack","category":"medications"}
+{"id":"312617","code":"312617","description":"predniSONE 5 MG Oral Tablet","category":"medications"}
+{"id":"108515","code":"108515","description":"1 ML tacrolimus 5 MG/ML Injection","category":"medications"}
+{"id":"859747","code":"859747","description":"rosuvastatin calcium 10 MG Oral Tablet","category":"medications"}
+{"id":"1997015","code":"1997015","description":"bivalirudin 50 ML; 5 MG/ML Injection","category":"medications"}
+{"id":"896209","code":"896209","description":"60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler","category":"medications"}
+{"id":"477045","code":"477045","description":"Chlorpheniramine Maleate 2 MG/ML Oral Solution","category":"medications"}
+{"id":"1807510","code":"1807510","description":"150 ML vancomycin 5 MG/ML Injection","category":"medications"}
+{"id":"312938","code":"312938","description":"Sertraline 100 MG Oral Tablet","category":"medications"}
+{"id":"858813","code":"858813","description":"enalapril maleate 5 MG Oral Tablet","category":"medications"}
+{"id":"313820","code":"313820","description":"Acetaminophen 160 MG Chewable Tablet","category":"medications"}
+{"id":"309362","code":"309362","description":"Clopidogrel 75 MG Oral Tablet","category":"medications"}
+{"id":"1361226","code":"1361226","description":"heparin sodium  porcine 1000 UNT/ML Injectable Solution","category":"medications"}
+{"id":"864706","code":"864706","description":"methadone hydrochloride 10 MG Oral Tablet","category":"medications"}
+{"id":"143975","code":"143975","description":"glycopyrrolate 1.5 MG Oral Tablet [Glycate]","category":"medications"}
+{"id":"312962","code":"312962","description":"simvastatin 5 MG Oral Tablet","category":"medications"}
+{"id":"897685","code":"897685","description":"verapamil hydrochloride 80 MG Oral Tablet","category":"medications"}
+{"id":"705129","code":"705129","description":"Nitroglycerin 0.4 MG/ACTUAT Mucosal Spray","category":"medications"}
+{"id":"1808217","code":"1808217","description":"100 ML Propofol 10 MG/ML Injection","category":"medications"}
+{"id":"896006","code":"896006","description":"120 ACTUAT fluticasone propionate 0.22 MG/ACTUAT Metered Dose Inhaler [Flovent]","category":"medications"}
+{"id":"859424","code":"859424","description":"rosuvastatin calcium 5 MG Oral Tablet","category":"medications"}
+{"id":"966222","code":"966222","description":"Levothyroxine Sodium 0.075 MG Oral Tablet","category":"medications"}
+{"id":"1664463","code":"1664463","description":"24 HR tacrolimus 1 MG Extended Release Oral Tablet","category":"medications"}
+{"id":"1116635","code":"1116635","description":"ticagrelor 90 MG Oral Tablet","category":"medications"}
+{"id":"896001","code":"896001","description":"120 ACTUAT fluticasone propionate 0.11 MG/ACTUAT Metered Dose Inhaler [Flovent]","category":"medications"}
+{"id":"866924","code":"866924","description":"metoprolol tartrate 25 MG Oral Tablet","category":"medications"}
+{"id":"2284960","code":"2284960","description":"remdesivir 100 MG Injection","category":"medications"}
+{"id":"198767","code":"198767","description":"Pancreatin 600 MG Oral Tablet","category":"medications"}
+{"id":"749762","code":"749762","description":"Seasonique 91 Day Pack","category":"medications"}
+{"id":"1659149","code":"1659149","description":"piperacillin 4000 MG / tazobactam 500 MG Injection","category":"medications"}
+{"id":"751623","code":"751623","description":"nebivolol 5 MG Oral Tablet [Bystolic]","category":"medications"}
+{"id":"896758","code":"896758","description":"labetalol hydrochloride 100 MG Oral Tablet","category":"medications"}
+{"id":"1245441","code":"1245441","description":"ezetimibe 10 MG / simvastatin 40 MG Oral Tablet [Vytorin]","category":"medications"}
+{"id":"311700","code":"311700","description":"Midazolam 1 MG/ML Injectable Solution","category":"medications"}
+{"id":"636045","code":"636045","description":"hydrochlorothiazide 25 MG / valsartan 320 MG Oral Tablet","category":"medications"}
+{"id":"1536148","code":"1536148","description":"120 ACTUAT mometasone furoate 0.2 MG/ACTUAT Metered Dose Inhaler [Asmanex]","category":"medications"}
+{"id":"866438","code":"866438","description":"24 HR metoprolol succinate 50 MG Extended Release Oral Tablet [Toprol]","category":"medications"}
+{"id":"310261","code":"310261","description":"exemestane 25 MG Oral Tablet","category":"medications"}
+{"id":"855812","code":"855812","description":"prasugrel 10 MG Oral Tablet","category":"medications"}
+{"id":"859088","code":"859088","description":"NDA020983 200 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler [Ventolin]","category":"medications"}
+{"id":"1437975","code":"1437975","description":"Glycopyrrolate 1.5 MG Oral Tablet [Glycate]","category":"medications"}
+{"id":"860182","code":"860182","description":"rimabotulinumtoxinB 5000 UNT/ML [Myobloc]","category":"medications"}
+{"id":"200096","code":"200096","description":"irbesartan 300 MG Oral Tablet","category":"medications"}
+{"id":"993770","code":"993770","description":"Acetaminophen 300 MG / Codeine Phosphate 15 MG Oral Tablet","category":"medications"}
+{"id":"748962","code":"748962","description":"Camila 28 Day Pack","category":"medications"}
+{"id":"898346","code":"898346","description":"amlodipine 10 MG / benazepril hydrochloride 40 MG Oral Capsule","category":"medications"}
+{"id":"314231","code":"314231","description":"Simvastatin 10 MG Oral Tablet","category":"medications"}
+{"id":"1306292","code":"1306292","description":"cobicistat 150 MG / elvitegravir 150 MG / emtricitabine 200 MG / tenofovir disoproxil fumarate 300 MG Oral Tablet","category":"medications"}
+{"id":"308192","code":"308192","description":"Amoxicillin 500 MG Oral Tablet","category":"medications"}
+{"id":"1049625","code":"1049625","description":"Acetaminophen 325 MG / Oxycodone Hydrochloride 10 MG Oral Tablet [Percocet]","category":"medications"}
+{"id":"1804799","code":"1804799","description":"Alteplase 100 MG Injection","category":"medications"}
+{"id":"241834","code":"241834","description":"cycloSPORINE  modified 100 MG Oral Capsule","category":"medications"}
+{"id":"314203","code":"314203","description":"quinapril 40 MG Oral Tablet","category":"medications"}
+{"id":"1732186","code":"1732186","description":"100 ML Epirubicin Hydrochloride 2 MG/ML Injection","category":"medications"}
+{"id":"1789958","code":"1789958","description":"Dysport botulinum toxin A 300 UNT Injection","category":"medications"}
+{"id":"313782","code":"313782","description":"Acetaminophen 325 MG Oral Tablet","category":"medications"}
+{"id":"197604","code":"197604","description":"Digoxin 0.125 MG Oral Tablet","category":"medications"}
+{"id":"861646","code":"861646","description":"pitavastatin calcium 1 MG Oral Tablet [Livalo]","category":"medications"}
+{"id":"856556","code":"856556","description":"propranolol hydrochloride 60 MG Oral Tablet","category":"medications"}
+{"id":"1721613","code":"1721613","description":"cobicistat 150 MG / elvitegravir 150 MG / emtricitabine 200 MG / tenofovir alafenamide 10 MG Oral Tablet","category":"medications"}
+{"id":"1483744","code":"1483744","description":"Naltrexone hydrochloride 50 MG Oral Tablet","category":"medications"}
+{"id":"866436","code":"866436","description":"24 HR metoprolol succinate 50 MG Extended Release Oral Tablet","category":"medications"}
+{"id":"1747691","code":"1747691","description":"emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Table","category":"medications"}
+{"id":"1790099","code":"1790099","description":"10 ML Doxorubicin Hydrochloride 2 MG/ML Injection","category":"medications"}
+{"id":"349353","code":"349353","description":"hydrochlorothiazide 25 MG / valsartan 160 MG Oral Tablet","category":"medications"}
+{"id":"896027","code":"896027","description":"60 ACTUAT fluticasone propionate 0.25 MG/ACTUAT Dry Powder Inhaler [Flovent]","category":"medications"}
+{"id":"1091392","code":"1091392","description":"Methylphenidate Hydrochloride 20 MG Oral Tablet","category":"medications"}
+{"id":"979492","code":"979492","description":"losartan potassium 50 MG Oral Tablet","category":"medications"}
+{"id":"855332","code":"855332","description":"warfarin sodium 5 MG Oral Tablet","category":"medications"}
+{"id":"197903","code":"197903","description":"lovastatin 10 MG Oral Tablet","category":"medications"}
+{"id":"757594","code":"757594","description":"Jolivette 28 Day Pack","category":"medications"}
+{"id":"197887","code":"197887","description":"hydrochlorothiazide 25 MG / lisinopril 20 MG Oral Tablet","category":"medications"}
+{"id":"1547660","code":"1547660","description":"30 ACTUAT fluticasone furoate 0.1 MG/ACTUAT Dry Powder Inhaler [Arnuity]","category":"medications"}
+{"id":"476556","code":"476556","description":"emtricitabine 200 MG / tenofovir disoproxil fumarate 300 MG Oral Tablet","category":"medications"}
+{"id":"746815","code":"746815","description":"60 ACTUAT mometasone furoate 0.22 MG/ACTUAT Dry Powder Inhaler [Asmanex]","category":"medications"}
+{"id":"1791701","code":"1791701","description":"10 ML Fluorouracil 50 MG/ML Injection","category":"medications"}
+{"id":"1735006","code":"1735006","description":"10 ML Fentanyl 0.05 MG/ML Injection","category":"medications"}
+{"id":"1719286","code":"1719286","description":"10 ML Furosemide 10 MG/ML Injection","category":"medications"}
+{"id":"1000126","code":"1000126","description":"1 ML medroxyprogesterone acetate 150 MG/ML Injection","category":"medications"}
+{"id":"1860480","code":"1860480","description":"1 ML DOCEtaxel 20 MG/ML Injection","category":"medications"}
+{"id":"608139","code":"608139","description":"atomoxetine 100 MG Oral Capsule","category":"medications"}
+{"id":"849574","code":"849574","description":"Naproxen sodium 220 MG Oral Tablet","category":"medications"}
+{"id":"311354","code":"311354","description":"lisinopril 5 MG Oral Tablet","category":"medications"}
+{"id":"310798","code":"310798","description":"Hydrochlorothiazide 25 MG Oral Tablet","category":"medications"}
+{"id":"630208","code":"630208","description":"albuterol 0.83 MG/ML Inhalation Solution","category":"medications"}
+{"id":"643066","code":"643066","description":"efavirenz 600 MG / emtricitabine 200 MG / tenofovir disoproxil fumarate 300 MG Oral Tablet","category":"medications"}
+{"id":"1359269","code":"1359269","description":"darunavir 800 MG Oral Tablet","category":"medications"}
+{"id":"763138","code":"763138","description":"reteplase 10 UNT Injection","category":"medications"}
+{"id":"854916","code":"854916","description":"bisoprolol fumarate 2.5 MG / hydrochlorothiazide 6.25 MG Oral Tablet","category":"medications"}
+{"id":"617310","code":"617310","description":"atorvastatin 20 MG Oral Tablet","category":"medications"}
+{"id":"310436","code":"310436","description":"Galantamine 4 MG Oral Tablet","category":"medications"}
+{"id":"854255","code":"854255","description":"enoxaparin sodium 100 MG/ML Injectable Solution","category":"medications"}
+{"id":"860518","code":"860518","description":"24 HR carvedilol phosphate 20 MG Extended Release Oral Capsule [Coreg]","category":"medications"}
+{"id":"1656346","code":"1656346","description":"sacubitril 24 MG / valsartan 26 MG Oral Tablet [Entresto]","category":"medications"}
+{"id":"845488","code":"845488","description":"ramipril 1.25 MG Oral Capsule","category":"medications"}
+{"id":"402109","code":"402109","description":"fosamprenavir 700 MG Oral Tablet","category":"medications"}
+{"id":"979471","code":"979471","description":"hydrochlorothiazide 25 MG / losartan potassium 100 MG Oral Tablet","category":"medications"}
+{"id":"807283","code":"807283","description":"Mirena 52 MG Intrauterine System","category":"medications"}
+{"id":"2003249","code":"2003249","description":"lamivudine 300 MG / tenofovir disoproxil fumarate 300 MG Oral Tablet","category":"medications"}
+{"id":"1729584","code":"1729584","description":"remifentanil 2 MG Injection","category":"medications"}
+{"id":"856457","code":"856457","description":"propranolol hydrochloride 20 MG Oral Tablet","category":"medications"}
+{"id":"834102","code":"834102","description":"Penicillin V Potassium 500 MG Oral Tablet","category":"medications"}
+{"id":"1234995","code":"1234995","description":"Rocuronium bromide 10 MG/ML Injectable Solution","category":"medications"}
+{"id":"200033","code":"200033","description":"carvedilol 25 MG Oral Tablet","category":"medications"}
+{"id":"209387","code":"209387","description":"Acetaminophen 325 MG Oral Tablet [Tylenol]","category":"medications"}
+{"id":"749196","code":"749196","description":"clopidogrel 300 MG Oral Tablet","category":"medications"}
+{"id":"314231","code":"314231","description":"simvastatin 10 MG Oral Tablet","category":"medications"}
+{"id":"1807513","code":"1807513","description":"vancomycin 1000 MG Injection","category":"medications"}
+{"id":"1664986","code":"1664986","description":"Aztreonam 2000 MG Injection","category":"medications"}
+{"id":"997488","code":"997488","description":"Fexofenadine hydrochloride 30 MG Oral Tablet","category":"medications"}
+{"id":"2001499","code":"2001499","description":"Vitamin B12 5 MG/ML Injectable Solution","category":"medications"}
+{"id":"205532","code":"205532","description":"Pulmozyme (Dornase Alfa)","category":"medications"}
+{"id":"860975","code":"860975","description":"24 HR Metformin hydrochloride 500 MG Extended Release Oral Tablet","category":"medications"}
+{"id":"855332","code":"855332","description":"Warfarin Sodium 5 MG Oral Tablet","category":"medications"}
+{"id":"978950","code":"978950","description":"Natazia 28 Day Pack","category":"medications"}
+{"id":"349199","code":"349199","description":"valsartan 80 MG Oral Tablet","category":"medications"}
+{"id":"351266","code":"351266","description":"buprenorphine 2 MG / naloxone 0.5 MG Sublingual Tablet","category":"medications"}
+{"id":"1998772","code":"1998772","description":"Breath-Actuated 120 ACTUAT beclomethasone dipropionate 0.08 MG/ACTUAT Metered Dose Inhaler [Qvar]","category":"medications"}
+{"id":"562366","code":"562366","description":"desflurane 1000 MG/ML Inhalation Solution","category":"medications"}
+{"id":"389221","code":"389221","description":"Etonogestrel 68 MG Drug Implant","category":"medications"}
+{"id":"310325","code":"310325","description":"ferrous sulfate 325 MG Oral Tablet","category":"medications"}
+{"id":"856519","code":"856519","description":"propranolol hydrochloride 40 MG Oral Tablet","category":"medications"}
+{"id":"106258","code":"106258","description":"Hydrocortisone 10 MG/ML Topical Cream","category":"medications"}
+{"id":"476349","code":"476349","description":"ezetimibe 10 MG / simvastatin 20 MG Oral Tablet","category":"medications"}
+{"id":"243670","code":"243670","description":"Aspirin 81 MG Oral Tablet","category":"medications"}
+{"id":"309845","code":"309845","description":"Diazepam 5 MG/ML Injectable Solution","category":"medications"}
+{"id":"197319","code":"197319","description":"Allopurinol 100 MG Oral Tablet","category":"medications"}
+{"id":"861356","code":"861356","description":"0.8 ML fondaparinux sodium 12.5 MG/ML Prefilled Syringe","category":"medications"}
+{"id":"904481","code":"904481","description":"pravastatin sodium 80 MG Oral Tablet","category":"medications"}
+{"id":"706774004","code":"706774004","description":"Lubricant (physical object)","category":"supplies"}
+{"id":"713779008","code":"713779008","description":"Nitrile examination/treatment glove  non-powdered  sterile (physical object)","category":"supplies"}
+{"id":"431069006","code":"431069006","description":"Packed red blood cells (product)","category":"supplies"}
+{"id":"706226000","code":"706226000","description":"Continuous positive airway pressure/Bilevel positive airway pressure mask (physical object)","category":"supplies"}
+{"id":"704718009","code":"704718009","description":"CPAP/BPAP oral mask (physical object)","category":"supplies"}
+{"id":"126261006","code":"126261006","description":"Human platelets  pooled (product)","category":"supplies"}
+{"id":"61968008","code":"61968008","description":"Syringe  device (physical object)","category":"supplies"}
+{"id":"337388004","code":"337388004","description":"Blood glucose testing strips (physical object)","category":"supplies"}
+{"id":"17102003","code":"17102003","description":"Nasogastric tube  device (physical object)","category":"supplies"}
+{"id":"419343004","code":"419343004","description":"Alcohol disinfectant (substance)","category":"supplies"}
+{"id":"1137596000","code":"1137596000","description":"Blood lancet (physical object)","category":"supplies"}
+{"id":"972002","code":"972002","description":"Air filter  device (physical object)","category":"supplies"}
+{"id":"469212006","code":"469212006","description":"Isolation gown  reusable (physical object)","category":"supplies"}
+{"id":"409534002","code":"409534002","description":"Disposable air-purifying respirator (physical object)","category":"supplies"}
+{"id":"463659001","code":"463659001","description":"Medical air low pressure tubing (physical object)","category":"supplies"}
+{"id":"463983006","code":"463983006","description":"Operating room gown  single-use (physical object)","category":"supplies"}
+{"id":"706092000","code":"706092000","description":"Suction system (physical object)","category":"supplies"}
+{"id":"465668002","code":"465668002","description":"Surgical cap  single-use (physical object)","category":"supplies"}
+{"id":"346447007","code":"346447007","description":"Fresh frozen plasma (product)","category":"supplies"}
+{"id":"706724001","code":"706724001","description":"Face shield (physical object)","category":"supplies"}
+{"id":"84879009","code":"84879009","description":"Human plasma  blood product (product)","category":"supplies"}
+{"id":"468601005","code":"468601005","description":"Endotracheal tube holder (physical object)","category":"supplies"}
+{"id":"701434005","code":"701434005","description":"Viral filter (physical object)","category":"supplies"}
+{"id":"8537005","code":"8537005","description":"Solution (substance)","category":"supplies"}
+{"id":"38126007","code":"38126007","description":"Protective glasses  device (physical object)","category":"supplies"}
+{"id":"468507004","code":"468507004","description":"Endotracheal tube stylet  single-use (physical object)","category":"supplies"}
+{"id":"119219003","code":"119219003","description":"Kidney part (body structure)","category":"supplies"}
+{"id":"467645007","code":"467645007","description":"Continuous positive airway pressure nasal oxygen cannula (physical object)","category":"supplies"}
+{"id":"469673003","code":"469673003","description":"Isolation gown  single-use (physical object)","category":"supplies"}
+{"id":"470609007","code":"470609007","description":"Laryngoscope blade  single-use (physical object)","category":"supplies"}
+{"id":"827149008","code":"827149008","description":"Carbon dioxide breath analyzer (physical object)","category":"supplies"}
+{"id":"467053003","code":"467053003","description":"Basic endotracheal tube  single-use (physical object)","category":"supplies"}
+{"id":"470618009","code":"470618009","description":"Antiseptic towelette (physical object)","category":"supplies"}

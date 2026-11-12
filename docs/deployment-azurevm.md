@@ -9,7 +9,7 @@
 
 Follow the steps below to deploy the solution to your Azure subscription.
 
-1. Run the following script to provision a development VM with Visual Studio 2022 Community and required dependencies preinstalled.
+1. Run the following script to provision a development VM with Visual Studio 2026 Community and required dependencies preinstalled.
 
     ```pwsh
     .\deploy\powershell\Deploy-Vm.ps1 -resourceGroup <rg_name> -location <location> -password <password>
@@ -26,19 +26,7 @@ Follow the steps below to deploy the solution to your Azure subscription.
 
 1. Use RDP to remote into the freshly provisioned VM with the username `BYDtoChatGPTUser` and the password you provided earlier on.  
 
-1. Add the `BYDtoChatGPTUser` account to the `docker-users` local group on the VM. Sign out and sign back in to the VM to apply the changes.
-
-1. Install WSL2 by running the following command in a command prompt:
-
-    ```cmd
-    wsl --install
-    ```
-
-    > If the above command returns "Windows Subsystem for Linux is already installed.", then execute the following command to update WSL: `wsl --update`. You do not need to restart if you are only updating WSL.
-
-1. Restart the VM to complete the setup.
-
-1. Log back in with the `BYDtoChatGPTUser` account and start `Docker Desktop`. Ensure the Docker engine is up and running. Keep `Docker Desktop` running in the background.
+1. Log back in with the `BYDtoChatGPTUser` account and the password you provided earlier on.
 
 1. Clone the repository:
 
@@ -46,7 +34,7 @@ Follow the steps below to deploy the solution to your Azure subscription.
     git clone --recurse-submodules https://github.com/Azure/Medical-Claims-Transaction-Processing-at-scale.git
     ```
 
-1. Open PowerShell, navigate to the `Medical-Claims-Transaction-Processing-at-scale` folder, and run the following script to provision the infrastructure and deploy the API and frontend. This will provision all of the required infrastructure, deploy the API and web app services into AKS, and provision and load artifacts into a Synapse Analytics workspace.
+1. Open PowerShell, navigate to the `Medical-Claims-Transaction-Processing-at-scale` folder, and run the following script to provision the infrastructure and deploy the API and frontend. This will provision all of the required infrastructure and deploy the API and web app services into AKS.
 
     ```pwsh
     cd .\Medical-Claims-Transaction-Processing-at-scale
@@ -80,12 +68,11 @@ The following flags can be used to enable/disable specific deployment steps in t
 | Parameter Name | Description |
 |----------------|-------------|
 | stepDeployBicep | Enables or disables the provisioning of resources in Azure via Bicep templates (located in `./infrastructure`). Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/powershell/Deploy-Bicep.ps1` script.
-| stepBuildPush | Enables or disables the build and push of Docker images into the Azure Container Registry (ACR). Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/BuildPush.ps1` script.
-| stepDeployCertManager | Enables or disables adding the official cert-manager repository to your local and updates the repo cache. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/DeployCertManager.ps1` script.
-| stepDeployTls | Enables or disables SSL/TLS support on the AKS cluster in the resource group. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/DeployTlsSupport.ps1` script.
-| stepDeployImages | Enables or disables deploying the Docker images from the `CoreClaims.WebAPI` and `CoreClaims.WorkerService` projects to AKS. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/Deploy-Images-Aks.ps1` script.
-| stepPublishSite | Enables or disables the build and deployment of the static HTML site to the hosting storage account in the target resource group. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/Publish-Site.ps1` script.
-| stepSetupSynapse | Enables or disables the deployment of a Synapse artifacts to the target synapse workspace. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/infrastructure/Setup-Synapse.ps1` script.
+| stepBuildPush | Enables or disables the build and push of container images using ACR Tasks (no local Docker required). Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/powershell/BuildPush.ps1` script.
+| stepDeployCertManager | Enables or disables adding the official cert-manager repository to your local and updates the repo cache. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/powershell/DeployCertManager.ps1` script.
+| stepDeployTls | Enables or disables SSL/TLS support on the AKS cluster in the resource group. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/powershell/DeployTlsSupport.ps1` script.
+| stepDeployImages | Enables or disables deploying container images from the `CoreClaims.WebAPI` and `CoreClaims.WorkerService` projects. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/powershell/Deploy-Images-Aks.ps1` or `deploy/powershell/Deploy-Images-Aca.ps1` script.
+| stepPublishSite | Enables or disables the build and deployment of the static HTML site to the hosting storage account in the target resource group. Valid values are 0 (Disabled) and 1 (Enabled). See the `deploy/powershell/Publish-Site.ps1` script.
 | stepLoginAzure | Enables or disables interactive Azure login. If disabled, the deployment assumes that the current Azure CLI session is valid. Valid values are 0 (Disabled).
 
 Example command:
@@ -95,12 +82,10 @@ cd deploy/powershell
 ./Unified-Deploy.ps1 -resourceGroup myRg `
                      -subscription 0000... `
                      -stepLoginAzure 0 `
-                     -stepDeployOpenAi 0 `
                      -stepDeployBicep 0 `
                      -stepDeployCertManager 0 `
                      -stepDeployTls 0 `
                      -stepBuildPush 1 `
                      -stepDeployImages 1 `
-                     -stepSetupSynapse 0 `
                      -stepPublishSite 1
 ```

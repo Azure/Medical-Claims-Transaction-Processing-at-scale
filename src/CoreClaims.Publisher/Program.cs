@@ -6,6 +6,7 @@ using CoreClaims.Publisher.Services;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Extensions.Configuration;
 using CoreClaims.Publisher.Model;
+using System.Diagnostics;
 
 namespace CoreClaims.Publisher
 {
@@ -45,27 +46,54 @@ namespace CoreClaims.Publisher
 
             if (string.IsNullOrEmpty(config[Constants.Connections.CosmosDbEndpoint]))
             {
-                Console.Error.WriteLine($"Missing config value: {Constants.Connections.EventHubNamespace}");
+                Console.Error.WriteLine($"Missing config value: {Constants.Connections.CosmosDbEndpoint}");
                 return;
             }
             
-            var client = new CosmosClientBuilder(config[Constants.Connections.CosmosDbEndpoint])
+            var client = new CosmosClientBuilder(config[Constants.Connections.CosmosDbEndpoint], new DefaultAzureCredential())
                 .Build();
 
+            // Create repositories (used by both SeedData and normal modes)
+            var adjudicatorRepository = new AdjudicatorRepository(client);
+            var payerRepository = new PayerRepository(client);
+            var memberRepository = new MemberRepository(client);
+            var providerRepository = new ProviderRepository(client);
+            var claimProcedureRepository = new ClaimProcedureRepository(client);
+            var claimRepository = new ClaimRepository(client);
+
+            // If SeedData mode, run seed and exit
+            if (options.RunMode == GeneratorOptions.RunModeOption.SeedData)
+            {
+                Console.WriteLine("Starting initial data seed...");
+                var stopwatch = Stopwatch.StartNew();
+                var seedService = new DataSeedService(
+                    adjudicatorRepository,
+                    payerRepository,
+                    memberRepository,
+                    providerRepository,
+                    claimProcedureRepository,
+                    claimRepository,
+                    options.DataPath);
+                await seedService.SeedAllDataAsync();
+                stopwatch.Stop();
+                Console.WriteLine($"Data seed completed successfully in {stopwatch.Elapsed:hh\\:mm\\:ss\\.fff}");
+                return;
+            }
+
             Console.WriteLine("Loading Members...");
-            var members = await new MemberRepository(client).ListMembers(0, 10000);
+            var members = await memberRepository.ListMembers(0, 10000);
             var memberIds = members.Items.Select(m => m.MemberId).ToList();
 
             Console.WriteLine("Loading Payers...");
-            var payers = await new PayerRepository(client).ListPayers();
+            var payers = await payerRepository.ListPayers();
             var payerIds = payers.Items.Select(p => p.PayerId).ToList();
             
             Console.WriteLine("Loading Providers...");
-            var providers = await new ProviderRepository(client).ListProviders();
+            var providers = await providerRepository.ListProviders();
             var providerIds = providers.Items.Select(p => p.ProviderId).ToList();
 
             Console.WriteLine("Loading Procedures...");
-            var claimProcedures = await new ClaimProcedureRepository(client).ListClaimProcedures();
+            var claimProcedures = await claimProcedureRepository.ListClaimProcedures();
 
             var eventHub = new EventHubService(config[Constants.Connections.EventHubNamespace]);
             var generator = new DataGenerator(memberIds, payerIds, providerIds, claimProcedures.Items.ToList());

@@ -1,12 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import link from 'next/link';
 
 import TransactionsStatement from '../hooks/TransactionsStatement';
-import scrollToElement from '../hooks/scrollToElement';
+import scrollToElement from '../hooks/ScrollToElement';
 import { FormatMoney } from '../hooks/Formatters';
-import { Table } from 'flowbite-react';
+import { Table, TableHeadCell, TableCell } from 'flowbite-react';
 import MemberDetail from './MemberDetail';
 import MemberCoverageModal from './MemberCoverageModal';
 import ClaimList from '../member/claims/ClaimList';
@@ -87,23 +86,23 @@ export default function Members() {
 							rowFormatter={formatValues}
 							extraHeaders={
 								<>
-									<Table.HeadCell></Table.HeadCell>
-									<Table.HeadCell></Table.HeadCell>
-									<Table.HeadCell></Table.HeadCell>
+									<TableHeadCell></TableHeadCell>
+									<TableHeadCell></TableHeadCell>
+									<TableHeadCell></TableHeadCell>
 								</>
 							}
 							extraRowItems={
 								(row) => (
 									<>
-										<Table.Cell className="!p-4">
+										<TableCell className="!p-4">
 											<span className="hover:cursor-pointer" onClick={()=> onClickMemberDetail(row.memberId)}>Details</span>
-										</Table.Cell>
-										<Table.Cell className="!p-4">
+										</TableCell>
+										<TableCell className="!p-4">
 											<span className="hover:cursor-pointer" onClick={()=> onClickMemberCoverage(row.memberId)}>View Coverage</span>
-										</Table.Cell>
-										<Table.Cell className="!p-4">
+										</TableCell>
+										<TableCell className="!p-4">
 											<span className="hover:cursor-pointer" onClick={()=> onClickViewClaims(row.memberId)}>View Claims</span>
-										</Table.Cell>
+										</TableCell>
 									</>
 								)
 							}

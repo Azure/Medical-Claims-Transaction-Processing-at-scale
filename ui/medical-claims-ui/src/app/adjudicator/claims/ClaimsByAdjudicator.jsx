@@ -1,12 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import link from 'next/link';
-import { Table, Pagination, Spinner } from 'flowbite-react';
+import { Table, TableHeadCell, TableCell, Pagination, Spinner } from 'flowbite-react';
 import moment from 'moment';
 
 import TransactionsStatement from '../../hooks/TransactionsStatement';
-import scrollToElement from '../../hooks/scrollToElement';
+import scrollToElement from '../../hooks/ScrollToElement';
 import { FormatMoney } from '../../hooks/Formatters';
 import ClaimDetails from './ClaimDetails';
 import ClaimHistory from '../../member/claims/ClaimHistory';
@@ -100,19 +99,19 @@ export default function ClaimsByAdjudicator({ adjudicatorId, isManager }) {
 							rowFormatter={formatValues}
 							extraHeaders={
 								<>
-									<Table.HeadCell></Table.HeadCell>
-									<Table.HeadCell></Table.HeadCell>
+									<TableHeadCell key="details-header"></TableHeadCell>
+									<TableHeadCell key="history-header"></TableHeadCell>
 								</>
 							}
 							extraRowItems={
 								(row) => (
 									<>
-										<Table.Cell>
+										<TableCell key={`details-${row.claimId}`}>
 											<span className="hover:cursor-pointer" onClick={()=> viewDetails(row.claimId)}>Details</span>
-										</Table.Cell>
-									 	<Table.Cell>
+										</TableCell>
+									 	<TableCell key={`history-${row.claimId}`}>
 											<span className="hover:cursor-pointer" onClick={()=> viewHistory(row.claimId)}>View History</span>
-										</Table.Cell>
+										</TableCell>
 									</>
 								)
 							}

@@ -1,0 +1,10 @@
+{"id":"a735bf55-83e9-331a-899d-a82a60b9f60c","adjudicatorId":"a735bf55-83e9-331a-899d-a82a60b9f60c","type":"Adjudicator","name":"Medicare","email":"medicare@contoso.com","role":"Manager"}
+{"id":"df166300-5a78-3502-a46a-832842197811","adjudicatorId":"df166300-5a78-3502-a46a-832842197811","type":"Adjudicator","name":"Medicaid","email":"medicaid@contoso.com","role":"Adjudicator"}
+{"id":"d18ef2e6-ef40-324c-be54-34a5ee865625","adjudicatorId":"d18ef2e6-ef40-324c-be54-34a5ee865625","type":"Adjudicator","name":"Dual Eligible","email":"dualeligible@contoso.com","role":"Adjudicator"}
+{"id":"26aab0cd-6aba-3e1b-ac5b-05c8867e762c","adjudicatorId":"26aab0cd-6aba-3e1b-ac5b-05c8867e762c","type":"Adjudicator","name":"Humana","email":"humana@contoso.com","role":"Adjudicator"}
+{"id":"b046940f-1664-3047-bca7-dfa76be352a4","adjudicatorId":"b046940f-1664-3047-bca7-dfa76be352a4","type":"Adjudicator","name":"Blue Cross Blue Shield","email":"bluecrossblueshield@contoso.com","role":"Manager"}
+{"id":"d31fccc3-1767-390d-966a-22a5156f4219","adjudicatorId":"d31fccc3-1767-390d-966a-22a5156f4219","type":"Adjudicator","name":"UnitedHealthcare","email":"unitedhealthcare@contoso.com","role":"Adjudicator"}
+{"id":"0133f751-9229-3cfd-815f-b6d4979bdd6a","adjudicatorId":"0133f751-9229-3cfd-815f-b6d4979bdd6a","type":"Adjudicator","name":"Aetna","email":"aetna@contoso.com","role":"Manager"}
+{"id":"8fa6c185-e44e-3e34-8bd8-39be8694f4ce","adjudicatorId":"8fa6c185-e44e-3e34-8bd8-39be8694f4ce","type":"Adjudicator","name":"Cigna Health","email":"cignahealth@contoso.com","role":"Adjudicator"}
+{"id":"734afbd6-4794-363b-9bc0-6a3981533ed5","adjudicatorId":"734afbd6-4794-363b-9bc0-6a3981533ed5","type":"Adjudicator","name":"Anthem","email":"anthem@contoso.com","role":"Adjudicator"}
+{"id":"e03e23c9-4df1-3eb6-a62d-f70f02301496","adjudicatorId":"e03e23c9-4df1-3eb6-a62d-f70f02301496","type":"Adjudicator","name":"NO_INSURANCE","email":"no_insurance@contoso.com","role":"Adjudicator"}

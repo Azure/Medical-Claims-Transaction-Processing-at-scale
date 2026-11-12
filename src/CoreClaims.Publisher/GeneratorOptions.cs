@@ -12,7 +12,8 @@ namespace CoreClaims.Publisher
         public enum RunModeOption
         {
             OneTime,
-            Continuous
+            Continuous,
+            SeedData
         }
 
         public RunModeOption RunMode { get; set; } = RunModeOption.OneTime;
@@ -24,5 +25,7 @@ namespace CoreClaims.Publisher
         public int SleepTime { get; set; } = 10000;
 
         public bool Verbose { get; set; } = true;
+
+        public string DataPath { get; set; } = "data";
     }
 }

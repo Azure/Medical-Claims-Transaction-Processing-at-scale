@@ -83,5 +83,10 @@ namespace CoreClaims.Infrastructure.Repository
         {
             await Container.UpsertItemAsync(claim);
         }
+
+        public async Task UpsertAdjudicator(Adjudicator adjudicator)
+        {
+            await Container.UpsertItemAsync(adjudicator, new Microsoft.Azure.Cosmos.PartitionKey(adjudicator.AdjudicatorId));
+        }
     }
 }

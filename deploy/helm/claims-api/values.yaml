@@ -46,9 +46,7 @@ env:
     - name: BusinessRuleOptions__DemoManagerAdjudicatorId
     - name: RulesEngine__OpenAIEndpoint
     - name: RulesEngine__OpenAICompletionsDeployment
-    - name: ClientId
   secret:
-    - name: RulesEngine__OpenAIKey
     - name: ApplicationInsights__ConnectionString
   values:
     - name: ASPNETCORE_ENVIRONMENT

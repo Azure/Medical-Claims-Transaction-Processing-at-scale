@@ -38,15 +38,20 @@ namespace CoreClaims.WebAPI.Endpoints.Http
         public override void AddRoutes(WebApplication app)
         {
             app.MapPost($"/{UrlFragment}/{{claimId}}/acknowledge", async (string claimId) => await AcknowledgeClaim(claimId))
-                .WithName("AcknowledgeClaim");
+                .WithName("AcknowledgeClaim")
+                .RequireCors("AllowAllOrigins");
             app.MapGet($"/{UrlFragment}/{{claimId}}/history", async (string claimId) => await GetClaimHistory(claimId))
-                .WithName("GetClaimHistory");
+                .WithName("GetClaimHistory")
+                .RequireCors("AllowAllOrigins");
             app.MapGet($"/{UrlFragment}/{{claimId}}/recommendation", async (string claimId) => await GetClaimRecommendation(claimId))
-                .WithName("GetClaimRecommendation");
+                .WithName("GetClaimRecommendation")
+                .RequireCors("AllowAllOrigins");
             app.MapGet($"/{UrlFragment}/{{claimId}}", async (string claimId) => await GetClaimAdjudication(claimId))
-                .WithName("GetClaimAdjudication");
+                .WithName("GetClaimAdjudication")
+                .RequireCors("AllowAllOrigins");
             app.MapPut($"/{UrlFragment}/{{claimId}}", async (string claimId, UpdateClaimModel claimDetail) => await UpdateClaimAdjudication(claimId, claimDetail))
-                .WithName("UpdateClaimAdjudication");
+                .WithName("UpdateClaimAdjudication")
+                .RequireCors("AllowAllOrigins");
         }
 
         protected virtual async Task<IResult> AcknowledgeClaim(string claimId)

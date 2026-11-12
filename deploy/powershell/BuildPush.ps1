@@ -3,51 +3,69 @@
 Param(
     [parameter(Mandatory=$true)][string]$resourceGroup,
     [parameter(Mandatory=$true)][string]$acrName,
-    [parameter(Mandatory=$false)][bool]$dockerBuild=$true,
-    [parameter(Mandatory=$false)][bool]$dockerPush=$true,
-    [parameter(Mandatory=$false)][string]$dockerTag="latest",
-    [parameter(Mandatory=$false)][bool]$isWindowsMachine=$false
+    [parameter(Mandatory=$false)][string]$dockerTag="latest"
 )
 
 Push-Location $($MyInvocation.InvocationName | Split-Path)
-$sourceFolder=$(./Join-Path-Recursively.ps1 -pathParts ..,powershell)
-Write-Host "---------------------------------------------------" -ForegroundColor Yellow
 
-Write-Host "---------------------------------------------------" -ForegroundColor Yellow
-Write-Host "Getting info from ACR $resourceGroup/$acrName" -ForegroundColor Yellow
-Write-Host "---------------------------------------------------" -ForegroundColor Yellow
-az acr update -n $acrName --admin-enabled true
-$acrLoginServer=$(az acr show -g $resourceGroup -n $acrName -o json | ConvertFrom-Json).loginServer
-$acrCredentials=$(az acr credential show -g $resourceGroup -n $acrName -o json | ConvertFrom-Json)
-$acrPwd=$acrCredentials.passwords[0].value
-$acrUser=$acrCredentials.username
-$dockerComposeFile="../docker/docker-compose.yml"
-
-
-if ($dockerBuild) {
-    Write-Host "---------------------------------------------------" -ForegroundColor Yellow
-    Write-Host "Using docker compose to build & tag images." -ForegroundColor Yellow
-    Write-Host "Images will be named as $acrLoginServer/imageName:$dockerTag" -ForegroundColor Yellow
-    Write-Host "---------------------------------------------------" -ForegroundColor Yellow
-
-    Push-Location $sourceFolder
-    $env:TAG=$dockerTag
-    $env:REGISTRY=$acrLoginServer 
-    docker-compose -f $dockerComposeFile build
-    Pop-Location
+Write-Host "Configuring ACR..." -ForegroundColor Gray
+$acrResult = az acr update -n $acrName --admin-enabled true --only-show-errors 2>&1
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "  ✗ Failed to configure ACR" -ForegroundColor Red
+    Write-Host "Error: $acrResult" -ForegroundColor Red
+    exit 1
 }
 
-if ($dockerPush) {
-    Write-Host "---------------------------------------------------" -ForegroundColor Yellow
-    Write-Host "Pushing images to $acrLoginServer" -ForegroundColor Yellow
-    Write-Host "---------------------------------------------------" -ForegroundColor Yellow
+# Get source directory (../../src from powershell folder)
+$srcPath = (Resolve-Path "../../src").Path
 
-    Push-Location $sourceFolder
-    docker login -p $acrPwd -u $acrUser $acrLoginServer
-    $env:TAG=$dockerTag
-    $env:REGISTRY=$acrLoginServer 
-    docker-compose -f $dockerComposeFile push
-    Pop-Location
+# Define images to build
+$images = @(
+    @{
+        Name = "claims-api"
+        Dockerfile = "CoreClaims.WebAPI/Dockerfile"
+        Context = $srcPath
+    },
+    @{
+        Name = "claims-worker"
+        Dockerfile = "CoreClaims.WorkerService/Dockerfile"
+        Context = $srcPath
+    }
+)
+
+Write-Host "Building and pushing images using ACR Tasks..." -ForegroundColor White
+Write-Host "  Tag: $dockerTag" -ForegroundColor Gray
+
+foreach ($image in $images) {
+    $imageName = "$($image.Name):$dockerTag"
+    Write-Host "`nBuilding $imageName..." -ForegroundColor Cyan
+    
+    # Use ACR Tasks to build and push in one command
+    az acr build `
+        --registry $acrName `
+        --image $imageName `
+        --file "$($image.Context)/$($image.Dockerfile)" `
+        $image.Context `
+        --only-show-errors 2>&1 | ForEach-Object {
+            if ($_ -match "error|ERROR|failed|Failed|unable") {
+                Write-Host "  $_" -ForegroundColor Red
+            } elseif ($_ -match "Pushed|Successfully tagged|Run ID:") {
+                # Show only important success messages
+            } elseif ($_ -match "Step \d+/\d+ : ") {
+                # Show build steps in gray
+                Write-Host "  $_" -ForegroundColor DarkGray
+            }
+        }
+    
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "  ✗ Failed to build $imageName" -ForegroundColor Red
+        Pop-Location
+        exit 1
+    }
+    
+    Write-Host "  ✓ $imageName built and pushed successfully" -ForegroundColor Green
 }
+
+Write-Host "`nAll images built and pushed to ACR" -ForegroundColor Green
 
 Pop-Location

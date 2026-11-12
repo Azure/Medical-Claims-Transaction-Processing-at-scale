@@ -1,6 +1,7 @@
+'use client';
 
 import { useState } from 'react';
-import { Table, Pagination, Spinner } from 'flowbite-react';
+import { Table, TableHead, TableHeadCell, TableBody, TableRow, TableCell, Pagination, Spinner } from 'flowbite-react';
 
 const paginationTheme = {
   pages: {
@@ -103,30 +104,32 @@ export default function DataTable(props) {
 				<Table className="w-full" hoverable>
 
 					{/* Table headers */}
-					<Table.Head>
-						{headers.map((header) => (
-							<Table.HeadCell key={header.key} onClick={() => onHeaderClicked(header)} className="cursor-pointer font-bold normal-case text-sm">
-								{header.name} {sortColumn === header.key ? sortIcon : null}
-							</Table.HeadCell>
-						))}
+					<TableHead>
+						<TableRow>
+							{headers.map((header) => (
+								<TableHeadCell key={header.key} onClick={() => onHeaderClicked(header)} className="cursor-pointer font-bold normal-case text-sm">
+									{header.name} {sortColumn === header.key ? sortIcon : null}
+								</TableHeadCell>
+							))}
 
-						{ extraHeaders }
-					</Table.Head>
+							{ extraHeaders }
+						</TableRow>
+					</TableHead>
 
 					{/* Table body */}
-					<Table.Body className="divide-y">
+					<TableBody className="divide-y">
 						{Array.isArray(data) && data.map((row, rowIndex) => (
-							<Table.Row key={rowIndex} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+							<TableRow key={rowIndex} className="bg-white dark:border-gray-700 dark:bg-gray-800">
 								{Array.isArray(headers) && headers.map((header, cellIndex) => (
-									<Table.Cell key={`${rowIndex}-${cellIndex}`} style={header.cellStyle}>
+									<TableCell key={`${rowIndex}-${cellIndex}`} style={header.cellStyle}>
 										<span style={header.textStyle}>{formatRowItem(header, row[header.key], row)}</span>
-									</Table.Cell>
+									</TableCell>
 								))}
 
 								{ extraRowItems && extraRowItems(row) }
-							</Table.Row>
+							</TableRow>
 						))}
-					</Table.Body>
+					</TableBody>
 				</Table>
 			) :
 				<div className="text-center mt-10 mb-10">
